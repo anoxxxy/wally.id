@@ -16,12 +16,13 @@
 	coinjs.hdkey = {'prv':0x0488ade4, 'pub':0x0488b21e};
 	coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'};
 	//for PoS coins!
-	coinjs.txExtraTimeField = false;
+	coinjs.txExtraTimeField = true;
 	coinjs.txExtraTimeFieldValue = false;
 	coinjs.txExtraUnitField = false;
 	coinjs.txExtraUnitFieldValue = false;
 
-
+	coinjs.decimalPlaces = 8;
+	coinjs.symbol = 'BTC';
 
 /*
 var types = {
@@ -1080,6 +1081,9 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		//PoS coins
 		if (coinjs.txExtraTimeField) {
 			r.nTime = (Date.now() / 1000)*1;
+		}
+		if (coinjs.txExtraUnitField) {
+			r.nUnit = 0;
 		}
 
 		/* add an input to a transaction */

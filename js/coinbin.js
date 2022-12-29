@@ -1635,7 +1635,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			//add lock time information to the user
 			if(decode['lock_time'] != 0)
 				$("#verifyTransactionData .transactionLockTime").html($("#verifyTransactionData .transactionLockTime").html() + '<br><div class="alert alert-danger">This is a Time Locked Address, unlock the funds after this Date/Block.</div>' );
-			
+
 			var h = '';
 			$.each(decode.ins, function(i,o){
 				console.log('decode.ins: ', decode.ins);
@@ -2457,11 +2457,17 @@ scrollIntoView(target, {
 		$("#statusSettings").removeClass("alert-success").removeClass("alert-danger").addClass("hidden").html("");
 		$("#settings .has-error").removeClass("has-error");
 
+
 		$.each($(".coinjssetting"),function(i, o){
 			if(!$(o).val().match(/^0x[0-9a-f]+$/)){
+				console.log('i: ', i);
+				console.log('$(o): ', $(o));
+				console.log('$(o).val(): '+ $(o).val());
 				$(o).parent().addClass("has-error");
 			}
 		});
+		
+
 
 		if($("#settings .has-error").length==0){
 
@@ -2478,6 +2484,7 @@ scrollIntoView(target, {
 				$("#nTime").val(Date.now() / 1000 | 0);
 				$("#txTimeOptional").show();
 				$("#verifyTransactionData .txtime").show();
+				console.log('show extra field!');
 			} else {
 				$("#txTimeOptional").hide();
 				$("#verifyTransactionData .txtime").hide();

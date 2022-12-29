@@ -449,9 +449,11 @@ wally_fn.decodeHexPrivKey = function(key){
     coinjs.txExtraUnitField = false;
     coinjs.txExtraUnitFieldValue = false;
 
+    coinjs.decimalPlaces = 8;
+
     if (network == "btc-mainnet") {
       coinjs.asset = 'Bitcoin';
-      coinjs.ticker = 'BTC';      //asset name
+      coinjs.symbol = 'BTC';      //ticker
       coinjs.pub = 0x00;      //wif
       coinjs.priv = 0x80;     //pubKeyHash
       coinjs.multisig = 0x05; //scriptHash
@@ -608,7 +610,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
     }
     if (network == "btc-testnet") {
       coinjs.asset = 'Bitcoin-testnet';
-      coinjs.ticker = 'BTC-TESTNET';
+      coinjs.symbol = 'BTC-TESTNET';
       coinjs.pub = 0x6f;
       coinjs.priv = 0xef;
       coinjs.multisig = 0xc4;
@@ -618,7 +620,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
     }
     if (network == "ltc-mainnet") {
       coinjs.asset = 'Litecoin';
-      coinjs.ticker = 'LTC';
+      coinjs.symbol = 'LTC';
       coinjs.pub = 0x30;
       coinjs.priv = 0xb0;
       coinjs.multisig = 0x32;
@@ -676,7 +678,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
     }
     if (network == "ltc-testnet") {
       coinjs.asset = 'Litecoin-testnet';
-      coinjs.ticker = 'LTC-TESTNET';
+      coinjs.symbol = 'LTC-TESTNET';
       coinjs.pub = 0xef;
       coinjs.priv = 0x6f;
       coinjs.multisig = 0xc4;
@@ -685,7 +687,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
   }
     if (network == "doge-mainnet") {
         coinjs.asset = 'Dogecoin';
-        coinjs.ticker = 'DOGE';
+        coinjs.symbol = 'DOGE';
         coinjs.pub = 0x1e;
         coinjs.priv = 0x9e;
         coinjs.multisig = 0x16;
@@ -694,7 +696,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
     }
     if (network == "doge-testnet") {
         coinjs.asset = 'Dogecoin-testnet';
-        coinjs.ticker = 'DOGE-TESTNET';
+        coinjs.symbol = 'DOGE-TESTNET';
         coinjs.pub = 0xf1;
         coinjs.priv = 0x71;
         coinjs.multisig = 0xc4;
@@ -703,7 +705,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
     }
     if (network == "bay-mainnet") {
         coinjs.asset = 'BitBay';
-        coinjs.ticker = 'BAY';
+        coinjs.symbol = 'BAY';
         coinjs.pub = 0x19;
         coinjs.priv = 0x99;
         coinjs.multisig = 0x55;
@@ -761,7 +763,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
     }
     if (network == "blk-mainnet") {
         coinjs.asset = 'Blackcoin';
-        coinjs.ticker = 'BLK';
+        coinjs.symbol = 'BLK';
         coinjs.pub = 0x19;
         coinjs.priv = 0x99;
         coinjs.multisig = 0x55;
@@ -820,7 +822,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
 
     if (network == "blk-testnet") {
         coinjs.asset = 'Blackcoin-testnet';
-        coinjs.ticker = 'BLK-TESTNET';
+        coinjs.symbol = 'BLK-TESTNET';
         coinjs.pub = 0x6f;
         coinjs.priv = 0xef;
         coinjs.multisig = 0xc4;
@@ -879,7 +881,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
     
     if (network == "lynx-mainnet") {
         coinjs.asset = 'LYNX';
-        coinjs.ticker = 'LYNX';
+        coinjs.symbol = 'LYNX';
         coinjs.pub = 0xad;
         coinjs.priv = 0x2d;
         coinjs.multisig = 0x32;
