@@ -1618,8 +1618,12 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			//	throw false;
 
 			$("#verifyTransactionData .transactionVersion").html(decode['version']);
+			$("#verifyTransactionData .transactionTime").html(new Date(decode['nTime']*1000).toUTCString());
 			$("#verifyTransactionData .transactionSize").html(decode.size()+' <i>bytes</i>');
-			$("#verifyTransactionData .transactionLockTime").html(decode['lock_time']);
+			//$("#verifyTransactionData .transactionLockTime").html(decode['lock_time']);
+			$("#verifyTransactionData .transactionLockTime").html((decode['lock_time'] >= 500000000)? (new Date(decode['lock_time']*1000).toUTCString()) : ("Block height "+decode['lock_time']) );
+
+			$("#verifyTransactionData .transactionUnit").html(String.fromCharCode(decode['nUnit']));
 			$("#verifyTransactionData .transactionRBF").hide();
 			$("#verifyTransactionData .transactionSegWit").hide();
 			if (decode.witness.length>=1) {
@@ -1628,6 +1632,10 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			$("#verifyTransactionData").removeClass("hidden");
 			$("#verifyTransactionData tbody").html("");
 
+			//add lock time information to the user
+			if(decode['lock_time'] != 0)
+				$("#verifyTransactionData .transactionLockTime").html($("#verifyTransactionData .transactionLockTime").html() + '<br><div class="alert alert-danger">This is a Time Locked Address, unlock the funds after this Date/Block.</div>' );
+			
 			var h = '';
 			$.each(decode.ins, function(i,o){
 				console.log('decode.ins: ', decode.ins);
