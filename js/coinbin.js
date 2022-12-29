@@ -6,6 +6,149 @@ $(document).ready(function() {
 	var explorer_addr = "https://coinb.in/addr/"
 	var explorer_block = "https://coinb.in/block/"
 
+	var browserHistoryState = [];
+	var availablePages = ["home", "newAddress", "newSegWit", "newMultiSig", "newTimeLocked", "newHDaddress", "newTransaction", "verify", "sign", "broadcast", "wallet", "settings", "about", "fees", "converter"];
+	
+	var navigationPages = {	//unused for now
+		"home" : {},
+		"newAddress" : {},
+		"newSegWit" : {},
+		"newMultiSig" : {},
+		"newTimeLocked" : {},
+		"newHDaddress" : {},
+		"newTransaction" : [
+			"txinputs",
+			"txoutputs"
+		],
+		"verify" : {},
+		"sign" : {},
+		"broadcast" : {},
+		"wallet" : {},
+		"settings" : {},
+		"about" : {},
+		"fees" : {},
+		"converter" : {},
+		"components" : {}
+	};
+
+
+/*
+
+
+	var navigationPages = {	//unused for now
+		"home" : {},
+		"newAddress" : {},
+		"newSegWit" : {},
+		"newMultiSig" : {},
+		"newTimeLocked" : {},
+		"newHDaddress" : {},
+		"newTransaction" : [
+			"txinputs",
+			"txoutputs"
+		],
+		"verify" : {},
+		"sign" : {},
+		"broadcast" : {},
+		"wallet" : {},
+		"settings" : {},
+		"about" : {},
+		"fees" : {},
+		"converter" : {}
+	};
+
+
+console.log(navigationPages);
+console.log('navigationPages.length: '+ Object.keys(navigationPages).length);
+
+console.log("Page 'about' exists?: " + navigationPages.hasOwnProperty("about"));
+
+console.log(navigationPages.about);
+
+console.log("Page 'about' has subpages? "+ Object.keys(navigationPages.about).length);
+
+console.log("Page 'newTransaction' has subpages? "+ Object.keys(navigationPages.newTransaction).length);
+if(navigationPages.hasOwnProperty("about")){}
+
+/////////////////////////////////////
+  var searchHash = "newTransaction";
+	var navigationPages = {	//unused for now
+		"home" : {},
+		"newAddress" : {},
+		"newSegWit" : {},
+		"newMultiSig" : {},
+		"newTimeLocked" : {},
+		"newHDaddress" : {},
+		"newTransaction" : [
+			"txinputs",
+			"txoutputs"
+		],
+		"verify" : {},
+		"sign" : {},
+		"broadcast" : {},
+		"wallet" : {},
+		"settings" : {},
+		"about" : {},
+		"fees" : {},
+		"converter" : {}
+	};
+
+
+console.log(navigationPages);
+console.log('navigationPages.length: '+ Object.keys(navigationPages).length);
+
+console.log("Page '"+searchHash+"' exists?: " + navigationPages.hasOwnProperty( searchHash ));
+
+console.log(navigationPages[searchHash]);
+
+console.log("Page '"+searchHash+""' has subpages? "+ Object.keys(navigationPages[searchHash]).length);
+
+console.log("Page 'newTransaction' has subpages? "+ Object.keys(navigationPages.newTransaction).length);
+if(navigationPages.hasOwnProperty("about")){}
+
+
+
+
+*/
+
+/*
+profile_data = { 
+			"address" : "",
+			"email" : loginEmail,
+			"login_type" : "", //"password" (email & password login), "private_key" login, "import_wallet", mnemonic" login, "hdmaster" login
+			"wallet_type" : walletType,	//regular (login normal address), multisig
+			"redeem_script" : "",
+			"remember_me" : loginRemember,
+			"pubkey_sorted": false,	// check this when generating the private keys! - (it must be sorted if user wants to import to BitBay Client Wallet)
+			"signatures" : signatures,	//total signatures/private keys needs for signing a transaction!
+			
+			"public_keys" : [
+				//{loginPass[0]["password"]},
+				//{loginPass[1]["password"]}
+			],
+			"passwords" : [
+				loginPass
+				//{loginPass[0]["password"]},
+				//{loginPass[1]["password"]}
+			],
+			"private_keys" : [
+				{""},
+				{""}
+			],
+			"deterministic" : [
+				{"xpub" : ""},
+				{"xprv" : ""},
+				{"seed" : ""}
+			],
+			"imported_wallet" : [
+			{"file1": ""},
+			{"file2": ""},
+			]
+		};
+		*/
+	
+
+	var landingPageShowOnPages = [""];
+
 	var wallet_timer = false;
 
 	$("#openBtn").click(function(){
@@ -292,8 +435,8 @@ $(document).ready(function() {
 	$("#walletSpendTo .addressAdd").click(function(){
 		var clone = '<div class="form-horizontal output">'+$(this).parent().html()+'</div>';
 		$("#walletSpendTo").append(clone);
-		$("#walletSpendTo .glyphicon-plus:last").removeClass('glyphicon-plus').addClass('glyphicon-minus');
-		$("#walletSpendTo .glyphicon-minus:last").parent().removeClass('addressAdd').addClass('addressRemove');
+		$("#walletSpendTo .bi-plus:last").removeClass('bi-plus').addClass('bi-dash');
+		$("#walletSpendTo .bi-dash:last").parent().removeClass('addressAdd').addClass('addressRemove');
 		$("#walletSpendTo .addressRemove").unbind("");
 		$("#walletSpendTo .addressRemove").click(function(){
 			$(this).parent().fadeOut().remove();
@@ -466,8 +609,8 @@ $(document).ready(function() {
 		if($("#multisigPubKeys .pubkeyRemove").length<14){
 			var clone = '<div class="form-horizontal">'+$(this).parent().html()+'</div>';
 			$("#multisigPubKeys").append(clone);
-			$("#multisigPubKeys .glyphicon-plus:last").removeClass('glyphicon-plus').addClass('glyphicon-minus');
-			$("#multisigPubKeys .glyphicon-minus:last").parent().removeClass('pubkeyAdd').addClass('pubkeyRemove');
+			$("#multisigPubKeys .bi-plus:last").removeClass('bi-plus').addClass('bi-dash');
+			$("#multisigPubKeys .bi-dash:last").parent().removeClass('pubkeyAdd').addClass('pubkeyRemove');
 			$("#multisigPubKeys .pubkeyRemove").unbind("");
 			$("#multisigPubKeys .pubkeyRemove").click(function(){
 				$(this).parent().fadeOut().remove();
@@ -505,9 +648,11 @@ $(document).ready(function() {
 
 	/* new -> time locked code */
 
+	/*
 	$('#timeLockedDateTimePicker').datetimepicker({
 		format: "MM/DD/YYYY HH:mm",
 	});
+	*/
 	
 	$('#timeLockedRbTypeBox input').change(function(){
 		if ($('#timeLockedRbTypeDate').is(':checked')){
@@ -594,10 +739,10 @@ $(document).ready(function() {
 
 	$("#recipients .addressAddTo").click(function(){
 		if($("#recipients .addressRemoveTo").length<19){
-			var clone = '<div class="row recipient"><br>'+$(this).parent().parent().html()+'</div>';
+			var clone = '<div class="row no-gutter py-1 recipient">'+$(this).parent().parent().html()+'</div>';
 			$("#recipients").append(clone);
-			$("#recipients .glyphicon-plus:last").removeClass('glyphicon-plus').addClass('glyphicon-minus');
-			$("#recipients .glyphicon-minus:last").parent().removeClass('addressAdd').addClass('addressRemoveTo');
+			$("#recipients .bi-plus:last").removeClass('bi-plus').addClass('bi-dash');
+			$("#recipients .bi-dash:last").parent().removeClass('addressAdd').addClass('addressRemoveTo');
 			$("#recipients .addressRemoveTo").unbind("");
 			$("#recipients .addressRemoveTo").click(function(){
 				$(this).parent().parent().fadeOut().remove();
@@ -608,11 +753,11 @@ $(document).ready(function() {
 	});
 
 	$("#inputs .txidAdd").click(function(){
-		var clone = '<div class="row inputs"><br>'+$(this).parent().parent().html()+'</div>';
+		var clone = '<div class="row no-gutter inputs">'+$(this).parent().parent().html()+'</div>';
 		$("#inputs").append(clone);
 		$("#inputs .txidClear:last").remove();
-		$("#inputs .glyphicon-plus:last").removeClass('glyphicon-plus').addClass('glyphicon-minus');
-		$("#inputs .glyphicon-minus:last").parent().removeClass('txidAdd').addClass('txidRemove');
+		$("#inputs .bi-plus:last").removeClass('bi-plus').addClass('bi-dash');
+		$("#inputs .bi-dash:last").parent().removeClass('txidAdd').addClass('txidRemove');
 		$("#inputs .txidRemove").unbind("");
 		$("#inputs .txidRemove").click(function(){
 			$(this).parent().parent().fadeOut().remove();
@@ -1015,7 +1160,7 @@ $(document).ready(function() {
 						var clone = '<span><div class="row recipients mediator mediator_'+pubkey+'" rel="'+redeem.addr+'">'+$("#recipients .addressAddTo").parent().parent().html()+'</div><br></span>';
 						$("#recipients").prepend(clone);
 
-						$("#recipients .mediator_"+pubkey+" .glyphicon-plus:first").removeClass('glyphicon-plus');
+						$("#recipients .mediator_"+pubkey+" .bi-plus:first").removeClass('bi-plus');
 						$("#recipients .mediator_"+pubkey+" .address:first").val(payto).attr('disabled', true).attr('readonly',true).attr('title','Medation fee for '+$(mo).html());
 
 						var amount = ((fee*$("#totalInput").html())/100).toFixed(8);
@@ -1275,15 +1420,7 @@ $(document).ready(function() {
 		$("#transactionFee").val((fee>0)?fee:'0.00');
 	}
 
-	$(".optionsCollapse").click(function(){
-		if($(".optionsAdvanced",$(this).parent()).hasClass('hidden')){
-			$(".glyphcollapse",$(this).parent()).removeClass('glyphicon-collapse-down').addClass('glyphicon-collapse-up');
-			$(".optionsAdvanced",$(this).parent()).removeClass("hidden");
-		} else {
-			$(".glyphcollapse",$(this).parent()).removeClass('glyphicon-collapse-up').addClass('glyphicon-collapse-down');
-			$(".optionsAdvanced",$(this).parent()).addClass("hidden");
-		}
-	});
+
 
 	/* broadcast a transaction */
 
@@ -1306,7 +1443,7 @@ $(document).ready(function() {
                         success: function(data) {
 				$("#rawTransactionStatus").html(unescape($(data).find("response").text()).replace(/\+/g,' ')).removeClass('hidden');
 				if($(data).find("result").text()==1){
-					$("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden").html(' TXID: ' + $(data).find("txid").text() + '<br> <a href="https://coinb.in/tx/' + $(data).find("txid").text() + '" target="_blank">View on Blockchain</a>');
+					$("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden").html('Your transaction was sent!<br> TXID: ' + $(data).find("txid").text() + '<br> <a href="https://coinb.in/tx/' + $(data).find("txid").text() + '" target="_blank">View on Blockchain</a>');
 				} else {
 					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').prepend('<span class="glyphicon glyphicon-exclamation-sign"></span> ');
 				}
@@ -1468,8 +1605,18 @@ $(document).ready(function() {
 
 	function decodeTransactionScript(){
 		var tx = coinjs.transaction();
+		console.log('tx: ', tx);
+		/*
+		var regex = /^[0-9a-fA-F]{64}$/ig;
+var tx = '1200900900002000001100000000990000000900000000000000000000000001';
+    console.log('testar: ',  regex.test(tx));
+		*/
 		try {
 			var decode = tx.deserialize($("#verifyScript").val());
+			console.log('decode: ', decode);
+			//if(!decode.ins.length && !decode.ins.length)	//iceeee add back
+			//	throw false;
+
 			$("#verifyTransactionData .transactionVersion").html(decode['version']);
 			$("#verifyTransactionData .transactionSize").html(decode.size()+' <i>bytes</i>');
 			$("#verifyTransactionData .transactionLockTime").html(decode['lock_time']);
@@ -1483,12 +1630,14 @@ $(document).ready(function() {
 
 			var h = '';
 			$.each(decode.ins, function(i,o){
+				console.log('decode.ins: ', decode.ins);
 				var s = decode.extractScriptKey(i);
+				console.log('s: ', s);
 				h += '<tr>';
 				h += '<td><input class="form-control" type="text" value="'+o.outpoint.hash+'" readonly></td>';
 				h += '<td class="col-xs-1">'+o.outpoint.index+'</td>';
 				h += '<td class="col-xs-2"><input class="form-control" type="text" value="'+Crypto.util.bytesToHex(o.script.buffer)+'" readonly></td>';
-				h += '<td class="col-xs-1"> <span class="glyphicon glyphicon-'+((s.signed=='true' || (decode.witness[i] && decode.witness[i].length==2))?'ok':'remove')+'-circle"></span>';
+				h += '<td class="col-xs-1"> <span class="bi bi-'+((s.signed=='true' || (decode.witness[i] && decode.witness[i].length==2))?'check':'x')+'-circle-fill"></span>';
 				if(s['type']=='multisig' && s['signatures']>=1){
 					h += ' '+s['signatures'];
 				}
@@ -1499,7 +1648,7 @@ $(document).ready(function() {
 					var rs = script.decodeRedeemScript(s.script);
 					h += rs['signaturesRequired']+' of '+rs['pubkeys'].length;
 				} else {
-					h += '<span class="glyphicon glyphicon-remove-circle"></span>';
+					h += '<i class="bi bi-x-circle-fill"></i>';
 				}
 				h += '</td>';
 				h += '</tr>';
@@ -1519,6 +1668,7 @@ $(document).ready(function() {
 
 					var data = Crypto.util.bytesToHex(o.script.chunks[1]);
 					var dataascii = hex2ascii(data);
+					console.log('dataascii: ', dataascii);
 
 					if(dataascii.match(/^[\s\d\w]+$/ig)){
 						data = dataascii;
@@ -1553,8 +1703,10 @@ $(document).ready(function() {
 			$(h).appendTo("#verifyTransactionData .outs tbody");
 
 			$(".verifyLink").attr('href','?verify='+$("#verifyScript").val());
+			console.log('return decodeTransactionScript');
 			return true;
 		} catch(e) {
+			console.log('decodeTransactionScript: ', e);
 			return false;
 		}
 	}
@@ -1567,7 +1719,11 @@ $(document).ready(function() {
 	}
 
 	function decodePrivKey(){
+		console.log('decodePrivKey');
 		var wif = $("#verifyScript").val();
+		if(wif.length==64){
+			wif = coinjs.privkey2wif(wif);
+		}
 		if(wif.length==51 || wif.length==52){
 			try {
 				var w2address = coinjs.wif2address(wif);
@@ -1791,35 +1947,483 @@ $(document).ready(function() {
 
 	$('input[title!=""], abbr[title!=""]').tooltip({'placement':'bottom'});
 
+	//init load #hashpage
+	//load browser #hashpage on load
 	if (location.hash !== ''){
 		$('a[href="' + location.hash + '"]').tab('show');
+
+		landingPage(location.hash);
+	 	//scrollFunction(location.hash);
+
+		console.log('location.hash clicked');
 	}
 
 	$(".showKey").click(function(){
-		$("input[type='password']",$(this).parent().parent()).attr('type','text');
+		var parentNode = $(this).parent().parent();
+		var inputField = parentNode.find('input');
+
+		
+		if (inputField.attr('type') == 'text') {
+		//if ($(this).data("hidden") === false) {
+			inputField.attr('type','password');
+			//$(this).data("hidden", true);
+			$(this).html('<i class="bi bi-eye-fill"></i>');
+		} else {
+			inputField.attr('type','text');
+			//$(this).data("hidden", false);
+			$(this).html('<i class="bi bi-eye-slash-fill"></i>');
+		}
+
 	});
 
 	$("#homeBtn").click(function(e){
+		console.log('homeBtn clicked');
+
+		landingPage("#home");
+
 		e.preventDefault();
 		history.pushState(null, null, '#home');
 		$("#header .active, #content .tab-content").removeClass("active");
 		$("#home").addClass("active");
+		
 	});
 
+	//popstate pushstate history on tabs
 	$('a[data-toggle="tab"]').on('click', function(e) {
+		console.log('a[data-toggle="tab"] clicked');
+
 		e.preventDefault();
 		if(e.target && $(e.target).attr('href')) {
 			history.pushState(null, null, '#'+$(e.target).attr('href').substr(1));
 		}
-	});
 
-	window.addEventListener("popstate", function(e) {
-		var activeTab = $('[href=' + location.hash + ']');
-		if (activeTab.length) {
-			activeTab.tab('show');
-		} else {
-			$('.nav-tabs a:first').tab('show');
+	});
+	
+
+	async function navigationPageHideAll(pageHash){
+		//remove active class from the active page contents
+		var tabPages = document.querySelectorAll('.tab-pane.tab-content.active');
+		tabPages.forEach(allTabs => {
+            allTabs.classList.remove("active");
+            console.log("navigationPageHideAll --> active pages removed!");
+        });
+
+		var anchorHashBelongsToPage = await navigationPageValidate(pageHash);
+		console.log('anchorHashBelongsToPage: ' + anchorHashBelongsToPage);
+		
+		if(anchorHashBelongsToPage){
+			navigationPageShow(pageHash);
+			console.log('anchorHashBelongsToPage: ' + anchorHashBelongsToPage);
+			document.getElementById(anchorHashBelongsToPage).classList.add("active");
+		}else
+			navigationPageShow(pageHash);
+
+        
+        scrollFunction(pageHash);
+        
+	}
+	async function navigationPageShow(pageHash){
+		console.log('navigationPageShow: '+ pageHash);
+
+		
+		/*
+		var anchorHashBelongsToPage = await navigationPageValidate(pageHash);
+		console.log('anchorHashBelongsToPage: ' + anchorHashBelongsToPage);
+		
+		if(anchorHashBelongsToPage){
+			console.log('anchorHashBelongsToPage: ' + anchorHashBelongsToPage);
+			document.getElementById(anchorHashBelongsToPage).classList.add("active");
+		}else
+			document.getElementById(pageHash).classList.add("active");
+		*/
+
+		document.getElementById(pageHash).classList.add("active");
+		
+		
+		//scrollFunction(pageHash);
+	}
+
+		//document.querySelectorAll('[data-pagescroll="page_tab"]');
+
+	//$('a[data-pagescroll="page_tab"]').on('click', function(e) {
+
+/*
+var pageNavigationLinks = document.querySelectorAll('a[data-pagescroll="page_tab"]');
+
+pageNavigationLinks.forEach(navigateLinks => {
+        navigateLinks.addEventListener("click", function (e) {
+            //t.closeAllPopups();
+            //e.preventDefault();
+            console.log('navigateLinks clicked: ', navigateLinks);
+            console.log('navigateLinks hash: ', this.hash);
+
+            //remove active class from the clicked link
+			(this).classList.remove("active");
+			//this.classList.remove("shadow");
+
+			
+
+
+			//remove active class from the active page contents
+			navigationPageHideAll();
+			
+			//var tabPages = document.querySelectorAll('.tab-pane.tab-content.active');
+			//tabPages.forEach(allTabs => {
+	          //  allTabs.classList.remove("active");
+	          //  console.log("--> active class removed!");
+	          //  console.log('changeTab: ', allTabs);
+	        //});
+	        
+
+	        //active tab content on clicked link
+			(this).classList.add("active");
+
+			var newPushState = (this.hash).replace('#', '');
+
+			console.log(`History.state before pushState: ${history.state}`);
+			if(history.state != newPushState) {
+				history.pushState((this.hash).replace('#', ''), null, this.hash);
+				console.log('History.state after pushState: ', history.state);
+
+				//show/hide landing page
+				landingPage(history.state);
+
+				//show clicked page 
+				navigationPageShow(newPushState);
+				location.hash = history.state;
+				
+				//scroll to the new page tab
+				scrollFunction("tab-content");
+
+			}
+			
+			console.log('newPushState: '+ newPushState);
+
+			
+
+			
+
+
+
+        });
+        console.log('loop');
+    })
+*/
+
+/*
+btn.addEventListener('click', event => {
+  // {bar: 'foo'}
+  console.log(event.target.dataset);
+
+  // "foo"
+  console.log(event.target.getAttribute('data-bar'));
+});
+*/
+/*
+document.addEventListener('click', function (event) {
+
+	// Only run if a [data-dropdown] button was clicked
+	if (!event.target.matches('[data-pagescroll="page_tab"]')) return;
+
+	console.log("page_tab was clicked");
+
+	// Show or hide the dropdown menu...
+
+});
+*/
+
+	
+	//handles page tab content navigation
+	$('a').on('click', function(e) {
+		
+		
+		e.preventDefault();
+		console.log('this.href: ', this);
+
+		console.log('this.dataset.pagescroll: '+ this.dataset.pagescroll)
+		/*if(!this.dataset.pagescroll)
+			return;
+		if(this.dataset.pagescroll != "page_tab")
+			return;
+		*/
+
+		//icee - add try catch
+		if(this.dataset.pagescroll && this.dataset.pagescroll == "page_tab"){
+
+			//remove active class from the clicked link
+			this.classList.remove("active");
+
+			//scroll to the new page tab
+			//scrollFunction("tab-content");
+
+			
+
+			
+			
+			//var tabPages = document.querySelectorAll('.tab-pane.tab-content.active');
+			//tabPages.forEach(allTabs => {
+	            //allTabs.classList.remove("active");
+	            //console.log("--> active class removed!");
+	            //console.log('changeTab: ', allTabs);
+	        //});
+	        
+
+			//activate tab content on clicked link
+			//document.querySelector(this.hash).classList.add("active");
+
+			var newPushState = (this.hash).replace('#', '');
+
+			console.log(`History.state before pushState: ${history.state}`);
+			if(history.state != newPushState) {
+				history.pushState((this.hash).replace('#', ''), null, this.hash);
+				console.log('History.state after pushState: ', history.state);
+				//landingPage(newPushState);
+			}
+
+			
+			landingPage(newPushState);
+
 		}
+
+	});
+	
+
+//check if anchor/Hash exists among available pages!
+	async function navigationPageValidate(anchorHash) {
+		
+		console.log("=========navigationPageValidate==============");
+		console.log("anchorHash: "+ anchorHash);
+
+		if(!anchorHash)
+			return false;
+		var searchHash = anchorHash.replace('#', '');
+		console.log("searchHash: "+ searchHash);
+
+		//var pageFound = async () => {
+			Object.entries(navigationPages).forEach(([key, value]) => {
+			  
+			  //check for mainPages
+			  if(key == searchHash){
+			    //console.log ("key= searchHash: " + searchHash);
+			    //console.log("return: " + key);
+			    //pageFound=1;
+			    console.log('key found in pages: '+key);
+			    return key;
+			  }
+			  
+			  //check for subPages
+			  if(value.length){
+			    Object.entries(value).forEach(([keySub, valueSub]) => {
+			      if(valueSub == searchHash){
+			        //console.log ("valueSub= searchHash: " + valueSub);
+			        //console.log("returnsub: " + key);
+			        //pageFound=1;
+			        console.log('key found in pages: '+key);
+			        
+			        navigationPageShow(key);
+			        $('[href="#'+valueSub+'"]').click();	//click/focus  on the anchor link 
+
+			        //location.hash = key;
+			        return key;
+			      }
+			    });
+			    
+			    
+			      
+			  }
+			});
+			return false;
+		//}
+		//return pageFound;
+		//console.log('pageFound: ' + pageFound)
+	}
+/*
+window.addEventListener('hashchange', () => {
+  alert('The hash has changed!');
+}, false);
+*/
+	//browser history hash changed
+	window.onhashchange = async function() {
+	 console.log('=============onhashchange===============');
+
+	 console.log('History.state after pushState: ', history.state);
+	 console.log('History.state', history);
+	 console.log('location.hash: ', location.hash);
+
+
+	 /*
+	 var currentPageHash = location.hash.replace('#', '');
+	 if(availablePages.indexOf(history.state) !== -1) {
+	 	console.log('page found!');
+	 	landingPage(history.state);
+	 	scrollFunction(history.state);
+	 }else if(availablePages.indexOf(currentPageHash) !== -1) {
+	 	scrollFunction(currentPageHash);
+	 	landingPage(currentPageHash);
+	 }else {
+	 	console.log('page not found!');
+	 }
+	 */
+	 /*
+	 var navigationPageIsValid = await navigationPageValidate(history.state);
+	console.log('navigationPageIsValid 1: '+navigationPageIsValid + ', history.state: '+history.state);
+	 if(navigationPageIsValid) {
+	 	console.log('page found! history.state');
+	 	landingPage(history.state);
+	 	//scrollFunction(history.state);
+	 	return true;
+	 }
+	 navigationPageIsValid = await navigationPageValidate(location.hash);
+	 console.log('navigationPageIsValid 2: '+navigationPageIsValid + ', location.hash: '+location.hash);
+
+	 if(navigationPageIsValid) {
+	 	console.log('page found! location.hash');
+	 	//scrollFunction(location.hash);
+	 	landingPage(location.hash);
+	 	return true;
+	 }
+	 */
+
+	 /*else {
+	 	console.log('page not found! history.state: ' + history.state + ', location.hash: '+location.hash);
+	 }*/
+	 if (location.hash.length > 0){
+        // Navigate to the hash
+        //document.getElementById(location.hash.substr(1)).scrollIntoView();
+        console.log('user clicked back 1!: '+ location.hash);
+        landingPage(location.hash);
+    } else {
+    	console.log('user clicked back 2!');
+    	
+    	}
+
+	 console.log('page not found! history.state: ' + history.state + ', location.hash: '+location.hash);
+	 return false;
+
+
+	}
+
+
+	
+
+//handles smooth scroll to tab content
+function scrollFunction(scrollToId) {
+
+		//scrollToId.replace('#', '');
+		//console.log('scrolledID: ' + scrollToId.replace('#', ''));
+        var target = document.getElementById(scrollToId.replace('#', ''));
+if(target === null)
+        	return;
+
+       // combine it with any of the other options from 'scroll-into-view-if-needed'
+
+//document.getElementById("tab-content").scrollIntoView({ behavior: 'smooth', block: 'start' });
+//window.scrollBy({ top: -40, left: 0, behavior: 'smooth' });
+
+
+if(scrollToId == "#home" || scrollToId == "#verify")
+	window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+	//window.scrollBy({ top: -400, left: 0, behavior: 'smooth' });
+else{
+	target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	//window.scrollBy({ top: -20, left: 0, behavior: 'smooth' });
+}
+
+//await window.scrollBy({ top: -100, left: 0, behavior: 'smooth' });
+
+
+/*
+scrollIntoView(target, {
+  scrollMode: 'if-needed',
+  block: 'start',
+  inline: 'center',
+});
+*/
+
+
+/*
+        if(target === null)
+        	return;
+        //var e = document.getElementById("tab-content");
+        
+
+        // This start the block to the window 
+        // bottom and also aligns the view to the center 
+        target.scrollIntoView({
+          block: 'start',
+          behavior: 'smooth',
+          inline: 'start'
+        });
+        */
+
+      }
+
+      async function landingPage(pageHash, show=false) {
+		
+		//if(landingPageShowOnPages.indexOf("") !== -1)
+		console.log('====landingPage===');
+
+		pageHash = pageHash.replace("#", "");
+		//hide landing page for other active tabs
+		if (pageHash == "home" || pageHash == "about") {
+			$('.landing_box').removeClass("hidden");
+		}else 
+			$('.landing_box').addClass("hidden");
+
+		console.log("pageHash: " + pageHash);
+		//remove active class from the active page contents
+		navigationPageHideAll(pageHash);
+
+		console.log(`History.state: ${history.state}`);
+		console.log('History: ',  history);
+
+		/*
+		//is the anchorLink a subpage, redirect to its main page!
+		var anchorHashBelongsToPage = await navigationPageValidate(pageHash);
+		console.log('anchorHashBelongsToPage: ' + anchorHashBelongsToPage);
+		
+		if(anchorHashBelongsToPage)
+			pageHash = anchorHashBelongsToPage;
+
+		//show validated page
+		navigationPageShow(pageHash);
+		*/
+
+		//scrollFunction(pageHash);
+
+      }
+     //popstate pushstate history on links
+	window.addEventListener("popstate", function(e) {
+		
+		/*
+		var activeTab = $('[href="' + location.hash + '"]');
+
+		
+		//hide landing page for other active tabs
+		landingPage(location.hash);
+
+
+		console.log('clicked popstate hash: ', location.hash);
+
+		console.log('activeTab', activeTab);
+
+		console.log('activeTab.length: ' + activeTab.length);
+		//show clicked tab
+		if (activeTab.length) {
+			//scrollFunction(location.hash);
+			activeTab.tab('show');	//disabled for smoot scrolling, remove if u dont want any smooth scroll
+
+		} else {
+			//$('#tab-content div:first').tab('show').addClass("hejsan");
+			//set home page tab as default!
+			$("#homeBtn").click();
+		}
+
+		//remove the active class from the clicked a link
+		activeTab.removeClass("active");
+
+		*/
+
 	});
 
 	for(i=1;i<3;i++){
@@ -1893,9 +2497,11 @@ $(document).ready(function() {
 		// deal with unspent output settings
 		if(o[6]=="false"){
 			$("#coinjs_utxo, #redeemFrom, #redeemFromBtn, #openBtn, .qrcodeScanner").attr('disabled',true);			
-			$("#coinjs_utxo").val("coinb.in");
+			$("#redeemFrom").val("Loading of address inputs is currently not available for " + this.options[ this.selectedIndex ].text);
+			//$("#coinjs_utxo").val("coinb.in");
 		} else {
 			$("#coinjs_utxo").val(o[6]);
+			$("#redeemFrom").val("");
 			$("#coinjs_utxo, #redeemFrom, #redeemFromBtn, #openBtn, .qrcodeScanner").attr('disabled',false);
 		}
 

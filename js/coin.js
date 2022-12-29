@@ -10,11 +10,95 @@
 	var coinjs = window.coinjs = function () { };
 
 	/* public vars */
-	coinjs.pub = 0x00;
+	coinjs.pub = 0;
 	coinjs.priv = 0x80;
 	coinjs.multisig = 0x05;
 	coinjs.hdkey = {'prv':0x0488ade4, 'pub':0x0488b21e};
 	coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'};
+	//coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'tp'};
+
+
+
+/*
+var types = {
+  MULTISIG: 'multisig',
+  NONSTANDARD: 'nonstandard',
+  NULLDATA: 'nulldata',
+  P2PK: 'pubkey',
+  P2PKH: 'pubkeyhash',
+  P2SH: 'scripthash',
+  P2WPKH: 'witnesspubkeyhash',
+  P2WSH: 'witnessscripthash',
+  WITNESS_COMMITMENT: 'witnesscommitment'
+}
+
+module.exports = {
+  classifyInput: classifyInput,
+  classifyOutput: classifyOutput,
+  classifyWitness: classifyWitness,
+  multisig: multisig,
+  nullData: nullData,
+  pubKey: pubKey,
+  pubKeyHash: pubKeyHash,
+  scriptHash: scriptHash,
+  witnessPubKeyHash: witnessPubKeyHash,
+  witnessScriptHash: witnessScriptHash,
+  witnessCommitment: witnessCommitment,
+  types: types
+}
+
+<option value="litecoin_testnet" rel="0x6f;0xef;0xc4;0x43587cf;0x4358394;NOT.SET;NOT.SET">Litecoin (testnet)</option>
+<option value="dogecoin_testnet" rel="0x71;0xf1;0xc4;0x43587cf;0x4358394;NOT.SET;NOT.SET">Bitcoin (testnet)</option>
+
+libs.bitcoin.networks.crown = {
+  messagePrefix: 'unused',
+  bip32: {
+    public: 0x0488b21e,
+    private: 0x0488ade4
+  },
+  pubKeyHash: 0x00,
+  scriptHash: 0x05,
+  wif: 0x80,
+
+
+libs.bitcoin.networks.litecointestnet = {
+  messagePrefix: '\x18Litecoin Signed Message:\n',
+  bip32: {
+    public: 0x043587cf,
+    private: 0x04358394,
+  },
+  pubKeyHash: 0x6f,
+  scriptHash: 0xc4,
+  wif: 0xef,
+};
+
+libs.bitcoin.networks.dogecointestnet = {
+  messagePrefix: '\x19Dogecoin Signed Message:\n',
+  bip32: {
+    public: 0x043587cf,
+    private: 0x04358394
+  },
+  pubKeyHash: 0x71,
+  scriptHash: 0xc4,
+  wif: 0xf1
+};
+
+
+
+	coinjs.pub = 0x19;
+	coinjs.priv = 0x99;
+	coinjs.multisig = 0x55;
+	coinjs.multisig_str = "55";
+	coinjs.hdkey = {'prv':0x02cfbf60, 'pub':0x02cfbede};
+	coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'};
+
+	https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZeJJTEHvSzGR8Uy|BJLZ29gAk9aGW9HoAnsEzqmWp6BX7tZEN8|bSg6gu7nH8aHwz2FTqfNF3h6TBExozfkMc|BEWNxapAtBtj2hqQGbQ8Ae6xNyyz5qcMrJ|bNZQjohFer1caZT8YbbvDqA5A4VRuY1NZ7&key=fcda1e67b06e&n=0
+
+https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZeJJTEHvSzGR8Uy|BJLZ29gAk9aGW9HoAnsEzqmWp6BX7tZEN8|bSg6gu7nH8aHwz2FTqfNF3h6TBExozfkMc|BEWNxapAtBtj2hqQGbQ8Ae6xNyyz5qcMrJ|bNZQjohFer1caZT8YbbvDqA5A4VRuY1NZ7&key=fcda1e67b06e&n=0
+
+73 addresses
+*/
+
 
 	coinjs.compressed = false;
 
@@ -208,6 +292,7 @@
 		return r;
 	}
 
+	
 	/* provide a privkey and return an WIF  */
 	coinjs.privkey2wif = function(h){
 		var r = Crypto.util.hexToBytes(h);
@@ -1711,6 +1796,7 @@
 				buffer = Crypto.util.hexToBytes(buffer)
 			}
 
+			console.log('r.deserialize buffer: ', buffer);
 			var pos = 0;
 			var witness = false;
 
@@ -2051,7 +2137,20 @@
 		for(x=0;x<l;x++) {
 			r += chars.charAt(Math.floor(Math.random() * 62));
 		}
-		return r;
+		return coinjs.generatePass();
 	}
+
+	coinjs.generatePass = function(length) {
+  var generatePass = (
+  //length = 20,
+  wishlist = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~'
+) =>
+  Array.from(crypto.getRandomValues(new Uint32Array(length)))
+    .map((x) => wishlist[x % wishlist.length])
+    .join('');
+
+  return generatePass();  
+}
+
 
 })();

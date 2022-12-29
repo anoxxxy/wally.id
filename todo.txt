@@ -1,0 +1,20 @@
+Anoxy, [12/27/22 10:56 PM]
+also people will be able to change blockchain api
+
+Anoxy, [12/27/22 10:56 PM]
+in case some of them are blocked in some countries etc
+
+
+
+Anoxy, [12/27/22 10:56 PM]
+also people will be able to change blockchain api
+
+Anoxy, [12/27/22 10:56 PM]
+in case some of them are blocked in some countries etc
+
+Omid Beige, [12/27/22 10:59 PM]
+yeah totally fair
+it could also have a description field for more info or the countries that this api can support (for future references haha)
+
+yeah and most importantly, you can check the IP and see which of those APIs to use for clients so they dont need to get blocked independently where they are located
+:D

@@ -6,7 +6,7 @@
 		<link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
 		<link rel="stylesheet" href="css/style.css" media="screen">
 
-		<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="./assets/js/jquery-3.6.1.min.js" ></script>
 		<script type="text/javascript" src="js/moment.min.js"></script>
 		<script type="text/javascript" src="js/transition.js"></script>
 		<script type="text/javascript" src="js/collapse.js"></script>
@@ -25,6 +25,7 @@
 		<script type="text/javascript" src="js/ellipticcurve.js"></script>
 
 		<script type="text/javascript" src="js/coin.js"></script>
+        <script type="text/javascript" src="./assets/js/wally_fn.js"></script>
 	</head>
 	<!-- =================================================================== -->
 
@@ -73,7 +74,7 @@
 
     $("#test1Btn").click(function(){
     {
-        var testName = "hex private key to compressed address";
+        var testName = "RAW/HEX private key to compressed address";
         var testInput = "0000000000000000000000000000000000000000000000000000000000000001";
         var testExpected = "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH";
         coinjs.compressed = true;
@@ -83,7 +84,7 @@
     }
 
     {
-        var testName = "hex private key to uncompressed address";
+        var testName = "RAW/HEX private key to uncompressed address";
         var testInput = "0000000000000000000000000000000000000000000000000000000000000001";
         var testExpected = "1EHNa6Q4Jz2uvNExL497mE43ikXhwF6kZm";
         coinjs.compressed = false;
@@ -100,6 +101,164 @@
         var testOutput = coinjs.wif2address(testInput).address;
         addTestOutput(testName, testOutput, testExpected);
     }
+
+    {
+        var testName = "WIF compressed private key to address";
+        var testInput = "Kx4VFK8gXu4qBv73x9b1KFnWYqKekkprYyfX9QhFUMQhrTUooXKc";
+        var testExpected ="1NFeCVtA3zuCUAmYheRvfyABnSZCHfrR3j";
+        coinjs.compressed = true;
+        var testOutput = coinjs.wif2address(testInput).address;
+        addTestOutput(testName, testOutput, testExpected);
+    }
+
+
+    
+    /*hex key to addressess*/
+    {
+        var testName = "RAW/HEX private key to supported addresses (bitcoin-mainnet)";
+        var testInput = "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364140";
+        var testExpected = {
+          "hex_key": "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364140",
+          "wif": {
+            "compressed": {
+              "key": "L5oLkpV3aqBjhki6LmvChTCV6odsp4SXM6FfU2Gppt5kFLaHLuZ9",
+              "public_key": "0379be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+              "address": "1GrLCmVQXoyJXaPJQdqssNqwxvha1eUo2E",
+              "bech32": {
+                "address": "bc1q4h0ycu78h88wzldxc7e79vhw5xsde0n8jk4wl5",
+                "type": "bech32",
+                "redeemscript": "adde4c73c7b9cee17da6c7b3e2b2eea1a0dcbe67"
+              },
+              "segwit": {
+                "address": "38Kw57SDszoUEikRwJNBpypPSdpbAhToeD",
+                "type": "segwit",
+                "redeemscript": "0014adde4c73c7b9cee17da6c7b3e2b2eea1a0dcbe67"
+              }
+            },
+            "uncompressed": {
+              "key": "5Km2kuu7vtFDPpxywn4u3NLpbr5jKpTB3jsuDU2KYEqetqj84qw",
+              "public_key": "0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798b7c52588d95c3b9aa25b0403f1eef75702e84bb7597aabe663b82f6f04ef2777",
+              "address": "1JPbzbsAx1HyaDQoLMapWGoqf9pD5uha5m"
+            }
+          }
+        };
+
+        var saved = pushNetworkVars("btc-mainnet");
+        var testOutput = wally_fn.hexPrivKeyDecode(testInput, ['bech32', 'segwit']);
+        popNetworkVars(saved);
+        addTestOutput(testName, testOutput, testExpected);
+    }
+
+    {
+        var testName = "RAW/HEX private key to supported addresses (litecoin-mainnet)";
+        var testInput = "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364140";
+        var testExpected = {
+          "hex_key": "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364140",
+          "wif": {
+            "compressed": {
+              "key": "TBdcCZnDzDALUbLxtQs4uojs3fHBt9TRAJ9vKpuNPrFumEBYrLc9",
+              "public_key": "0379be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+              "address": "Lb5HTyoEcUDMnP5TamqB9PuiB94rDWF48R",
+              "bech32": {
+                "address": "bc1q4h0ycu78h88wzldxc7e79vhw5xsde0n8jk4wl5",
+                "type": "bech32",
+                "redeemscript": "adde4c73c7b9cee17da6c7b3e2b2eea1a0dcbe67"
+              },
+              "segwit": {
+                "address": "MEY5NzrBq7eu3E2L3BMXed4nmLR3BHHXT3",
+                "type": "segwit",
+                "redeemscript": "0014adde4c73c7b9cee17da6c7b3e2b2eea1a0dcbe67"
+              }
+            },
+            "uncompressed": {
+              "key": "6w4mE3SeqJi5sCrqTbrrpm7zZKeCXcuCpRH4vf3MFhAGaf9TznB",
+              "public_key": "0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798b7c52588d95c3b9aa25b0403f1eef75702e84bb7597aabe663b82f6f04ef2777",
+              "address": "LccZFpB12fY2q26xWVa7nHsbsNBVFHTBqW"
+            }
+          }
+        };
+
+        var saved = pushNetworkVars("ltc-mainnet");
+        var testOutput = wally_fn.hexPrivKeyDecode(testInput, ['bech32', 'segwit']);
+        popNetworkVars(saved);
+        addTestOutput(testName, testOutput, testExpected);
+    }
+
+    {
+        var testName = "RAW/HEX private key to supported addresses (dogecoin-mainnet)";
+        var testInput = "cd5a799a020a8f4573a79bf23df7aa5f6d7714e2c4b337f894ef787aa3eaf05c";
+        var testExpected = {
+          "hex_key": "cd5a799a020a8f4573a79bf23df7aa5f6d7714e2c4b337f894ef787aa3eaf05c",
+          "wif": {
+            "compressed": {
+              "key": "QVVonj6jwjwVrwrDcAzqyNr4PNGAvkgbz5r8TRxRMVAd9oWaFk4u",
+              "public_key": "02ae6b89013b4ef4a626717c505a001c87fe4e18ed1f5a9c847d686e0928b41a27",
+              "address": "DPFMv2n9ZBdrJF55ZZjpS8x7LD71fnUSJS"
+            },
+            "uncompressed": {
+              "key": "6Kh4ML47ZLhSa4pQFK8DTNGCBxZte6pVKNVMGWDZFcP7qDhYNRu",
+              "public_key": "04ae6b89013b4ef4a626717c505a001c87fe4e18ed1f5a9c847d686e0928b41a27dc4d1237bb31c04315c2f8ac34f04885fc01ccf8bf58f11660ab9bf55fa66b6c",
+              "address": "DEzrkgfooA9cSggwiHaBe7nPdUdogTDHWy"
+            }
+          }
+        };
+
+        var saved = pushNetworkVars("doge-mainnet");
+        var testOutput = wally_fn.hexPrivKeyDecode(testInput);
+        popNetworkVars(saved);
+        addTestOutput(testName, testOutput, testExpected);
+    }
+
+    {
+        var testName = "RAW/HEX private key to supported addresses (bitbay-mainnet)";
+        var testInput = "cd5a799a020a8f4573a79bf23df7aa5f6d7714e2c4b337f894ef787aa3eaf05c";
+        var testExpected = {
+          "hex_key": "cd5a799a020a8f4573a79bf23df7aa5f6d7714e2c4b337f894ef787aa3eaf05c",
+          "wif": {
+            "compressed": {
+              "key": "PkbevvJF4yMozMnNqo2NzWNd9CFukfKyAsjUfADwu6Q4k9UXGrtC",
+              "public_key": "02ae6b89013b4ef4a626717c505a001c87fe4e18ed1f5a9c847d686e0928b41a27",
+              "address": "BNZLzVHi1HKUD5NeSU5E1WbBBgpJ6xq6JA"
+            },
+            "uncompressed": {
+              "key": "69yLUAoxJDKJtxusiR2DgmGKcPVJPac7PB8p3kn5HLMBNBhxdo2",
+              "public_key": "04ae6b89013b4ef4a626717c505a001c87fe4e18ed1f5a9c847d686e0928b41a27dc4d1237bb31c04315c2f8ac34f04885fc01ccf8bf58f11660ab9bf55fa66b6c",
+              "address": "BEJqq9BNFFqEMWzWbBubDVRTUxM6AbwrjX"
+            }
+          }
+        };
+
+        var saved = pushNetworkVars("bay-mainnet");
+        var testOutput = wally_fn.hexPrivKeyDecode(testInput);
+        popNetworkVars(saved);
+        addTestOutput(testName, testOutput, testExpected);
+    }
+
+    {
+        var testName = "RAW/HEX private key to supported addresses (blackcoin-mainnet)";
+        var testInput = "cd5a799a020a8f4573a79bf23df7aa5f6d7714e2c4b337f894ef787aa3eaf05c";
+        var testExpected = {
+          "hex_key": "cd5a799a020a8f4573a79bf23df7aa5f6d7714e2c4b337f894ef787aa3eaf05c",
+          "wif": {
+            "compressed": {
+              "key": "PkbevvJF4yMozMnNqo2NzWNd9CFukfKyAsjUfADwu6Q4k9UXGrtC",
+              "public_key": "02ae6b89013b4ef4a626717c505a001c87fe4e18ed1f5a9c847d686e0928b41a27",
+              "address": "BNZLzVHi1HKUD5NeSU5E1WbBBgpJ6xq6JA"
+            },
+            "uncompressed": {
+              "key": "69yLUAoxJDKJtxusiR2DgmGKcPVJPac7PB8p3kn5HLMBNBhxdo2",
+              "public_key": "04ae6b89013b4ef4a626717c505a001c87fe4e18ed1f5a9c847d686e0928b41a27dc4d1237bb31c04315c2f8ac34f04885fc01ccf8bf58f11660ab9bf55fa66b6c",
+              "address": "BEJqq9BNFFqEMWzWbBubDVRTUxM6AbwrjX"
+            }
+          }
+        };
+
+        var saved = pushNetworkVars("blk-mainnet");
+        var testOutput = wally_fn.hexPrivKeyDecode(testInput);
+        popNetworkVars(saved);
+        addTestOutput(testName, testOutput, testExpected);
+    }
+
 
     {
         var testName = "raw private key to uncompressed base58check WIF private key";
@@ -163,8 +322,21 @@
         var testExpected = "bc1qhmc0vk4xzr37ayv7tlyhns7x4dk04tyvflk8ey";
         var pubkey = coinjs.wif2pubkey(testInput);
         var testOutput = coinjs.bech32Address(pubkey.pubkey).address;
+
         addTestOutput(testName, testOutput, testExpected);
     }
+
+    {
+        var testName = "convert WIF private key to address bech32";
+        var testInput = "L3GzRAGwCqfSNFr6g1NQm7edn29DgAKZJ6owUBqYELpP6Kbim5kM";
+        var testExpected = "bc1qhmc0vk4xzr37ayv7tlyhns7x4dk04tyvflk8ey";
+        var pubkey = coinjs.wif2pubkey(testInput);
+        var testOutput = coinjs.bech32Address(pubkey.pubkey).address;
+        console.log('testOutput: ', testOutput);
+        console.log('testExpected: '+ testExpected);
+        addTestOutput(testName, testOutput, testExpected);
+    }
+    
 
     {
         var testName = "bech32 address, to hex ripemd160 hash of public key";
@@ -328,7 +500,15 @@
 
     function addTestOutput(testName, testOutput, testExpected) {
         var testResult = "Fail ❌";
-        if (testOutput == testExpected) { testResult = "Pass ✓"; }
+        
+        if( typeof testOutput === 'object' && typeof testExpected === 'object'){
+            if( wally_fn.isObjectEqual(testOutput, testExpected))
+                testResult = "Pass ✓";
+            console.log('===compare objects!===');
+        }else{
+            if (testOutput == testExpected) { testResult = "Pass ✓"; }
+        }
+        
         document.getElementById('testResults').value += testName + " : " + testResult + "\n";
     }
 
@@ -343,33 +523,84 @@
 		var savedParams = {
 			'pub':coinjs.pub,
 			'priv':coinjs.priv,
-			'multisig':coinjs.multisig
+			'multisig':coinjs.multisig,
+            //'hdkey':coinjs.hdkey,
+            //'bech32':coinjs.bech32,
+            //'supports_address':coinjs.supports_address,
 		};
 		if (network == "btc-mainnet") {
 			coinjs.pub = 0x00;
 			coinjs.priv = 0x80;
 			coinjs.multisig = 0x05;
+            coinjs.hdkey = {'prv':0x0488ade4, 'pub':0x0488b21e};
+            coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'};
+            coinjs.supports_address = ['compressed', 'uncompressed', 'bech32', 'segwit'];
 		}
 		if (network == "btc-testnet") {
 			coinjs.pub = 0x6f;
 			coinjs.priv = 0xef;
 			coinjs.multisig = 0xc4;
+            coinjs.hdkey = {'prv':0x04358394, 'pub':0x043587cf};
+            coinjs.supports_address = ['compressed', 'uncompressed', 'bech32', 'segwit'];
 		}
 		if (network == "ltc-mainnet") {
 			coinjs.pub = 0x30;
 			coinjs.priv = 0xb0;
 			coinjs.multisig = 0x32;
+            coinjs.hdkey = {'prv':0x019d9cfe, 'pub':0x019da462};
+            coinjs.supports_address = ['compressed', 'uncompressed', 'bech32', 'segwit'];
 		}
 		if (network == "ltc-testnet") {
-			coinjs.pub = 0x6f;
-			coinjs.priv = 0xef;
-			coinjs.multisig = 0x3a4;
-		}
+            coinjs.pub = 0xef;          //wif
+            coinjs.priv = 0x6f;      //pubKeyHash
+            coinjs.multisig = 0xc4;  //scriptHash
+            coinjs.hdkey = {'prv':0x04358394, 'pub':0x043587cf};
+            coinjs.supports_address = ['compressed', 'uncompressed', 'bech32', 'segwit'];
+        }
 		if (network == "doge-mainnet") {
-			coinjs.pub = 0x1e;
-			coinjs.priv = 0x9e;
-			coinjs.multisig = 0x16;
-		}
+            coinjs.pub = 0x1e;
+            coinjs.priv = 0x9e;
+            coinjs.multisig = 0x16;
+            coinjs.hdkey = {'prv':0x089944e4, 'pub':0x0827421e};
+            coinjs.supports_address = ['compressed', 'uncompressed'];
+        }
+        if (network == "doge-testnet") {
+            coinjs.pub = 0xf1;          //wif
+            coinjs.priv = 0x71;      //pubKeyHash
+            coinjs.multisig = 0xc4;  //scriptHash
+            coinjs.hdkey = {'prv':0x04358394, 'pub':0x043587cf};
+            coinjs.supports_address = ['compressed', 'uncompressed'];
+        }
+        if (network == "bay-mainnet") {
+            coinjs.pub = 0x19;
+            coinjs.priv = 0x99;
+            coinjs.multisig = 0x55;
+            coinjs.hdkey = {'prv':0x02cfbf60, 'pub':0x02cfbede};
+            coinjs.supports_address = ['compressed', 'uncompressed'];
+        }
+        if (network == "blk-mainnet") {
+            coinjs.pub = 0x19;
+            coinjs.priv = 0x99;
+            coinjs.multisig = 0x55;
+            coinjs.hdkey = {'prv':0x02cfbf60, 'pub':0x02cfbede};
+            coinjs.supports_address = ['compressed', 'uncompressed'];
+        }
+        if (network == "lynx-mainnet") {
+            coinjs.pub = 0xad;
+            coinjs.priv = 0x2d;
+            coinjs.multisig = 0x32;
+            coinjs.hdkey = {'prv':0x0488ade4, 'pub':0x0488b21e};
+            coinjs.supports_address = ['compressed', 'uncompressed'];
+        }
+
+        console.log('coinjs.pub: ' +coinjs.pub);
+        console.log('coinjs.priv: ' +coinjs.priv);
+        console.log('coinjs.multisig: ' +coinjs.multisig);
+        console.log('coinjs.hdkey: ', coinjs.hdkey);
+        console.log('coinjs.bech32: ', coinjs.bech32);
+        console.log('coinjs.supports_address: ', coinjs.supports_address);
+
+
 		return savedParams;
 	}
 
