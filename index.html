@@ -3394,30 +3394,70 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                 </div>
                 <div id="settingsCustom" class="hidden">
                   <hr>
-                  <div class="row no-gutters">
+                  
+
+                  <div class="row ">
                     <div class="col-md-4">
                       <b>Pub</b>: <br>
                       <input type="text" class="form-control coinjssetting" id="coinjs_pub">
                     </div>
+
                     <div class="col-md-4">
                       <b>Priv</b>: <br>
                       <input type="text" class="form-control coinjssetting" id="coinjs_priv">
                     </div>
+
                     <div class="col-md-4">
                       <b>Script Hash (multisig)</b>: <br>
                       <input type="text" class="form-control coinjssetting" id="coinjs_multisig">
                     </div>
                   </div>
-                  <div class="row no-gutters">
-                    <div class="col-md-6">
+
+                  <div class="row">
+                    <div class="col-md-4">
                       <b>HD Pub</b>: <br>
                       <input type="text" class="form-control coinjssetting" id="coinjs_hdpub">
                     </div>
-                    <div class="col-md-6">
+
+                    <div class="col-md-4">
                       <b>HD Priv</b>: <br>
                       <input type="text" class="form-control coinjssetting" id="coinjs_hdprv">
                     </div>
+
+                    <div class="col-md-4">
+                      <b>Bech32 prefix</b>: <br>
+                      <input type="text" class="form-control" id="coinjs_bech32">
+                    </div>
                   </div>
+
+       
+                  <div class="row">
+                    <div class="col-md-3">
+                      <b>Extra time field?</b>: <br>
+                      <select class="form-control" id="coinjs_extratimefield">
+                        <option value="true">true</option>
+                        <option value="false">false</option>
+                      </select>
+                    </div>
+                    
+                    <div class="col-md-3">
+                      <b>Extra unit field value?</b>: <br>
+                      <input type="text" class="form-control coinjssetting boolisvalid" id="coinjs_extraunitfieldvalue">
+                    </div>
+                    
+                    <div class="col-md-3">
+                      <b>Decimal places</b>: <br>
+                      <input type="text" class="form-control" id="coinjs_decimalplaces">
+                    </div>
+                    
+                    <div class="col-md-3">
+                      <b>Symbol</b>: <br>
+                      <input type="text" class="form-control" id="coinjs_symbol">
+                    </div>
+
+                  </div>
+
+
                   <br>
                   <div class="alert alert-info"> <span class="glyphicon glyphicon-info-sign"></span> You will not be able to automatically broadcast or retreive your unspent outputs from coinb.in when using this setting and will need to use your desktop client instead, however everything else such as creating key pairs, addresses, transaction generation and signing will continue to function normally.</div>
                 </div>

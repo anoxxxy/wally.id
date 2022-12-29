@@ -15,7 +15,11 @@
 	coinjs.multisig = 0x05;
 	coinjs.hdkey = {'prv':0x0488ade4, 'pub':0x0488b21e};
 	coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'};
-	//coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'tp'};
+	//for PoS coins!
+	coinjs.txExtraTimeField = false;
+	coinjs.txExtraTimeFieldValue = false;
+	coinjs.txExtraUnitField = false;
+	coinjs.txExtraUnitFieldValue = false;
 
 
 
@@ -1073,6 +1077,11 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		r.timestamp = null;
 		r.block = null;
 
+		//PoS coins
+		if (coinjs.txExtraTimeField) {
+			r.nTime = (Date.now() / 1000)*1;
+		}
+
 		/* add an input to a transaction */
 		r.addinput = function(txid, index, script, sequence){
 			var o = {};
@@ -1752,6 +1761,11 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 			var buffer = [];
 			buffer = buffer.concat(coinjs.numToBytes(parseInt(this.version),4));
 
+			//PoS coins
+			if (coinjs.txExtraTimeField) {
+				buffer = buffer.concat(coinjs.numToBytes(parseInt(this.nTime),4));
+			}
+
 			if(coinjs.isArray(this.witness)){
 				buffer = buffer.concat([0x00, 0x01]);
 			}
@@ -1826,6 +1840,12 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 			var obj = new coinjs.transaction();
 			obj.version = readAsInt(4);
+
+			//PoS coins
+			if (coinjs.txExtraTimeField) {
+				console.log('txExtra:');
+				obj.nTime = readAsInt(4);
+			}
 
 			if(buffer[pos] == 0x00 && buffer[pos+1] == 0x01){
 				// segwit transaction
