@@ -2178,6 +2178,12 @@
                     <p>The <a href="https://bitcoin.org/en/developer-guide#locktime-and-sequence-number">locktime</a> indicates the earliest time a transaction can be added to the block chain.</p>
                     <input type="text" class="form-control" value="0" id="nLockTime">
                     <hr>
+                    <div id="txTimeOptional">
+                      <label>Extra time field</label>
+                      <p>Indicates the timestamp of a transaction.</p>
+                      <input type="text" class="form-control" value="0" id="nTime">
+                    </div>
+                    <hr>
                     <label>Replace By Fee (RBF)</label>
                     <p class="checkbox">
                       <label><input type="checkbox" id="txRBF" class="checkbox-inline" checked> Make this a <a href="https://en.bitcoin.it/wiki/Transaction_replacement" target="_blank">RBF transaction</a>.</label>
@@ -2607,8 +2613,10 @@
                   <h4>Transaction Script</h4>
                   <p><span style="float:right"><a href="" target="_blank" class="verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a></span>The above script has been decoded</p>
                   <div><b>Version</b>: <span class="transactionVersion"></span></div>
+                  <div class="txtime"><b>Transaction Time</b>: <span class="transactionTime"></span></div>
                   <div><b>Transaction Size</b>: <span class="transactionSize"></span></div>
                   <div><b>Lock time</b>: <span class="transactionLockTime"></span></div>
+                  <div class="txunit"><b>Unit</b>: <span class="transactionUnit"></span></div>
                   <div class="transactionSegWit"><b>SegWit</b>: True</div>
                   <div class="transactionRBF"><b>RBF</b>: This is a <a href="https://en.bitcoin.it/wiki/Transaction_replacement">replace by fee</a> transaction!</div>
                   <hr>

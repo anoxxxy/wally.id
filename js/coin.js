@@ -1801,6 +1801,12 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 			}
 
 			buffer = buffer.concat(coinjs.numToBytes(parseInt(this.lock_time),4));
+
+			//Additional TxUnit field
+			if (coinjs.txExtraUnitField) {
+				buffer = buffer.concat(coinjs.numToBytes(parseInt(coinjs.txExtraUnitFieldValue),1));
+			}
+
 			return Crypto.util.bytesToHex(buffer);
 		}
 
@@ -1890,6 +1896,12 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 			}
 
  			obj.lock_time = readAsInt(4);
+
+ 			//Additional TxUnit field
+ 			if (coinjs.txExtraUnitField) {
+				obj.nUnit = readAsInt(1);
+			}
+
 			return obj;
 		}
 

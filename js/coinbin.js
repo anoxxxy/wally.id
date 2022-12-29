@@ -2464,6 +2464,30 @@ scrollIntoView(target, {
 			coinjs.hdkey.pub =  $("#coinjs_hdpub").val()*1;
 			coinjs.hdkey.prv =  $("#coinjs_hdprv").val()*1;
 
+			//added for PoS coins
+			coinjs.txExtraTimeField = ($("#coinjs_extratimefield").val() == "true");
+			if (coinjs.txExtraTimeField) {
+				$("#nTime").val(Date.now() / 1000 | 0);
+				$("#txTimeOptional").show();
+				$("#verifyTransactionData .txtime").show();
+			} else {
+				$("#txTimeOptional").hide();
+				$("#verifyTransactionData .txtime").hide();
+			}
+			
+			coinjs.txExtraUnitField = ($("#coinjs_extraunitfieldvalue").val() !== "false");
+			if (coinjs.txExtraUnitField) {
+				coinjs.txExtraUnitFieldValue = $("#coinjs_extraunitfieldvalue").val()*1;
+				$("#verifyTransactionData .txunit").show();
+			} else {
+				$("#verifyTransactionData .txunit").hide();
+			}
+			
+			coinjs.decimalPlaces = $("#coinjs_decimalplaces").val()*1;
+
+			coinjs.symbol = $("#coinjs_symbol").val();
+			coinjs.bech32.hrp = $("#coinjs_bech32").val()
+
 			configureBroadcast();
 			configureGetUnspentTx();
 
