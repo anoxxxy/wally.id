@@ -1054,9 +1054,10 @@ profile_data = {
 		var host = $(this).attr('rel');
 
         // api:             blockcypher     blockchair      chain.so
-        // network name     "btc"           "bitcoin"       "BTC"
-        // network name     "ltc"           "litecoin"      "LTC"
-        // network name     "doge"          "dogecoin"      "DOGE"
+        // network name     "btc"           "bitcoin"       "BTC/BTCTEST"
+        // network name     "ltc"           "litecoin"      "LTC/LTCTEST"
+        // network name     "doge"          "dogecoin"      "DOGE/DOGETEST"
+
 
 		if(host=='chain.so_bitcoinmainnet'){
 			listUnspentChainso(redeem, "BTC");
@@ -1078,6 +1079,14 @@ profile_data = {
 			listUnspentBlockchair(redeem, "litecoin");
 		} else if(host=='blockchair_dogecoin'){
 			listUnspentBlockchair(redeem, "dogecoin");
+		
+		} else if(host=='chain.so_bitcoin_testnet'){
+			listUnspentChainso(redeem, "BTCTEST");
+        } else if(host=='chain.so_litecoin_testnet'){
+			listUnspentChainso(redeem, "LTCTEST");
+		} else if(host=='chain.so_dogecoin_testnet'){
+			listUnspentChainso(redeem, "DOGETEST");
+
 		} else {
 			listUnspentDefault(redeem);
 		}
@@ -1618,12 +1627,27 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			//	throw false;
 
 			$("#verifyTransactionData .transactionVersion").html(decode['version']);
-			$("#verifyTransactionData .transactionTime").html(new Date(decode['nTime']*1000).toUTCString());
+			
+			if (decode['nTime']){
+				$("#verifyTransactionData .txtime").removeClass("hidden");
+				$("#verifyTransactionData .transactionTime").html(new Date(decode['nTime']*1000).toUTCString());
+			}else {
+				if (!$("#verifyTransactionData .txtime").hasClass("hidden"))
+					$("#verifyTransactionData .txtime").addClass("hidden");
+			}
+
 			$("#verifyTransactionData .transactionSize").html(decode.size()+' <i>bytes</i>');
 			//$("#verifyTransactionData .transactionLockTime").html(decode['lock_time']);
 			$("#verifyTransactionData .transactionLockTime").html((decode['lock_time'] >= 500000000)? (new Date(decode['lock_time']*1000).toUTCString()) : ("Block height "+decode['lock_time']) );
 
-			$("#verifyTransactionData .transactionUnit").html(String.fromCharCode(decode['nUnit']));
+			if (decode['unit']){
+				$("#verifyTransactionData .txunit").removeClass("hidden");
+				$("#verifyTransactionData .transactionUnit").html(String.fromCharCode(decode['nUnit']));
+			} else  {
+				if (!$("#verifyTransactionData .txunit").hasClass("hidden"))
+					$("#verifyTransactionData .txunit").addClass("hidden");
+			}
+
 			$("#verifyTransactionData .transactionRBF").hide();
 			$("#verifyTransactionData .transactionSegWit").hide();
 			if (decode.witness.length>=1) {
@@ -2563,10 +2587,11 @@ scrollIntoView(target, {
 		var host = $("#coinjs_broadcast option:selected").val();
 
         // api:             blockcypher     blockchair      chain.so
-        // network name     "btc"           "bitcoin"       "BTC"
-        // network name     "ltc"           "litecoin"      "LTC"
-        // network name     "doge"          "dogecoin"      "DOGE"
+        // network name     "btc"           "bitcoin"       "BTC/BTCTEST"
+        // network name     "ltc"           "litecoin"      "LTC/LTCTEST"
+        // network name     "doge"          "dogecoin"      "DOGE/DOGETEST"
 
+        console.log('configureBroadcast: ', this)
 		$("#rawSubmitBtn").unbind("");
 		if(host=="chain.so_bitcoinmainnet"){
 			$("#rawSubmitBtn").click(function(){
@@ -2604,13 +2629,26 @@ scrollIntoView(target, {
 			$("#rawSubmitBtn").click(function(){
 				rawSubmitblockchair(this, "dogecoin");
 			});
+		} else if(host=='chain.so_bitcoin_testnet'){
+			$("#rawSubmitBtn").click(function(){
+				rawSubmitChainso(this, "BTCTEST");
+			});
+	    } else if(host=='chain.so_litecoin_testnet'){
+			$("#rawSubmitBtn").click(function(){
+				rawSubmitChainso(this, "LTCTEST");
+			});
+		} else if(host=='chain.so_dogecoin_testnet'){
+			$("#rawSubmitBtn").click(function(){
+				rawSubmitChainso(this, "DOGETEST");
+			});
+		
 		} else {
 			$("#rawSubmitBtn").click(function(){
 				rawSubmitDefault(this); // revert to default
 			});
 		}
 	}
-
+	
 	function configureGetUnspentTx(){
 		$("#redeemFromBtn").attr('rel',$("#coinjs_utxo option:selected").val());
 	}

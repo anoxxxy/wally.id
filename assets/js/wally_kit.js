@@ -330,38 +330,36 @@ var CryptoidBasedExplorer = {
   getBalance: {
     "cryptoid": function(address){
       this.apikey = "1205735eba8c";
+      this.address_balance = 0;
       this.api_getbalance = "//chainz.cryptoid.info/"+coinjs.symbol+"/api.dws?key="+this.apikey+"&q=getbalance&a="+address;
 
 
           //url : "//chainz.cryptoid.info/"+coinjs.symbol+"/api.dws?key="+this.apikey+"&q=getbalance&a="+address,
           //url : "https://chainz.cryptoid.info/blk/api.dws?key=1205735eba8c&q=getbalance&a=BM1NK84mhsbFSjtpwyvG5fhZRuoNwpGeWu",
           //https://chainz.cryptoid.info/blk/address.dws?BM1NK84mhsbFSjtpwyvG5fhZRuoNwpGeWu
+/*
+var hej = coinjs.ajax(testurl, (data) => {
 
+  console.log(data);
+          });
+*/
 
-          coinjs.addressBalance(this.api_getbalance, address,function(data){
-            // if($(data).find("result").text()==1){
-
+          
+          var testurl = "https://chainz.cryptoid.info/blk/api.dws?key=1205735eba8c&q=getbalance&a=BM1NK84mhsbFSjtpwyvG5fhZRuoNwpGeWu";
+          var hej = coinjs.ajax(api_getbalance, (data) => {
+              
             if (data) {
-              if(host=='coinexplorer_custom'){
-                var parsed = JSON.parse(data);
-                if(parsed.type==='error') {
-                  //$("#walletBalance").html("0.0 "+ coinjs.symbol).attr('rel',v).fadeOut().fadeIn();
-                  //error retrieving balance?
-                }
-                else {
-                  var bal = parsed.result[$("#walletAddress").html()];
-                  $("#walletBalance").html(bal + " " + coinjs.symbol).attr('rel',bal).fadeOut().fadeIn();
-                  //we got the balance!
-                }
-              }else {
-                var bal = data;
-                $("#walletBalance").html(bal + " " + coinjs.symbol).attr('rel',bal).fadeOut().fadeIn();
-              }
-            } else {
+              var bal = JSON.parse(data);
+              this.address_balance = bal;
+              $("#walletBalance").html(bal + " " + coinjs.symbol).attr('rel',bal).fadeOut().fadeIn();
+            } else
               $("#walletBalance").html("0.0 "+ coinjs.symbol).attr('rel',bal).fadeOut().fadeIn();
-            }
 
-            });
+            //reduce the amount of API calls: add this to checkURLTime so we dont overload APIs
+
+          }/*, 'GET'*/);
+          
+
 
       }
     },
@@ -402,6 +400,73 @@ var CryptoidBasedExplorer = {
         });
       }
     },
+    broadcast: {
+    "cryptoid": function(redeem){
+        $.ajax ({
+          type: "POST",
+          url: "https://chainz.cryptoid.info/"+coinjs.symbol+"/api.dws?q=pushtx&key="+this.apikey,
+          //url: "https://chainz.cryptoid.info/ppc-test/api.dws?q=pushtx&key="+this.apikey,
+          data: $("#rawTransaction").val(), //{"tx_hex":$("#rawTransaction").val()},
+          dataType: "text", //"json",
+
+          error: function(data, status, error) {
+            console.log('broadcast cryptoid: error');
+            console.log('data: ', data);
+            console.log('data: ', status);
+            console.log('data: ', error);
+            var obj = data.responseText; //$.parseJSON(data.responseText);
+            var r = '';
+            r += obj.length ? obj : '';//(obj.data.tx_hex) ? obj.data.tx_hex : '';
+            r = (r!='') ? r : ' Failed to broadcast'; // build response
+            $("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+          },
+            success: function(data) {
+            //var obj = data.responseText; //$.parseJSON(data.responseText);
+            console.log('broadcast cryptoid: succes');
+            console.log('data: ', data);
+            if(data.length){
+              $("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden").html(' Txid: '+data);
+            } else {
+              $("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+            }
+          },
+          complete: function(data, status) {
+            $("#rawTransactionStatus").fadeOut().fadeIn();
+            $(thisbtn).val('Submit').attr('disabled',false);
+          }
+        });
+      }
+    },
+    /*
+
+
+
+    iceee not finished yet
+    getInputAmount: {
+    "cryptoid": function(endpoint) {
+      return function(txid, index, callback) {
+        $.ajax ({
+          type: "GET",
+          url: "https://chainz.cryptoid.info/"+coinjs.symbil+"/api.dws?q=txinfo&key="+this.apikey+"&t="+txid,
+          dataType: "json",
+          error: function(data) {
+            callback(false);
+          },
+          success: function(data) {
+            if (coinjs.debug) {console.log(data)};
+            if (data.outputs.length > index) {
+              callback(parseInt(data.outputs[index].amount*("1e"+coinjs.decimalPlaces), 10));
+            } else {
+              callback(false);
+            }
+
+          },
+        });
+
+      }
+    }
+  },
+  */
 }
 
 var iquidusBasedExplorer = {
@@ -799,6 +864,8 @@ https://blockchain.info/multiaddr?active=bc1qldtwp5yz6t4uuhhjcp00hvsmrsfxar2hy09
 https://blockchain.info/unspent?active=bc1qldtwp5yz6t4uuhhjcp00hvsmrsfxar2hy09v0d
 https://blockchain.info/btc-testnet/unspent?active=bc1qldtwp5yz6t4uuhhjcp00hvsmrsfxar2hy09v0d
 
+
+https://blockchair.com/broadcast
 
 
 ***Chain.so

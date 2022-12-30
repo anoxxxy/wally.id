@@ -2614,10 +2614,10 @@
                   <h4>Transaction Script</h4>
                   <p><span style="float:right"><a href="" target="_blank" class="verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a></span>The above script has been decoded</p>
                   <div><b>Version</b>: <span class="transactionVersion"></span></div>
-                  <div class="txtime"><b>Transaction Time</b>: <span class="transactionTime"></span></div>
+                  <div class="txtime hidden"><b>Transaction Time</b>: <span class="transactionTime"></span></div>
                   <div><b>Transaction Size</b>: <span class="transactionSize"></span></div>
                   <div><b>Lock time</b>: <span class="transactionLockTime"></span></div>
-                  <div class="txunit"><b>Unit</b>: <span class="transactionUnit"></span></div>
+                  <div class="txunit hidden"><b>Unit</b>: <span class="transactionUnit"></span></div>
                   <div class="transactionSegWit"><b>SegWit</b>: True</div>
                   <div class="transactionRBF"><b>RBF</b>: This is a <a href="https://en.bitcoin.it/wiki/Transaction_replacement">replace by fee</a> transaction!</div>
                   <hr>
@@ -3391,10 +3391,10 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                       <option value="litecoin_mainnet" rel="0x30;0xb0;0x32;0x019da462;0x019d9cfe;blockcypher_litecoin;blockcypher_litecoin">Litecoin (mainnet)</option>
                       <option value="dogecoin_mainnet" rel="0x1e;0x9e;0x16;0x0827421e;0x089944e4;blockcypher_dogecoin;blockcypher_dogecoin">Dogecoin (mainnet)</option>
                       <option value="shadowcash_mainnet" rel="0x3f;0xbf;0x7d;0xee80286a;0xee8031e8;false;false">ShadowCash (mainnet)</option>
-                      <option value="bitcoin_testnet" rel="0x6f;0xef;0xc4;0x043587cf;0x04358394;false;false">Bitcoin (testnet)</option>
+                      <option value="bitcoin_testnet" rel="0x6f;0xef;0xc4;0x043587cf;0x04358394;chain.so_bitcoin_testnet;chain.so_bitcoin_testnet">Bitcoin (testnet)</option>
 
-                      <option value="litecoin_testnet" rel="0x6f;0xef;0xc4;0x043587cf;0x04358394;false;false">Litecoin (testnet)</option>
-                      <option value="dogecoin_testnet" rel="0x71;0xf1;0xc4;0x043587cf;0x04358394;false;false">Dogecoin (testnet)</option>
+                      <option value="litecoin_testnet" rel="0x6f;0xef;0xc4;0x043587cf;0x04358394;chain.so_litecoin_testnet;chain.so_litecoin_testnet">Litecoin (testnet)</option>
+                      <option value="dogecoin_testnet" rel="0x71;0xf1;0xc4;0x043587cf;0x04358394;chain.so_dogecoin_testnet;chain.so_dogecoin_testnet">Dogecoin (testnet)</option>
 
 
                       <option value="custom" rel="0x00;0x80;0x05;0x488b21e;0x488ade4;false;false">Custom</option>
@@ -3444,8 +3444,8 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                     <div class="col-md-3">
                       <b>Extra time field?</b>: <br>
                       <select class="form-control" id="coinjs_extratimefield">
+                        <option value="false" >false</option>
                         <option value="true">true</option>
-                        <option value="false">false</option>
                       </select>
                     </div>
                     
@@ -3486,6 +3486,10 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                       <option value="chain.so_bitcoinmainnet"> Chain.so (Bitcoin mainnet)</option>
                       <option value="chain.so_litecoin"> Chain.so (Litecoin)</option>
                       <option value="chain.so_dogecoin"> Chain.so (Dogecoin)</option>
+
+                      <option value="chain.so_bitcoin_testnet"> Chain.so (Bitcoin testnet)</option>
+                      <option value="chain.so_litecoin_testnet"> Chain.so (Litecoin testnet)</option>
+                      <option value="chain.so_dogecoin_testnet"> Chain.so (Dogecoin testnet)</option>
                     </select>
                   </div>
                 </div>
@@ -3505,6 +3509,10 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                       <option value="chain.so_bitcoinmainnet"> Chain.so (Bitcoin mainnet)</option>
                       <option value="chain.so_litecoin"> Chain.so (Litecoin)</option>
                       <option value="chain.so_dogecoin"> Chain.so (Dogecoin)</option>
+
+                      <option value="chain.so_bitcoin_testnet"> Chain.so (Bitcoin testnet)</option>
+                      <option value="chain.so_litecoin_testnet"> Chain.so (Litecoin testnet)</option>
+                      <option value="chain.so_dogecoin_testnet"> Chain.so (Dogecoin testnet)</option>
                     </select>
                   </div>
                 </div>

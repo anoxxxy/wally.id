@@ -2043,7 +2043,12 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 	}
 
 	/* raw ajax function to avoid needing bigger frame works like jquery, mootools etc */
-	coinjs.ajax = function(u, f, m, a){
+	coinjs.ajax = function(u, f, m='GET', a){	//url, callbackFunction, method, a?isAwhat? =parameters for POST
+		console.log('u:', u);
+		console.log('f:', f);
+		console.log('m:', m);
+		console.log('a:', a);
+
 		var x = false;
 		try{
 			x = new ActiveXObject('Msxml2.XMLHTTP')
@@ -2061,8 +2066,10 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 		x.open(m, u, true);
 		x.onreadystatechange=function(){
-			if((x.readyState==4) && f)
+			if((x.readyState==4) && f){
+				console.log('back to callBackFunc!');
 				f(x.responseText);
+				}
 		};
 
 		if(m == 'POST'){
