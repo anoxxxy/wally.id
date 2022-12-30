@@ -16,7 +16,7 @@
 	coinjs.hdkey = {'prv':0x0488ade4, 'pub':0x0488b21e};
 	coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'};
 	//for PoS coins!
-	coinjs.txExtraTimeField = true;
+	coinjs.txExtraTimeField = false;
 	coinjs.txExtraTimeFieldValue = false;
 	coinjs.txExtraUnitField = false;
 	coinjs.txExtraUnitFieldValue = false;

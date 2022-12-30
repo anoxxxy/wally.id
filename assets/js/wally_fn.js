@@ -692,7 +692,8 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
         coinjs.priv = 0x9e;
         coinjs.multisig = 0x16;
         coinjs.hdkey = {'prv':0x089944e4, 'pub':0x0827421e};
-        coinjs.supports_address = ['compressed', 'uncompressed'];
+        coinjs.supports_address = ['compressed', 'uncompressed', 'segwit'];
+
     }
     if (network == "doge-testnet") {
         coinjs.asset = 'Dogecoin-testnet';
