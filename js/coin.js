@@ -1081,9 +1081,11 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		//PoS coins
 		if (coinjs.txExtraTimeField) {
 			r.nTime = (Date.now() / 1000)*1;
+			console.log('extra time field added');
 		}
 		if (coinjs.txExtraUnitField) {
 			r.nUnit = 0;
+			console.log('extra unit field added');
 		}
 
 		/* add an input to a transaction */
