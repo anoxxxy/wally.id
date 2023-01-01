@@ -1611,6 +1611,39 @@ profile_data = {
 		// broadcast transaction via blockstream.com (mainnet)
 	//https://tbtc.bitaps.com/broadcast
 	//https://live.blockcypher.com/btc-testnet/decodetx/
+
+	function rawSubmitBlockstreamBTC(thisbtn){ 
+		console.log('===rawSubmitBlockstreamBTC===');
+		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
+		$.ajax ({
+			type: "POST",
+			url: "https://blockstream.info/api/tx",
+			data: $("#rawTransaction").val(),
+			error: function(data) {
+				console.log('Blockstream error data: ', data);
+				var r = 'Failed to broadcast: error code=' + data.status.toString() + ' ' + data.statusText;
+				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+			},
+            success: function(data) {
+            	console.log('Blockstream success data: ', data);
+            	var txid = (data.match(/[a-f0-9]{64}/gi)[0]);
+            	if(txid){
+					$("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden")
+                    .html(' TXID: ' + txid + '<br> <a href="https://live.blockcypher.com/tx/' + txid + '" target="_blank">View on Blockchain Explorer</a>');
+				} else {
+					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+				}
+			},
+			complete: function(data, status) {
+				console.log('Blockstream complete data: ', data);
+				console.log('Blockstream status data: ', status);
+				$("#rawTransactionStatus").fadeOut().fadeIn();
+				$(thisbtn).val('Submit').attr('disabled',false);				
+			}
+		});
+	}
+
+
 	function rawSubmitBlockstreamBTCTestnet(thisbtn){ 
 		console.log('===rawSubmitBlockstreamBTCTestnet===');
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
@@ -2788,10 +2821,14 @@ scrollIntoView(target, {
 			$("#rawSubmitBtn").click(function(){
 				rawSubmitblockchair(this, "dogecoin");
 			});
-			
-		} else if(host=='blockstream.info_bitcoin_testnet'){
+		} else if(host=='blockstream.info_bitcoin'){
 			$("#rawSubmitBtn").click(function(){
 				console.log('Blockstream push broadcast');
+				rawSubmitBlockstreamBTC(this);
+			});
+		} else if(host=='blockstream.info_bitcoin_testnet'){
+			$("#rawSubmitBtn").click(function(){
+				console.log('Blockstream bitcoin testnet push broadcast');
 				rawSubmitBlockstreamBTCTestnet(this);
 			});
 	    } else if(host=='chain.so_bitcoin_testnet'){
