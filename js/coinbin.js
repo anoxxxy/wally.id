@@ -1612,11 +1612,12 @@ profile_data = {
 	//https://tbtc.bitaps.com/broadcast
 	//https://live.blockcypher.com/btc-testnet/decodetx/
 	function rawSubmitBlockstreamBTCTestnet(thisbtn){ 
+		console.log('===rawSubmitBlockstreamBTCTestnet===');
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
 		$.ajax ({
 			type: "POST",
 			url: "https://blockstream.info/testnet/api/tx",
-			data: {"txid":$("#rawTransaction").val()},
+			data: $("#rawTransaction").val(),
 			error: function(data) {
 				console.log('Blockstream error data: ', data);
 				var r = 'Failed to broadcast: error code=' + data.status.toString() + ' ' + data.statusText;
@@ -1624,9 +1625,10 @@ profile_data = {
 			},
             success: function(data) {
             	console.log('Blockstream success data: ', data);
-				if((data.tx) && data.tx.hash){
+            	var txid = (data.match(/[a-f0-9]{64}/gi)[0]);
+            	if(txid){
 					$("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden")
-                    .html(' TXID: ' + data.tx.hash + '<br> <a href="https://live.blockcypher.com/tx/' + data.tx.hash + '" target="_blank">View on Blockchain Explorer</a>');
+                    .html(' TXID: ' + txid + '<br> <a href="https://live.blockcypher.com/tx/' + txid + '" target="_blank">View on Blockchain Explorer</a>');
 				} else {
 					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
 				}
