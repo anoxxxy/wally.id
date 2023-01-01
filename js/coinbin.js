@@ -2720,7 +2720,10 @@ scrollIntoView(target, {
                 explorer_addr = "https://chain.so/address/DOGE/";
             }
 
-			$("#statusSettings").addClass("alert-success").removeClass("hidden").html("<span class=\"glyphicon glyphicon-ok\"></span> Settings updates successfully").fadeOut().fadeIn();	
+            var selectedNetwork = $("#coinjs_coin option:selected").text();
+            console.log('selectedNetwork: ', selectedNetwork);
+
+			$("#statusSettings").addClass("alert-success").removeClass("hidden").html("<span class=\"glyphicon glyphicon-ok\"></span> Network settings updated successfully! <br> Network: "+selectedNetwork).fadeOut().fadeIn();
 		} else {
 			$("#statusSettings").addClass("alert-danger").removeClass("hidden").html("There is an error with one or more of your settings");	
 		}
