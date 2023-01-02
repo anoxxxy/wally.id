@@ -1101,10 +1101,42 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
         console.log('coinjs.hdkey: ', coinjs.hdkey);
         console.log('coinjs.bech32: ', coinjs.bech32);
         console.log('coinjs.supports_address: ', coinjs.supports_address);
-
-
-    
   }
+
+/*
+   @ return Available Blockchain Networks 
+   @param string, all/mainnet/testnet
+
+   returns object
+  */
+
+  wally_fn.getNetworks = function (chainType = 'all') {
+
+    //defaults to mainnet, or else set to testnet
+    var listChainTypes = ["all", "mainnet", "testnet"];
+
+    try {
+      if(!listChainTypes.includes(chainType))
+        throw('Network type "'+chainType+'" not found!');
+
+      if (chainType == "all") {
+        console.log( 'list '+chainType +': ', this.networks);
+        return this.networks;
+      }
+
+      //if(!this.networks.hasOwnProperty(chainType))
+        //throw('Network type "'+chainType+'" not found!')
+      console.log( 'list '+chainType +': ', this.networks[chainType]);
+      return this.chainType;
+
+
+    } catch (e) {
+      console.log('wally_fn.listNetwork ERROR: ', e);
+      //console.warn("");
+    }
+    return false;
+  };
+
 
 })();
 

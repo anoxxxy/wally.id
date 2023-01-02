@@ -527,23 +527,33 @@ profile_data = {
 
 	/* new -> segwit code */
 	$("#newSegWitKeysBtn").click(function(){
-		var compressed = coinjs.compressed;
-		coinjs.compressed = true;
 
-		var s = ($("#newSegWitBrainwallet").is(":checked")) ? $("#brainwalletSegWit").val() : null;
-		var coin = coinjs.newKeys(s);
+		try {
+			if(Object.keys(coinjs.bech32).length === 0)
+				throw('Segwit not supported!');
 
-		if($("#newSegWitBech32addr").is(":checked")){
-			var sw = coinjs.bech32Address(coin.pubkey);
-		} else {
-			var sw = coinjs.segwitAddress(coin.pubkey);
+
+
+			var compressed = coinjs.compressed;
+			coinjs.compressed = true;
+
+			var s = ($("#newSegWitBrainwallet").is(":checked")) ? $("#brainwalletSegWit").val() : null;
+			var coin = coinjs.newKeys(s);
+
+			if($("#newSegWitBech32addr").is(":checked")){
+				var sw = coinjs.bech32Address(coin.pubkey);
+			} else {
+				var sw = coinjs.segwitAddress(coin.pubkey);
+			}
+
+			$("#newSegWitAddress").val(sw.address);
+			$("#newSegWitRedeemScript").val(sw.redeemscript);
+			$("#newSegWitPubKey").val(coin.pubkey);
+			$("#newSegWitPrivKey").val(coin.wif);
+			coinjs.compressed = compressed;
+		} catch (e) {
+			console.log('ERROR newSegWitKeysBtn!');
 		}
-
-		$("#newSegWitAddress").val(sw.address);
-		$("#newSegWitRedeemScript").val(sw.redeemscript);
-		$("#newSegWitPubKey").val(coin.pubkey);
-		$("#newSegWitPrivKey").val(coin.wif);
-		coinjs.compressed = compressed;
 	});
 
 	$("#newSegwitPaperwalletBtn").click(function(){
