@@ -2706,6 +2706,7 @@ scrollIntoView(target, {
 			
 			coinjs.decimalPlaces = $("#coinjs_decimalplaces").val()*1;
 
+			coinjs.coinName = $("#coinjs_coinname").val();
 			coinjs.symbol = $("#coinjs_symbol").val();
 			coinjs.bech32.hrp = $("#coinjs_bech32").val()
 
@@ -2723,7 +2724,7 @@ scrollIntoView(target, {
             var selectedNetwork = $("#coinjs_coin option:selected").text();
             console.log('selectedNetwork: ', selectedNetwork);
 
-			$("#statusSettings").addClass("alert-success").removeClass("hidden").html("<span class=\"glyphicon glyphicon-ok\"></span> Network settings updated successfully! <br> Network: "+selectedNetwork).fadeOut().fadeIn();
+			$("#statusSettings").addClass("alert-success").removeClass("hidden").html("<span class=\"glyphicon glyphicon-ok\"></span> Network settings updated to: "+selectedNetwork).fadeOut().fadeIn();
 		} else {
 			$("#statusSettings").addClass("alert-danger").removeClass("hidden").html("There is an error with one or more of your settings");	
 		}

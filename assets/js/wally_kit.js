@@ -760,8 +760,15 @@ var iquidusBasedExplorer = {
     coinjs.decimalPlaces = 8;
 
     if (network == "btc-mainnet") {
-      coinjs.asset = 'Bitcoin';
+      coinjs.coinName = 'Bitcoin';
       coinjs.symbol = 'BTC';      //ticker
+      coinjs.asset = {
+        name: 'Bitcoin',
+        network: 'mainnet',
+        unspent_outputs: '',
+        broadcast: '',
+        symbol: 'BTC'
+      };
       coinjs.pub = 0x00;      //wif
       coinjs.priv = 0x80;     //pubKeyHash
       coinjs.multisig = 0x05; //scriptHash
@@ -919,7 +926,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
 
     }
     if (network == "btc-testnet") {
-      coinjs.asset = 'Bitcoin-testnet';
+      coinjs.coinName = 'Bitcoin-testnet';
       coinjs.symbol = 'BTC-TESTNET';
       coinjs.pub = 0x6f;
       coinjs.priv = 0xef;
@@ -929,7 +936,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
         coinjs.supports_address = ['compressed', 'uncompressed', 'bech32', 'segwit'];
     }
     if (network == "ltc-mainnet") {
-      coinjs.asset = 'Litecoin';
+      coinjs.coinName = 'Litecoin';
       coinjs.symbol = 'LTC';
       coinjs.pub = 0x30;
       coinjs.priv = 0xb0;
@@ -987,7 +994,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
       }
     }
     if (network == "ltc-testnet") {
-      coinjs.asset = 'Litecoin-testnet';
+      coinjs.coinName = 'Litecoin-testnet';
       coinjs.symbol = 'LTC-TESTNET';
       coinjs.pub = 0xef;
       coinjs.priv = 0x6f;
@@ -996,7 +1003,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
       coinjs.supports_address = ['compressed', 'uncompressed', 'bech32', 'segwit'];
   }
     if (network == "doge-mainnet") {
-        coinjs.asset = 'Dogecoin';
+        coinjs.coinName = 'Dogecoin';
         coinjs.symbol = 'DOGE';
         coinjs.pub = 0x1e;
         coinjs.priv = 0x9e;
@@ -1005,7 +1012,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
         coinjs.supports_address = ['compressed', 'uncompressed'];
     }
     if (network == "doge-testnet") {
-        coinjs.asset = 'Dogecoin-testnet';
+        coinjs.coinName = 'Dogecoin-testnet';
         coinjs.symbol = 'DOGE-TESTNET';
         coinjs.pub = 0xf1;
         coinjs.priv = 0x71;
@@ -1014,7 +1021,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
         coinjs.supports_address = ['compressed', 'uncompressed'];
     }
     if (network == "bay-mainnet") {
-        coinjs.asset = 'BitBay';
+        coinjs.coinName = 'BitBay';
         coinjs.symbol = 'BAY';
         coinjs.pub = 0x19;
         coinjs.priv = 0x99;
@@ -1072,7 +1079,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
       }
     }
     if (network == "blk-mainnet") {
-        coinjs.asset = 'Blackcoin';
+        coinjs.coinName = 'Blackcoin';
         coinjs.symbol = 'BLK';
         coinjs.pub = 0x19;
         coinjs.priv = 0x99;
@@ -1131,7 +1138,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
     }
 
     if (network == "blk-testnet") {
-        coinjs.asset = 'Blackcoin-testnet';
+        coinjs.coinName = 'Blackcoin-testnet';
         coinjs.symbol = 'BLK-TESTNET';
         coinjs.pub = 0x6f;
         coinjs.priv = 0xef;
@@ -1190,7 +1197,7 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
 
     
     if (network == "lynx-mainnet") {
-        coinjs.asset = 'LYNX';
+        coinjs.coinName = 'LYNX';
         coinjs.symbol = 'LYNX';
         coinjs.pub = 0xad;
         coinjs.priv = 0x2d;

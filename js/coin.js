@@ -23,6 +23,7 @@
 
 	coinjs.decimalPlaces = 8;
 	coinjs.symbol = 'BTC';
+	coinjs.coinName = 'Bitcoin';
 
 /*
 var types = {
