@@ -438,6 +438,7 @@ wally_fn.decodeHexPrivKey = function(key){
         asset: {
           name: 'Bitcoin',
           symbol: 'BTC',
+          icon: './assets/images/crypto/bitcoin-btc-logo.svg',
           network: 'mainnet',
           api : {
               //only key is used for the moment, not the value!
@@ -478,6 +479,7 @@ wally_fn.decodeHexPrivKey = function(key){
         asset: {
           name: 'Litecoin',
           symbol: 'LTC',
+          icon: './assets/images/crypto/litecoin-ltc-logo.svg',
           network: 'mainnet',
           api : {
               //only key is used for the moment, not the value!
@@ -513,6 +515,7 @@ wally_fn.decodeHexPrivKey = function(key){
         asset: {
           name: 'Dogecoin',
           symbol: 'DOGE',
+          icon: './assets/images/crypto/dogecoin-doge-logo.svg',
           network: 'mainnet',
           api : {
             unspent_outputs: {
@@ -542,6 +545,7 @@ wally_fn.decodeHexPrivKey = function(key){
         asset: {
           name: 'BitBay',
           symbol: 'BAY',
+          icon: './assets/images/crypto/bitbay-bay-logo-purple.svg',
           network: 'mainnet',
           api : {
             unspent_outputs: {
@@ -572,6 +576,7 @@ wally_fn.decodeHexPrivKey = function(key){
         asset: {
           name: 'Blackcoin',
           symbol: 'BLK',
+          icon: './assets/images/crypto/blackcoin-blk-logo.svg',
           network: 'mainnet',
           api : {
             unspent_outputs: {
@@ -600,6 +605,7 @@ wally_fn.decodeHexPrivKey = function(key){
         asset: {
           name: 'Lynx',
           symbol: 'LYNX',
+          icon: './assets/images/crypto/lynx-lynx-logo.svg',
           network: 'mainnet',
           api : {
             unspent_outputs: {
@@ -631,6 +637,7 @@ wally_fn.decodeHexPrivKey = function(key){
         asset: {
           name: 'Bitcoin',
           symbol: 'tBTC',
+          icon: './assets/images/crypto/bitcoin-btc-logo.svg',
           network: 'testnet',
           api : {
               //only key is used for the moment, not the value!
@@ -667,6 +674,7 @@ wally_fn.decodeHexPrivKey = function(key){
         asset: {
           name: 'Litecoin',
           symbol: 'tLTC',
+          icon: './assets/images/crypto/litecoin-ltc-logo.svg',
           network: 'testnet',
           api : {
             unspent_outputs: {
@@ -695,6 +703,7 @@ wally_fn.decodeHexPrivKey = function(key){
         asset: {
           name: 'Dogecoin',
           symbol: 'tDOGE',
+          icon: './assets/images/crypto/dogecoin-doge-logo.svg',
           network: 'testnet',
           api : {
             unspent_outputs: {
