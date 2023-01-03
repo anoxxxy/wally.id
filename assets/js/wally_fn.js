@@ -443,17 +443,17 @@ wally_fn.decodeHexPrivKey = function(key){
           api : {
               //only key is used for the moment, not the value!
             unspent_outputs: {
-              'Blockcypher.com': 'blockcypher_bitcoin_bitcoin',
-              'Blockchair.com': 'blockchair_bitcoin_bitcoin',
-              'Blockstream.info': 'blockstream.info_bitcoin',
+              'Blockcypher.com': 'blockcypher_bitcoin',
+              'Blockchair.com': 'blockchair_bitcoin',
+              'Blockstream.info': 'blockstream.info',
               'Chain.so': 'chain.so_bitcoin',
               'Coinb.in': 'coinb.in_bitcoin',
               'Cryptoid.info': 'cryptoid.info_bitcoin',
             },
             broadcast: {
-              'Blockcypher.com': 'blockcypher_bitcoin_bitcoin',
-              'Blockchair.com': 'blockchair_bitcoin_bitcoin',
-              'Blockstream.info': 'blockstream.info_bitcoin',
+              'Blockcypher.com': 'blockcypher_bitcoin',
+              'Blockchair.com': 'blockchair_bitcoin',
+              'Blockstream.info': 'blockstream.info',
               'Chain.so': 'chain.so_bitcoin',
               'Coinb.in': 'coinb.in_bitcoin',
               'Cryptoid.info': 'cryptoid.info_bitcoin',

@@ -3322,20 +3322,16 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
               <div class="col-md-12">
                 <h2 class="card-title">Converter</h2>
                 <h4 class="card-subtitle mb-3 text-muted">Powerful converter-tool!</h4>
+                
                 <div class="form-group">
                   <label class="" for="enc_from">Source Encoding</label>
-                  <div class="">
-                    <div class="">
-                      <div class="">
-                        <div class="btn-toolbar ">
-                          <div class="btn-group flex-wrap" role="group" data-toggle="buttons" id="enc_from">
-                            <label class="btn btn-outline-primary"><input id="from_hex" name="enc_from" type="radio" />Hex</label> <label class="btn btn-outline-primary"><input id="from_text" name="enc_from" type="radio" />Text</label> <label class="btn btn-outline-primary"><input id="from_bin" name="enc_from" type="radio" />Bin</label> <label class="btn btn-outline-primary"><input id="from_dec" name="enc_from" type="radio" />Dec</label> <label class="btn btn-outline-primary"><input id="from_base58" name="enc_from" type="radio" />Base58</label> <label class="btn btn-outline-primary"><input id="from_base58check" name="enc_from" type="radio" />B58Check</label> <label class="btn btn-outline-primary"><input id="from_base64" name="enc_from" type="radio" />Base64</label> <label class="btn btn-outline-primary"><input id="from_rfc1751" name="enc_from" type="radio" />Rfc1751</label> <label class="btn btn-outline-primary"><input id="from_mnemonic" name="enc_from" type="radio" />Poetry</label> <label class="btn btn-outline-primary"><input id="from_rot13" name="enc_from" type="radio" />Rot13</label> <!--<label class="btn btn-outline-primary"><input id="from_easy16" name="enc_from" type="radio" />Easy16--></label>
-                          </div>
-                        </div>
-                      </div>
+                    <div class="btn-toolbar ">
+                      <div class="btn-group flex-wrap" role="group" data-toggle="buttons" id="enc_from">
+                        <label class="btn btn-outline-primary"><input id="from_hex" name="enc_from" type="radio" />Hex</label> <label class="btn btn-outline-primary"><input id="from_text" name="enc_from" type="radio" />Text</label> <label class="btn btn-outline-primary"><input id="from_bin" name="enc_from" type="radio" />Bin</label> <label class="btn btn-outline-primary"><input id="from_dec" name="enc_from" type="radio" />Dec</label> <label class="btn btn-outline-primary"><input id="from_base58" name="enc_from" type="radio" />Base58</label> <label class="btn btn-outline-primary"><input id="from_base58check" name="enc_from" type="radio" />B58Check</label> <label class="btn btn-outline-primary"><input id="from_base64" name="enc_from" type="radio" />Base64</label> <label class="btn btn-outline-primary"><input id="from_rfc1751" name="enc_from" type="radio" />Rfc1751</label> <label class="btn btn-outline-primary"><input id="from_mnemonic" name="enc_from" type="radio" />Poetry</label> <label class="btn btn-outline-primary"><input id="from_rot13" name="enc_from" type="radio" />Rot13</label> <!--<label class="btn btn-outline-primary"><input id="from_easy16" name="enc_from" type="radio" />Easy16</label>-->
                     </div>
                   </div>
                 </div>
+
                 <div class="form-group">
                   <label class="" for="enc_from">Source Text</label>
                   <div class="">
@@ -3345,6 +3341,7 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                     </div>
                   </div>
                 </div>
+
                 <div class="form-group">
                   <label class="" for="enc_from">Convert To</label>
                   <div class="">
@@ -3355,6 +3352,7 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                     </div>
                   </div>
                 </div>
+
                 <div class="form-group">
                   <label class="" for="enc_from">Result</label>
                   <div class="">
@@ -3374,7 +3372,29 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                 <p>These simple settings below make coinb.in one of the most decentralized wallets in the world.</p>
                 <div class="row no-gutters">
                   <div class="col-md-12">
+
+                    <div class="form-group">
+                      <label class="">Network Type:</label><br>
+                      <!-- Set Network Typecheckbox -->
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-outline-primary active waves-effect">
+                                <input type="radio" name="radio_selectNetworkType" data-network-type="mainnet" value="radio_network_mainnet" > 
+                                <img src="./assets/images/network_mainnet.svg" class="icon32 "> Mainnet
+                            </label>
+                            <label class="btn btn-outline-primary waves-effect">
+                                <input type="radio" name="radio_selectNetworkType" data-network-type="testnet" value="radio_network_testnet"> 
+                                <img src="./assets/images/network_testnet.svg" class="icon32 "> Testnet
+                            </label>
+                        </div>
+                    </div>
+
                     <select class="form-control" id="coinjs_network">
+                    </select>
+
+                    <select class="form-control" id="coinjs_broadcast_api">
+                    </select>
+
+                    <select class="form-control" id="coinjs_utxo_api">
                     </select>
                     <b>Network</b>: <br>
                     <p class="text-muted">Select which network you'd like to use for key pair generation.</p>
