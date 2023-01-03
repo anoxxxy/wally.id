@@ -364,6 +364,10 @@ vertical-align: -8px;
 .icon {
 	
 }
+.icon-center {
+	margin: auto;
+	display: block;
+}
 .icon24 {
 	width: 24px;
 	height: 24px;
@@ -1021,6 +1025,9 @@ background-size: cover;
 
 .text-primary{
 color:  #6772e5 !important;
+}
+.text-bold{
+font-weight: 500;
 }
 
 /*landing page*/

@@ -22,7 +22,8 @@
                  //type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
 
                   closable: true,
-                  cssClass: 'modal-dialog-scrollable',  //modal-dialog-centered, modal-dialog-scrollable, modal-sm, modal-lg, modal-xl
+                  //cssClass: 'modal-dialog-scrollable animate__animated animate__zoomIn',  //modal-dialog-centered, modal-dialog-scrollable, modal-sm, modal-lg, modal-xl
+                  cssClass: 'modal-dialog-scrollable text-bold',  //modal-dialog-centered, modal-dialog-scrollable, modal-sm, modal-lg, modal-xl
                   verticalCentered:true,
                   
                   closeByBackdrop: false,   //You can not close this dialog by clicking outside or pressing ESC key
@@ -36,7 +37,7 @@
                       }
                   },
                    {
-                      label: 'Close the dialog',
+                      label: 'Close',
                       cssClass: 'btn-sm btn-flat-primary',
                       action: function(dialogRef){
                           dialogRef.close();
