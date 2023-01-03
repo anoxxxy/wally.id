@@ -3366,19 +3366,24 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
             </div>
           </div>
           <div class="tab-pane tab-content" id="settings">
-            <div class="row no-gutters tab-body">
-              <div class="col-md-12">
-                <h2>Settings <small> making coinb.in even better!</small></h2>
-                <p>These simple settings below make coinb.in one of the most decentralized wallets in the world.</p>
-                <div class="row no-gutters">
-                  <div class="col-md-12">
+            
+            <div class="card-openwallet">
+              <div class="card-openwallet-header ">
+                <h3 class="card-openwallet-title">
+                  Wally.id <small>Settings</small>
+                </h3>
+              </div>
+              <div class="card-openwallet-body m-1">
+                <div class="p-1 py-1">
+                  <h4 class="card-subtitle mb-3 text-muted text-center"><small>These simple settings makes Wally.id, the world's most secure & decentralized wallet.</small></h4>
 
-                    <div class="form-group">
+                  <!-- Settings Input -->
+                  <div class="form-group text-center">
                       <label class="">Network Type:</label><br>
                       <!-- Set Network Typecheckbox -->
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-outline-primary active waves-effect">
-                                <input type="radio" name="radio_selectNetworkType" data-network-type="mainnet" value="radio_network_mainnet" > 
+                                <input type="radio" name="radio_selectNetworkType" data-network-type="mainnet" value="radio_network_mainnet" checked> 
                                 <img src="./assets/images/network_mainnet.svg" class="icon32 "> Mainnet
                             </label>
                             <label class="btn btn-outline-primary waves-effect">
@@ -3388,14 +3393,57 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                         </div>
                     </div>
 
-                    <select class="form-control" id="coinjs_network">
-                    </select>
+                    <div class="callout-title">
+                      Asset
+                    </div>
+                    <div class="callout callout-no-border p-2 pb-3 pt-3 m-0 mt-2 form-group  mb-3">
+                        <p class="text-muted"><small>Select Asset/Network for key pair generation.</small></p>
+                        <select class="form-control" id="coinjs_network">
+                        </select>
+                    </div>
 
-                    <select class="form-control" id="coinjs_broadcast_api">
-                    </select>
+                    <div class="callout-title">
+                      Unspent outputs:
+                    </div>
+                    <div class="callout callout-no-border p-2 pb-3 pt-3 m-0 form-group  mb-3">
+                      <p class="text-muted"><small>Select the network where you want to retrieve your unspent outputs from.</small></p>
+                      <select class="form-control" id="coinjs_utxo_api">
+                      </select>
+                    </div>
 
-                    <select class="form-control" id="coinjs_utxo_api">
-                    </select>
+                    <div class="callout-title">
+                      Broadcast:
+                    </div>
+                    <div class="callout callout-no-border p-2 pb-3 pt-3 m-0 form-group  mb-3">
+                      <p class="text-muted"><small>Select the network you want to use to send the transaction.</small></p>
+                      <select class="form-control" id="coinjs_broadcast_api">
+                      </select>
+                    </div>
+
+                    <br>
+                    <button id="" class="btn btn-block btn btn-flat-primary waves-effect">Save Settings</button>
+
+
+
+                </div>
+              </div>
+            </div>
+
+            <br><br><br><br><br><br><br><br><br><br>
+            <div class="row no-gutters tab-body">
+
+              
+
+              <div class="col-md-12">
+                <h2 class="card-title">Settings</h2>
+                <h4 class="card-subtitle mb-3 text-muted">take Wally to higher highs!</h4>
+
+                <p>These simple settings below makes Wally.id the most trusted and decentralized wallets in the world.</p>
+                <div class="row no-gutters">
+                  <div class="col-md-12">
+
+                    
+
                     <b>Network</b>: <br>
                     <p class="text-muted">Select which network you'd like to use for key pair generation.</p>
                     <select class="form-control" id="coinjs_coin">

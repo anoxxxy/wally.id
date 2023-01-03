@@ -7,6 +7,8 @@
 
   var wally_fn = window.wally_fn = function () { };
 
+  wally_fn.network = 'mainnet';
+  
   /*
    @ Validate Email address
   */

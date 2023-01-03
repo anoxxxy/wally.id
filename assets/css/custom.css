@@ -1307,6 +1307,33 @@ right: 10px;
 	box-shadow: unset;
 	background: transparent;
 }
+
+#openLogin input.form-control, 
+#openLogin .input-group input, 
+#openLogin .input-group .input-group-append > span, 
+#openLogin .input-group .input-group-append > div, 
+#openLogin .input-group .input-group-prepend > span, 
+#openLogin .input-group .input-group-prepend > div {
+	border: 0;
+	box-shadow: unset;
+	background: transparent;
+}
+
+
+
+.callout.callout-no-border select,
+.callout.callout-no-border select.form-control,
+.callout.callout-no-border input.form-control,
+.callout.callout-no-border .input-group input,
+.callout.callout-no-border .input-group .input-group-append > span,
+.callout.callout-no-border .input-group .input-group-append > div, 
+.callout.callout-no-border .input-group .input-group-prepend > span, 
+.callout.callout-no-border .input-group-prepend > div {
+	border: 0;
+	box-shadow: unset;
+	background: transparent;
+}
+
 #openLogin input.form-control.is-valid,
 #openLogin input.form-control.is-invalid {
 	border-width: 1px;

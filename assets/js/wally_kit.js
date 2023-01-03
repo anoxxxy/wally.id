@@ -88,11 +88,8 @@
       //if defined, set to currenct Chain Network
       if(coinjs.asset.network) {
         networkTypesRadio.parent().removeClass('active');
-        $('input[type=radio][name=radio_selectNetworkType][data-chain-type='+coinjs.asset.network+']').prop('checked', true).parent().addClass('active');
+        $('input[type=radio][name=radio_selectNetworkType][data-network-type='+coinjs.asset.network+']').prop('checked', true).parent().addClass('active');
         console.log('Network Type is already set!');
-
-        //wally_kit.settingsListProviders(coinjs.asset.network, coinjs.asset.name);
-        //var chainList = wally_fn.getNetworks(coinjs.asset.network);
 
         //show providers for i.e Broadcast and UTXO API
         wally_kit.settingsListAssets(coinjs.asset.network)
@@ -102,7 +99,7 @@
     } catch (e) {
       //not network is choosen, default to mainnet
         networkTypesRadio.parent().removeClass('active');
-        $('input[type=radio][name=radio_selectNetworkType][data-chain-type=mainnet]').prop('checked', true).parent().addClass('active');
+        $('input[type=radio][name=radio_selectNetworkType][data-network-type=mainnet]').prop('checked', true).parent().addClass('active');
         console.log('No Network Type! Set to Default!', e);
     }
 
@@ -115,6 +112,8 @@
 
     console.log('===settingsListAssets===');
     try {
+      wally_fn.network = network_var;
+
       networks = wally_fn.networks[network_var];
       console.log('networks: '+network_var);
       
@@ -231,11 +230,9 @@ $(document).ready(function() {
 
     console.log('this.value: ' + this.value);
 
-    var network = $("input[type=radio][name=radio_selectNetworkType]:checked").attr('data-network-type');
-
 
     //update network type and providers
-    wally_kit.setNetwork(network, this.value, false);
+    wally_kit.setNetwork(wally_fn.network, this.value, false);
     wally_kit.settingsListNetworkProviders();
   });
 
