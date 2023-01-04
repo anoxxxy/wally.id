@@ -2667,6 +2667,9 @@ scrollIntoView(target, {
 
 	$("#settingsBtn").click(function(){
 
+
+		wally_kit.setNetwork(wally_fn.network, $('#coinjs_network').val());
+		return;
 		// log out of openwallet
 		$("#walletLogout").click();
 
