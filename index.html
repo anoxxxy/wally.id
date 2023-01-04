@@ -610,7 +610,7 @@
                 <strong>your</strong> Keys, your <strong>Crypto</strong>!
               </p>
               <p class="lead font-weight-bold text-center mt-3 landing_text_sub">
-                Free, Self-Custodial, <br>Multi-Blockchain Cold Wallet!
+                Decentralized Non-Custodial, <br>Multi-Blockchain Cold Wallet!
               </p>
               
             </h1>
@@ -3398,8 +3398,25 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                     </div>
                     <div class="callout callout-no-border p-3 pb-3 pt-3 m-0 form-group  mb-3">
                         <p class="text-muted"><small>Select Asset/Network for key pair generation.</small></p>
-                        <select class="form-control" id="coinjs_network">
+                        <select class="form-control hidden" id="coinjs_network">
                         </select>
+
+<div class="dropdown-select" id="coinjs_network_select">
+  <button class="text-primary text-bold" type="button" data-toggle="dropdown" data-flip="false" aria-haspopup="true" aria-expanded="false">
+    
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" >
+    <li><img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon tokens icon24">Bitcoin (BTC)</li>
+    <li><img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon tokens icon24">Litecoin (LTC)</li>
+    <li><img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon tokens icon24">Dogecoin (DOGE)</li>
+    <li><img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon tokens icon24">BitBay (BAY)</li>
+    <li><img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon tokens icon24">Blackcoin (BLK)</li>
+    <li><img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon tokens icon24">Lynx (LYNX)</li>
+
+  </ul>
+</div>
+
                     </div>
 
                     <div class="callout-title">

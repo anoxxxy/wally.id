@@ -28,6 +28,9 @@
     var listNetworkTypes = ["mainnet", "testnet"];
     var modalTitle = 'Blockchain Network', modalMessage, newNetwork;
     try {
+      
+      wally_fn.asset = asset_var;
+
       //set default chain type to Mainnet
       if(!listNetworkTypes.includes(network_var))
         network_var = 'mainnet';
@@ -114,18 +117,27 @@
     try {
       wally_fn.network = network_var;
 
-      networks = wally_fn.networks[network_var];
       console.log('networks: '+network_var);
       
       //set network type
       wally_kit.setNetwork(network_var, 'bitcoin', false);
 
       //element vars
-      var assetSelectEl = $('#coinjs_network').text('');
+      var assetSelectEl = $('#coinjs_network');
+      assetSelectEl.text('');
+      
+      var assetSelectwIconsEl = $('#coinjs_network_select ul');
+      assetSelectwIconsEl.text('');
 
       //iterate through the networks vars and add to the select-network-element
-      for (var [key, value] of Object.entries(networks)) {
+      var i=0;
+      for (var [key, value] of Object.entries(wally_fn.networks[network_var])) {
         assetSelectEl.append('<option value="'+key+'" data-icon="'+value.asset.icon+'" >'+value.asset.name+' ('+value.asset.symbol+')</option>');
+        assetSelectwIconsEl.append('<li data-icon="'+value.asset.icon+'" data-asset="'+key+'"><img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')</li>');
+
+        if(i==0)//set default asset
+          $('#coinjs_network_select button').html('<img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')');
+        i++;
       }
 
       wally_kit.settingsListNetworkProviders();
@@ -205,6 +217,7 @@ $(document).ready(function() {
   //***Vars
   var portfolioNetworkType = $('input[type=radio][name=radio_selectNetworkType]');
   var portfolioAsset = $('#coinjs_network');
+  var portfolioAssetwIcons = $('#coinjs_network_select');
 
   //***Set default Network
   wally_kit.initNetwork(portfolioNetworkType);
@@ -238,6 +251,18 @@ $(document).ready(function() {
 
 
   
+  /* since the select content is dynamic we need to listen to body > element */
+  $("body").on("click", "#coinjs_network_select li", function(e){
+  //$('.dropdown-select .dropdown-menu li').on('click', function() {
+    var getValue = $(this).html();
+    $('.dropdown-select button').html(getValue);
+    console.log('change asset!', e);
+    var newAsset = $(this).attr('data-asset');
+    console.log('set Asset to:' + newAsset);
+
+    
+    $('#coinjs_network').val(newAsset).change();
+  });
 
   
 
