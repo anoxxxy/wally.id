@@ -152,15 +152,30 @@
   wally_kit.settingsListNetworkProviders = function() {
 
     var selectNetworkBroadcastAPI = $('#coinjs_broadcast_api').text('');
+    var selectNetworkBroadcastAPIwIcons = $('#coinjs_broadcast_api_select ul').text('');
     var selectNetworkUtxoAPI = $('#coinjs_utxo_api').text('');
+    var selectNetworkUtxoAPIwIcons = $('#coinjs_utxo_api_select ul').text('');
 
+
+    var i=0;
     for (var [key, value] of Object.entries(coinjs.asset.api.broadcast)) {
       selectNetworkBroadcastAPI.append('<option value="'+value+'" data-icon="" >'+key+'</option>');
+      selectNetworkBroadcastAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-broadcast-provider="'+value+'" data-broadcast-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+'</li>');
+
+      if(i==0)//set broadcast asset
+          $('#coinjs_broadcast_api_select button').html('<img src="./assets/images/providers_icon.svg" class="icon32"> '+key);
+      i++;
     }
 
+    i=0;
     for (var [key, value] of Object.entries(coinjs.asset.api.unspent_outputs)) {
       selectNetworkUtxoAPI.append('<option value="'+value+'" data-icon="" >'+key+'</option>');
+      selectNetworkUtxoAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-utxo-provider="'+value+'" data-utxo-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+'</li>');
+      if(i==0)//set utxo provider asset
+        $('#coinjs_utxo_api_select button').html('<img src="./assets/images/providers_icon.svg" class="icon32"> '+key);
+      i++;
     }
+
   }
 
   /*
@@ -249,13 +264,50 @@ $(document).ready(function() {
     wally_kit.settingsListNetworkProviders();
   });
 
+/*Settings dropdown-select listener*/
+$("body").on("click", "#settings .dropdown-select li", function(e){
+  var _this_ = $(this);
+  var getValue = _this_.html();
 
+  var parentId = _this_.parent().parent().attr('id');
+  var parentBtn = _this_.parent().parent().children('button');
+
+  parentBtn.html(getValue);
+
+  console.log('parent: ', $(this).parent().parent());
+  console.log('children: ', $(this).parent().parent().children());
+
+
+  //remove "_select" from id to get it equivalent select element
+  var eqSelectId = parentId.replace('_select', ''), setSelectValue;
+  ;
+  if (eqSelectId == 'coinjs_network'){
+    console.log('change asset!', e);
+    setSelectValue = $(this).attr('data-asset');
+    console.log('set Asset to:' + setSelectValue);
+
+    
+    
+  }else if (eqSelectId == 'coinjs_utxo_api'){
+    setSelectValue = $(this).attr('data-utxo-provider');
+  }else if (eqSelectId == 'coinjs_broadcast_api'){
+    setSelectValue = $(this).attr('data-broadcast-provider');
+  }
+
+  $('#'+eqSelectId).val(setSelectValue).change();
+
+  //#settings .dropdown-select li
+});
+  
   
   /* since the select content is dynamic we need to listen to body > element */
+  /*
   $("body").on("click", "#coinjs_network_select li", function(e){
   //$('.dropdown-select .dropdown-menu li').on('click', function() {
     var getValue = $(this).html();
     $('.dropdown-select button').html(getValue);
+
+
     console.log('change asset!', e);
     var newAsset = $(this).attr('data-asset');
     console.log('set Asset to:' + newAsset);
@@ -263,6 +315,7 @@ $(document).ready(function() {
     
     $('#coinjs_network').val(newAsset).change();
   });
+  */
 
   
 

@@ -610,7 +610,7 @@
                 <strong>your</strong> Keys, your <strong>Crypto</strong>!
               </p>
               <p class="lead font-weight-bold text-center mt-3 landing_text_sub">
-                Decentralized Non-Custodial, <br>Multi-Blockchain Cold Wallet!
+                The World's most Powerful, non-custodial <br>Decentralized Cold Wallet!
               </p>
               
             </h1>
@@ -3424,8 +3424,19 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                     </div>
                     <div class="callout callout-no-border p-3 pb-3 pt-3 m-0 form-group  mb-3">
                       <p class="text-muted"><small>Select the network where you want to retrieve your unspent outputs from.</small></p>
-                      <select class="form-control" id="coinjs_utxo_api">
+                      <select class="form-control hidden" id="coinjs_utxo_api">
                       </select>
+
+
+<div class="dropdown-select" id="coinjs_utxo_api_select">
+  <button class="text-primary text-bold" type="button" data-toggle="dropdown" data-flip="false" aria-haspopup="true" aria-expanded="false">
+    
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" >
+  </ul>
+</div>
+
                     </div>
 
                     <div class="callout-title">
@@ -3433,8 +3444,16 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                     </div>
                     <div class="callout callout-no-border p-3 pb-3 pt-3 m-0 form-group  mb-3">
                       <p class="text-muted"><small>Select the network you want to use to send the transaction.</small></p>
-                      <select class="form-control" id="coinjs_broadcast_api">
+                      <select class="form-control hidden" id="coinjs_broadcast_api">
                       </select>
+<div class="dropdown-select" id="coinjs_broadcast_api_select">
+  <button class="text-primary text-bold" type="button" data-toggle="dropdown" data-flip="false" aria-haspopup="true" aria-expanded="false">
+    
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" >
+  </ul>
+</div>
                     </div>
 
                     <br>
