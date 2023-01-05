@@ -64,6 +64,7 @@
         modalMessage = '<div class="text-center text-primary"><p>You just changed blockchain network settings:</p>' 
           + newNetwork.asset.name + ' ('+newNetwork.asset.symbol+' '+newNetwork.asset.network+')</div>';
         modalMessage += '<img src="'+newNetwork.asset.icon+'" class="icon-center icon64 ">'
+        modalMessage += '<br><div class="text-center text-muted">API Providers:</p><br> Unspent outputs: '+wally_fn.provider.utxo+'<br>Broadcast: '+wally_fn.provider.broadcast+'</div>';
 
         custom.showModal(modalTitle, modalMessage);
       }

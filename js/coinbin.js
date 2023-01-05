@@ -2669,9 +2669,11 @@ scrollIntoView(target, {
 		//wally_kit.setNetwork(wally_fn.network, $('#coinjs_network').val());
 		//wally_kit.setNetwork(wally_fn.network, $('#coinjs_network').val(), {saveSettings: true, showMessage: true});
 		console.log('settingsBtn $(#coinjs_network).val(): '+ $('#coinjs_network').val());
-		wally_fn.provider.broadcast = $('#coinjs_broadcast_api').val();
+		//wally_fn.provider.broadcast = $('#coinjs_broadcast_api ').val();
+		wally_fn.provider.broadcast = $('#coinjs_broadcast_api option:selected').text();
 
-		wally_fn.provider.utxo = $('#coinjs_utxo_api').val();
+		//wally_fn.provider.utxo = $('#coinjs_utxo_api').val();
+		wally_fn.provider.utxo = $('#coinjs_utxo_api option:selected').text();
 		console.log('settingsBtn wally_fn.asset: '+ wally_fn.asset);
 
 		wally_kit.setNetwork(wally_fn.network, wally_fn.asset, {saveSettings: true, showMessage: true, renderFields: false});
