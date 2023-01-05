@@ -2666,10 +2666,19 @@ scrollIntoView(target, {
 	$("#coinjs_hdprv").val('0x'+(coinjs.hdkey.prv).toString(16));	
 
 	$("#settingsBtn").click(function(){
+		//wally_kit.setNetwork(wally_fn.network, $('#coinjs_network').val());
+		//wally_kit.setNetwork(wally_fn.network, $('#coinjs_network').val(), {saveSettings: true, showMessage: true});
+		console.log('settingsBtn $(#coinjs_network).val(): '+ $('#coinjs_network').val());
+		wally_fn.provider.broadcast = $('#coinjs_broadcast_api').val();
 
+		wally_fn.provider.utxo = $('#coinjs_utxo_api').val();
+		console.log('settingsBtn wally_fn.asset: '+ wally_fn.asset);
 
-		wally_kit.setNetwork(wally_fn.network, $('#coinjs_network').val());
+		wally_kit.setNetwork(wally_fn.network, wally_fn.asset, {saveSettings: true, showMessage: true, renderFields: false});
 		return;
+	});
+	$("#settingsBtnOld").click(function(){
+
 		// log out of openwallet
 		$("#walletLogout").click();
 

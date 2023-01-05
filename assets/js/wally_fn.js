@@ -440,6 +440,7 @@ wally_fn.decodeHexPrivKey = function(key){
         symbol: 'BTC',      //ticker
         asset: {
           name: 'Bitcoin',
+          slug: 'bitcoin',
           symbol: 'BTC',
           icon: './assets/images/crypto/bitcoin-btc-logo.svg',
           network: 'mainnet',
@@ -481,6 +482,7 @@ wally_fn.decodeHexPrivKey = function(key){
         symbol: 'LTC',      //ticker
         asset: {
           name: 'Litecoin',
+          slug: 'litecoin',
           symbol: 'LTC',
           icon: './assets/images/crypto/litecoin-ltc-logo.svg',
           network: 'mainnet',
@@ -517,6 +519,7 @@ wally_fn.decodeHexPrivKey = function(key){
         symbol: 'DOGE',      //ticker
         asset: {
           name: 'Dogecoin',
+          slug: 'dogecoin',
           symbol: 'DOGE',
           icon: './assets/images/crypto/dogecoin-doge-logo.svg',
           network: 'mainnet',
@@ -547,6 +550,7 @@ wally_fn.decodeHexPrivKey = function(key){
         symbol: 'BAY',      //ticker
         asset: {
           name: 'BitBay',
+          slug: 'bitbay',
           symbol: 'BAY',
           icon: './assets/images/crypto/bitbay-bay-logo-purple.svg',
           network: 'mainnet',
@@ -578,6 +582,7 @@ wally_fn.decodeHexPrivKey = function(key){
         symbol: 'BLK',      //ticker
         asset: {
           name: 'Blackcoin',
+          slug: 'blackcoin',
           symbol: 'BLK',
           icon: './assets/images/crypto/blackcoin-blk-logo.svg',
           network: 'mainnet',
@@ -607,6 +612,7 @@ wally_fn.decodeHexPrivKey = function(key){
         symbol: 'LYNX',      //ticker
         asset: {
           name: 'Lynx',
+          slug: 'lynx',
           symbol: 'LYNX',
           icon: './assets/images/crypto/lynx-lynx-logo.svg',
           network: 'mainnet',
@@ -639,6 +645,7 @@ wally_fn.decodeHexPrivKey = function(key){
         symbol: 'tBTC',      //ticker
         asset: {
           name: 'Bitcoin',
+          slug: 'bitcoin',
           symbol: 'tBTC',
           icon: './assets/images/crypto/bitcoin-btc-logo.svg',
           network: 'testnet',
@@ -676,6 +683,7 @@ wally_fn.decodeHexPrivKey = function(key){
         symbol: 'tLTC',      //ticker
         asset: {
           name: 'Litecoin',
+          slug: 'litecoin',
           symbol: 'tLTC',
           icon: './assets/images/crypto/litecoin-ltc-logo.svg',
           network: 'testnet',
@@ -705,6 +713,7 @@ wally_fn.decodeHexPrivKey = function(key){
         symbol: 'tDOGE',      //ticker
         asset: {
           name: 'Dogecoin',
+          slug: 'dogecoin',
           symbol: 'tDOGE',
           icon: './assets/images/crypto/dogecoin-doge-logo.svg',
           network: 'testnet',

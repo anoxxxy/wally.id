@@ -11,8 +11,14 @@
 
   /*
   @ Set Blockchain Network Settings
+  @params
+    network
+    asset
+    options (saveSettings, showMessage (about updated settings) )
   */
-  wally_kit.setNetwork = function (network_var = 'mainnet', asset_var = 'bitcoin', showChangeMessage = true) {
+  wally_kit.setNetwork = function (network_var = 'mainnet', asset_var = 'bitcoin', options = {saveSettings: false, showMessage: false, renderFields: true}) {
+    console.log('===wally_kit.setNetwork===');
+
 
     /*
     //confirm in console
@@ -36,26 +42,35 @@
         network_var = 'mainnet';
 
       //set default network to Bitcoin
-      if(!wally_fn.networks[network_var].hasOwnProperty(asset_var))
+      if(!wally_fn.networks[network_var].hasOwnProperty(asset_var)) {
         asset_var = 'bitcoin';
+        console.log('reset network to: '+ asset_var);
+      }
 
       newNetwork = wally_fn.networks[network_var][asset_var];
 
-      console.log('network_var : '+ network_var);
-      console.log('asset : '+ asset_var);
-      console.log('network info : ', newNetwork);
+      console.log('Network:: '+ network_var);
+      console.log('Asset: '+ asset_var);
+      console.log('Network/Asset Info: ', newNetwork);
 
       //update coinjs settings: merge settings with coinjs and overwrite existing properties,
-      $.extend(coinjs, wally_fn.networks[network_var][asset_var])
-      //Object.assign(coinjs, (wally_fn.networks[network_var][asset_var]))
+      if (options.saveSettings) {
+        $.extend(coinjs, wally_fn.networks[network_var][asset_var])
+        //Object.assign(coinjs, (wally_fn.networks[network_var][asset_var]))
+        //options.showMessage = true;
+      }
 
-      if (showChangeMessage) {
+      if (options.showMessage) {
         modalMessage = '<div class="text-center text-primary"><p>You just changed blockchain network settings:</p>' 
           + newNetwork.asset.name + ' ('+newNetwork.asset.symbol+' '+newNetwork.asset.network+')</div>';
         modalMessage += '<img src="'+newNetwork.asset.icon+'" class="icon-center icon64 ">'
 
         custom.showModal(modalTitle, modalMessage);
       }
+
+      //update list for supported assets for choosen network 
+      if(options.renderFields)
+        wally_kit.settingsListAssets(network_var);
 
       
     } catch (e) {
@@ -86,7 +101,7 @@
 
       //set default Chain Network 
       if (coinjs.asset === undefined)
-        wally_kit.setNetwork('mainnet', 'bitcoin', false);
+        wally_kit.setNetwork('mainnet', 'bitcoin', {saveSettings: true, showMessage: false, renderFields: true});
 
       //if defined, set to currenct Chain Network
       if(coinjs.asset.network) {
@@ -95,7 +110,7 @@
         console.log('Network Type is already set!');
 
         //show providers for i.e Broadcast and UTXO API
-        wally_kit.settingsListAssets(coinjs.asset.network)
+        //wally_kit.settingsListAssets(coinjs.asset.network)
         //wally_kit.settingsListChainProviders(coinjs.asset.network)
       } 
 
@@ -117,10 +132,11 @@
     try {
       wally_fn.network = network_var;
 
-      console.log('networks: '+network_var);
+      console.log('Network: '+network_var);
+      console.log('Asset: '+wally_fn.asset);
       
       //set network type
-      wally_kit.setNetwork(network_var, 'bitcoin', false);
+      //wally_kit.setNetwork(network_var, 'bitcoin', false);
 
       //element vars
       var assetSelectEl = $('#coinjs_network');
@@ -130,13 +146,15 @@
       assetSelectwIconsEl.text('');
 
       //iterate through the networks vars and add to the select-network-element
+      
       var i=0;
       for (var [key, value] of Object.entries(wally_fn.networks[network_var])) {
+
         assetSelectEl.append('<option value="'+key+'" data-icon="'+value.asset.icon+'" >'+value.asset.name+' ('+value.asset.symbol+')</option>');
         assetSelectwIconsEl.append('<li data-icon="'+value.asset.icon+'" data-asset="'+key+'"><img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')</li>');
 
-        if(i==0)//set default asset
-          $('#coinjs_network_select button').html('<img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')');
+        if(i==0) //render button-select content
+          $('#coinjs_network_select button').html('<img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')'); 
         i++;
       }
 
@@ -149,7 +167,8 @@
   /*
   @ Set Providers for chosen network!
   */
-  wally_kit.settingsListNetworkProviders = function() {
+  wally_kit.settingsListNetworkProviders = function(asset_var) {
+    console.log('===settingsListNetworkProviders===');
 
     var selectNetworkBroadcastAPI = $('#coinjs_broadcast_api').text('');
     var selectNetworkBroadcastAPIwIcons = $('#coinjs_broadcast_api_select ul').text('');
@@ -157,25 +176,49 @@
     var selectNetworkUtxoAPIwIcons = $('#coinjs_utxo_api_select ul').text('');
 
 
+    //default asset if nothing is set!    
+    
+    console.log('asset_var before: '+asset_var);
+
+    console.log('wally_fn.asset before: ', wally_fn.asset);
+    if(asset_var !== undefined) {
+      wally_fn.asset = asset_var;
+      console.log('update asset to: '+asset_var);
+      console.log('updated asset to: '+wally_fn.asset);
+    }
+
+    if (wally_fn.asset == '') {
+      wally_fn.asset = 'bitcoin';
+      console.log('update default asset to: '+wally_fn.asset);
+    }
+    
+    
+
+    console.log('wally_fn.asset after: ', wally_fn.asset);
+
     var i=0;
-    for (var [key, value] of Object.entries(coinjs.asset.api.broadcast)) {
+    for (var [key, value] of Object.entries(wally_fn.networks[wally_fn.network][wally_fn.asset].asset.api.broadcast)) {
       selectNetworkBroadcastAPI.append('<option value="'+value+'" data-icon="" >'+key+'</option>');
       selectNetworkBroadcastAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-broadcast-provider="'+value+'" data-broadcast-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+'</li>');
 
       if(i==0) {//set broadcast asset
           $('#coinjs_broadcast_api_select button').html('<img src="./assets/images/providers_icon.svg" class="icon32"> '+key);
           wally_fn.provider.broadcast = key;
+          console.log('Broadcast provider: ' + key);
         }
       i++;
     }
 
     i=0;
-    for (var [key, value] of Object.entries(coinjs.asset.api.unspent_outputs)) {
+    for (var [key, value] of Object.entries(wally_fn.networks[wally_fn.network][wally_fn.asset].asset.api.unspent_outputs)) {
       selectNetworkUtxoAPI.append('<option value="'+value+'" data-icon="" >'+key+'</option>');
       selectNetworkUtxoAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-utxo-provider="'+value+'" data-utxo-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+'</li>');
+
+
       if (i==0) {//set utxo provider asset
         $('#coinjs_utxo_api_select button').html('<img src="./assets/images/providers_icon.svg" class="icon32"> '+key);
         wally_fn.provider.utxo = key;
+        console.log('UTXO provider: ' + key);
       }
       i++;
     }
@@ -253,10 +296,12 @@ $(document).ready(function() {
     //console.log('Network Type changed: ' , this);
     //console.log('Network Type changed: ' , e);
     //console.log('Network Type to: ' , $(this).attr('data-network-type'));
-    wally_kit.settingsListAssets($(this).attr('data-network-type'));
+    //wally_kit.settingsListAssets($(this).attr('data-network-type'));
+    wally_kit.setNetwork($(this).attr('data-network-type'), '',{saveSettings: false, showMessage: false, renderFields: true});
   });
 
   portfolioAsset.on('change', function(e) {
+    console.log('===portfolioAsset===');
     //console.log('Network Type changed: ' , this);
     //console.log('Network Type changed: ' , e);
     //console.log('Network Type to: ' , $(this).attr('data-network-type'));
@@ -264,30 +309,31 @@ $(document).ready(function() {
 
     
 
-    console.log('this.value: ' + this.value);
+    //console.log('this.value: ' + this.value);
 
 
     //update network type and providers
-    wally_kit.setNetwork(wally_fn.network, this.value, false);
-    wally_kit.settingsListNetworkProviders();
+    //wally_kit.setNetwork(wally_fn.network, this.value, {saveSettings: false, showMessage: false});
+    wally_kit.settingsListNetworkProviders(this.value);
+
+    //wally_fn.asset = asset_var;
   });
 
   portfolioProviderUtxo.on('change', function(e) {
     console.log('===portfolioProviderUtxo Change===');
 
     var optionsText = this.options[this.selectedIndex].text;
-    console.log('optionsText: '+ optionsText);
-    wally_fn.provider.utxo = optionsText;
-
+    //wally_fn.provider.utxo = optionsText;
+    console.log('changed UTXO Provider to: '+ optionsText);
   });
 
   portfolioProviderBroadcast.on('change', function(e) {
     console.log('===portfolioProviderUtxo Change===');
 
     var optionsText = this.options[this.selectedIndex].text;
-    wally_fn.provider.broadcast = optionsText;
+    //wally_fn.provider.broadcast = optionsText;
     
-    console.log('optionsText: '+ optionsText);
+    console.log('changed Broadcast Provider to: '+ optionsText);
   });
 
 /*Settings dropdown-select listener*/
@@ -300,15 +346,15 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
 
   parentBtn.html(getValue);
 
-  console.log('parent: ', $(this).parent().parent());
-  console.log('children: ', $(this).parent().parent().children());
+  //console.log('parent: ', $(this).parent().parent());
+  //console.log('children: ', $(this).parent().parent().children());
 
 
   //remove "_select" from id to get it equivalent select element
   var eqSelectId = parentId.replace('_select', ''), setSelectValue;
   ;
   if (eqSelectId == 'coinjs_network'){
-    console.log('change asset!', e);
+    //console.log('change asset!', e);
     setSelectValue = $(this).attr('data-asset');
     console.log('set Asset to:' + setSelectValue);
 
