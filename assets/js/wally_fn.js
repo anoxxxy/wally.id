@@ -1104,7 +1104,9 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
         coinjs.priv = 0x2d;
         coinjs.multisig = 0x32;
         coinjs.hdkey = {'prv':0x0488ade4, 'pub':0x0488b21e};
-        coinjs.supports_address = ['compressed', 'uncompressed'];
+        coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'};
+        coinjs.supports_address = ['compressed', 'uncompressed', 'bech32', 'segwit'];
+
     }
 
         console.log('coinjs.pub: ' +coinjs.pub);

@@ -2679,6 +2679,8 @@ scrollIntoView(target, {
 		wally_kit.setNetwork(wally_fn.network, wally_fn.asset, {saveSettings: true, showMessage: true, renderFields: false});
 		return;
 	});
+
+	/*
 	$("#settingsBtnOld").click(function(){
 
 		// log out of openwallet
@@ -2754,6 +2756,7 @@ scrollIntoView(target, {
 		}
 	});
 
+	
 	$("#coinjs_coin").change(function(){
 
 		var selected_option = $("option:selected",this);
@@ -2802,6 +2805,7 @@ scrollIntoView(target, {
 			$("#settingsCustom").addClass("hidden");
 		}
 	});
+	
 
 	function configureBroadcast(){
 		var host = $("#coinjs_broadcast option:selected").val();
@@ -2892,6 +2896,7 @@ scrollIntoView(target, {
 	function configureGetUnspentTx(){
 		$("#redeemFromBtn").attr('rel',$("#coinjs_utxo option:selected").val());
 	}
+	*/
 
 
 	/* fees page code */
