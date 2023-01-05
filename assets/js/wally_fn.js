@@ -629,9 +629,8 @@ wally_fn.decodeHexPrivKey = function(key){
         priv : 0xad,     //pubKeyHash
         multisig : 0x32, //scriptHash
           hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e}, //fix this! iceeee
-          //coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'};   ask Ben! iceee
-          bech32 : {},
-          supports_address : ['compressed', 'uncompressed'],
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'},
+          supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,
