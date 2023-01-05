@@ -8,6 +8,7 @@
   var wally_fn = window.wally_fn = function () { };
 
   wally_fn.network = 'mainnet';
+  wally_fn.provider = {utxo:'', broadcast:''};
   
   /*
    @ Validate Email address
@@ -445,16 +446,16 @@ wally_fn.decodeHexPrivKey = function(key){
           api : {
               //only key is used for the moment, not the value!
             unspent_outputs: {
-              'Blockcypher.com': 'blockcypher_bitcoin',
-              'Blockchair.com': 'blockchair_bitcoin',
+              'Blockcypher.com': 'blockcypher.com_bitcoin',
+              'Blockchair.com': 'blockchair.com_bitcoin',
               'Blockstream.info': 'blockstream.info',
               'Chain.so': 'chain.so_bitcoin',
               'Coinb.in': 'coinb.in_bitcoin',
               'Cryptoid.info': 'cryptoid.info_bitcoin',
             },
             broadcast: {
-              'Blockcypher.com': 'blockcypher_bitcoin',
-              'Blockchair.com': 'blockchair_bitcoin',
+              'Blockcypher.com': 'blockcypher.com_bitcoin',
+              'Blockchair.com': 'blockchair.com_bitcoin',
               'Blockstream.info': 'blockstream.info',
               'Chain.so': 'chain.so_bitcoin',
               'Coinb.in': 'coinb.in_bitcoin',
@@ -486,14 +487,14 @@ wally_fn.decodeHexPrivKey = function(key){
           api : {
               //only key is used for the moment, not the value!
             unspent_outputs: {
-              'Blockcypher.com': 'blockcypher_litecoin',
-              'Blockchair.com': 'blockchair_litecoin',
+              'Blockcypher.com': 'blockcypher.com_litecoin',
+              'Blockchair.com': 'blockchair.com_litecoin',
               'Chain.so': 'chain.so_litecoin',
               'Cryptoid.info': 'cryptoid.info_litecoin',
             },
             broadcast: {
-              'Blockcypher.com': 'blockcypher_litecoin',
-              'Blockchair.com': 'blockchair_litecoin',
+              'Blockcypher.com': 'blockcypher.com_litecoin',
+              'Blockchair.com': 'blockchair.com_litecoin',
               'Chain.so': 'chain.so_litecoin',
               'Cryptoid.info': 'cryptoid.info_litecoin',
             }
@@ -644,14 +645,14 @@ wally_fn.decodeHexPrivKey = function(key){
           api : {
               //only key is used for the moment, not the value!
             unspent_outputs: {
-              'Blockcypher.com': 'blockcypher_bitcoin_bitcoin',
-              'Blockchair.com': 'blockchair_bitcoin_bitcoin',
+              'Blockcypher.com': 'blockcypher.com_bitcoin',
+              'Blockchair.com': 'blockchair.com_bitcoin',
               'Blockstream.info': 'blockstream.info_bitcoin',
               'Chain.so': 'chain.so_bitcoin',
             },
             broadcast: {
-              'Blockcypher.com': 'blockcypher_bitcoin',
-              'Blockchair.com': 'blockchair_bitcoin_bitcoin',
+              'Blockcypher.com': 'blockcypher.com_bitcoin',
+              'Blockchair.com': 'blockchair.com_bitcoin',
               'Blockstream.info': 'blockstream.info_bitcoin',
               'Chain.so': 'chain.so_bitcoin',
             }

@@ -26,7 +26,7 @@
 
     //defaults to mainnet, or else set to testnet
     var listNetworkTypes = ["mainnet", "testnet"];
-    var modalTitle = 'Blockchain Network', modalMessage, newNetwork;
+    var modalTitle = 'Network Settings', modalMessage, newNetwork;
     try {
       
       wally_fn.asset = asset_var;
@@ -50,7 +50,7 @@
       //Object.assign(coinjs, (wally_fn.networks[network_var][asset_var]))
 
       if (showChangeMessage) {
-        modalMessage = '<div class="text-center text-primary"><p>You just switched Blockchain network:</p>' 
+        modalMessage = '<div class="text-center text-primary"><p>You just changed blockchain network settings:</p>' 
           + newNetwork.asset.name + ' ('+newNetwork.asset.symbol+' '+newNetwork.asset.network+')</div>';
         modalMessage += '<img src="'+newNetwork.asset.icon+'" class="icon-center icon64 ">'
 
@@ -61,7 +61,7 @@
     } catch (e) {
       console.log('wally_kit.setNetwork ERROR: ', e);
       modalTitle = 'Blockchain Network: ERROR!'
-      modalMessage = 'ERROR (wally_kit.setNetwork): Switching Blockchain Network Failed! ' + e;
+      modalMessage = 'ERROR (wally_kit.setNetwork): Change blockchain network settings failed! ' + e;
       custom.showModal(modalTitle, modalMessage, 'danger');
       //console.warn("");
     }
@@ -162,8 +162,10 @@
       selectNetworkBroadcastAPI.append('<option value="'+value+'" data-icon="" >'+key+'</option>');
       selectNetworkBroadcastAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-broadcast-provider="'+value+'" data-broadcast-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+'</li>');
 
-      if(i==0)//set broadcast asset
+      if(i==0) {//set broadcast asset
           $('#coinjs_broadcast_api_select button').html('<img src="./assets/images/providers_icon.svg" class="icon32"> '+key);
+          wally_fn.provider.broadcast = key;
+        }
       i++;
     }
 
@@ -171,8 +173,10 @@
     for (var [key, value] of Object.entries(coinjs.asset.api.unspent_outputs)) {
       selectNetworkUtxoAPI.append('<option value="'+value+'" data-icon="" >'+key+'</option>');
       selectNetworkUtxoAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-utxo-provider="'+value+'" data-utxo-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+'</li>');
-      if(i==0)//set utxo provider asset
+      if (i==0) {//set utxo provider asset
         $('#coinjs_utxo_api_select button').html('<img src="./assets/images/providers_icon.svg" class="icon32"> '+key);
+        wally_fn.provider.utxo = key;
+      }
       i++;
     }
 
@@ -234,6 +238,10 @@ $(document).ready(function() {
   var portfolioAsset = $('#coinjs_network');
   var portfolioAssetwIcons = $('#coinjs_network_select');
 
+  var portfolioProviderUtxo = $('#coinjs_utxo_api');
+  var portfolioProviderBroadcast = $('#coinjs_broadcast_api');
+
+
   //***Set default Network
   wally_kit.initNetwork(portfolioNetworkType);
 
@@ -264,6 +272,24 @@ $(document).ready(function() {
     wally_kit.settingsListNetworkProviders();
   });
 
+  portfolioProviderUtxo.on('change', function(e) {
+    console.log('===portfolioProviderUtxo Change===');
+
+    var optionsText = this.options[this.selectedIndex].text;
+    console.log('optionsText: '+ optionsText);
+    wally_fn.provider.utxo = optionsText;
+
+  });
+
+  portfolioProviderBroadcast.on('change', function(e) {
+    console.log('===portfolioProviderUtxo Change===');
+
+    var optionsText = this.options[this.selectedIndex].text;
+    wally_fn.provider.broadcast = optionsText;
+    
+    console.log('optionsText: '+ optionsText);
+  });
+
 /*Settings dropdown-select listener*/
 $("body").on("click", "#settings .dropdown-select li", function(e){
   var _this_ = $(this);
@@ -290,8 +316,10 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
     
   }else if (eqSelectId == 'coinjs_utxo_api'){
     setSelectValue = $(this).attr('data-utxo-provider');
+    //wally_fn.provider.utxo = $(this).attr('data-utxo-provider-name');
   }else if (eqSelectId == 'coinjs_broadcast_api'){
     setSelectValue = $(this).attr('data-broadcast-provider');
+    //wally_fn.provider.broadcast = $(this).attr('data-broadcast-provider-name');
   }
 
   $('#'+eqSelectId).val(setSelectValue).change();
