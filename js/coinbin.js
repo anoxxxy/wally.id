@@ -1061,6 +1061,26 @@ profile_data = {
 
 		$("#redeemFromBtn").html("Please wait, loading...").attr('disabled',true);
 
+
+		if (wally_fn.provider.utxo == 'Blockcypher.com') {
+			listUnspentBlockcypher(redeem, coinjs.asset.api.unspent_outputs['Blockcypher.com']);
+		} else if (wally_fn.provider.utxo == 'Blockchair.com') {
+			listUnspentBlockchair(redeem, coinjs.asset.api.unspent_outputs['Blockchair.com']);
+		} else if (wally_fn.provider.utxo == 'Blockstream.info') {
+			listUnspentBlockstream(redeem, coinjs.asset.api.unspent_outputs['Blockstream.info']);
+			//fix Blockstream for utxo!
+		} else if (wally_fn.provider.utxo == 'Chain.so') {
+			listUnspentChainso(redeem, coinjs.asset.api.unspent_outputs['Chain.so']);
+		} else if (wally_fn.provider.utxo == 'Coinb.in') {
+			listUnspentDefault(redeem);
+			//fix coinbin utxo here
+		} else if (wally_fn.provider.utxo == 'Cryptoid.info') {
+			listUnspentCryptoid(redeem, coinjs.asset.api.unspent_outputs['Cryptoid.info']);
+		}
+
+        
+
+		/*
 		var host = $(this).attr('rel');
 
         // api:             blockcypher     blockchair      chain.so
@@ -1106,6 +1126,7 @@ profile_data = {
 		else {
 			listUnspentDefault(redeem);
 		}
+		*/
 
 		if($("#redeemFromStatus").hasClass("hidden")) {
 			// An ethical dilemma: Should we automatically set nLockTime?
@@ -1302,9 +1323,17 @@ profile_data = {
 
 	/* retrieve unspent data from blockcypher */
 	function listUnspentBlockcypher(redeem,network){
+
+		var apiUrl = 'https://api.blockcypher.com/v1/'+network+'/main/addrs/'+redeem.addr+'?includeScript=true&unspentOnly=true';
+		
+		if (coinjs.asset.network == 'testnet')
+			apiUrl = 'https://api.blockcypher.com/v1/'+network+'/test3/addrs/'+redeem.addr+'?includeScript=true&unspentOnly=true';
+		
+
 		$.ajax ({
 			type: "GET",
-			url: "https://api.blockcypher.com/v1/"+network+"/main/addrs/"+redeem.addr+"?includeScript=true&unspentOnly=true",
+			//url: "https://api.blockcypher.com/v1/"+network+"/main/addrs/"+redeem.addr+"?includeScript=true&unspentOnly=true",
+			url: apiUrl,
 			dataType: "json",
 			error: function(data) {
 				$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs!');
@@ -1333,14 +1362,38 @@ profile_data = {
 		});
 	}
 
+	function listUnspentBlockstream(redeem,network){
+
+		
+		var apiUrl;
+		if(coinjs.asset.network == 'mainnet')
+			apiUrl = 'https://blockstream.info/api/';
+		if(coinjs.asset.network == 'mainnet')
+			apiUrl = 'https://blockstream.info/testnet/api/';
+
+		console.log('redeem: ', redeem);
+		console.log('network: ', network);
+
+	};
 	/* retrieve unspent data from blockchair */
 	function listUnspentBlockchair(redeem,network){
+
+		var apiUrl = 'https://api.blockchair.com/'+network+'/dashboards/address/'+redeem.addr;
+		
+		if (coinjs.asset.network == 'testnet')
+			apiUrl = 'https://api.blockchair.com/'+network+'/testnet/dashboards/address/'+redeem.addr;
+
+		
+
+
 		$.ajax ({
 			type: "GET",
-			url: "https://api.blockchair.com/"+network+"/dashboards/address/"+redeem.addr,
+			//url: "https://api.blockchair.com/"+network+"/dashboards/address/"+redeem.addr,
+			url: apiUrl,
 			dataType: "json",
 			error: function(data) {
-				$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs!');
+				$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs! <div class="alert alert-light">'+data.responseJSON.context.error+' </div>');
+				console.log('erro: ', data.responseJSON.context.error);
 			},
 			success: function(data) {
 				if((data.context && data.data) && data.context.code =='200'){
@@ -1357,7 +1410,7 @@ profile_data = {
 						}
 					}
 				} else {
-					$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs.');
+					$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs. <div class="alert alert-light">'+data.context.error+' </div>');
 				}
 			},
 			complete: function(data, status) {
@@ -1370,6 +1423,8 @@ profile_data = {
 
 	/* retrieve unspent data from chainso */
 	function listUnspentChainso(redeem, network){
+		
+		console.log('redeem: ', redeem);
 		$.ajax ({
 			type: "GET",
 			url: "https://chain.so/api/v2/get_tx_unspent/"+network+"/"+redeem.addr,
@@ -1378,6 +1433,144 @@ profile_data = {
 				$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs!');
 			},
 			success: function(data) {
+				if((data.status && data.data) && data.status=='success'){
+					$("#redeemFromAddress").removeClass('hidden').html('<span class="glyphicon glyphicon-info-sign"></span> Retrieved unspent inputs from address <a href="https://chain.so/address/'+network+'/'+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
+					for(var i in data.data.txs){
+						var o = data.data.txs[i];
+						var tx = ((""+o.txid).match(/.{1,2}/g).reverse()).join("")+'';
+						if(tx.match(/^[a-f0-9]+$/)){
+							var n = o.output_no;
+							var script = (redeem.redeemscript==true) ? redeem.decodedRs : o.script_hex;
+							var amount = o.value;
+							addOutput(tx, n, script, amount);
+						}
+					}
+				} else {
+					$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs.');
+				}
+			},
+			complete: function(data, status) {
+				$("#redeemFromBtn").html("Load").attr('disabled',false);
+				totalInputAmount();
+			}
+		});
+	}
+
+	/* retrieve unspent data from blockstream */
+	function listUnspentBlockstreams(redeem, network){
+		/*
+
+		https://blockstream.info/api/address/1DX8EFJPMBimWyApUndVSnwucu29Eob4fC/utxo
+		https://blockstream.info/api/scripthash/1DX8EFJPMBimWyApUndVSnwucu29Eob4fC/utxo
+		https://blockstream.info/api/scripthash/:hash/utxo
+		
+txid: tx
+vout: n
+value:
+confirmed: true
+
+https://blockstream.info/api/address/1DX8EFJPMBimWyApUndVSnwucu29Eob4fC/utxo
+[
+  {
+    "txid": "06a6845efa2de56ac9753edc9970e4abb59a16db19379a0e728e087ece83f2c5",
+    "vout": 1,
+    "status": {
+      "confirmed": true,
+      "block_height": 770416,
+      "block_hash": "00000000000000000003db3eb21ac3c4aba6d82d046d3092ccb4f0819f36e6a7",
+      "block_time": 1672888014
+    },
+    "value": 410234
+  },
+  {
+    "txid": "609257f98394f5ec8f05bbacc922452aeb2a56f969852fa052b6b5fc4d05fcd2",
+    "vout": 1,
+    "status": {
+      "confirmed": true,
+      "block_height": 770556,
+      "block_hash": "00000000000000000006e73b3979559249b5f8e682a2b90099d75bfb58229ee9",
+      "block_time": 1672965601
+    },
+    "value": 47139396
+  }
+]
+
+
+https://api.blockcypher.com/v1/btc/main/addrs/1DX8EFJPMBimWyApUndVSnwucu29Eob4fC?includeScript=true&unspentOnly=true
+{
+  "address": "1DX8EFJPMBimWyApUndVSnwucu29Eob4fC",
+  "total_received": 931143573,
+  "total_sent": 883593943,
+  "balance": 47549630,
+  "unconfirmed_balance": 0,
+  "final_balance": 47549630,
+  "n_tx": 141,
+  "unconfirmed_n_tx": 0,
+  "final_n_tx": 141,
+  "txrefs": [
+    {
+      "tx_hash": "609257f98394f5ec8f05bbacc922452aeb2a56f969852fa052b6b5fc4d05fcd2",
+      "block_height": 770556,
+      "tx_input_n": -1,
+      "tx_output_n": 1,
+      "value": 47139396,
+      "ref_balance": 100703630,
+      "spent": false,
+      "confirmations": 6,
+      "confirmed": "2023-01-06T00:40:01Z",
+      "double_spend": false,
+      "script": "76a914895405afd2380af9789c5be1e3c959637150f4aa88ac"
+    },
+    {
+      "tx_hash": "06a6845efa2de56ac9753edc9970e4abb59a16db19379a0e728e087ece83f2c5",
+      "block_height": 770416,
+      "tx_input_n": -1,
+      "tx_output_n": 1,
+      "value": 410234,
+      "ref_balance": 6835881,
+      "spent": false,
+      "confirmations": 146,
+      "confirmed": "2023-01-05T03:06:54Z",
+      "double_spend": false,
+      "script": "76a914895405afd2380af9789c5be1e3c959637150f4aa88ac"
+    }
+  ],
+  "tx_url": "https://api.blockcypher.com/v1/btc/main/txs/"
+}
+
+https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addresses&request=unspent&address=1DX8EFJPMBimWyApUndVSnwucu29Eob4fC&r=0.4235599810492048
+		*/
+
+		console.log('redeem: ', redeem);
+
+		$.ajax ({
+			type: "GET",
+			url: "https://chain.so/api/v2/get_tx_unspent/"+network+"/"+redeem.addr,
+			dataType: "json",
+			error: function(data) {
+				$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs!');
+			},
+			success: function(data) {
+				if (data.length) {	//unspent is in an array, so if empty then wallet is empty
+					$("#redeemFromAddress").removeClass('hidden').html('<span class="glyphicon glyphicon-info-sign"></span> Retrieved unspent inputs from address <a href="'+explorer_addr+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
+
+					for(var i in data){
+						var o = data[i];
+						var tx = ((""+o.txid).match(/.{1,2}/g).reverse()).join("")+'';
+						if(tx.match(/^[a-f0-9]+$/)){
+							var n = o.vout;
+							var script = (redeem.redeemscript==true) ? redeem.decodedRs : o.script_hex;
+							//script_hex is not presented, generate it!
+							//block_hash exists
+							var amount = o.value;
+							addOutput(tx, n, script, amount);
+						}
+					}
+
+				} else {
+					$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs.');
+				}
+
 				if((data.status && data.data) && data.status=='success'){
 					$("#redeemFromAddress").removeClass('hidden').html('<span class="glyphicon glyphicon-info-sign"></span> Retrieved unspent inputs from address <a href="'+explorer_addr+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
 					for(var i in data.data.txs){
@@ -1400,6 +1593,7 @@ profile_data = {
 			}
 		});
 	}
+
 
 	// retrieve unspent data from chainz.cryptoid.info (mainnet and testnet)
 	function listUnspentCryptoid(redeem, network){ 
@@ -1623,11 +1817,20 @@ profile_data = {
 	//https://live.blockcypher.com/btc-testnet/decodetx/
 
 	function rawSubmitBlockstreamBTC(thisbtn){ 
+
+		var apiUrl;
+		if(coinjs.asset.network == 'mainnet')
+			apiUrl = '//blockstream.info/api/';
+		if(coinjs.asset.network == 'mainnet')
+			apiUrl = '//blockstream.info/testnet/api/';
+
+		
+
 		console.log('===rawSubmitBlockstreamBTC===');
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
 		$.ajax ({
 			type: "POST",
-			url: "https://blockstream.info/api/tx",
+			url: apiUrl+tx,
 			data: $("#rawTransaction").val(),
 			error: function(data) {
 				console.log('Blockstream error data: ', data);
@@ -1653,37 +1856,6 @@ profile_data = {
 		});
 	}
 
-
-	function rawSubmitBlockstreamBTCTestnet(thisbtn){ 
-		console.log('===rawSubmitBlockstreamBTCTestnet===');
-		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
-		$.ajax ({
-			type: "POST",
-			url: "https://blockstream.info/testnet/api/tx",
-			data: $("#rawTransaction").val(),
-			error: function(data) {
-				console.log('Blockstream error data: ', data);
-				var r = 'Failed to broadcast: error code=' + data.status.toString() + ' ' + data.statusText;
-				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
-			},
-            success: function(data) {
-            	console.log('Blockstream success data: ', data);
-            	var txid = (data.match(/[a-f0-9]{64}/gi)[0]);
-            	if(txid){
-					$("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden")
-                    .html(' TXID: ' + txid + '<br> <a href="https://live.blockcypher.com/tx/' + txid + '" target="_blank">View on Blockchain Explorer</a>');
-				} else {
-					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
-				}
-			},
-			complete: function(data, status) {
-				console.log('Blockstream complete data: ', data);
-				console.log('Blockstream status data: ', status);
-				$("#rawTransactionStatus").fadeOut().fadeIn();
-				$(thisbtn).val('Submit').attr('disabled',false);				
-			}
-		});
-	}
 
 	// broadcast transaction via blockcypher.com (mainnet)
 	function rawSubmitblockcypher(thisbtn, network){ 
@@ -2677,6 +2849,10 @@ scrollIntoView(target, {
 		console.log('settingsBtn wally_fn.asset: '+ wally_fn.asset);
 
 		wally_kit.setNetwork(wally_fn.network, wally_fn.asset, {saveSettings: true, showMessage: true, renderFields: false});
+
+
+
+
 		return;
 	});
 

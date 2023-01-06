@@ -2148,7 +2148,7 @@
                 </div>
                 
                 <div class="hidden alert alert-danger" id="redeemFromStatus"></div>
-                <div class="hidden alert alert-info" id="redeemFromAddress"></div>
+                <div class="hidden alert alert-success" id="redeemFromAddress"></div>
                 
 
 
@@ -2178,17 +2178,28 @@
                     <label>Lock Time</label>
                     <p>The <a href="https://bitcoin.org/en/developer-guide#locktime-and-sequence-number">locktime</a> indicates the earliest time a transaction can be added to the block chain.</p>
                     <input type="text" class="form-control" value="0" id="nLockTime">
-                    <hr>
+                    
                     <div id="txTimeOptional">
-                      <label>Extra time field</label>
+                      <hr>
+                      <label>Extra Time Field</label>
                       <p>Indicates the timestamp of a transaction.</p>
                       <input type="text" class="form-control" value="0" id="nTime">
                     </div>
-                    <hr>
-                    <label>Replace By Fee (RBF)</label>
-                    <p class="checkbox">
-                      <label><input type="checkbox" id="txRBF" class="checkbox-inline" checked> Make this a <a href="https://en.bitcoin.it/wiki/Transaction_replacement" target="_blank">RBF transaction</a>.</label>
-                    </p>
+                    <div id="txUnitOptional">
+                      <label>Extra Unit Field</label>
+                      <p>Unit field value for a transaction.</p>
+                      <input type="text" class="form-control" value="0" id="nUnit">
+                    </div>
+
+                    <div id="txRbfTransactionOptional">
+                      <hr>
+
+                      <label>Replace By Fee (RBF)</label>
+                      <p class="checkbox">
+                        <label><input type="checkbox" id="txRBF" class="checkbox-inline" checked> Make this a <a href="https://en.bitcoin.it/wiki/Transaction_replacement" target="_blank">RBF transaction</a>.</label>
+                      </p>
+                      
+                    </div>
                     <hr>
                     <label>Network</label>
                     <p>The <a href="#settings">settings</a> page can be used to select alternative networks of which you can retrieve your unspent outputs and broadcast a signed transaction into.</p>

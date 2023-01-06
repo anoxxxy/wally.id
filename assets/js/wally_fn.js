@@ -447,26 +447,25 @@ wally_fn.decodeHexPrivKey = function(key){
           api : {
               //only key is used for the moment, not the value!
             unspent_outputs: {
-              'Blockcypher.com': 'blockcypher.com_bitcoin',
-              'Blockchair.com': 'blockchair.com_bitcoin',
-              'Blockstream.info': 'blockstream.info',
-              'Chain.so': 'chain.so_bitcoin',
-              'Coinb.in': 'coinb.in_bitcoin',
-              'Cryptoid.info': 'cryptoid.info_bitcoin',
+              'Blockcypher.com': 'btc',
+              'Blockchair.com': 'bitcoin',
+              //'Blockstream.info': 'Blockstream.info',
+              'Chain.so': 'BTC',
+              'Coinb.in': 'Coinb.in',
+              'Cryptoid.info': 'btc',
             },
             broadcast: {
-              'Blockcypher.com': 'blockcypher.com_bitcoin',
-              'Blockchair.com': 'blockchair.com_bitcoin',
-              'Blockstream.info': 'blockstream.info',
-              'Chain.so': 'chain.so_bitcoin',
-              'Coinb.in': 'coinb.in_bitcoin',
-              'Cryptoid.info': 'cryptoid.info_bitcoin',
-
+              'Blockcypher.com': 'btc',
+              'Blockchair.com': 'bitcoin',
+              'Blockstream.info': 'Blockstream.info', //no arguments needs to be passed
+              'Chain.so': 'BTC',
+              'Coinb.in': 'Coinb.in',                 //no arguments needs to be passed
+              'Cryptoid.info': 'btc',
             }
           }
         },
-        pub : 0x00,      //wif
-        priv : 0x80,     //pubKeyHash
+        pub : 0x00,      //pubKeyHash
+        priv : 0x80,     //wif
         multisig : 0x05, //scriptHash
           hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'},
@@ -476,6 +475,7 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
+        rbfTransaction: true,
       },
       litecoin : {
         coinName: 'Litecoin',
@@ -489,21 +489,21 @@ wally_fn.decodeHexPrivKey = function(key){
           api : {
               //only key is used for the moment, not the value!
             unspent_outputs: {
-              'Blockcypher.com': 'blockcypher.com_litecoin',
-              'Blockchair.com': 'blockchair.com_litecoin',
-              'Chain.so': 'chain.so_litecoin',
-              'Cryptoid.info': 'cryptoid.info_litecoin',
+              'Blockcypher.com': 'ltc',
+              'Blockchair.com': 'litecoin',
+              'Chain.so': 'LTC',
+              'Cryptoid.info': 'ltc',
             },
             broadcast: {
-              'Blockcypher.com': 'blockcypher.com_litecoin',
-              'Blockchair.com': 'blockchair.com_litecoin',
-              'Chain.so': 'chain.so_litecoin',
-              'Cryptoid.info': 'cryptoid.info_litecoin',
+              'Blockcypher.com': 'ltc',
+              'Blockchair.com': 'litecoin',
+              'Chain.so': 'LTC',
+              'Cryptoid.info': 'ltc',
             }
           }
         },
-        pub : 0x30,      //wif
-        priv : 0xb0,     //pubKeyHash
+        pub : 0x30,      //pubKeyHash
+        priv : 0xb0,     //wif
         multisig : 0x32, //scriptHash
           hdkey : {'prv':0x019d9cfe, 'pub':0x019da462},
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'},
@@ -513,6 +513,7 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
+        rbfTransaction: false,
       },
       dogecoin : {
         coinName: 'Dogecoin',
@@ -525,15 +526,19 @@ wally_fn.decodeHexPrivKey = function(key){
           network: 'mainnet',
           api : {
             unspent_outputs: {
-              'Chain.so': 'chain.so_dogecoin',
+              'Blockcypher.com': 'doge',
+              'Blockchair.com': 'dogecoin',
+              'Chain.so': 'DOGE',
             },
             broadcast: {
-              'Chain.so': 'chain.so_dogecoin',
+              'Blockcypher.com': 'doge',
+              'Blockchair.com': 'dogecoin',
+              'Chain.so': 'DOGE',
             }
           }
         },
-        pub : 0x1e,      //wif
-        priv : 0x9e,     //pubKeyHash
+        pub : 0x1e,      //pubKeyHash
+        priv : 0x9e,     //wif
         multisig : 0x16, //scriptHash
           hdkey : {'prv':0x089944e4, 'pub':0x0827421e},
           //bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'},
@@ -544,6 +549,7 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
+        rbfTransaction: false,
       },
       bitbay : {
         coinName: 'BitBay',
@@ -556,17 +562,17 @@ wally_fn.decodeHexPrivKey = function(key){
           network: 'mainnet',
           api : {
             unspent_outputs: {
-              'Cryptoid.info': 'cryptoid.info_bitbay',
-              'BitBay Node': 'bitbay_node',
+              'Cryptoid.info': 'bay',
+              'BitBay Node': '',
             },
             broadcast: {
-              'Cryptoid.info': 'cryptoid.info_bitbay',
-              'BitBay Node': 'bitbay_node',
+              'Cryptoid.info': 'bay',
+              'BitBay Node': '',
             }
           }
         },
-        pub : 0x19,      //wif
-        priv : 0x99,     //pubKeyHash
+        pub : 0x19,      //pubKeyHash
+        priv : 0x99,     //wif
         multisig : 0x55, //scriptHash
           hdkey : {'prv':0x02cfbf60, 'pub':0x02cfbede},
           bech32 : {},
@@ -576,6 +582,7 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
+        rbfTransaction: false,
       },
       blackcoin : {
         coinName: 'Blackcoin',
@@ -588,15 +595,15 @@ wally_fn.decodeHexPrivKey = function(key){
           network: 'mainnet',
           api : {
             unspent_outputs: {
-              'Cryptoid.info': 'cryptoid.info_bitbay'
+              'Cryptoid.info': 'blk'
             },
             broadcast: {
-              'Cryptoid.info': 'cryptoid.info_bitbay'
+              'Cryptoid.info': 'blk'
             }
           }
         },
-        pub : 0x19,      //wif
-        priv : 0x99,     //pubKeyHash
+        pub : 0x19,      //pubKeyHash
+        priv : 0x99,     //wif
         multisig : 0x55, //scriptHash
           hdkey : {'prv':0x02cfbf60, 'pub':0x02cfbede},
           bech32 : {},
@@ -606,6 +613,7 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
+        rbfTransaction: false,
       },
       lynx : {
         coinName: 'Lynx',
@@ -618,15 +626,15 @@ wally_fn.decodeHexPrivKey = function(key){
           network: 'mainnet',
           api : {
             unspent_outputs: {
-              'Cryptoid.info': 'cryptoid.info_lynx'
+              'Cryptoid.info': 'lynx'
             },
             broadcast: {
-              'Cryptoid.info': 'cryptoid.info_lynx'
+              'Cryptoid.info': 'lynx'
             }
           }
         },
-        pub : 0x2d,      //wif
-        priv : 0xad,     //pubKeyHash
+        pub : 0x2d,      //pubKeyHash
+        priv : 0xad,     //wif
         multisig : 0x32, //scriptHash
           hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e}, //fix this! iceeee
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'},
@@ -636,6 +644,7 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
+        rbfTransaction: false,
       },
     },
     testnet : {
@@ -651,21 +660,21 @@ wally_fn.decodeHexPrivKey = function(key){
           api : {
               //only key is used for the moment, not the value!
             unspent_outputs: {
-              'Blockcypher.com': 'blockcypher.com_bitcoin',
-              'Blockchair.com': 'blockchair.com_bitcoin',
-              'Blockstream.info': 'blockstream.info_bitcoin',
-              'Chain.so': 'chain.so_bitcoin',
+              'Blockchair.com': 'bitcoin',
+              'Blockcypher.com': 'btc',
+              //'Blockstream.info': 'Blockstream.info',
+              'Chain.so': 'BTCTEST',
             },
             broadcast: {
-              'Blockcypher.com': 'blockcypher.com_bitcoin',
-              'Blockchair.com': 'blockchair.com_bitcoin',
-              'Blockstream.info': 'blockstream.info_bitcoin',
-              'Chain.so': 'chain.so_bitcoin',
+              'Blockchair.com': 'bitcoin',
+              'Blockcypher.com': 'btc',
+              'Blockstream.info': 'Blockstream.info',
+              'Chain.so': 'BTCTEST',
             }
           }
         },
-        pub : 0x6f,      //wif
-        priv : 0xef,     //pubKeyHash
+        pub : 0x6f,      //pubKeyHash
+        priv : 0xef,     //wif
         multisig : 0xc4, //scriptHash
           hdkey : {'prv':0x04358394, 'pub':0x043587cf},
           //bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'tp'},
@@ -676,6 +685,7 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
+        rbfTransaction: true,
       },
       litecoin : {
         coinName: 'Litecoin',
@@ -688,24 +698,26 @@ wally_fn.decodeHexPrivKey = function(key){
           network: 'testnet',
           api : {
             unspent_outputs: {
-              'Chain.so': 'chain.so_litecoin',
+              'Chain.so': 'LTCTEST',
             },
             broadcast: {
-              'Chain.so': 'chain.so_litecoin',
+              'Chain.so': 'LTCTEST',
             }
+
           }
         },
-        pub : 0xef,      //wif
-        priv : 0x6f,     //pubKeyHash
+        pub : 0x6f,      //pubKeyHash
+        priv : 0xef,     //wif
         multisig : 0xc4, //scriptHash
           hdkey : {'prv':0x04358394, 'pub':0x043587cf},
-          bech32 : {},
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'},
           supports_address : ['compressed', 'uncompressed'],
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
+        rbfTransaction: false,
       },
       dogecoin : {
         coinName: 'Dogecoin',
@@ -718,15 +730,15 @@ wally_fn.decodeHexPrivKey = function(key){
           network: 'testnet',
           api : {
             unspent_outputs: {
-              'Chain.so': 'chain.so_dogecoin',
+              'Chain.so': 'DOGETEST',
             },
             broadcast: {
-              'Chain.so': 'chain.so_dogecoin',
+              'Chain.so': 'DOGETEST',
             }
           }
         },
-        pub : 0xf1,      //wif
-        priv : 0x71,     //pubKeyHash
+        pub : 0x71,      //pubKeyHash
+        priv : 0xf1,     //wif
         multisig : 0xc4, //scriptHash
           hdkey : {'prv':0x04358394, 'pub':0x043587cf},
           bech32 : {},
@@ -736,62 +748,15 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
+        rbfTransaction: false,
       },
     }
 
   };
 
+  
+
   /*
-  @ Network Settings
-  */
-  wally_fn.setNetwork = function (network) {
-
-
-    //***PoS and other coins
-    coinjs.txExtraTimeField = false;    //Set to true for PoS coins
-    coinjs.txExtraTimeFieldValue = false;
-    coinjs.txExtraUnitField = false;
-    coinjs.txExtraUnitFieldValue = false;
-
-    coinjs.decimalPlaces = 8;
-
-    if (network == "btc-mainnet") {
-      coinjs.coinName = 'Bitcoin';
-      coinjs.symbol = 'BTC';      //ticker
-      coinjs.asset = {
-        name: 'Bitcoin',
-        symbol: 'BTC',
-        network: 'mainnet',
-        api : {
-            //only key is used for the moment, not the value!
-          unspent_outputs: {
-            'Blockcypher.com': 'blockcypher_bitcoin_bitcoin',
-            'Blockchair.com': 'blockchair_bitcoin_bitcoin',
-            'Blockstream.info': 'blockstream.info_bitcoin',
-            'Chain.so': 'chain.so_bitcoin',
-            'Coinb.in': 'coinb.in_bitcoin',
-            'Cryptoid.info': 'cryptoid.info_bitcoin',
-          },
-          broadcast: {
-            'Blockcypher.com': 'blockcypher_bitcoin_bitcoin',
-            'Blockchair.com': 'blockchair_bitcoin_bitcoin',
-            'Blockstream.info': 'blockstream.info_bitcoin',
-            'Chain.so': 'chain.so_bitcoin',
-            'Coinb.in': 'coinb.in_bitcoin',
-            'Cryptoid.info': 'cryptoid.info_bitcoin',
-
-          }
-        }
-      };
-      coinjs.pub = 0x00;      //wif
-      coinjs.priv = 0x80;     //pubKeyHash
-      coinjs.multisig = 0x05; //scriptHash
-        coinjs.hdkey = {'prv':0x0488ade4, 'pub':0x0488b21e};
-        coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'};
-        coinjs.supports_address = ['compressed', 'uncompressed', 'bech32', 'segwit'];
-      
-
-/*
 
 https://www.blockcypher.com/dev/bitcoin/#api-versions
 
@@ -880,241 +845,6 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
 }
 */
 
-    }
-    if (network == "btc-testnet") {
-      coinjs.coinName = 'Bitcoin-testnet';
-      coinjs.symbol = 'BTC-TESTNET';
-      coinjs.asset = {
-        name: 'Bitcoin testnet',
-        symbol: 'TBTC',
-        network: 'testnet',
-        api : {
-          unspent_outputs: {
-            'Blockcypher.com': 'blockcypher_bitcoin_bitcoin',
-            'Blockchair.com': 'blockchair_bitcoin_bitcoin',
-            'Blockstream.info': 'blockstream.info_bitcoin',
-            'Chain.so': 'chain.so_bitcoin',
-          },
-          broadcast: {
-            'Blockcypher.com': 'blockcypher_bitcoin',
-            'Blockchair.com': 'blockchair_bitcoin_bitcoin',
-            'Blockstream.info': 'blockstream.info_bitcoin',
-            'Chain.so': 'chain.so_bitcoin',
-          }
-        }
-      };
-      coinjs.pub = 0x6f;
-      coinjs.priv = 0xef;
-      coinjs.multisig = 0xc4;
-        coinjs.hdkey = {'prv':0x04358394, 'pub':0x043587cf};
-        //coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'tp'};
-        coinjs.supports_address = ['compressed', 'uncompressed', 'bech32', 'segwit'];
-    }
-    if (network == "ltc-mainnet") {
-      coinjs.coinName = 'Litecoin';
-      coinjs.symbol = 'LTC';
-      coinjs.asset = {
-        name: 'Litecoin',
-        symbol: 'LTC',
-        network: 'mainnet',
-        api : {
-          unspent_outputs: {
-            'Blockcypher.com': 'blockcypher_litecoin',
-            'Blockchair.com': 'blockchair_litecoin',
-            'Chain.so': 'chain.so_litecoin',
-            'Cryptoid.info': 'cryptoid.info_litecoin',
-          },
-          broadcast: {
-            'Blockcypher.com': 'blockcypher_litecoin',
-            'Blockchair.com': 'blockchair_litecoin',
-            'Chain.so': 'chain.so_litecoin',
-            'Cryptoid.info': 'cryptoid.info_litecoin',
-          }
-        }
-      };
-      coinjs.pub = 0x30;
-      coinjs.priv = 0xb0;
-      coinjs.multisig = 0x32;
-        coinjs.hdkey = {'prv':0x019d9cfe, 'pub':0x019da462};
-        coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'};
-        coinjs.supports_address = ['compressed', 'uncompressed', 'bech32', 'segwit'];
-
-    }
-    if (network == "ltc-testnet") {
-      coinjs.coinName = 'Litecoin-testnet';
-      coinjs.symbol = 'LTC-TESTNET';
-      coinjs.asset = {
-        name: 'Litecoin',
-        symbol: 'TLTC',
-        network: 'testnet',
-        api : {
-          unspent_outputs: {
-            'Chain.so': 'chain.so_litecoin',
-          },
-          broadcast: {
-            'Chain.so': 'chain.so_litecoin',
-          }
-        }
-      };
-      coinjs.pub = 0xef;
-      coinjs.priv = 0x6f;
-      coinjs.multisig = 0xc4;
-      coinjs.hdkey = {'prv':0x04358394, 'pub':0x043587cf};
-      coinjs.supports_address = ['compressed', 'uncompressed', 'bech32', 'segwit'];
-  }
-    if (network == "doge-mainnet") {
-        coinjs.coinName = 'Dogecoin';
-        coinjs.symbol = 'DOGE';
-        coinjs.asset = {
-          name: 'Dogecoin',
-          symbol: 'DOGE',
-          network: 'mainnet',
-          api : {
-            unspent_outputs: {
-              'Chain.so': 'chain.so_dogecoin',
-            },
-            broadcast: {
-              'Chain.so': 'chain.so_dogecoin',
-            }
-          }
-        };
-        coinjs.pub = 0x1e;
-        coinjs.priv = 0x9e;
-        coinjs.multisig = 0x16;
-        coinjs.hdkey = {'prv':0x089944e4, 'pub':0x0827421e};
-        coinjs.supports_address = ['compressed', 'uncompressed', 'segwit'];
-
-    }
-    if (network == "doge-testnet") {
-        coinjs.coinName = 'Dogecoin-testnet';
-        coinjs.symbol = 'DOGE-TESTNET';
-        coinjs.asset = {
-          name: 'Dogecoin',
-          symbol: 'TDOGE',
-          network: 'testnet',
-          api : {
-            unspent_outputs: {
-              'Chain.so': 'chain.so_litecoin',
-            },
-            broadcast: {
-              'Chain.so': 'chain.so_litecoin',
-            }
-          }
-        };
-        coinjs.pub = 0xf1;
-        coinjs.priv = 0x71;
-        coinjs.multisig = 0xc4;
-        coinjs.hdkey = {'prv':0x04358394, 'pub':0x043587cf};
-        coinjs.supports_address = ['compressed', 'uncompressed'];
-    }
-    if (network == "bay-mainnet") {
-        coinjs.coinName = 'BitBay';
-        coinjs.symbol = 'BAY';
-        coinjs.asset = {
-          name: 'BitBay',
-          symbol: 'BAY',
-          network: 'mainnet',
-          api : {
-            unspent_outputs: {
-              'Cryptoid.info': 'cryptoid.info_bitbay',
-              'BitBay Node': 'bitbay_node',
-            },
-            broadcast: {
-              'Cryptoid.info': 'cryptoid.info_bitbay',
-              'BitBay Node': 'bitbay_node',
-            }
-          }
-        };
-        coinjs.pub = 0x19;
-        coinjs.priv = 0x99;
-        coinjs.multisig = 0x55;
-        coinjs.hdkey = {'prv':0x02cfbf60, 'pub':0x02cfbede};
-        coinjs.supports_address = ['compressed', 'uncompressed'];
-        coinjs.txExtraTimeField = true;
-        
-    }
-    if (network == "blk-mainnet") {
-        coinjs.coinName = 'Blackcoin';
-        coinjs.symbol = 'BLK';
-        coinjs.asset = {
-          name: 'Blackcoin',
-          symbol: 'BLK',
-          network: 'mainnet',
-          api : {
-            unspent_outputs: {
-              'Cryptoid.info': 'cryptoid.info_bitbay'
-            },
-            broadcast: {
-              'Cryptoid.info': 'cryptoid.info_bitbay'
-            }
-          }
-        };
-        coinjs.pub = 0x19;
-        coinjs.priv = 0x99;
-        coinjs.multisig = 0x55;
-        coinjs.hdkey = {'prv':0x488ade4, 'pub':0x488b21e};
-        coinjs.supports_address = ['compressed', 'uncompressed'];
-        coinjs.txExtraTimeField = true;   //remove after BLK fork!
-        
-    }
-
-    if (network == "blk-testnet") {
-        coinjs.coinName = 'Blackcoin-testnet';
-        coinjs.symbol = 'BLK-TESTNET';
-        coinjs.asset = {
-          name: 'Blackcoin',
-          symbol: 'TBLK',
-          network: 'testnet',
-          api : {
-            unspent_outputs: {
-              //'Cryptoid.info': 'cryptoid.info_blackcoin'
-            },
-            broadcast: {
-              //'Cryptoid.info': 'cryptoid.info_blackcoin'
-            }
-          }
-        };
-        coinjs.pub = 0x6f;
-        coinjs.priv = 0xef;
-        coinjs.multisig = 0xc4;
-        coinjs.hdkey = {'prv':0x04358394, 'pub':0x043587cf};
-        coinjs.supports_address = ['compressed', 'uncompressed'];
-        
-    }
-
-    
-    if (network == "lynx-mainnet") {
-        coinjs.coinName = 'LYNX';
-        coinjs.symbol = 'LYNX';
-        coinjs.asset = {
-          name: 'Lynx',
-          symbol: 'LYNX',
-          network: 'mainnet',
-          api : {
-            unspent_outputs: {
-              'Cryptoid.info': 'cryptoid.info_lynx'
-            },
-            broadcast: {
-              'Cryptoid.info': 'cryptoid.info_lynx'
-            }
-          }
-        };
-        coinjs.pub = 0xad;
-        coinjs.priv = 0x2d;
-        coinjs.multisig = 0x32;
-        coinjs.hdkey = {'prv':0x0488ade4, 'pub':0x0488b21e};
-        coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'};
-        coinjs.supports_address = ['compressed', 'uncompressed', 'bech32', 'segwit'];
-
-    }
-
-        console.log('coinjs.pub: ' +coinjs.pub);
-        console.log('coinjs.priv: ' +coinjs.priv);
-        console.log('coinjs.multisig: ' +coinjs.multisig);
-        console.log('coinjs.hdkey: ', coinjs.hdkey);
-        console.log('coinjs.bech32: ', coinjs.bech32);
-        console.log('coinjs.supports_address: ', coinjs.supports_address);
-  }
 
 /*
    @ return Available Blockchain Networks 

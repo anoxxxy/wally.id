@@ -58,6 +58,38 @@
         $.extend(coinjs, wally_fn.networks[network_var][asset_var])
         //Object.assign(coinjs, (wally_fn.networks[network_var][asset_var]))
         //options.showMessage = true;
+
+        //hide/show fields relative to updated Network
+        if (coinjs.rbfTransaction) {
+          $("#txRbfTransactionOptional").show();
+          $('#txRBF').prop('checked', false);
+        } else {
+          $("#txRbfTransactionOptional").hide();
+          $('#txRBF').prop('checked', false);
+        }
+        //for PoS coins
+        if (coinjs.txExtraTimeField) {
+          $("#nTime").val(Date.now() / 1000 | 0);
+          $("#txTimeOptional").show();
+          $("#verifyTransactionData .txtime").show();
+          console.log('show extra field!');
+        } else {
+          $("#txTimeOptional").hide();
+          $("#verifyTransactionData .txtime").hide();
+          $('#nTime').val('');
+        }
+        //check if asset needs extra unit field?
+        if (coinjs.txExtraUnitField) {
+          coinjs.txExtraUnitFieldValue = $("#nUnit").val()*1;
+          $('#txUnitOptional').show();
+          $("#verifyTransactionData .txunit").show();
+
+        } else {
+          $('#txUnitOptional').hide();
+          $("#verifyTransactionData .txunit").hide();
+          $('#nUnit').val('');
+        }
+        
       }
 
       if (options.showMessage) {
@@ -113,6 +145,7 @@
         //show providers for i.e Broadcast and UTXO API
         //wally_kit.settingsListAssets(coinjs.asset.network)
         //wally_kit.settingsListChainProviders(coinjs.asset.network)
+
       } 
 
     } catch (e) {
