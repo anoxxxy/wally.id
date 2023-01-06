@@ -1076,7 +1076,10 @@ profile_data = {
 			//fix coinbin utxo here
 		} else if (wally_fn.provider.utxo == 'Cryptoid.info') {
 			listUnspentCryptoid(redeem, coinjs.asset.api.unspent_outputs['Cryptoid.info']);
+		} else if (wally_fn.provider.utxo == 'Blockchain.info') {
+			listUnspentBlockhaininfo(redeem, coinjs.asset.api.unspent_outputs['Blockchain.info']);
 		}
+
 
         
 
@@ -1594,6 +1597,43 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 		});
 	}
 
+
+	// retrieve unspent data from chainz.cryptoid.info (mainnet and testnet)
+	function listUnspentBlockhaininfo(redeem, network){ 
+		console.log("listUnspentBlockhaininfo");
+		//https://blockchain.info/unspent?active=bc1qldtwp5yz6t4uuhhjcp00hvsmrsfxar2hy09v0d
+
+		$.ajax ({
+		  type: "GET",
+		  url: "https://blockchain.info/unspent?active="+ redeem.addr,
+		  dataType: "json",
+		  error: function() {
+			$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs! blk test function error');
+		  },
+		  success: function(data) {
+			//if($(data).find("unspent_outputs").text()==1){
+			  $("#redeemFromAddress").removeClass('hidden').html('<span class="glyphicon glyphicon-info-sign"></span> Retrieved unspent inputs from address <a href="https://www.blockchain.com/explorer/addresses/'+network+'/'+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
+
+				for(i = 0; i < data.unspent_outputs.length; ++i){
+						var o = data.unspent_outputs[i];
+						var tx = ((""+o.tx_hash_big_endian).match(/.{1,2}/g).reverse()).join("")+'';
+						if(tx.match(/^[a-f0-9]+$/)){
+							var n = o.tx_output_n;
+							var script = (redeem.redeemscript==true) ? redeem.decodedRs : o.script;
+							console.log('script: '+ script);
+							var amount = (o.value /100000000).toFixed(8);;
+							console.log(tx, n, script, amount)
+							addOutput(tx, n, script, amount);
+						}
+					}
+
+		   },
+		  complete: function(data, status) {
+			$("#redeemFromBtn").html("Load").attr('disabled',false);
+			totalInputAmount();
+		  }
+		});
+	}
 
 	// retrieve unspent data from chainz.cryptoid.info (mainnet and testnet)
 	function listUnspentCryptoid(redeem, network){ 

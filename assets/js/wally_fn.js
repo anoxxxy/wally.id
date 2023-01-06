@@ -447,16 +447,17 @@ wally_fn.decodeHexPrivKey = function(key){
           api : {
               //only key is used for the moment, not the value!
             unspent_outputs: {
-              'Blockcypher.com': 'btc',
+              'Blockchain.info': 'btc', //no arguments needs to be passed
               'Blockchair.com': 'bitcoin',
+              'Blockcypher.com': 'btc',
               //'Blockstream.info': 'Blockstream.info',
               'Chain.so': 'BTC',
               'Coinb.in': 'Coinb.in',
               'Cryptoid.info': 'btc',
             },
             broadcast: {
-              'Blockcypher.com': 'btc',
               'Blockchair.com': 'bitcoin',
+              'Blockcypher.com': 'btc',
               'Blockstream.info': 'Blockstream.info', //no arguments needs to be passed
               'Chain.so': 'BTC',
               'Coinb.in': 'Coinb.in',                 //no arguments needs to be passed
