@@ -1595,20 +1595,20 @@
                         <div id="walletSpend" class="walletOptions hidden">
                           <div class="row">
                             <div class="form-inline output">
-                              <div class="col-xs-8">
+                              <div class="col-8">
                                 <label>Address</label>
                               </div>
-                              <div class="col-xs-3">
+                              <div class="col-3">
                                 <label>Amount</label>
                               </div>
                             </div>
                           </div>
                           <div class="row" id="walletSpendTo">
                             <div class=" output">
-                              <div class="col-xs-8">
+                              <div class="col-8">
                                 <input type="text" class="form-control addressTo" >
                               </div>
-                              <div class="col-xs-3">
+                              <div class="col-3">
                                 <input type="text" class="form-control amount"  placeholder="0.00">
                               </div>
                               <a href="javascript:;" class="addressAdd"><i class="bi bi-plus"></i></a>
@@ -1616,11 +1616,11 @@
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-6">
                               <label><abbr title="the amount to pay in network miner fee">Transaction Fee</abbr>&nbsp;&nbsp;<a href="javascript:;" id="feesestwallet"><span class="glyphicon glyphicon-question-sign"></span></a></label>
                               <input type="text" class="form-control" value="0.00001000" id="txFee">
                             </div>
-                            <div class="col-xs-5">
+                            <div class="col-5">
                               <label><abbr title="the amount to donate to coinb.in">Donation</abbr></label>
                               <input type="text" class="form-control" value="0.001" id="developerDonation">
                             </div>
@@ -1792,20 +1792,20 @@
                         <div id="walletSpend" class="walletOptions hidden">
                           <div class="row">
                             <div class="form-inline output">
-                              <div class="col-xs-8">
+                              <div class="col-8">
                                 <label>Address</label>
                               </div>
-                              <div class="col-xs-3">
+                              <div class="col-3">
                                 <label>Amount</label>
                               </div>
                             </div>
                           </div>
                           <div class="row" id="walletSpendTo">
                             <div class=" output">
-                              <div class="col-xs-8">
+                              <div class="col-8">
                                 <input type="text" class="form-control addressTo" >
                               </div>
-                              <div class="col-xs-3">
+                              <div class="col-3">
                                 <input type="text" class="form-control amount"  placeholder="0.00">
                               </div>
                               <a href="javascript:;" class="addressAdd"><i class="bi bi-plus"></i></a>
@@ -1813,11 +1813,11 @@
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-6">
                               <label><abbr title="the amount to pay in network miner fee">Transaction Fee</abbr>&nbsp;&nbsp;<a href="javascript:;" id="feesestwallet"><span class="glyphicon glyphicon-question-sign"></span></a></label>
                               <input type="text" class="form-control" value="0.00001000" id="txFee">
                             </div>
-                            <div class="col-xs-5">
+                            <div class="col-5">
                               <label><abbr title="the amount to donate to coinb.in">Donation</abbr></label>
                               <input type="text" class="form-control" value="0.001" id="developerDonation">
                             </div>
@@ -1969,7 +1969,7 @@
                 </div>
                 <div id="multisigPubKeys" class="row no-gutters">
                   <div class="">
-                    <div class="col-xs-11">
+                    <div class="col-11">
                       <input type="text" class="form-control pubkey">
                     </div>
                     <a href="javascript:;" class="pubkeyAdd"><i class="bi bi-plus"></i></a>
@@ -1978,7 +1978,7 @@
                 </div>
                 <p>Enter the amount of signatures required to release the coins</p>
                 <div class="row no-gutters">
-                  <div class="col-xs-3">
+                  <div class="col-3">
                     <select id="releaseCoins" class="form-control">
                       <option>1</option>
                       <option selected>2</option>
@@ -2045,7 +2045,7 @@
                 </div>
                 <div class="row no-gutters">
                   <div class="">
-                    <div class="col-xs-12">
+                    <div class="col-12">
                       <input id="timeLockedPubKey" type="text" class="form-control pubkey">
                     </div>
                   </div>
@@ -2359,7 +2359,28 @@
                   <br>
                   <textarea class="form-control" style="height:150px" readonly></textarea>
                   <p class="text-muted">Size: <span class="txSize">0</span> <i>bytes</i></p>
+
                 </div>
+
+                <!-- -What do to after creating transaction -->
+                  <div id="transactionCreateOptions" class="hidden">
+                    <div class="mt-4 mb-4">
+                      <div class="text-right text-primary text-bold">
+                        If you are sure: &nbsp;
+
+                        <div class="btn-group" >
+                            <label class="btn btn-flat-warning waves-effect transactionToVerify">
+                                <i class="bi bi-patch-check"></i> Continue to Verify
+                            </label>
+                            <label class="btn btn-flat-success waves-effect transactionToSign">
+                                 Continue to Sign <i class="bi bi-pen"></i>
+                            </label>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
                 <input type="button" value="Submit" class="btn btn-primary" id="transactionBtn">
                 <br>
               </div>
@@ -2660,8 +2681,8 @@
                     <thead>
                       <tr style="font-weight:bold;">
                         <td><abbr title="address the funds are being sent to">Address</abbr></td>
-                        <td><abbr title="the amount the address is being sent">Amount</abbr></td>
                         <td><abbr title="the script of the transaction">Script</abbr></td>
+                        <td><abbr title="the amount the address is being sent">Amount</abbr></td>
                       </tr>
                     </thead>
                     <tbody>

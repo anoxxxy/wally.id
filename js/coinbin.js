@@ -787,7 +787,7 @@ profile_data = {
 		var tx = coinjs.transaction();
 		var estimatedTxSize = 10; // <4:version><1:txInCount><1:txOutCount><4:nLockTime>
 
-		$("#transactionCreate, #transactionCreateStatus").addClass("hidden");
+		$("#transactionCreate, #transactionCreateStatus, #transactionCreateOptions").addClass("hidden");
 
 		if(($("#nLockTime").val()).match(/^[0-9]+$/g)){
 			tx.lock_time = $("#nLockTime").val()*1;
@@ -866,7 +866,7 @@ profile_data = {
 				window.location = "#fees";
 			} else {
 
-				$("#transactionCreate").removeClass("hidden");
+				$("#transactionCreate, #transactionCreateOptions").removeClass("hidden");
 
 				// Check fee against hard 0.01 as well as fluid 200 satoshis per byte calculation.
 				if($("#transactionFee").val()>=0.01 || $("#transactionFee").val()>= estimatedTxSize * 200 * 1e-8){
@@ -879,6 +879,18 @@ profile_data = {
 			$("#transactionCreateStatus").removeClass("hidden").html("One or more input or output is invalid").fadeOut().fadeIn();
 		}
 	});
+
+	$("#transactionCreateOptions .transactionToSign").on( "click", function() {
+		$("#signTransaction").val( $('#transactionCreate textarea').val() ).fadeOut().fadeIn();;
+		window.location.hash = "#sign";
+	});
+
+	$("#transactionCreateOptions .transactionToVerify").on( "click", function() {
+		$("#verifyScript").val( $('#transactionCreate textarea').val() ).fadeOut().fadeIn();;
+		window.location.hash = "#verify";
+		$("#verifyBtn").click();
+	});
+
 
 	$("#feesestnewtx").click(function(){
 		$(this).attr('est','y');
@@ -2043,8 +2055,8 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 			$("#verify .verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
 			//$("#verify input.verifyLink").val(document.location.origin+''+document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
 
-			$("#verify input.verifyLink").val(window.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-			history.pushState({}, null, $("#verify input.verifyLink").val());
+			$("#verify input.verifyLink").val(document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+			//history.pushState({}, null, $("#verify input.verifyLink").val());
 
 			return decodeSuccess;
 		}
@@ -2106,14 +2118,14 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				console.log('s: ', s);
 				h += '<tr>';
 				h += '<td><input class="form-control" type="text" value="'+o.outpoint.hash+'" readonly></td>';
-				h += '<td class="col-xs-1">'+o.outpoint.index+'</td>';
-				h += '<td class="col-xs-2"><input class="form-control" type="text" value="'+Crypto.util.bytesToHex(o.script.buffer)+'" readonly></td>';
-				h += '<td class="col-xs-1"> <span class="bi bi-'+((s.signed=='true' || (decode.witness[i] && decode.witness[i].length==2))?'check':'x')+'-circle-fill"></span>';
+				h += '<td class="col-1">'+o.outpoint.index+'</td>';
+				h += '<td class="col-2"><input class="form-control" type="text" value="'+Crypto.util.bytesToHex(o.script.buffer)+'" readonly></td>';
+				h += '<td class="col-1"> <span class="bi bi-'+((s.signed=='true' || (decode.witness[i] && decode.witness[i].length==2))?'check':'x')+'-circle-fill"></span>';
 				if(s['type']=='multisig' && s['signatures']>=1){
 					h += ' '+s['signatures'];
 				}
 				h += '</td>';
-				h += '<td class="col-xs-1">';
+				h += '<td class="col-1">';
 				if(s['type']=='multisig'){
 					var script = coinjs.script();
 					var rs = script.decodeRedeemScript(s.script);
@@ -2147,8 +2159,8 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 					h += '<tr>';
 					h += '<td><input type="text" class="form-control" value="(OP_RETURN) '+data+'" readonly></td>';
-					h += '<td class="col-xs-1">'+(o.value/100000000).toFixed(8)+'</td>';
-					h += '<td class="col-xs-2"><input class="form-control" type="text" value="'+Crypto.util.bytesToHex(o.script.buffer)+'" readonly></td>';
+					h += '<td class="col-5"><input class="form-control" type="text" value="'+Crypto.util.bytesToHex(o.script.buffer)+'" readonly></td>';
+					h += '<td class="col-1">'+(o.value/100000000).toFixed(8)+'</td>';
 					h += '</tr>';
 				} else {
 
@@ -2166,8 +2178,8 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 					h += '<tr>';
 					h += '<td><input class="form-control" type="text" value="'+addr+'" readonly></td>';
-					h += '<td class="col-xs-1">'+(o.value/100000000).toFixed(8)+'</td>';
-					h += '<td class="col-xs-2"><input class="form-control" type="text" value="'+Crypto.util.bytesToHex(o.script.buffer)+'" readonly></td>';
+					h += '<td class="col-5"><input class="form-control" type="text" value="'+Crypto.util.bytesToHex(o.script.buffer)+'" readonly></td>';
+					h += '<td class="col-1">'+(o.value/100000000).toFixed(8)+'</td>';
 					h += '</tr>';
 				}
 			});
@@ -2178,10 +2190,10 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			
 			//$("#verify input.verifyLink").val(document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
 
-			$("#verify input.verifyLink").val(window.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+			$("#verify input.verifyLink").val(document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
 
 			
-			history.pushState({}, null, $("#verify input.verifyLink").val());
+			//history.pushState({}, null, $("#verify input.verifyLink").val());
 
 			console.log('return decodeTransactionScript');
 			return true;
@@ -2257,8 +2269,8 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 				$("#verify .verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
 				//$("#verify input.verifyLink").val(document.location.origin+''+document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-				$("#verify input.verifyLink").val(window.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-				history.pushState({}, null, $("#verify input.verifyLink").val());
+				$("#verify input.verifyLink").val(document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+				//history.pushState({}, null, $("#verify input.verifyLink").val());
 
 				return true;
 			} catch (e) {
@@ -2289,10 +2301,10 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				$("#verifyHDaddress .derived_data table tbody").html("");
 				deriveHDaddress();
 				$("#verify .verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-				history.pushState({}, null, $("#verify input.verifyLink").val());
+				//history.pushState({}, null, $("#verify input.verifyLink").val());
 
 				//$("#verify .verifyLink").val(document.location.origin+''+document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-				$("#verify input.verifyLink").val(window.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+				$("#verify input.verifyLink").val(document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
 				$("#verifyHDaddress").removeClass("hidden");
 				return true;
 			}
