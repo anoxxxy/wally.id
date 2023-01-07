@@ -2464,6 +2464,16 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		}
 	});
 
+
+/*
+	$('a[data-toggle="popover"], button[data-toggle="popover"]').popover({
+    	
+  	})
+  	*/
+  	$('[data-toggle="popover"]').popover({
+  		html: true,
+  	});
+
 	$('input[title!=""], abbr[title!=""]').tooltip({'placement':'bottom'});
 
 	//init load #hashpage
