@@ -749,7 +749,7 @@ profile_data = {
 
 	$("#recipients .addressAddTo").click(function(){
 		if($("#recipients .addressRemoveTo").length<19){
-			var clone = '<div class="row no-gutter py-1 recipient">'+$(this).parent().parent().html()+'</div>';
+			var clone = '<div class="row no-gutter py-2 recipient">'+$(this).parent().parent().html()+'</div>';
 			$("#recipients").append(clone);
 			$("#recipients .bi-plus:last").removeClass('bi-plus').addClass('bi-dash');
 			$("#recipients .bi-dash:last").parent().removeClass('addressAdd').addClass('addressRemoveTo');
@@ -827,7 +827,8 @@ profile_data = {
 
 				tx.addinput($(".txId",o).val(), $(".txIdN",o).val(), $(".txIdScript",o).val(), seq);
 			} else {
-				$('#putTabs a[href="#txinputs"]').attr('style','color:#a94442;');
+				//$('#putTabs a[href="#txinputs"]').attr('style','color:#a94442;');
+				$('#putTabs a[href="#txinputs"]').addClass('text-danger');
 			}
 		});
 
@@ -849,7 +850,8 @@ profile_data = {
 				tx.adddata(a);
 			} else { // neither address nor data
 				$(o).addClass('has-error');
-				$('#putTabs a[href="#txoutputs"]').attr('style','color:#a94442;');
+				//$('#putTabs a[href="#txoutputs"]').attr('style','color:#a94442;');
+				$('#putTabs a[href="#txoutputs"]').addClass('text-danger');
 			}
 		});
 
@@ -1060,6 +1062,11 @@ profile_data = {
 		var redeem = redeemingFrom(redeemValue);
 
 		$("#redeemFromStatus, #redeemFromAddress").addClass('hidden');
+		
+		//remove errors on elements
+		$("#transactionCreate, #transactionCreateStatus, #transactionCreateOptions").addClass("hidden");
+		$('#putTabs a[href="#txinputs"]').removeClass('text-danger');
+		$('#putTabs a[href="#txoutputs"]').removeClass('text-danger');
 
 		if(redeem.from=='multisigAddress'){
 			$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> You should use the redeem script, not its address!');

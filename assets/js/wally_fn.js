@@ -241,16 +241,17 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
     try {
       
       //convert decimal to hex if needed
-      //console.log('h before: '+h)
+      console.log('h before: '+h)
       if(this.isDecimal(h)){
         //h = this.Decimal2Hex(h);
         //h = h.padStart(64, '0');
         h = new BigInteger(h).toString(16);
-        console.log('we got a digit hexdecode');
-      }else
-        h = h.padStart(64, '0');  //wif should always be in 32bit/64 chars!
+        console.log('we got a digit in hexdecode');
+      }
 
-      //console.log('h after: '+h)
+      h = h.padStart(64, '0');  //wif should always be in 32bit/64 chars!
+
+      console.log('h after: '+h)
 
       //check if HEXkey is in range!
       if (!this.isHexKeyInRange(h))
@@ -279,12 +280,12 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
       //generate additional addresses like bech32 and segwit ?
       var address_formats = {};
       console.log('option.length: '+option.length);
-      if (option.length){
-        if (option.includes('bech32')){
+      if (option.supports_address.length){
+        if (option.supports_address.includes('bech32')){
           var swbech32C = coinjs.bech32Address(pubKeyC.pubkey);
           address_formats.bech32 = swbech32C;
         }
-        if (option.includes('segwit')){
+        if (option.supports_address.includes('segwit')){
           var swC = coinjs.segwitAddress(pubKeyC.pubkey);
           address_formats.segwit = swC;
         }
@@ -444,6 +445,7 @@ wally_fn.decodeHexPrivKey = function(key){
           symbol: 'BTC',
           icon: './assets/images/crypto/bitcoin-btc-logo.svg',
           network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
           api : {
               //only key is used for the moment, not the value!
             unspent_outputs: {
@@ -470,7 +472,7 @@ wally_fn.decodeHexPrivKey = function(key){
         multisig : 0x05, //scriptHash
           hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'},
-          supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
+          
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,
@@ -487,6 +489,7 @@ wally_fn.decodeHexPrivKey = function(key){
           symbol: 'LTC',
           icon: './assets/images/crypto/litecoin-ltc-logo.svg',
           network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
           api : {
               //only key is used for the moment, not the value!
             unspent_outputs: {
@@ -508,7 +511,7 @@ wally_fn.decodeHexPrivKey = function(key){
         multisig : 0x32, //scriptHash
           hdkey : {'prv':0x019d9cfe, 'pub':0x019da462},
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'},
-          supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
+          
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,
@@ -525,6 +528,7 @@ wally_fn.decodeHexPrivKey = function(key){
           symbol: 'DOGE',
           icon: './assets/images/crypto/dogecoin-doge-logo.svg',
           network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed', 'segwit'],
           api : {
             unspent_outputs: {
               'Blockcypher.com': 'doge',
@@ -544,7 +548,7 @@ wally_fn.decodeHexPrivKey = function(key){
           hdkey : {'prv':0x089944e4, 'pub':0x0827421e},
           //bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'},
           bech32 : {},
-          supports_address : ['compressed', 'uncompressed', 'segwit'],
+          
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,
@@ -561,6 +565,7 @@ wally_fn.decodeHexPrivKey = function(key){
           symbol: 'BAY',
           icon: './assets/images/crypto/bitbay-bay-logo-purple.svg',
           network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed'],
           api : {
             unspent_outputs: {
               'Cryptoid.info': 'bay',
@@ -577,7 +582,7 @@ wally_fn.decodeHexPrivKey = function(key){
         multisig : 0x55, //scriptHash
           hdkey : {'prv':0x02cfbf60, 'pub':0x02cfbede},
           bech32 : {},
-          supports_address : ['compressed', 'uncompressed'],
+          
         txExtraTimeField: true,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,
@@ -594,6 +599,7 @@ wally_fn.decodeHexPrivKey = function(key){
           symbol: 'BLK',
           icon: './assets/images/crypto/blackcoin-blk-logo.svg',
           network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed'],
           api : {
             unspent_outputs: {
               'Cryptoid.info': 'blk'
@@ -608,7 +614,7 @@ wally_fn.decodeHexPrivKey = function(key){
         multisig : 0x55, //scriptHash
           hdkey : {'prv':0x02cfbf60, 'pub':0x02cfbede},
           bech32 : {},
-          supports_address : ['compressed', 'uncompressed'],
+          
         txExtraTimeField: true,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,
@@ -625,6 +631,7 @@ wally_fn.decodeHexPrivKey = function(key){
           symbol: 'LYNX',
           icon: './assets/images/crypto/lynx-lynx-logo.svg',
           network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
           api : {
             unspent_outputs: {
               'Cryptoid.info': 'lynx'
@@ -639,7 +646,7 @@ wally_fn.decodeHexPrivKey = function(key){
         multisig : 0x32, //scriptHash
           hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e}, //fix this! iceeee
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'},
-          supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
+          
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,
@@ -658,6 +665,7 @@ wally_fn.decodeHexPrivKey = function(key){
           symbol: 'tBTC',
           icon: './assets/images/crypto/bitcoin-btc-logo.svg',
           network: 'testnet',
+          supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
           api : {
               //only key is used for the moment, not the value!
             unspent_outputs: {
@@ -680,7 +688,7 @@ wally_fn.decodeHexPrivKey = function(key){
           hdkey : {'prv':0x04358394, 'pub':0x043587cf},
           //bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'tp'},
           bech32 : {},
-          supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
+          
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,
@@ -697,6 +705,7 @@ wally_fn.decodeHexPrivKey = function(key){
           symbol: 'tLTC',
           icon: './assets/images/crypto/litecoin-ltc-logo.svg',
           network: 'testnet',
+          supports_address : ['compressed', 'uncompressed'],
           api : {
             unspent_outputs: {
               'Chain.so': 'LTCTEST',
@@ -712,7 +721,7 @@ wally_fn.decodeHexPrivKey = function(key){
         multisig : 0xc4, //scriptHash
           hdkey : {'prv':0x04358394, 'pub':0x043587cf},
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'},
-          supports_address : ['compressed', 'uncompressed'],
+          
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,
@@ -729,6 +738,7 @@ wally_fn.decodeHexPrivKey = function(key){
           symbol: 'tDOGE',
           icon: './assets/images/crypto/dogecoin-doge-logo.svg',
           network: 'testnet',
+          supports_address : ['compressed', 'uncompressed'],
           api : {
             unspent_outputs: {
               'Chain.so': 'DOGETEST',
@@ -743,7 +753,7 @@ wally_fn.decodeHexPrivKey = function(key){
         multisig : 0xc4, //scriptHash
           hdkey : {'prv':0x04358394, 'pub':0x043587cf},
           bech32 : {},
-          supports_address : ['compressed', 'uncompressed'],
+          
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,

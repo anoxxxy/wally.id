@@ -1889,7 +1889,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="btn-group">
+                <div class="btn-group mt-3">
                   <button type="button" class="btn btn-primary" id="newKeysBtn">Generate</button>
                   <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="sr-only">Toggle Dropdown</span>
@@ -1935,7 +1935,7 @@
                   <label><input type="checkbox" id="newSegWitBrainwallet" class="checkbox-inline"> Custom Seed or Brain Wallet</label>
                   <input type="text" class="form-control hidden" id="brainwalletSegWit">
                 </div>
-                <div class="btn-group">
+                <div class="btn-group mt-3">
                   <input type="button" class="btn btn-primary" value="Generate" id="newSegWitKeysBtn">
                   <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="caret"></span>
@@ -2287,7 +2287,7 @@
                         </div>
                       </div>
                       <div id="recipients">
-                        <div class="row no-gutter py-1 recipient">
+                        <div class="row no-gutter py-2 recipient">
                           <div class="col-8">
                             <input type="text" class="form-control address" placeholder="1">
                           </div>
@@ -2350,9 +2350,9 @@
                     <input type="text" id="transactionFee" class="form-control" value="0.0000" readonly>
                   </div>
                 </div>
-                <br>
-                <div id="transactionCreateStatus" class="alert alert-danger hidden"></div>
-                <div id="transactionCreate" class="alert alert-success hidden">
+                
+                <div id="transactionCreateStatus" class="alert alert-danger mt-3 mb-4 hidden"></div>
+                <div id="transactionCreate" class="alert alert-success mt-3 mb-4 hidden">
                   <label>Transaction</label>
                   <button class="qrcodeBtn btn btn-secondary" type="button" data-toggle="modal" data-target="#modalQrcode" style="float:right;"><i class="bi bi-qr-code"></i></button>
                   <p>The transaction below has been generated and encoded. It can be broadcasted once it has been signed.</p>
@@ -2381,8 +2381,10 @@
                     </div>
                   </div>
 
-                <input type="button" value="Submit" class="btn btn-primary" id="transactionBtn">
-                <br>
+                <div class="mt-4">
+                  <input type="button" value="Submit" class="btn btn-primary" id="transactionBtn">
+                </div>
+                
               </div>
             </div>
           </div>
