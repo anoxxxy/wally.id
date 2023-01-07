@@ -2001,6 +2001,8 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 		var script = coinjs.script();
 		var decode = script.decodeRedeemScript($("#verifyScript").val());
 		if(decode){
+			var decodeSuccess = false;
+
 			$("#verifyRsDataMultisig").addClass('hidden');
 			$("#verifyRsDataHodl").addClass('hidden');
 			$("#verifyRsDataSegWit").addClass('hidden');
@@ -2018,13 +2020,12 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 				}
 				$("#verifyRsData").removeClass("hidden");
 				$("#verifyRsDataMultisig").removeClass('hidden');
-				$(".verifyLink").attr('href','?verify='+$("#verifyScript").val());
-				return true;
+				decodeSuccess = true;
 			} else if(decode.type == "segwit__"){
 				$("#verifyRsData").removeClass("hidden");
 				$("#verifyRsDataSegWit .segWitAddress").val(decode['address']);
 				$("#verifyRsDataSegWit").removeClass('hidden');
-				return true;
+				decodeSuccess = true;
 			} else if(decode.type == "hodl__") {
 				var d = $("#verifyRsDataHodl .date").data("DateTimePicker");
 				$("#verifyRsDataHodl .address").val(decode['address']);
@@ -2032,9 +2033,14 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 				$("#verifyRsDataHodl .date").val(decode['checklocktimeverify'] >= 500000000? moment.unix(decode['checklocktimeverify']).format("MM/DD/YYYY HH:mm") : decode['checklocktimeverify']);
 				$("#verifyRsData").removeClass("hidden");
 				$("#verifyRsDataHodl").removeClass('hidden');
-				$(".verifyLink").attr('href','?verify='+$("#verifyScript").val());
-				return true;
+				decodeSuccess = true;
 			}
+
+			$("#verify .verifyLink").attr('href','?verify='+$("#verifyScript").val());
+			$("#verify input.verifyLink").val(document.location.origin+''+document.location.pathname+'?setasset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+			history.pushState({}, null, $("#verify input.verifyLink").val());
+
+			return decodeSuccess;
 		}
 		return false;
 	}
@@ -2161,7 +2167,10 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			});
 			$(h).appendTo("#verifyTransactionData .outs tbody");
 
-			$(".verifyLink").attr('href','?verify='+$("#verifyScript").val());
+			$("#verify .verifyLink").attr('href','?verify='+$("#verifyScript").val());
+			$("#verify input.verifyLink").val(document.location.origin+''+document.location.pathname+'?setasset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+			history.pushState({}, null, $("#verify input.verifyLink").val());
+
 			console.log('return decodeTransactionScript');
 			return true;
 		} catch(e) {
@@ -2222,7 +2231,11 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 					$("#verifyPubKey .verifyDataSw").removeClass('hidden');
 				}
 				$("#verifyPubKey").removeClass("hidden");
-				$(".verifyLink").attr('href','?verify='+$("#verifyScript").val());
+
+				$("#verify .verifyLink").attr('href','?verify='+$("#verifyScript").val());
+				$("#verify input.verifyLink").val(document.location.origin+''+document.location.pathname+'?setasset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+				history.pushState({}, null, $("#verify input.verifyLink").val());
+
 				return true;
 			} catch (e) {
 				return false;
@@ -2251,7 +2264,10 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				$("#verifyHDaddress .parent_fingerprint").val(Crypto.util.bytesToHex(hd.parent_fingerprint));
 				$("#verifyHDaddress .derived_data table tbody").html("");
 				deriveHDaddress();
-				$(".verifyLink").attr('href','?verify='+$("#verifyScript").val());
+				$("#verify .verifyLink").attr('href','?verify='+$("#verifyScript").val());
+				history.pushState({}, null, $("#verify input.verifyLink").val());
+				
+				$("#verify .verifyLink").val(document.location.origin+''+document.location.pathname+'?setasset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
 				$("#verifyHDaddress").removeClass("hidden");
 				return true;
 			}
@@ -3131,6 +3147,20 @@ scrollIntoView(target, {
 		$("#redeemFromBtn").attr('rel',$("#coinjs_utxo option:selected").val());
 	}
 	*/
+
+	/**/
+	// clear results when data changed
+	$("#verify #verifyScript").on('input change', function(){
+		$("#verify .verifyData").addClass("hidden");
+	});
+
+	$("#sign #signTransaction, #sign #signPrivateKey").on('input change', function(){
+		$("#sign #signedData").addClass("hidden");
+	});
+
+	$("#multisigPubKeys .list").on('input change', '.pubkey', function(){
+		$("#multiSigData").addClass("hidden");
+	});
 
 
 	/* fees page code */
