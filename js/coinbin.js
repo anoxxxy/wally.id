@@ -1041,7 +1041,11 @@ profile_data = {
 	/* redeem from button code */
 
 	$("#redeemFromBtn").click(function(){
-		var redeem = redeemingFrom($("#redeemFrom").val());	
+		var redeemEl = $("#redeemFrom");
+		var redeemValue = redeemEl.val().trim();
+		redeemEl.val(redeemValue);
+
+		var redeem = redeemingFrom(redeemValue);
 
 		$("#redeemFromStatus, #redeemFromAddress").addClass('hidden');
 
@@ -1343,7 +1347,7 @@ profile_data = {
 			},
 			success: function(data) {
 				if (data.address) { // address field will always be present, txrefs is only present if there are UTXOs
-					$("#redeemFromAddress").removeClass('hidden').html('<span class="glyphicon glyphicon-info-sign"></span> Retrieved unspent inputs from address <a href="'+explorer_addr+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
+					$("#redeemFromAddress").removeClass('hidden').html('<span class="glyphicon glyphicon-info-sign"></span> Retrieved unspent inputs from address <a href="https://live.blockcypher.com/'+network+'/address/'+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
 					for(var i in data.txrefs){
 						var o = data.txrefs[i];
 						var tx = ((""+o.tx_hash).match(/.{1,2}/g).reverse()).join("")+'';
@@ -1365,7 +1369,7 @@ profile_data = {
 		});
 	}
 
-	function listUnspentBlockstream(redeem,network){
+	function listUnspentBlockstream(redeem, network){
 
 		
 		var apiUrl;
@@ -1720,7 +1724,26 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 	/* broadcast a transaction */
 
 	$("#rawSubmitBtn").click(function(){
-		rawSubmitDefault(this);
+
+		if (wally_fn.provider.broadcast == 'Blockcypher.com') {
+			rawSubmitBlockcypher(this, coinjs.asset.api.broadcast['Blockcypher.com']);
+		} else if (wally_fn.provider.broadcast == 'Blockchair.com') {
+			rawSubmitBlockchair(this, coinjs.asset.api.broadcast['Blockchair.com']);
+		} else if (wally_fn.provider.broadcast == 'Blockstream.info') {
+			rawSubmitBlockstream(this, coinjs.asset.api.broadcast['Blockstream.info']);
+			//fix Blockstream for broadcast!
+		} else if (wally_fn.provider.broadcast == 'Chain.so') {
+			rawSubmitChainso(this, coinjs.asset.api.broadcast['Chain.so']);
+		} else if (wally_fn.provider.broadcast == 'Coinb.in') {
+			rawSubmitDefault(this);
+			//fix coinbin broadcast here
+		} else if (wally_fn.provider.broadcast == 'Cryptoid.info') {
+			rawSubmitCryptoid(this, coinjs.asset.api.broadcast['Cryptoid.info']);
+		} else if (wally_fn.provider.broadcast == 'Blockchain.info') {
+			rawSubmitBlockhaininfo(this, coinjs.asset.api.broadcast['Blockchain.info']);
+		}else {
+			rawSubmitDefault(this);
+		}
 	});
 
 	// broadcast transaction via coinbin (default)
@@ -1856,7 +1879,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 	//https://tbtc.bitaps.com/broadcast
 	//https://live.blockcypher.com/btc-testnet/decodetx/
 
-	function rawSubmitBlockstreamBTC(thisbtn){ 
+	function rawSubmitBlockstream(thisbtn, network){ 
 
 		var apiUrl;
 		if(coinjs.asset.network == 'mainnet')
@@ -1866,7 +1889,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 
 		
 
-		console.log('===rawSubmitBlockstreamBTC===');
+		console.log('===rawSubmitBlockstream===');
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
 		$.ajax ({
 			type: "POST",
@@ -1898,7 +1921,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 
 
 	// broadcast transaction via blockcypher.com (mainnet)
-	function rawSubmitblockcypher(thisbtn, network){ 
+	function rawSubmitBlockcypher(thisbtn, network){ 
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
 		$.ajax ({
 			type: "POST",
@@ -1924,7 +1947,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 	}
 
 	// broadcast transaction via blockchair
-	function rawSubmitblockchair(thisbtn, network){
+	function rawSubmitBlockchair(thisbtn, network){
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
                 $.ajax ({
                         type: "POST",
@@ -3072,14 +3095,9 @@ scrollIntoView(target, {
 		} else if(host=='blockstream.info_bitcoin'){
 			$("#rawSubmitBtn").click(function(){
 				console.log('Blockstream push broadcast');
-				rawSubmitBlockstreamBTC(this);
+				rawSubmitBlockstream(this);
 			});
-		} else if(host=='blockstream.info_bitcoin_testnet'){
-			$("#rawSubmitBtn").click(function(){
-				console.log('Blockstream bitcoin testnet push broadcast');
-				rawSubmitBlockstreamBTCTestnet(this);
-			});
-	    } else if(host=='chain.so_bitcoin_testnet'){
+		}  else if(host=='chain.so_bitcoin_testnet'){
 			$("#rawSubmitBtn").click(function(){
 				rawSubmitChainso(this, "BTCTEST");
 			});
