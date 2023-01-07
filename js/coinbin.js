@@ -1983,16 +1983,20 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 	$("#verifyBtn").click(function(){
 		$(".verifyData").addClass("hidden");
 		$("#verifyStatus").hide();
-		if(!decodeRedeemScript()){
-			if(!decodeTransactionScript()){
-				if(!decodePrivKey()){
-					if(!decodePubKey()){
-						if(!decodeHDaddress()){
-							$("#verifyStatus").removeClass('hidden').fadeOut().fadeIn();
+		try {
+			if(!decodeRedeemScript()){
+				if(!decodeTransactionScript()){
+					if(!decodePrivKey()){
+						if(!decodePubKey()){
+							if(!decodeHDaddress()){
+								$("#verifyStatus").removeClass('hidden').fadeOut().fadeIn();
+							}
 						}
 					}
 				}
 			}
+		} catch (e) {
+			console.log('verifyBtn: ', e);
 		}
 
 	});
@@ -2036,8 +2040,10 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 				decodeSuccess = true;
 			}
 
-			$("#verify .verifyLink").attr('href','?verify='+$("#verifyScript").val());
-			$("#verify input.verifyLink").val(document.location.origin+''+document.location.pathname+'?setasset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+			$("#verify .verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+			//$("#verify input.verifyLink").val(document.location.origin+''+document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+
+			$("#verify input.verifyLink").val(window.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
 			history.pushState({}, null, $("#verify input.verifyLink").val());
 
 			return decodeSuccess;
@@ -2167,8 +2173,14 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			});
 			$(h).appendTo("#verifyTransactionData .outs tbody");
 
-			$("#verify .verifyLink").attr('href','?verify='+$("#verifyScript").val());
-			$("#verify input.verifyLink").val(document.location.origin+''+document.location.pathname+'?setasset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+			$("#verify .verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+			//$("#verify input.verifyLink").val(document.location.origin+''+document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+			
+			//$("#verify input.verifyLink").val(document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+
+			$("#verify input.verifyLink").val(window.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+
+			
 			history.pushState({}, null, $("#verify input.verifyLink").val());
 
 			console.log('return decodeTransactionScript');
@@ -2178,6 +2190,17 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			return false;
 		}
 	}
+
+	$("#verifyTransactionData .verifyToSign").on( "click", function() {
+		$("#signTransaction").val( $('#verifyScript').val() ).fadeOut().fadeIn();
+		window.location.hash = "#sign";
+	});
+
+	$("#verifyTransactionData .verifyToBroadcast").on( "click", function() {
+		$("#broadcast #rawTransaction").val( $('#verifyScript').val() ).fadeOut().fadeIn();
+		window.location.hash = "#broadcast";
+	});
+
 
 	function hex2ascii(hex) {
 		var str = '';
@@ -2232,8 +2255,9 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				}
 				$("#verifyPubKey").removeClass("hidden");
 
-				$("#verify .verifyLink").attr('href','?verify='+$("#verifyScript").val());
-				$("#verify input.verifyLink").val(document.location.origin+''+document.location.pathname+'?setasset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+				$("#verify .verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+				//$("#verify input.verifyLink").val(document.location.origin+''+document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+				$("#verify input.verifyLink").val(window.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
 				history.pushState({}, null, $("#verify input.verifyLink").val());
 
 				return true;
@@ -2264,10 +2288,11 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				$("#verifyHDaddress .parent_fingerprint").val(Crypto.util.bytesToHex(hd.parent_fingerprint));
 				$("#verifyHDaddress .derived_data table tbody").html("");
 				deriveHDaddress();
-				$("#verify .verifyLink").attr('href','?verify='+$("#verifyScript").val());
+				$("#verify .verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
 				history.pushState({}, null, $("#verify input.verifyLink").val());
-				
-				$("#verify .verifyLink").val(document.location.origin+''+document.location.pathname+'?setasset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+
+				//$("#verify .verifyLink").val(document.location.origin+''+document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+				$("#verify input.verifyLink").val(window.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
 				$("#verifyHDaddress").removeClass("hidden");
 				return true;
 			}
