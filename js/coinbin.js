@@ -2002,6 +2002,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 	$("#verifyBtn").click(function(){
 		$(".verifyData").addClass("hidden");
 		$("#verifyStatus").hide();
+		$('#verifyScript').val($('#verifyScript').val().trim());
 		try {
 			if(!decodeRedeemScript()){
 				if(!decodeTransactionScript()){
@@ -2081,8 +2082,9 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		try {
 			var decode = tx.deserialize($("#verifyScript").val());
 			console.log('decode: ', decode);
-			//if(!decode.ins.length && !decode.ins.length)	//iceeee add back
-			//	throw false;
+			//if the transaction has no inputs: this is not a transaction!
+			if(!decode.ins.length && !decode.ins.length)	//iceeee add back
+				throw false;
 
 			$("#verifyTransactionData .transactionVersion").html(decode['version']);
 			
@@ -2229,16 +2231,32 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 	}
 
 	function decodePrivKey(){
-		console.log('decodePrivKey');
-		var wif = $("#verifyScript").val();
-		if(wif.length==64){
-			wif = coinjs.privkey2wif(wif);
+		console.log('===coinjs.decodePrivKey===');
+		var privkey = $("#verifyScript").val();
+		
+		if(privkey.length==64){
+			privkey = coinjs.privkey2wif(privkey);
+			console.log('wiffen: ', privkey);
+			if(privkey.length==51 || privkey.length==52){
+				var w2address = coinjs.wif2address(privkey);
+				var w2pubkey = coinjs.wif2pubkey(privkey);
+
+				$("#verifyPrivHexKey .address").val(w2address['address']);
+				$("#verifyPrivHexKey .pubkey").val(w2pubkey['pubkey']);
+				$("#verifyPrivHexKey .privkey").val(privkey);
+				$("#verifyPrivHexKey .iscompressed").html(w2address['compressed']?'true':'false');
+
+				$("#verifyPrivHexKey").removeClass("hidden");
+				return true;
+			}
+
 		}
-		if(wif.length==51 || wif.length==52){
+		
+		if(privkey.length==51 || privkey.length==52){
 			try {
-				var w2address = coinjs.wif2address(wif);
-				var w2pubkey = coinjs.wif2pubkey(wif);
-				var w2privkey = coinjs.wif2privkey(wif);
+				var w2address = coinjs.wif2address(privkey);
+				var w2pubkey = coinjs.wif2pubkey(privkey);
+				var w2privkey = coinjs.wif2privkey(privkey);
 
 				$("#verifyPrivKey .address").val(w2address['address']);
 				$("#verifyPrivKey .pubkey").val(w2pubkey['pubkey']);
@@ -2290,6 +2308,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 	function decodeHDaddress(){
 		coinjs.compressed = true;
+		console.log('===coinjs.decodeHDaddress===');
 		var s = $("#verifyScript").val();
 		try {
 			var hex = Crypto.util.bytesToHex((coinjs.base58decode(s)).slice(0,4));
