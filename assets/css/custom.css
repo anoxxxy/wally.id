@@ -2112,3 +2112,7 @@ width: 96%;
 .dropdown-select .dropdown-menu li:hover {
   background-color: #f4f3fd;
 }
+
+#donateTxBtn .icon {
+	vertical-align: middle;
+}

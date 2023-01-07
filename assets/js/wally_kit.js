@@ -60,7 +60,7 @@
         //options.showMessage = true;
 
         //hide/show fields relative to updated Network
-        if (coinjs.rbfTransaction) {
+        if (coinjs.txRBFTransaction) {
           $("#txRbfTransactionOptional").show();
           $('#txRBF').prop('checked', false);
         } else {

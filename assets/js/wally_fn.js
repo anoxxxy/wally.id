@@ -478,7 +478,8 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
-        rbfTransaction: true,
+        txRBFTransaction: true,
+        developer: 'iceeeee',
       },
       litecoin : {
         coinName: 'Litecoin',
@@ -517,7 +518,8 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
-        rbfTransaction: false,
+        txRBFTransaction: false,
+        developer: 'iceeeee',
       },
       dogecoin : {
         coinName: 'Dogecoin',
@@ -554,7 +556,8 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
-        rbfTransaction: false,
+        txRBFTransaction: false,
+        developer: 'iceeeee',
       },
       bitbay : {
         coinName: 'BitBay',
@@ -588,7 +591,8 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
-        rbfTransaction: false,
+        txRBFTransaction: false,
+        developer: 'iceeeee',
       },
       blackcoin : {
         coinName: 'Blackcoin',
@@ -620,7 +624,8 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
-        rbfTransaction: false,
+        txRBFTransaction: false,
+        developer: 'iceeeee',
       },
       lynx : {
         coinName: 'Lynx',
@@ -652,7 +657,8 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
-        rbfTransaction: false,
+        txRBFTransaction: false,
+        developer: 'iceeeee',
       },
     },
     testnet : {
@@ -694,7 +700,8 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
-        rbfTransaction: true,
+        txRBFTransaction: true,
+        developer: 'iceeeee',
       },
       litecoin : {
         coinName: 'Litecoin',
@@ -727,7 +734,8 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
-        rbfTransaction: false,
+        txRBFTransaction: false,
+        developer: 'iceeeee',
       },
       dogecoin : {
         coinName: 'Dogecoin',
@@ -759,7 +767,8 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
-        rbfTransaction: false,
+        txRBFTransaction: false,
+        developer: 'iceeeee',
       },
     }
 
