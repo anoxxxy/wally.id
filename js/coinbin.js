@@ -2015,6 +2015,15 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 					}
 				}
 			}
+
+			//add link for sharing to verify page
+			if ($("#verifyStatus").hasClass('hidden')) {
+				$("#verify input.verifyLink").val(document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val()).trigger('change');
+				history.pushState({}, null, $("#verify input.verifyLink").val());
+				console.log('add share link');
+			}else
+				console.log('dont add share link');
+
 		} catch (e) {
 			console.log('verifyBtn: ', e);
 		}
@@ -2059,12 +2068,6 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 				$("#verifyRsDataHodl").removeClass('hidden');
 				decodeSuccess = true;
 			}
-
-			$("#verify .verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-			//$("#verify input.verifyLink").val(document.location.origin+''+document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-
-			$("#verify input.verifyLink").val(document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-			//history.pushState({}, null, $("#verify input.verifyLink").val());
 
 			return decodeSuccess;
 		}
@@ -2196,16 +2199,6 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			});
 			$(h).appendTo("#verifyTransactionData .outs tbody");
 
-			$("#verify .verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-			//$("#verify input.verifyLink").val(document.location.origin+''+document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-			
-			//$("#verify input.verifyLink").val(document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-
-			$("#verify input.verifyLink").val(document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-
-			
-			//history.pushState({}, null, $("#verify input.verifyLink").val());
-
 			console.log('return decodeTransactionScript');
 			return true;
 		} catch(e) {
@@ -2271,7 +2264,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			//wif decoding didnt work
 			//try to decode private key, either in HEX-format or Decimal-format
 
-			var hexDecoded = wally_fn.hexPrivKeyDecode(privkey, {'supports_address': coinjs.asset.supports_address});
+			var hexDecoded = wally_fn.hexPrivKeyDecode(privkey.toLowerCase(), {'supports_address': coinjs.asset.supports_address});
 
 			console.log('hexDecoded: ', hexDecoded);
 
@@ -2321,10 +2314,6 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				}
 				$("#verifyPubKey").removeClass("hidden");
 
-				$("#verify .verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-				//$("#verify input.verifyLink").val(document.location.origin+''+document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-				$("#verify input.verifyLink").val(document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-				//history.pushState({}, null, $("#verify input.verifyLink").val());
 
 				return true;
 			} catch (e) {
@@ -2355,11 +2344,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				$("#verifyHDaddress .parent_fingerprint").val(Crypto.util.bytesToHex(hd.parent_fingerprint));
 				$("#verifyHDaddress .derived_data table tbody").html("");
 				deriveHDaddress();
-				$("#verify .verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-				//history.pushState({}, null, $("#verify input.verifyLink").val());
 
-				//$("#verify .verifyLink").val(document.location.origin+''+document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
-				$("#verify input.verifyLink").val(document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
 				$("#verifyHDaddress").removeClass("hidden");
 				return true;
 			}
@@ -3251,6 +3236,14 @@ scrollIntoView(target, {
 	*/
 
 	/**/
+	//verifyLink
+	//$("body").on("change", "#verify input.verifyLink", function(e){
+	$("#verify input.verifyLink").on('change', function(e) {
+		
+		console.log('input.verifyLink changed!', e.target);
+		$("#verify a.verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+	});
+
 	// clear results when data changed
 	$("#verify #verifyScript").on('input change', function(){
 		$("#verify .verifyData").addClass("hidden");

@@ -2354,7 +2354,7 @@
                 <div id="transactionCreateStatus" class="alert alert-danger mt-3 mb-4 hidden"></div>
                 <div id="transactionCreate" class="alert alert-success mt-3 mb-4 hidden">
                   <label>Transaction</label>
-                  <button class="qrcodeBtn btn btn-secondary" type="button" data-toggle="modal" data-target="#modalQrcode" style="float:right;"><i class="bi bi-qr-code"></i></button>
+                  <button class="qrcodeBtn btn btn-flat-info" type="button" data-toggle="modal" data-target="#modalQrcode" style="float:right;"><i class="bi bi-qr-code"></i></button>
                   <p>The transaction below has been generated and encoded. It can be broadcasted once it has been signed.</p>
                   <br>
                   <textarea class="form-control" style="height:150px" readonly></textarea>
@@ -2567,15 +2567,21 @@
                 <h2 class="card-title">Verify</h2>
                 <h4 class="card-subtitle mb-3 text-muted">transactions and other scripts</h4>
                 <div class="row no-gutters mb-3">
-                  <div class="">
-                    <p>Enter the raw transaction, redeem script, pubkey, hd address or wif key to convert it into a readable format that can be verified manually.</p>
+                  <div class="alert alert-light">
+                    <p>Enter the raw transaction, redeem script, public key, HD address or private key to convert it into a readable format that can be verified manually.</p>
                     <textarea type="text" id="verifyScript" class="form-control" style="height:125px"></textarea>
                   </div>
                 </div>
                 
                 <div class="hidden verifyData" id="verifyRsData">
                   <h4>Redeem Script</h4>
-                  <p><span style="float:right"><a href="javascript:;" target="_blank" class="verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></span></a></span>The above redeem script has been decoded</p>
+                  <p>
+                    <span style="float:right">
+                      <a href="javascript:;" target="_blank" class="verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
+                    </span>
+                    The above redeem script has been decoded
+                  </p>
+
                   <div class="hidden" id="verifyRsDataMultisig">
                     <label>Multi Signature Address</label>
                     <div class="row">
@@ -2583,7 +2589,7 @@
                         <div class="input-group">
                           <input type="text" class="form-control address multisigAddress" value="" readonly>
                           <span class="input-group-append">
-                          <button class="qrcodeBtn btn btn-secondary" type="button" data-toggle="modal" data-target="#modalQrcode"><i class="bi bi-qr-code"></i></button>
+                            <button class="qrcodeBtn btn btn-secondary" type="button" data-toggle="modal" data-target="#modalQrcode"><i class="bi bi-qr-code"></i></button>
                           </span>
                         </div>
                       </div>
@@ -2646,7 +2652,9 @@
                 </div>
                 <div class="hidden verifyData" id="verifyTransactionData">
                   <h4>Transaction Script</h4>
-                  <p><span style="float:right"><a href="" target="_blank" class="verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a></span>The above script has been decoded</p>
+                  <p>
+                    The above script has been decoded
+                  </p>
 
                   
 
@@ -2658,9 +2666,13 @@
                   <div class="transactionSegWit"><b>SegWit</b>: True</div>
                   <div class="transactionRBF"><b>RBF</b>: This is a <a href="https://en.bitcoin.it/wiki/Transaction_replacement">replace by fee</a> transaction!</div>
 
-                  <div class="py-3" title="Shareable verification link">
-                    <label for="verifyshareLink" class="m-1"><small>Shareable verification link</small></label>
-                    <input type="text" class="form-control verifyLink" id="verifyshareLink" value="" readonly>
+
+                  <div class="callout-title text-muted text-primary">Shareable verification link</div>
+                  <div class="input-group py-2" title="Shareable verification link">
+                    <input type="text" class="form-control verifyLink" value="" readonly>
+                    <div class="input-group-append">
+                      <a href="" class="btn verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
+                    </div>
                   </div>
 
                   <hr>
@@ -2725,8 +2737,19 @@
                   
                   
                   <h2 class="card-title">Private WIF Key</h2>
-                  <h4 class="card-subtitle mb-3 text-muted">The Private Key has been decoded.</h4>
-                
+                  <h4 class="card-subtitle mb-3 text-muted">
+                    The Private Key has been decoded.
+                  </h4>
+
+
+                  <div class="callout-title text-muted text-primary">Shareable verification link</div>
+                  <div class="input-group py-2" title="Shareable verification link">
+                    <input type="text" class="form-control verifyLink" value="" readonly>
+                    <div class="input-group-append">
+                      <a href="" class="btn verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
+                    </div>
+                  </div>
+
                   <div class="callout m-0 mb-3">
                     <div>Format: <span class="privkey_format"></span></div>
                     <div class="text-muted py-1"><small><b>Is compressed</b>: <span class="iscompressed"></span></small></div>
@@ -2749,10 +2772,22 @@
 
                 <div class="hidden verifyData" id="verifyPrivHexKey">
                   <hr>
-                  <div class="col-12 py-3">
+                  <div class="py-3">
 
                     <h2 class="card-title">Private Key</h2>
-                    <h4 class="card-subtitle mb-3 text-muted">The Private Key has been decoded.</h4>
+                    <h4 class="card-subtitle mb-3 text-muted">
+                      The Private Key has been decoded.
+                    </h4>
+
+                  <div class="callout-title text-muted text-primary">Shareable verification link</div>
+                  <div class="input-group py-2" title="Shareable verification link">
+                    <input type="text" class="form-control verifyLink" value="" readonly>
+                    <div class="input-group-append">
+                      <a href="" class="btn verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
+                    </div>
+                  </div>
+
+                  <hr>
 
                   </div>
                   
