@@ -7,6 +7,7 @@
 
   var wally_fn = window.wally_fn = function () { };
 
+  wally_fn.host = '';
   wally_fn.network = 'mainnet';
   wally_fn.provider = {utxo:'', broadcast:''};
   
@@ -911,6 +912,34 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
     }
     return false;
   };
+
+
+  /*
+  @ Set Host name
+  //Check if the script is hosted online or running locally
+  */
+
+  wally_fn.setHost = function() {
+  
+    if (document.location.host != '') {
+      wally_fn.host = document.location.origin+'/';
+      //wally_fn.host = document.protocol+document.location.host;
+      console.log('running on server');
+    } else {  //running locally
+      wally_fn.host = document.location.pathname;
+      console.log('running locally');
+    }
+
+    /*
+  if (document.location.host) {
+    // remote file over http or https
+  } else {
+    // local file
+  }
+
+    */
+  };
+
 
 
 })();

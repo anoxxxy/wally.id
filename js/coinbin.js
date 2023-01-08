@@ -2018,7 +2018,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 
 			//add link for sharing to verify page
 			if ($("#verifyStatus").hasClass('hidden')) {
-				$("#verify input.verifyLink").val(document.location.pathname+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val()).trigger('change');
+				$("#verify input.verifyLink").val(wally_fn.host+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val()).trigger('change');
 				history.pushState({}, null, $("#verify input.verifyLink").val());
 				console.log('add share link');
 			}else
@@ -2103,7 +2103,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 			$("#verifyTransactionData .transactionSize").html(decode.size()+' <i>bytes</i>');
 			//$("#verifyTransactionData .transactionLockTime").html(decode['lock_time']);
-			$("#verifyTransactionData .transactionLockTime").html((decode['lock_time'] >= 500000000)? (new Date(decode['lock_time']*1000).toUTCString()) : ("Block height "+decode['lock_time']) );
+			$("#verifyTransactionData .transactionLockTime").html((decode['lock_time'] >= 500000000)? (new Date(decode['lock_time']*1000).toUTCString()) : ('<span class="text-muted">Block height '+decode['lock_time']+'</span>') );
 
 			if (decode['unit']){
 				$("#verifyTransactionData .txunit").removeClass("hidden");

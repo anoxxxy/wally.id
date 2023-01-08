@@ -89,7 +89,7 @@
           $("#verifyTransactionData .txunit").hide();
           $('#nUnit').val('');
         }
-        
+
       }
 
       if (options.showMessage) {
@@ -130,6 +130,9 @@
 
     console.log('===initNetwork===');
     try {
+      //set Host
+      wally_fn.setHost();
+
       console.log('networkType: ', networkTypesRadio);
 
       //set default Chain Network 
