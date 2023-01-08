@@ -2082,6 +2082,8 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		try {
 			var decode = tx.deserialize($("#verifyScript").val());
 			console.log('decode: ', decode);
+			if(!decode)
+				return false;
 			//if the transaction has no inputs: this is not a transaction!
 			if(!decode.ins.length && !decode.ins.length)	//iceeee add back
 				throw false;
@@ -2232,30 +2234,42 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 	function decodePrivKey(){
 		console.log('===coinjs.decodePrivKey===');
-		var privkey = $("#verifyScript").val();
-		
 
-		//try to decode WIF key
-		if(privkey.length==51 || privkey.length==52){
-			try {
+		try {
+			var privkey = $("#verifyScript").val();
+			
+
+			//try to decode WIF key
+			if(privkey.length==51 || privkey.length==52){
 				var w2address = coinjs.wif2address(privkey);
 				var w2pubkey = coinjs.wif2pubkey(privkey);
 				var w2privkey = coinjs.wif2privkey(privkey);
+				var w2pubkeyhash = coinjs.address2ripemd160(w2address['address']);
+				
+				var privkeyHex = (w2privkey['privkey']).replace(/^0+/, '');
+				privkeyHex = privkeyHex.padStart(64, '0');
+
+				console.log('w2pubkeyhash: ',w2pubkeyhash);
 
 				$("#verifyPrivKey .address").val(w2address['address']);
 				$("#verifyPrivKey .pubkey").val(w2pubkey['pubkey']);
-				$("#verifyPrivKey .privkey").val(w2privkey['privkey']);
-				$("#verifyPrivKey .iscompressed").html(w2address['compressed']?'true':'false');
+				$("#verifyPrivKey .pubkeyHash").val(w2pubkeyhash);
+				$("#verifyPrivKey .privkey").val(privkeyHex);
+				
+				
+
+				var isCompressed = w2address['compressed']?'true':'false';
+				$("#verifyPrivKey .iscompressed").text(isCompressed);
+
+				$("#verifyPrivKey .privkey_format").text( isCompressed == 'true' ? 'Compressed' : 'Uncompressed');
+				
 
 				$("#verifyPrivKey").removeClass("hidden");
 				return true;
-			} catch (e) {
-				return false;
 			}
-		}
 
-		//try to decode private key, either in HEX-format or Decimal-format
-		//if(privkey.length==64){
+			//wif decoding didnt work
+			//try to decode private key, either in HEX-format or Decimal-format
 
 			var hexDecoded = wally_fn.hexPrivKeyDecode(privkey, {'supports_address': coinjs.asset.supports_address});
 
@@ -2280,28 +2294,11 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			$("#verifyPrivHexKey .misc .privkeyDecimal").val(hexDecoded.decimal_key);
 
 			$("#verifyPrivHexKey").removeClass("hidden");
-/*
-			***Uncompressed
-			Address:
-			Public Key:
-			Private Key (WIF):
 
-			***Compressed
-			Address Compressed:
-			Address Segwit: 
-			Address Bech32:
-			Public Key:
-			Private Key (WIF):
-
-			Private Key (HEX):
-			Decimal key (Decimal):
-
-
-*/
-
-		//}
-
-
+			return true;
+		} catch (e) {
+			console.log('coinbin.decodePrivKey error: ', e);
+		}
 		return false;
 	}
 
@@ -3257,6 +3254,8 @@ scrollIntoView(target, {
 	// clear results when data changed
 	$("#verify #verifyScript").on('input change', function(){
 		$("#verify .verifyData").addClass("hidden");
+		$("#verify #verifyStatus").addClass("hidden");
+
 	});
 
 	$("#sign #signTransaction, #sign #signPrivateKey").on('input change', function(){

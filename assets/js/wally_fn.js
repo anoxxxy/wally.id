@@ -130,7 +130,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
 
   /*
   @ Check if HEX value is within Bitcoin HEX key range
-  param HEX/DIGITS
+  param HEX/Decimals
   */
   wally_fn.isHexKeyInRange = function (key) {
 
@@ -162,7 +162,11 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
         keyBig = new BigInteger(key);
 
       }else {
-        console.log('is HEX');
+        
+        if (!this.isHex(key))
+          throw ('Key is not in HEX format!');
+
+        console.log('Key is in HEX format');
 
 
 
@@ -200,7 +204,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
     } catch (err) {
       console.log('isHexKeyInRange :', err)
     }
-    custom.showModal('Error', 'ERROR (wally_fn.E1): Out of Range! <br>Error generating Crypto address! <p>Try other credentials!</p>', 'secondary');
+    custom.showModal('Error', 'ERROR (wally_fn.isHexKeyInRange E1): Key is out of Range! <br>Error Decoding Crypto address! <p>Try other credentials!</p>', 'secondary');
     return false;
 
   }

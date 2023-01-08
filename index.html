@@ -2722,12 +2722,27 @@
 
                 </div>
                 <div class="hidden verifyData" id="verifyPrivKey">
-                  <h4>WIF Key</h4>
-                  <p>The above private key (WIF) has been decoded</p>
-                  <p><b>Address</b>: <input type="text" class="form-control address" readonly></p>
-                  <p><b>Public key</b>: <input type="text" class="form-control pubkey" readonly></p>
-                  <p><b>Private key (HEX)</b>: <input type="text" class="form-control privkey" readonly></p>
-                  <p><b>Is compressed</b>: <span class="iscompressed"></span></p>
+                  
+                  
+                  <h2 class="card-title">Private WIF Key</h2>
+                  <h4 class="card-subtitle mb-3 text-muted">The Private Key has been decoded.</h4>
+                
+                  <div class="callout m-0 mb-3">
+                    <div>Format: <span class="privkey_format"></span></div>
+                    <div class="text-muted py-1"><small><b>Is compressed</b>: <span class="iscompressed"></span></small></div>
+
+                    <div class="callout-title text-muted text-primary">Address</div>
+                    <input type="text" class="form-control address" readonly></p>
+
+                    <div class="callout-title text-muted text-primary">Public key</div>
+                    <input type="text" class="form-control pubkey" readonly></p>
+
+                    <div class="callout-title text-muted text-primary">Public Key Hash (Hash 160)</div>
+                    <input type="text" class="form-control pubkeyHash" readonly></p>
+
+                    <div class="callout-title text-muted text-primary">Private Key(HEX)</div>
+                    <input type="text" class="form-control privkey" readonly></p>
+                  </div>
                 </div>
 
 
@@ -2735,8 +2750,10 @@
                 <div class="hidden verifyData" id="verifyPrivHexKey">
                   <hr>
                   <div class="col-12 py-3">
-                    <h4>Private Key</h4>
-                    <p class="text-muted">The Private Key has been decoded.</p>
+
+                    <h2 class="card-title">Private Key</h2>
+                    <h4 class="card-subtitle mb-3 text-muted">The Private Key has been decoded.</h4>
+
                   </div>
                   
                   <div class="callout m-0 mb-3 uncompressed">
@@ -2753,7 +2770,7 @@
                     <div class="callout-title text-muted text-primary">Public Key Hash (Hash 160)</div>
                     <input type="text" class="form-control pubkeyHash" readonly></p>
                     
-                    <div class="callout-title text-muted text-primary">Private key (WIF)</div>
+                    <div class="callout-title text-muted text-primary">Private Key (WIF)</div>
                     <input type="text" class="form-control privkey" readonly></p>
                     
                   </div>
@@ -2779,22 +2796,26 @@
                     <div class="callout-title text-muted text-primary">Bech32 Redeem Script</div>
                     <input type="text" class="form-control CBech32Redeemscript" readonly></p>
                     
-                    <div class="callout-title text-muted text-primary">Public key</div>
+                    <div class="callout-title text-muted text-primary">Public Key</div>
                     <input type="text" class="form-control pubkey" readonly>
                     
                     <div class="callout-title text-muted text-primary">Public Key Hash (Hash 160)</div>
                     <input type="text" class="form-control pubkeyHash" readonly>
                     
-                    <div class="callout-title text-muted text-primary">Private key (WIF)</div>
+                    <div class="callout-title text-muted text-primary">Private Key (WIF)</div>
                     <input type="text" class="form-control privkey" readonly></p>
                     
                   </div>
 
                   <div class="callout m-0 misc">
-                    <div class="callout-title text-muted text-primary">Private key (HEX)</div>
+                    <p>Private Key formats </p>
+                    <div class="text-muted  "><small><b>Private key</b> in different formats</small></div>
+                    <br>
+
+                    <div class="callout-title text-muted text-primary">Private Key (HEX)</div>
                     <input type="text" class="form-control privkeyHex" readonly>
                     
-                    <div class="callout-title text-muted text-primary">Private key (Decimal)</div>
+                    <div class="callout-title text-muted text-primary">Private Key (Decimal)</div>
                     <input type="text" class="form-control privkeyDecimal" readonly>
                   </div>
 

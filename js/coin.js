@@ -1829,97 +1829,103 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 		/* deserialize a transaction */
 		r.deserialize = function(buffer){
-			if (typeof buffer == "string") {
-				buffer = Crypto.util.hexToBytes(buffer)
-			}
 
-			console.log('r.deserialize buffer: ', buffer);
-			var pos = 0;
-			var witness = false;
-
-			var readAsInt = function(bytes) {
-				if (bytes == 0) return 0;
-				pos++;
-				return buffer[pos-1] + readAsInt(bytes-1) * 256;
-			}
-
-			var readVarInt = function() {
-				pos++;
-				if (buffer[pos-1] < 253) {
-					return buffer[pos-1];
+			try {
+				if (typeof buffer == "string") {
+					buffer = Crypto.util.hexToBytes(buffer)
 				}
-				return readAsInt(buffer[pos-1] - 251);
-			}
 
-			var readBytes = function(bytes) {
-				pos += bytes;
-				return buffer.slice(pos - bytes, pos);
-			}
+				console.log('r.deserialize buffer: ', buffer);
+				var pos = 0;
+				var witness = false;
 
-			var readVarString = function() {
-				var size = readVarInt();
-				return readBytes(size);
-			}
+				var readAsInt = function(bytes) {
+					if (bytes == 0) return 0;
+					pos++;
+					return buffer[pos-1] + readAsInt(bytes-1) * 256;
+				}
 
-			var obj = new coinjs.transaction();
-			obj.version = readAsInt(4);
+				var readVarInt = function() {
+					pos++;
+					if (buffer[pos-1] < 253) {
+						return buffer[pos-1];
+					}
+					return readAsInt(buffer[pos-1] - 251);
+				}
 
-			//PoS coins
-			if (coinjs.txExtraTimeField) {
-				console.log('txExtra:');
-				obj.nTime = readAsInt(4);
-			}
+				var readBytes = function(bytes) {
+					pos += bytes;
+					return buffer.slice(pos - bytes, pos);
+				}
 
-			if(buffer[pos] == 0x00 && buffer[pos+1] == 0x01){
-				// segwit transaction
-				witness = true;
-				obj.witness = [];
-				pos += 2;
-			}
+				var readVarString = function() {
+					var size = readVarInt();
+					return readBytes(size);
+				}
 
-			var ins = readVarInt();
-			for (var i = 0; i < ins; i++) {
-				obj.ins.push({
-					outpoint: {
-						hash: Crypto.util.bytesToHex(readBytes(32).reverse()),
- 						index: readAsInt(4)
-					},
-					script: coinjs.script(readVarString()),
-					sequence: readAsInt(4)
-				});
-			}
+				var obj = new coinjs.transaction();
+				obj.version = readAsInt(4);
 
-			var outs = readVarInt();
-			for (var i = 0; i < outs; i++) {
-				obj.outs.push({
-					value: coinjs.bytesToNum(readBytes(8)),
-					script: coinjs.script(readVarString())
-				});
-			}
+				//PoS coins
+				if (coinjs.txExtraTimeField) {
+					console.log('txExtra:');
+					obj.nTime = readAsInt(4);
+				}
 
-			if(witness == true){
-				for (i = 0; i < ins; ++i) {
-					var count = readVarInt();
-					var vector = [];
-					for(var y = 0; y < count; y++){
-						var slice = readVarInt();
-						pos += slice;
-						if(!coinjs.isArray(obj.witness[i])){
-							obj.witness[i] = [];
+				if(buffer[pos] == 0x00 && buffer[pos+1] == 0x01){
+					// segwit transaction
+					witness = true;
+					obj.witness = [];
+					pos += 2;
+				}
+
+				var ins = readVarInt();
+				for (var i = 0; i < ins; i++) {
+					obj.ins.push({
+						outpoint: {
+							hash: Crypto.util.bytesToHex(readBytes(32).reverse()),
+	 						index: readAsInt(4)
+						},
+						script: coinjs.script(readVarString()),
+						sequence: readAsInt(4)
+					});
+				}
+
+				var outs = readVarInt();
+				for (var i = 0; i < outs; i++) {
+					obj.outs.push({
+						value: coinjs.bytesToNum(readBytes(8)),
+						script: coinjs.script(readVarString())
+					});
+				}
+
+				if(witness == true){
+					for (i = 0; i < ins; ++i) {
+						var count = readVarInt();
+						var vector = [];
+						for(var y = 0; y < count; y++){
+							var slice = readVarInt();
+							pos += slice;
+							if(!coinjs.isArray(obj.witness[i])){
+								obj.witness[i] = [];
+							}
+							obj.witness[i].push(Crypto.util.bytesToHex(buffer.slice(pos - slice, pos)));
 						}
-						obj.witness[i].push(Crypto.util.bytesToHex(buffer.slice(pos - slice, pos)));
 					}
 				}
+
+	 			obj.lock_time = readAsInt(4);
+
+	 			//Additional TxUnit field
+	 			if (coinjs.txExtraUnitField) {
+					obj.nUnit = readAsInt(1);
+				}
+
+				return obj;
+			} catch (e) {
+				console.log('r.deserialize error: ', e);
 			}
-
- 			obj.lock_time = readAsInt(4);
-
- 			//Additional TxUnit field
- 			if (coinjs.txExtraUnitField) {
-				obj.nUnit = readAsInt(1);
-			}
-
-			return obj;
+			return false;
 		}
 
 		r.size = function(){
