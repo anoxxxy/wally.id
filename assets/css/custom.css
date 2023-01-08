@@ -2116,3 +2116,26 @@ width: 96%;
 #donateTxBtn .icon {
 	vertical-align: middle;
 }
+
+/*verify page*/
+#verifyPrivHexKey input.form-control {
+	padding-bottom: 0;
+}
+
+#verifyPrivHexKey .callout-title {
+	top: 8px;
+}
+#verifyPrivHexKey .form-control:disabled, .form-control[readonly] {
+
+}
+#verifyPrivHexKey input.form-control {
+	box-shadow: 0 0 0 0px rgba(43,45,80,.1),0 1px 0px 0 rgba(43,45,80,.1),0 3px 9px 0 rgba(43,45,80,.08),0 0px 0px 0 rgba(0,0,0,.08),0 0px 1px 0 rgba(0,0,0,.08);
+}
+#verifyPrivHexKey .form-control:disabled, #verifyPrivHexKey .form-control[readonly] {
+  background-color: #fefefe;
+}
+
+#verifyPrivHexKey input.form-control[readonly] {
+	padding-bottom: 4px;
+	margin-bottom:  4px;
+}

@@ -2722,7 +2722,7 @@
 
                 </div>
                 <div class="hidden verifyData" id="verifyPrivKey">
-                  <h4>WIF key</h4>
+                  <h4>WIF Key</h4>
                   <p>The above private key (WIF) has been decoded</p>
                   <p><b>Address</b>: <input type="text" class="form-control address" readonly></p>
                   <p><b>Public key</b>: <input type="text" class="form-control pubkey" readonly></p>
@@ -2730,46 +2730,77 @@
                   <p><b>Is compressed</b>: <span class="iscompressed"></span></p>
                 </div>
 
+
+
                 <div class="hidden verifyData" id="verifyPrivHexKey">
-                  <h4>Private key</h4>
-                  <p>The above private key has been decoded</p>
-                  <div class="uncompressed">
-                    <p>Uncompressed Format</p>
-                    <p><b>Is compressed</b>: <span class="iscompressed">false</span></p>
+                  <hr>
+                  <div class="col-12 py-3">
+                    <h4>Private Key</h4>
+                    <p class="text-muted">The Private Key has been decoded.</p>
+                  </div>
+                  
+                  <div class="callout m-0 mb-3 uncompressed">
+                    <p>Format: Uncompressed</p>
+                    <div class="text-muted"><small><b>Is compressed</b>: <span class="iscompressed">false</span></small></div>
                     <br>
-                    <p><b>Address</b>: <input type="text" class="form-control address" readonly></p>
-                    <p><b>Public key</b>: <input type="text" class="form-control pubkey" readonly></p>
-                    <p><b>Public Key Hash (Hash 160)</b>: <input type="text" class="form-control pubkeyHash" readonly></p>
-                    <p><b>Private key (WIF)</b>: <input type="text" class="form-control privkey" readonly></p>
+                    
+                    <div class="callout-title text-muted text-primary">Address</div>
+                    <input type="text" class="form-control address" readonly></p>
+                    
+                    <div class="callout-title text-muted text-primary">Public key</div>
+                    <input type="text" class="form-control pubkey" readonly></p>
+                    
+                    <div class="callout-title text-muted text-primary">Public Key Hash (Hash 160)</div>
+                    <input type="text" class="form-control pubkeyHash" readonly></p>
+                    
+                    <div class="callout-title text-muted text-primary">Private key (WIF)</div>
+                    <input type="text" class="form-control privkey" readonly></p>
                     
                   </div>
 
-                  <div class="compressed">
-                    <hr>
-                    <p>Compressed Format</p>
-                    <p><b>Is compressed</b>: <span class="iscompressed">true</span></p>
+                  <div class="callout m-0 mb-3 compressed">
+                    <p>Format: Compressed </p>
+                    <div class="text-muted"><small><b>Is compressed</b>: <span class="iscompressed">true</span></small></div>
                     <br>
-                    <p><b>Address</b>: <input type="text" class="form-control address" readonly></p>
-                    <p><b>Address (P2SH Segwit)</b>: <input type="text" class="form-control addressCSegwit" readonly></p>
-                    <p><b>P2SH Segwit Redeem Script</b>: <input type="text" class="form-control CSegwitRedeemscript" readonly></p>
+
+
+                    <div class="callout-title text-muted text-primary">Address</div>
+                    <input type="text" class="form-control address" readonly>
+
+                    <div class="callout-title text-muted text-primary">Address (P2SH Segwit)</div>
+                    <input type="text" class="form-control addressCSegwit" readonly>
                     
-                    <p><b>Address (Bech32)</b>: <input type="text" class="form-control addressCBech32" readonly></p>
-                    <p><b>Bech32 Redeem Script</b>: <input type="text" class="form-control CBech32Redeemscript" readonly></p>
-                    <p><b>Public key</b>: <input type="text" class="form-control pubkey" readonly></p>
-                    <p><b>Public Key Hash (Hash 160)</b>: <input type="text" class="form-control pubkeyHash" readonly></p>
+                    <div class="callout-title text-muted text-primary">P2SH Segwit Redeem Script</div>
+                    <input type="text" class="form-control CSegwitRedeemscript" readonly>
                     
+                    <div class="callout-title text-muted text-primary">Address (Bech32)</div>
+                    <input type="text" class="form-control addressCBech32" readonly></p>
+
+                    <div class="callout-title text-muted text-primary">Bech32 Redeem Script</div>
+                    <input type="text" class="form-control CBech32Redeemscript" readonly></p>
                     
-                    <p><b>Private key (WIF)</b>: <input type="text" class="form-control privkey" readonly></p>
+                    <div class="callout-title text-muted text-primary">Public key</div>
+                    <input type="text" class="form-control pubkey" readonly>
+                    
+                    <div class="callout-title text-muted text-primary">Public Key Hash (Hash 160)</div>
+                    <input type="text" class="form-control pubkeyHash" readonly>
+                    
+                    <div class="callout-title text-muted text-primary">Private key (WIF)</div>
+                    <input type="text" class="form-control privkey" readonly></p>
                     
                   </div>
 
-                  <div class="misc">
-                    <hr>
-                    <p><b>Private key (HEX)</b>: <input type="text" class="form-control privkeyHex" readonly></p>
-                    <p><b>Private key (Decimal)</b>: <input type="text" class="form-control privkeyDecimal" readonly></p>
+                  <div class="callout m-0 misc">
+                    <div class="callout-title text-muted text-primary">Private key (HEX)</div>
+                    <input type="text" class="form-control privkeyHex" readonly>
+                    
+                    <div class="callout-title text-muted text-primary">Private key (Decimal)</div>
+                    <input type="text" class="form-control privkeyDecimal" readonly>
                   </div>
 
                 </div>
+
+
                 <div class="hidden verifyData" id="verifyPubKey">
                   <h4>Public key</h4>
                   <p><span style="float:right"><a href="" target="_blank" class="verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a></span>The above public key has been encoded to its address</p>
