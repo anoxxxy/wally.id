@@ -2566,13 +2566,13 @@
               <div class="col-md-12">
                 <h2 class="card-title">Verify</h2>
                 <h4 class="card-subtitle mb-3 text-muted">transactions and other scripts</h4>
-                <div class="row no-gutters">
+                <div class="row no-gutters mb-3">
                   <div class="">
                     <p>Enter the raw transaction, redeem script, pubkey, hd address or wif key to convert it into a readable format that can be verified manually.</p>
                     <textarea type="text" id="verifyScript" class="form-control" style="height:125px"></textarea>
                   </div>
                 </div>
-                <br>
+                
                 <div class="hidden verifyData" id="verifyRsData">
                   <h4>Redeem Script</h4>
                   <p><span style="float:right"><a href="javascript:;" target="_blank" class="verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></span></a></span>The above redeem script has been decoded</p>
@@ -2723,19 +2723,52 @@
                 </div>
                 <div class="hidden verifyData" id="verifyPrivKey">
                   <h4>WIF key</h4>
-                  <p>The above WIF key has been decoded</p>
+                  <p>The above private key (WIF) has been decoded</p>
                   <p><b>Address</b>: <input type="text" class="form-control address" readonly></p>
                   <p><b>Public key</b>: <input type="text" class="form-control pubkey" readonly></p>
                   <p><b>Private key (HEX)</b>: <input type="text" class="form-control privkey" readonly></p>
                   <p><b>Is compressed</b>: <span class="iscompressed"></span></p>
                 </div>
+
                 <div class="hidden verifyData" id="verifyPrivHexKey">
-                  <h4>HEX key</h4>
-                  <p>The above HEX key has been decoded</p>
-                  <p><b>Address</b>: <input type="text" class="form-control address" readonly></p>
-                  <p><b>Public key</b>: <input type="text" class="form-control pubkey" readonly></p>
-                  <p><b>Private key (WIF)</b>: <input type="text" class="form-control privkey" readonly></p>
-                  <p><b>Is compressed</b>: <span class="iscompressed"></span></p>
+                  <h4>Private key</h4>
+                  <p>The above private key has been decoded</p>
+                  <div class="uncompressed">
+                    <p>Uncompressed Format</p>
+                    <p><b>Is compressed</b>: <span class="iscompressed">false</span></p>
+                    <br>
+                    <p><b>Address</b>: <input type="text" class="form-control address" readonly></p>
+                    <p><b>Public key</b>: <input type="text" class="form-control pubkey" readonly></p>
+                    <p><b>Public Key Hash (Hash 160)</b>: <input type="text" class="form-control pubkeyHash" readonly></p>
+                    <p><b>Private key (WIF)</b>: <input type="text" class="form-control privkey" readonly></p>
+                    
+                  </div>
+
+                  <div class="compressed">
+                    <hr>
+                    <p>Compressed Format</p>
+                    <p><b>Is compressed</b>: <span class="iscompressed">true</span></p>
+                    <br>
+                    <p><b>Address</b>: <input type="text" class="form-control address" readonly></p>
+                    <p><b>Address (P2SH Segwit)</b>: <input type="text" class="form-control addressCSegwit" readonly></p>
+                    <p><b>P2SH Segwit Redeem Script</b>: <input type="text" class="form-control CSegwitRedeemscript" readonly></p>
+                    
+                    <p><b>Address (Bech32)</b>: <input type="text" class="form-control addressCBech32" readonly></p>
+                    <p><b>Bech32 Redeem Script</b>: <input type="text" class="form-control CBech32Redeemscript" readonly></p>
+                    <p><b>Public key</b>: <input type="text" class="form-control pubkey" readonly></p>
+                    <p><b>Public Key Hash (Hash 160)</b>: <input type="text" class="form-control pubkeyHash" readonly></p>
+                    
+                    
+                    <p><b>Private key (WIF)</b>: <input type="text" class="form-control privkey" readonly></p>
+                    
+                  </div>
+
+                  <div class="misc">
+                    <hr>
+                    <p><b>Private key (HEX)</b>: <input type="text" class="form-control privkeyHex" readonly></p>
+                    <p><b>Private key (Decimal)</b>: <input type="text" class="form-control privkeyDecimal" readonly></p>
+                  </div>
+
                 </div>
                 <div class="hidden verifyData" id="verifyPubKey">
                   <h4>Public key</h4>
@@ -2846,9 +2879,11 @@
                   </div>
                   <br>
                 </div>
-                <div id="verifyStatus" class="alert alert-danger hidden"><span class="glyphicon glyphicon-exclamation-sign"></span> Unable to decode</div>
-                <input type="button" value="Verify" class="btn btn-primary" id="verifyBtn">
-                <br>
+                <div id="verifyStatus" class="alert alert-danger mt-3 mb-4 hidden"><span class="glyphicon glyphicon-exclamation-sign"></span> Unable to decode</div>
+                <div class="mt-4">
+                  <input type="button" value="Verify" class="btn btn-primary" id="verifyBtn">
+                </div>
+                
               </div>
             </div>
           </div>

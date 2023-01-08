@@ -208,6 +208,13 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		return coinjs.base58encode(x.concat(checksum));
 	}
 
+	/* provide an address and return ripemd160 hash of public key */
+	coinjs.address2ripemd160 = function(a){
+		var bytes = coinjs.base58decode(a);
+    var front = bytes.slice(1, bytes.length-4);
+    return Crypto.util.bytesToHex(front);
+	}
+
 	/* new multisig address, provide the pubkeys AND required signatures to release the funds */
 	coinjs.pubkeys2MultisigAddress = function(pubkeys, required) {
 		var s = coinjs.script();

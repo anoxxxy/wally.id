@@ -2234,24 +2234,8 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		console.log('===coinjs.decodePrivKey===');
 		var privkey = $("#verifyScript").val();
 		
-		if(privkey.length==64){
-			privkey = coinjs.privkey2wif(privkey);
-			console.log('wiffen: ', privkey);
-			if(privkey.length==51 || privkey.length==52){
-				var w2address = coinjs.wif2address(privkey);
-				var w2pubkey = coinjs.wif2pubkey(privkey);
 
-				$("#verifyPrivHexKey .address").val(w2address['address']);
-				$("#verifyPrivHexKey .pubkey").val(w2pubkey['pubkey']);
-				$("#verifyPrivHexKey .privkey").val(privkey);
-				$("#verifyPrivHexKey .iscompressed").html(w2address['compressed']?'true':'false');
-
-				$("#verifyPrivHexKey").removeClass("hidden");
-				return true;
-			}
-
-		}
-		
+		//try to decode WIF key
 		if(privkey.length==51 || privkey.length==52){
 			try {
 				var w2address = coinjs.wif2address(privkey);
@@ -2268,9 +2252,57 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			} catch (e) {
 				return false;
 			}
-		} else {
-			return false;
 		}
+
+		//try to decode private key, either in HEX-format or Decimal-format
+		//if(privkey.length==64){
+
+			var hexDecoded = wally_fn.hexPrivKeyDecode(privkey, {'supports_address': coinjs.asset.supports_address});
+
+			console.log('hexDecoded: ', hexDecoded);
+
+			$("#verifyPrivHexKey .uncompressed .address").val(hexDecoded.wif.uncompressed.address);
+			$("#verifyPrivHexKey .uncompressed .pubkey").val(hexDecoded.wif.uncompressed.public_key);
+			$("#verifyPrivHexKey .uncompressed .pubkeyHash").val(hexDecoded.wif.uncompressed.public_key_hash);
+			$("#verifyPrivHexKey .uncompressed .privkey").val(hexDecoded.wif.uncompressed.key);
+
+			$("#verifyPrivHexKey .compressed .address").val(hexDecoded.wif.compressed.address);
+			$("#verifyPrivHexKey .compressed .addressCSegwit").val(hexDecoded.wif.compressed.segwit.address);
+			$("#verifyPrivHexKey .compressed .CSegwitRedeemscript").val(hexDecoded.wif.compressed.segwit.redeemscript);
+			$("#verifyPrivHexKey .compressed .addressCBech32").val(hexDecoded.wif.compressed.bech32.address);
+			$("#verifyPrivHexKey .compressed .CBech32Redeemscript").val(hexDecoded.wif.compressed.bech32.redeemscript);
+			$("#verifyPrivHexKey .compressed .pubkey").val(hexDecoded.wif.compressed.public_key);
+			$("#verifyPrivHexKey .compressed .pubkeyHash").val(hexDecoded.wif.compressed.public_key_hash);
+			$("#verifyPrivHexKey .compressed .privkey").val(hexDecoded.wif.compressed.key);
+
+			
+			$("#verifyPrivHexKey .misc .privkeyHex").val(hexDecoded.hex_key);
+			$("#verifyPrivHexKey .misc .privkeyDecimal").val(hexDecoded.decimal_key);
+
+			$("#verifyPrivHexKey").removeClass("hidden");
+/*
+			***Uncompressed
+			Address:
+			Public Key:
+			Private Key (WIF):
+
+			***Compressed
+			Address Compressed:
+			Address Segwit: 
+			Address Bech32:
+			Public Key:
+			Private Key (WIF):
+
+			Private Key (HEX):
+			Decimal key (Decimal):
+
+
+*/
+
+		//}
+
+
+		return false;
 	}
 
 	function decodePubKey(){

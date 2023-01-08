@@ -240,6 +240,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
     */
     try {
       
+      
       //convert decimal to hex if needed
       console.log('h before: '+h)
       if(this.isDecimal(h)){
@@ -256,6 +257,9 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
       //check if HEXkey is in range!
       if (!this.isHexKeyInRange(h))
         throw ('HexKey is not in Range!');
+
+      var keyInDecimal = new BigInteger(h, 16).toString(10);
+      console.log('keyInDecimal: '+keyInDecimal);
 
     
       
@@ -306,6 +310,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
       var privKeyWifU = coinjs.base58encode(r.concat(checksum));
       var addressU = coinjs.wif2address(privKeyWifU);
       var pubKeyU = coinjs.wif2pubkey(privKeyWifU);
+
       //var swbech32U = coinjs.bech32Address(pubKeyU.pubkey);    //<--not supported for bech32
       //var swU = coinjs.segwitAddress(pubKeyU.pubkey);  //<-- not supported for segwit
 
@@ -323,12 +328,14 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
 
 
       var hexGenerated = {
+        'decimal_key': keyInDecimal,
         'hex_key': h,
         'wif': {
           'compressed': {
             'key': privKeyWifC,
             'public_key': pubKeyC.pubkey,
             'address': addressC.address,
+            'public_key_hash': coinjs.address2ripemd160(addressC.address),
             //'bech32': swbech32C,-
             //'segwit': swC,
 
@@ -337,6 +344,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
           'uncompressed': {
             'key': privKeyWifU,
             'public_key': pubKeyU.pubkey,
+            'public_key_hash': coinjs.address2ripemd160(addressU.address),
             'address': addressU.address,
           }
         }
