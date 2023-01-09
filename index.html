@@ -1870,7 +1870,7 @@
                 </div>
                 <div class="checkbox">
                   <label><input type="checkbox" id="newBrainwallet" class="checkbox-inline"> Custom Seed or Brain Wallet</label>
-                  <input type="text" class="form-control hidden" id="brainwallet">
+                  <input type="text" class="form-control mb-2 hidden" id="brainwallet">
                 </div>
                 <div class="checkbox">
                   <label><input type="checkbox" id="encryptKey" class="checkbox-inline"> Encrypt Private Key with AES-256 Password</label>
@@ -1933,7 +1933,7 @@
                 </div>
                 <div class="checkbox">
                   <label><input type="checkbox" id="newSegWitBrainwallet" class="checkbox-inline"> Custom Seed or Brain Wallet</label>
-                  <input type="text" class="form-control hidden" id="brainwalletSegWit">
+                  <input type="text" class="form-control mb-2 hidden" id="brainwalletSegWit">
                 </div>
                 <div class="btn-group mt-3">
                   <input type="button" class="btn btn-primary" value="Generate" id="newSegWitKeysBtn">
@@ -2110,23 +2110,26 @@
                 <div class="input-group">
                   <input id="newHDxpub" type="text" class="form-control" value="" readonly>
                   <div class="input-group-append">
-                  <div class="deriveHDbtn input-group-text cursor-pointer" ><span title="Derive from key" class="glyphicon glyphicon-chevron-right"></span></div>
+                  <div class="deriveHDbtn input-group-text cursor-pointer" title="Derive from Public Key"><i class="bi bi-caret-right-fill"></i> </div>
                   </div>
                 </div>
                 <label>xPrv Address</label>
                 <div class="input-group">
                   <input id="newHDxprv" type="text" class="form-control" value="" readonly>
                   <div class="input-group-append">
-                  <div class="deriveHDbtn btn btn-secondary"><span title="Derive from key" class="glyphicon glyphicon-chevron-right"></span></div>
+                  <div class="deriveHDbtn input-group-text cursor-pointer" title="Derive from Private Key"><i class="bi bi-caret-right-fill"></i> </div>
                   </div>
                 </div>
                 <h5 class="py-2 mt-4">Address Options</h5>
                 <p>You can use the advanced options below to generate different kinds of master addresses.</p>
                 <div class="checkbox">
                   <label><input type="checkbox" id="newHDBrainwallet" class="checkbox-inline"> Custom Seed or Brain Wallet</label>
-                  <input type="text" class="form-control hidden" id="HDBrainwallet">
+                  <input type="text" class="form-control mb-2 hidden" id="HDBrainwallet">
                 </div>
-                <input type="button" class="btn btn-primary" value="Generate" id="newHDKeysBtn">
+                
+                <div class="btn-group mt-3">
+                  <input type="button" class="btn btn-primary" value="Generate" id="newHDKeysBtn">
+                </div>
               </div>
             </div>
           </div>
@@ -2574,16 +2577,22 @@
                 </div>
                 
                 <div class="hidden verifyData" id="verifyRsData">
-                  <h4>Redeem Script</h4>
-                  <p>
-                    <span style="float:right">
-                      <a href="javascript:;" target="_blank" class="verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
-                    </span>
-                    The above redeem script has been decoded
-                  </p>
+                  <h2 class="card-title">Redeem Script</h2>
+                  <div class="mb-3 text-muted">The redeem script has been decoded</div>
+
+                  <div class="callout-title text-muted text-primary">Shareable verification link</div>
+                  <div class="input-group py-2" title="Shareable verification link">
+                    <input type="text" class="form-control verifyLink" value="" readonly>
+                    <div class="input-group-append">
+                      <a href="" class="btn btn-flat-primary verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
+                    </div>
+                  </div>
+
+                  <hr>
+
 
                   <div class="hidden" id="verifyRsDataMultisig">
-                    <label>Multi Signature Address</label>
+                    <div class="callout-title text-muted text-primary">Multi Signature Address</div>
                     <div class="row">
                       <div class="col-lg-6">
                         <div class="input-group">
@@ -2604,13 +2613,13 @@
                     <br>
                   </div>
                   <div class="hidden verifyData" id="verifyRsDataSegWit">
-                    <label>Segwit Address</label>
+                    <div class="callout-title text-muted text-primary">Segwit Address</div>
                     <div class="row">
                       <div class="col-lg-6">
                         <div class="input-group">
                           <input type="text" class="form-control address segWitAddress" value="" readonly>
                           <span class="input-group-append">
-                          <button class="qrcodeBtn btn btn-secondary" type="button" data-toggle="modal" data-target="#modalQrcode"><i class="bi bi-qr-code"></i></button>
+                          <button class="qrcodeBtn btn btn-flat-primary" type="button" data-toggle="modal" data-target="#modalQrcode"><i class="bi bi-qr-code"></i></button>
                           </span>
                         </div>
                       </div>
@@ -2618,7 +2627,7 @@
                     <br>
                   </div>
                   <div class="hidden verifyData" id="verifyRsDataHodl">
-                    <label>Hodl Address</label>
+                    <div class="callout-title text-muted text-primary">Hodl Address</div>
                     <div class="row">
                       <div class="col-md-12">
                         <div class="input-group">
@@ -2629,7 +2638,7 @@
                         </div>
                       </div>
                     </div>
-                    <label>Required Signature</label>
+                    <div class="callout-title text-muted text-primary">Required Signature</div>
                     <div class="row">
                       <div class="col-md-12">
                         <div class="input-group">
@@ -2640,7 +2649,7 @@
                         </div>
                       </div>
                     </div>
-                    <label>Unlock Time</label>
+                    <div class="callout-title text-muted text-primary">Unlock Time</div>
                     <div class="row">
                       <div class="col-md-4">
                         <div class="input-group">
@@ -2668,7 +2677,7 @@
                   <div class="input-group py-2" title="Shareable verification link">
                     <input type="text" class="form-control verifyLink" value="" readonly>
                     <div class="input-group-append">
-                      <a href="" class="btn verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
+                      <a href="" class="btn btn-flat-primary verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
                     </div>
                   </div>
 
@@ -2741,7 +2750,7 @@
                   <div class="input-group py-2" title="Shareable verification link">
                     <input type="text" class="form-control verifyLink" value="" readonly>
                     <div class="input-group-append">
-                      <a href="" class="btn verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
+                      <a href="" class="btn btn-flat-primary verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
                     </div>
                   </div>
 
@@ -2772,15 +2781,15 @@
                     <h2 class="card-title">Private Key</h2>
                     <div class="mb-3 text-muted">The Private Key has been decoded.</div>
 
-                  <div class="callout-title text-muted text-primary">Shareable verification link</div>
-                  <div class="input-group py-2" title="Shareable verification link">
-                    <input type="text" class="form-control verifyLink" value="" readonly>
-                    <div class="input-group-append">
-                      <a href="" class="btn verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
+                    <div class="callout-title text-muted text-primary">Shareable verification link</div>
+                    <div class="input-group py-2" title="Shareable verification link">
+                      <input type="text" class="form-control verifyLink" value="" readonly>
+                      <div class="input-group-append">
+                        <a href="" class="btn btn-flat-primary verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
+                      </div>
                     </div>
-                  </div>
 
-                  <hr>
+                    <hr>
 
                   </div>
                   
@@ -2851,34 +2860,62 @@
 
 
                 <div class="hidden verifyData" id="verifyPubKey">
-                  <h4>Public key</h4>
-                  <p><span style="float:right"><a href="" target="_blank" class="verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a></span>The above public key has been encoded to its address</p>
-                  <p><b>Legacy Address</b>: <input type="text" class="form-control address" readonly></p>
+                  <h2 class="card-title">Public Key</h2>
+                  <div class="mb-3 text-muted">The Private Key has been encoded to its address.</div>
+
+                  <div class="callout-title text-muted text-primary">Shareable verification link</div>
+                  <div class="input-group py-2" title="Shareable verification link">
+                    <input type="text" class="form-control verifyLink" value="" readonly>
+                    <div class="input-group-append">
+                      <a href="" class="btn btn-flat-primary verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
+                    </div>
+                  </div>
+
+                  <hr>
+                
+                  <div class="callout-title text-muted text-primary">Legacy Address</div>
+                  <input type="text" class="form-control address" readonly>
                   <div class="hidden verifyDataSw">
                     <hr>
                     <div class="row">
                       <div class="col-md-6">
-                        <p><b>P2SH Segwit Address</b>: <input type="text" class="form-control addressSegWit" readonly></p>
+                        <div class="callout-title text-muted text-primary">P2SH Segwit Address</div>
+                        <input type="text" class="form-control addressSegWit" readonly>
                       </div>
                       <div class="col-md-6">
-                        <p><b>P2SH Segwit Redeem Script</b>: <input type="text" class="form-control addressSegWitRedeemScript" readonly></p>
+                        <div class="callout-title text-muted text-primary">P2SH Segwit Redeem Script</div>
+                        <input type="text" class="form-control addressSegWitRedeemScript" readonly>
                       </div>
                     </div>
                     <hr>
                     <div class="row">
                       <div class="col-md-6">
-                        <p><b>Bech32 Address</b>: <input type="text" class="form-control addressBech32" readonly></p>
+                        <div class="callout-title text-muted text-primary">Bech32 Address</div>
+                        <input type="text" class="form-control addressBech32" readonly>
                       </div>
                       <div class="col-md-6">
-                        <p><b>Bech32 Redeem Script</b>: <input type="text" class="form-control addressBech32RedeemScript" readonly></p>
+                        <div class="callout-title text-muted text-primary">Bech32 Redeem Script</div>
+                        <input type="text" class="form-control addressBech32RedeemScript" readonly>
                       </div>
                     </div>
                     <br>
                   </div>
                 </div>
                 <div class="hidden verifyData" id="verifyHDaddress">
-                  <h4>HD Address</h4>
-                  <p><span style="float:right"><a href="" target="_blank" class="verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a></span>The key <small><span class="hdKey hidden"></span></small> has been decoded</p>
+                  <h2 class="card-title">HD Address</h2>
+                  <div class="mb-3 text-muted">The key <small><span class="hdKey hidden"></span></small> has been decoded</div>
+
+                  <div class="callout-title text-muted text-primary">Shareable verification link</div>
+                  <div class="input-group py-2" title="Shareable verification link">
+                    <input type="text" class="form-control verifyLink" value="" readonly>
+                    <div class="input-group-append">
+                      <a href="" class="btn btn-flat-primary verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
+                    </div>
+                  </div>
+
+                  <hr>
+                
+
                   <div class="row">
                     <div class="col-md-2">
                       <b>Type</b><br>

@@ -133,7 +133,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
   @ Check if HEX value is within Bitcoin HEX key range
   param HEX/Decimals
   */
-  wally_fn.isHexKeyInRange = function (key) {
+  wally_fn.isHexKeyInRange = function (key, options = {'show_error': true}) {
 
     try {
       console.log('key before: '+ key);
@@ -203,9 +203,13 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
         return true;
 
     } catch (err) {
-      console.log('isHexKeyInRange :', err)
+      console.log('ERROR (wally_fn.isHexKeyInRange E1):', err)
     }
-    custom.showModal('Error', 'ERROR (wally_fn.isHexKeyInRange E1): Key is out of Range! <br>Error Decoding Crypto address! <p>Try other credentials!</p>', 'secondary');
+    
+    //is option set to show error?
+    if (options.show_error)
+      custom.showModal('Error', 'ERROR (wally_fn.isHexKeyInRange E1): Key is out of Range! <br>Error Decoding Crypto address! <p>Try other credentials!</p>', 'secondary');
+
     return false;
 
   }
@@ -227,7 +231,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
    @Generate all addresses for supported assets
   */
     /* decode/convert HEX privkey to addresses, privkeys, compressed and uncompressed*/
-  wally_fn.hexPrivKeyDecode = function (h, option = {'supports_address':[]}) {
+  wally_fn.hexPrivKeyDecode = function (h, options = {'supports_address':[], 'show_error': true}) {
 
     //generate legacy compressed and uncompressed wif keys
 
@@ -260,9 +264,9 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
       console.log('h after: '+h)
 
       //check if HEXkey is in range!
-      if (!this.isHexKeyInRange(h))
+      if (!this.isHexKeyInRange(h, {'show_error': options.show_error}))
         throw ('HexKey is not in Range!');
-
+        
       var keyInDecimal = new BigInteger(h, 16).toString(10);
       console.log('keyInDecimal: '+keyInDecimal);
 
@@ -288,13 +292,13 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
       
       //generate additional addresses like bech32 and segwit ?
       var address_formats = {};
-      console.log('option.length: '+option.length);
-      if (option.supports_address.length){
-        if (option.supports_address.includes('bech32')){
+      console.log('options.length: '+options.length);
+      if (options.supports_address.length){
+        if (options.supports_address.includes('bech32')){
           var swbech32C = coinjs.bech32Address(pubKeyC.pubkey);
           address_formats.bech32 = swbech32C;
         }
-        if (option.supports_address.includes('segwit')){
+        if (options.supports_address.includes('segwit')){
           var swC = coinjs.segwitAddress(pubKeyC.pubkey);
           address_formats.segwit = swC;
         }
@@ -376,7 +380,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
     } catch (err){
       console.log('ERROR (hexPrivKeyDecode): Out of Range! Error generating Bitcoin address!: ', err)
     }
-
+    return false;
   }
 
 /*

@@ -289,11 +289,13 @@ border-bottom:1px solid #F0F2F4;
 		padding: 0.75rem 0.2rem !important;
 	}
 	.tab-content .tab-pane .tab-body {
-		padding: 1.5rem .5rem;
+		padding: 1.5rem .8rem;
 	}
 	.tab-content .tab-pane [class*='col-'] {
+		/*
 		padding-left: 3px;
 		padding-right: 3px;
+		*/
 	}
 	.form-control {
 		padding: .375rem .45rem;
@@ -984,6 +986,9 @@ box-shadow: 0 0 0 1px rgba(43,45,80,.1),0 2px 5px 0 rgba(43,45,80,.1),0 3px 9px 
 		  }
 		}
 
+.form-control {
+	border-radius: .375rem;
+}
 /*
 
 .btn:focus,.btn:active {
@@ -2126,6 +2131,7 @@ width: 96%;
 	top: 8px;
 	padding-bottom: 1px;
 	margin-bottom: 1px;
+	z-index: 1;
 }
 #verify .form-control:disabled, .form-control[readonly] {
 

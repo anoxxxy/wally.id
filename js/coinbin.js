@@ -2264,9 +2264,11 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			//wif decoding didnt work
 			//try to decode private key, either in HEX-format or Decimal-format
 
-			var hexDecoded = wally_fn.hexPrivKeyDecode(privkey.toLowerCase(), {'supports_address': coinjs.asset.supports_address});
 
+			var hexDecoded = wally_fn.hexPrivKeyDecode(privkey.toLowerCase(), {'supports_address': coinjs.asset.supports_address, 'show_error': false});
 			console.log('hexDecoded: ', hexDecoded);
+			if (!hexDecoded)
+				return ;
 
 			$("#verifyPrivHexKey .uncompressed .address").val(hexDecoded.wif.uncompressed.address);
 			$("#verifyPrivHexKey .uncompressed .pubkey").val(hexDecoded.wif.uncompressed.public_key);
