@@ -1836,12 +1836,19 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				}
 
 				console.log('r.deserialize buffer: ', buffer);
+				console.log('r.deserialize buffer.length: ', buffer.length);
 				var pos = 0;
 				var witness = false;
 
 				var readAsInt = function(bytes) {
 					if (bytes == 0) return 0;
 					pos++;
+
+					//dont go any further then buffer.length
+					if (pos > buffer.length)
+						throw ('Not Within Buffer Range (length), No need to read more!');
+
+					//console.log('pos: '+ pos);
 					return buffer[pos-1] + readAsInt(bytes-1) * 256;
 				}
 
