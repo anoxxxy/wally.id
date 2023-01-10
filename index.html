@@ -1958,7 +1958,7 @@
                   <div class="col-md-8">
                     <p>Public keys can be <a href="#newAddress">generated in your browser</a> or from your bitcoin client.</p>
                     <p>
-                      Enter the public keys of all the participants, to create a <a href="https://en.bitcoin.it/wiki/Address#Multi-signature_addresses" target="_blank">multi signature address</a>. Maximum of 15 allowed. Compressed and uncompressed public keys are accepted.
+                      Enter the public keys of all the participants, to create a <a href="https://en.bitcoin.it/wiki/Address#Multi-signature_addresses" target="_blank">multi signature address</a>. Maximum of 16 allowed. Compressed and uncompressed public keys are accepted.
                     </p>
                   </div>
                   <div class="col-md-3">
@@ -1967,15 +1967,20 @@
                   <div class="col-md-1">
                   </div>
                 </div>
-                <div id="multisigPubKeys" class="row no-gutters">
-                  <div class="">
-                    <div class="col-11">
-                      <input type="text" class="form-control pubkey">
+                <div id="multisigPubKeys" class="mt-1 mb-3">
+                  
+                  <div class="row" data-pubkey-number="1">
+                    <div class="col">
+                      <div class="callout-title text-muted text-primary">Public Key <span class="pubkeyNumber">1</span></div>
+                      <input type="text" class="form-control pubkey" placeholder="">
                     </div>
-                    <a href="javascript:;" class="pubkeyAdd"><i class="bi bi-plus"></i></a>
-                    <br><br>
+                    <div class="col-auto col-auto d-flex flex-column-reverse">
+                      <a href="javascript:;" class="btn btn-flat-primary pubkeyAdd"><i class="bi bi-plus"></i></a>
+                    </div>
                   </div>
+
                 </div>
+
                 <p>Enter the amount of signatures required to release the coins</p>
                 <div class="row no-gutters">
                   <div class="col-3">
@@ -1995,6 +2000,7 @@
                       <option>13</option>
                       <option>14</option>
                       <option>15</option>
+                      <option>16</option>
                     </select>
                   </div>
                 </div>
@@ -3939,6 +3945,22 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                 New SegWit Address
                 </a>
               </li>
+              <li class="mb-0">
+                <a href="#newMultiSig" data-pagescroll="page_tab">
+                New Multisig Address
+                </a>
+              </li>
+              <li class="mb-0">
+                <a href="#newHDaddress" data-pagescroll="page_tab">
+                New HD Address
+                </a>
+              </li>
+              <li class="mb-0">
+                <a href="#newTimeLocked" data-pagescroll="page_tab">
+                New Time Locked Address
+                </a>
+              </li>
+              
               
               <li class="mb-1">
                 <a href="#newTransaction" data-pagescroll="page_tab">

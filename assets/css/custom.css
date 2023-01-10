@@ -987,7 +987,7 @@ box-shadow: 0 0 0 1px rgba(43,45,80,.1),0 2px 5px 0 rgba(43,45,80,.1),0 3px 9px 
 		}
 
 .form-control {
-	border-radius: .375rem;
+	border-radius: .375rem !important;
 }
 /*
 
@@ -2143,7 +2143,7 @@ width: 96%;
   background-color: #fefefe;
 }
 
-#verify input.form-control[readonly] {
+ input.form-control[readonly] {
 	padding-bottom: 4px;
 	margin-bottom:  4px;
 }
@@ -2153,7 +2153,7 @@ width: 96%;
 	border: 1px solid #9199e6;*/
 }
 
-#verify .form-control:focus {
+.form-control:focus {
  color:#495057;
  background-color:#fff;
  border-color: #9199e699;

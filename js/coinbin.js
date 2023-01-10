@@ -616,17 +616,101 @@ profile_data = {
 	});
 
 	$("#multisigPubKeys .pubkeyAdd").click(function(){
-		if($("#multisigPubKeys .pubkeyRemove").length<14){
-			var clone = '<div class="form-horizontal">'+$(this).parent().html()+'</div>';
+		if($("#multisigPubKeys .pubkeyRemove").length<=16){
+			var pubKeysNumber = $('#multisigPubKeys .pubkey').length;
+			var nextPubKeysNumber = (pubKeysNumber+1);
+
+			var clone = '<div class="row hidden" data-pubkey-number="'+nextPubKeysNumber+'">'+$(this).parent().parent().html()+'</div>';
 			$("#multisigPubKeys").append(clone);
+
+			$('#multisigPubKeys .row[data-pubkey-number="'+nextPubKeysNumber+'"] .pubkeyNumber').text(nextPubKeysNumber);
+			$('#multisigPubKeys .row[data-pubkey-number="'+nextPubKeysNumber+'"]').removeClass('hidden').velocity('slideDown', { duration: 200 });
+
+
 			$("#multisigPubKeys .bi-plus:last").removeClass('bi-plus').addClass('bi-dash');
 			$("#multisigPubKeys .bi-dash:last").parent().removeClass('pubkeyAdd').addClass('pubkeyRemove');
-			$("#multisigPubKeys .pubkeyRemove").unbind("");
-			$("#multisigPubKeys .pubkeyRemove").click(function(){
-				$(this).parent().fadeOut().remove();
-			});
 		}
 	});
+
+
+
+	$("body").on("click", "#multisigPubKeys .pubkeyRemove", async function(e){
+
+	//$("#multisigPubKeys .pubkeyRemove").click(function(){
+
+				var aa = $(this).parent().parent();
+
+				aa.velocity(
+				  "slideUp",	//transition.slideUpIn
+				  { 
+				    duration: 200,
+				    complete: function() {
+				      console.log("animation complete")
+
+				      aa.remove();
+
+				    	var allPubKeysElements = $("#multisigPubKeys .row");
+				    	var i=1;
+						allPubKeysElements.each(function(){
+						  //$(this).blah//refers to jquery object.
+						  //$(this).text(i++);
+
+						  /*
+						  console.log('======');
+						  console.log('data attr: ' + $(this).attr('data-pubkey-number'));
+						  console.log('$this: ', $(this));
+						  console.log('this', this);
+						  */
+
+						  //if ($(this).attr('data-pubkey-number') != '') {
+						  if ($(this)) {
+						  	
+						  	$(this).attr('data-pubkey-number', i);
+						  	$(this).find('.pubkeyNumber').text(i).fadeIn();
+						  	//console.log('NOT hidden row!')
+						  	//console.log('child: ', $(this).find('.pubkeyNumber'));
+						  	//console.log('new number: '+ $(this).find('.pubkeyNumber').text())
+						  	i++;
+
+						  } else {
+						  	/*console.log('hidden row!')
+						  	$(this).find('.pubkeyNumber').text(i);
+						  	console.log('child: ', $(this).find('.pubkeyNumber'));
+						  	console.log('new number: '+ $(this).find('.pubkeyNumber').text())
+						  	*/
+						  }
+
+						  
+
+						});
+
+
+				    }
+				  });
+
+				/*
+				// Using Velocity's utility function... *
+				$.Velocity.animate(aa, { opacity: 1, duration: 100  })
+				    // Callback to fire once the animation is complete.
+				    .then(function(elements) { console.log("Resolved."); 
+
+				    	aa.remove();
+
+				    	var allPubKeysElements = $("#multisigPubKeys .row");
+				    	var i=1;
+						allPubKeysElements.each(function(){
+						  if ($(this)) {						  	
+						  	$(this).attr('data-pubkey-number', i);
+						  	$(this).find('.pubkeyNumber').text(i).fadeIn();
+						  	i++;
+						  }
+						});
+				    })
+				    // Callback to fire if an error occurs. 
+				    .catch(function(error) { console.log("Rejected."); });
+				    */
+
+			});
 
 	$("#mediatorList").change(function(){
 		var data = ($(this).val()).split(";");
@@ -638,7 +722,7 @@ profile_data = {
 	$("#mediatorAddKey").click(function(){
 		var count = 0;
 		var len = $(".pubkeyRemove").length;
-		if(len<14){
+		if(len<=16){
 			$.each($("#multisigPubKeys .pubkey"),function(i,o){
 				if($(o).val()==''){
 					$(o).val($("#mediatorPubkey").val()).fadeOut().fadeIn();
@@ -2990,8 +3074,9 @@ scrollIntoView(target, {
 
 	});
 
+	/* add three pubkeys for multisig address creation*/
 	for(i=1;i<3;i++){
-		$(".pubkeyAdd").click();
+		$("#multisigPubKeys .pubkeyAdd").click();
 	}
 
 	validateOutputAmount();

@@ -34,6 +34,16 @@
     return regex.test(password);
   }
 
+  /*
+  @ sleep promise
+  */
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  /*
+  @ Hash the email + password upon account login
+  */
   wally_fn.passwordHasher = function (email, pass) {
     var s = email;
     s += '|'+pass+'|';
