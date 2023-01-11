@@ -53,7 +53,7 @@
       console.log('Asset: '+ asset_var);
       console.log('Network/Asset Info: ', newNetwork);
 
-      //update coinjs settings: merge settings with coinjs and overwrite existing properties,
+      //update coinjs settings: merge variable settings with coinjs and overwrite existing properties,
       if (options.saveSettings) {
         $.extend(coinjs, wally_fn.networks[network_var][asset_var]);
         //Object.assign(coinjs, (wally_fn.networks[network_var][asset_var]))
@@ -94,7 +94,7 @@
 
       //update list for supported assets for choosen network 
       if(options.renderFields)
-        wally_kit.settingsListAssets(network_var);
+        this.settingsListAssets(network_var);
 
       //show message for changing network & asset
       if (options.showMessage) {
@@ -154,7 +154,7 @@
           console.log('asset was found: ', value.asset.symbol);
           console.log('asset key was found: ', key);
 
-          await wally_kit.setNetwork(network_var, asset_var, {saveSettings: true, showMessage: true, renderFields: true});
+          await this.setNetwork(network_var, asset_var, {saveSettings: true, showMessage: true, renderFields: true});
         }
       }
 
@@ -207,7 +207,7 @@
 
       //set default Chain Network 
       if (coinjs.asset === undefined)
-        wally_kit.setNetwork('mainnet', 'bitcoin', {saveSettings: true, showMessage: false, renderFields: true});
+        this.setNetwork('mainnet', 'bitcoin', {saveSettings: true, showMessage: false, renderFields: true});
 
       //if defined, set to selected/active Network
       if(coinjs.asset.network) {
@@ -257,15 +257,39 @@
       var i=0;
       for (var [key, value] of Object.entries(wally_fn.networks[network_var])) {
 
-        assetSelectEl.append('<option value="'+key+'" data-icon="'+value.asset.icon+'" >'+value.asset.name+' ('+value.asset.symbol+')</option>');
+        if (i==0) {//render button-select content
+          //if (coinjs.asset !== undefined) {
+           // $('#coinjs_network_select button').html('<img src="'+coinjs.asset.icon+'" class="icon32"> '+coinjs.asset.name+' ('+coinjs.asset.symbol+')'); 
+
+            //$('#coinjs_network').val(coinjs.asset.slug).attr('selected','selected');
+            //$('#coinjs_network option[value="'+coinjs.asset.slug+'"]').attr('selected','selected');
+            //console.log('trigger select change');
+          //}else
+            $('#coinjs_network_select button').html('<img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')'); 
+        }
+
+        //selected asset
+        if (coinjs.asset.slug == key){
+          assetSelectEl.append('<option value="'+key+'" data-icon="'+value.asset.icon+'" selected="selected">'+value.asset.name+' ('+value.asset.symbol+')</option>');
+          $('#coinjs_network_select button').html('<img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')'); 
+          console.log('trigger selected icon');
+        } else {
+          assetSelectEl.append('<option value="'+key+'" data-icon="'+value.asset.icon+'" >'+value.asset.name+' ('+value.asset.symbol+')</option>');
+          //$('#coinjs_network_select button').html('<img src="'+coinjs.asset.icon+'" class="icon32"> '+coinjs.asset.name+' ('+coinjs.asset.symbol+')'); 
+          console.log('not triggered');
+          
+        }
+
+        //list rest of assets
         assetSelectwIconsEl.append('<li data-icon="'+value.asset.icon+'" data-asset="'+key+'"><img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')</li>');
 
-        if(i==0) //render button-select content
-          $('#coinjs_network_select button').html('<img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')'); 
+        
+        
+        
         i++;
       }
 
-      wally_kit.settingsListNetworkProviders();
+      this.settingsListNetworkProviders();
     } catch (e) {
       console.log('wally_kit.settingsListAssets ERROR:', e);
     }
@@ -289,9 +313,17 @@
 
     console.log('wally_fn.asset before: ', wally_fn.asset);
     if(asset_var !== undefined) {
-      wally_fn.asset = asset_var;
-      console.log('update asset to: '+asset_var);
-      console.log('updated asset to: '+wally_fn.asset);
+      
+
+      //update select button content relative to asset
+      if( wally_fn.networks[wally_fn.network][asset_var] !== undefined ) {
+
+        wally_fn.asset = asset_var;
+        console.log('update asset to: '+asset_var);
+        console.log('updated asset to: '+wally_fn.asset);
+
+        $('#coinjs_network_select button').html('<img src="'+wally_fn.networks[wally_fn.network][asset_var].asset.icon+'" class="icon32"> '+wally_fn.networks[wally_fn.network][asset_var].asset.name+' ('+wally_fn.networks[wally_fn.network][asset_var].asset.symbol+')'); 
+      }
     }
 
     if (wally_fn.asset == '') {
@@ -300,6 +332,10 @@
     }
     
     
+    //$('#coinjs_network_select li[data-asset="'+asset_var+'"]').click();
+    
+
+
 
     console.log('wally_fn.asset after: ', wally_fn.asset);
 
@@ -416,7 +452,8 @@ $(document).ready(function() {
 
     
 
-    //console.log('this.value: ' + this.value);
+    console.log('portfolioAsset this.value: ' + this.value);
+    //$('#coinjs_network_select li[data-asset="'+this.value+'"]').click();
 
 
     //update network type and providers
