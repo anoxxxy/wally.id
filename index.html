@@ -55,8 +55,10 @@
       -->
     <script type="text/javascript" src="./assets/js/bootstrap.min.js"></script>
 
+    <!-- Internal Wally functions -->
     <script type="text/javascript" src="./assets/js/wally_fn.js"></script>
-    <script type="text/javascript" src="./assets/js/wally_kit.js"></script>
+
+    
 
     <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-popover-x@1.5.1/js/bootstrap-popover-x.min.js" type="text/javascript"></script>
     <script src="./assets/js/bootstrap-dialog.js" type="text/javascript"></script>
@@ -91,6 +93,8 @@
     <script type="text/javascript" src="./assets/js/blockies/blockie.js"></script>
 
     <!-- Custom Code -->
+    <!-- Internal Wally DOM functions -->
+    <script type="text/javascript" src="./assets/js/wally_kit.js"></script>
     
     <script type="text/javascript" src="./assets/js/custom.js"></script>
     <script type="text/javascript" src="./assets/js/openwallet_formwizard.js"></script>
@@ -2007,25 +2011,29 @@
                 <br>
                 <div id="multiSigErrorMsg" class="alert alert-danger" style="display:none;"></div>
                 <div class="alert alert-success hidden" id="multiSigData">
-                  <label>Address</label>
+                  <label>Multisig Address</label>
                   <p>Payment should be made to this address:</p>
                   <div class="row">
                     <div class="col-lg-6">
                       <div class="input-group">
                         <input type="text" class="form-control address" value="" readonly>
                         <div class="input-group-append">
-                        <span class="qrcodeBtn btn btn-secondary" data-toggle="modal" data-target="#modalQrcode"><i class="bi bi-qr-code"></i></span>
+                        <span class="qrcodeBtn btn btn-flat-primary" data-toggle="modal" data-target="#modalQrcode"><i class="bi bi-qr-code"></i></span>
                         </div>
                       </div>
                     </div>
                   </div>
                   <label>Redeem Script</label>
-                  <p>This script should be <i>saved and should be shared with all the participants before a payment is made</i>, so they may validate the authenticity of the address, it will also be used later to release the bitcoins.</p>
+                  <p>This script should be <i>saved and should be shared with all the participants before a payment is made</i>, so they may validate the authenticity of the address, it will also be used later to release the funds <span class="asset_name">(BTC)</span>.</p>
                   <textarea class="form-control script" style="height:160px" readonly></textarea>
                   <label>Shareable URL</label>
                   <input type="text" class="scriptUrl form-control" readonly>
                 </div>
-                <input type="button" class="btn btn-primary" value="Submit" id="newMultiSigAddress">
+                
+
+                <div class="btn-group mt-3">
+                  <input type="button" class="btn btn-primary" value="Submit" id="newMultiSigAddress">
+                </div>
                 <br>
               </div>
             </div>
@@ -2049,12 +2057,10 @@
                   <div class="col-md-1">
                   </div>
                 </div>
-                <div class="row no-gutters">
-                  <div class="">
+                <div class="row py-3">
                     <div class="col-12">
                       <input id="timeLockedPubKey" type="text" class="form-control pubkey">
                     </div>
-                  </div>
                 </div>
                 <p id="timeLockedRbTypeBox">
                   Enter the 
@@ -2065,7 +2071,7 @@
                   <label for="timeLockedRbTypeBlockHeight">blockheight</label>
                   required to release the coins: 
                 </p>
-                <div class="row no-gutters">
+                <div class="row py-2">
                   <div class="col-md-6">
                     <div class="form-group">
                       <div class="input-group date" id='timeLockedDateTimePicker'>
@@ -2083,7 +2089,7 @@
                 <br>
                 <div id="timeLockedErrorMsg" class="alert alert-danger" style="display:none;"></div>
                 <div class="alert alert-success hidden" id="timeLockedData">
-                  <label>Address</label>
+                  <label>Time Locked Multisig Address</label>
                   <p>Payment should be made to this address:</p>
                   <div class="row">
                     <div class="col-lg-6">
@@ -2363,7 +2369,7 @@
                 <div id="transactionCreateStatus" class="alert alert-danger mt-3 mb-4 hidden"></div>
                 <div id="transactionCreate" class="alert alert-success mt-3 mb-4 hidden">
                   <label>Transaction</label>
-                  <button class="qrcodeBtn btn btn-flat-info" type="button" data-toggle="modal" data-target="#modalQrcode" style="float:right;"><i class="bi bi-qr-code"></i></button>
+                  <button class="qrcodeBtn btn btn-flat-primary" type="button" data-toggle="modal" data-target="#modalQrcode" style="float:right;"><i class="bi bi-qr-code"></i></button>
                   <p>The transaction below has been generated and encoded. It can be broadcasted once it has been signed.</p>
                   <br>
                   <textarea class="form-control" style="height:150px" readonly></textarea>
@@ -2586,7 +2592,7 @@
                   <h2 class="card-title">Redeem Script</h2>
                   <div class="mb-3 text-muted">The redeem script has been decoded</div>
 
-                  <div class="callout-title text-muted text-primary">Shareable verification link</div>
+                  <div class="callout-title text-muted text-primary">Shareable link</div>
                   <div class="input-group py-2" title="Shareable verification link">
                     <input type="text" class="form-control verifyLink" value="" readonly>
                     <div class="input-group-append">
@@ -2604,7 +2610,7 @@
                         <div class="input-group">
                           <input type="text" class="form-control address multisigAddress" value="" readonly>
                           <span class="input-group-append">
-                            <button class="qrcodeBtn btn btn-secondary" type="button" data-toggle="modal" data-target="#modalQrcode"><i class="bi bi-qr-code"></i></button>
+                            <button class="qrcodeBtn btn btn-flat-primary" type="button" data-toggle="modal" data-target="#modalQrcode"><i class="bi bi-qr-code"></i></button>
                           </span>
                         </div>
                       </div>
@@ -2639,7 +2645,7 @@
                         <div class="input-group">
                           <input type="text" class="form-control address" value="" readonly>
                           <span class="input-group-append">
-                          <button class="qrcodeBtn btn btn-secondary" type="button" data-toggle="modal" data-target="#modalQrcode"><i class="bi bi-qr-code"></i></button>
+                          <button class="qrcodeBtn btn btn-flat-primary" type="button" data-toggle="modal" data-target="#modalQrcode"><i class="bi bi-qr-code"></i></button>
                           </span>
                         </div>
                       </div>
@@ -2650,7 +2656,7 @@
                         <div class="input-group">
                           <input type="text" class="form-control address pubkey" value="" readonly>
                           <span class="input-group-append">
-                          <button class="qrcodeBtn btn btn-secondary" type="button" data-toggle="modal" data-target="#modalQrcode"><i class="bi bi-qr-code"></i></button>
+                          <button class="qrcodeBtn btn btn-flat-primary" type="button" data-toggle="modal" data-target="#modalQrcode"><i class="bi bi-qr-code"></i></button>
                           </span>
                         </div>
                       </div>
@@ -2679,7 +2685,7 @@
                   <div class="transactionRBF"><b>RBF</b>: This is a <a href="https://en.bitcoin.it/wiki/Transaction_replacement">replace by fee</a> transaction!</div>
 
 
-                  <div class="callout-title text-muted text-primary">Shareable verification link</div>
+                  <div class="callout-title text-muted text-primary">Shareable link</div>
                   <div class="input-group py-2" title="Shareable verification link">
                     <input type="text" class="form-control verifyLink" value="" readonly>
                     <div class="input-group-append">
@@ -2752,7 +2758,7 @@
                   <div class="mb-3 text-muted">The Private Key has been decoded.</div>
 
 
-                  <div class="callout-title text-muted text-primary">Shareable verification link</div>
+                  <div class="callout-title text-muted text-primary">Shareable link</div>
                   <div class="input-group py-2" title="Shareable verification link">
                     <input type="text" class="form-control verifyLink" value="" readonly>
                     <div class="input-group-append">
@@ -2787,7 +2793,7 @@
                     <h2 class="card-title">Private Key</h2>
                     <div class="mb-3 text-muted">The Private Key has been decoded.</div>
 
-                    <div class="callout-title text-muted text-primary">Shareable verification link</div>
+                    <div class="callout-title text-muted text-primary">Shareable link</div>
                     <div class="input-group py-2" title="Shareable verification link">
                       <input type="text" class="form-control verifyLink" value="" readonly>
                       <div class="input-group-append">
@@ -2869,7 +2875,7 @@
                   <h2 class="card-title">Public Key</h2>
                   <div class="mb-3 text-muted">The Private Key has been encoded to its address.</div>
 
-                  <div class="callout-title text-muted text-primary">Shareable verification link</div>
+                  <div class="callout-title text-muted text-primary">Shareable link</div>
                   <div class="input-group py-2" title="Shareable verification link">
                     <input type="text" class="form-control verifyLink" value="" readonly>
                     <div class="input-group-append">
@@ -2911,7 +2917,7 @@
                   <h2 class="card-title">HD Address</h2>
                   <div class="mb-3 text-muted">The key <small><span class="hdKey hidden"></span></small> has been decoded</div>
 
-                  <div class="callout-title text-muted text-primary">Shareable verification link</div>
+                  <div class="callout-title text-muted text-primary">Shareable link</div>
                   <div class="input-group py-2" title="Shareable verification link">
                     <input type="text" class="form-control verifyLink" value="" readonly>
                     <div class="input-group-append">
@@ -3082,7 +3088,7 @@
                 </div>
                 <div class="alert alert-success hidden" id="signedData">
                   <label>Signed transaction</label>
-                  <button class="qrcodeBtn btn btn-secondary" type="button" data-toggle="modal" data-target="#modalQrcode" style="float:right;"><i class="bi bi-qr-code"></i></button>
+                  <button class="qrcodeBtn btn btn-flat-primary" type="button" data-toggle="modal" data-target="#modalQrcode" style="float:right;"><i class="bi bi-qr-code"></i></button>
                   <p>The above transaction has been signed:</p>
                   <textarea class="form-control script" style="height:160px" readonly></textarea>
                   <p class="text-muted">Size: <span class="txSize">0</span> <i>bytes</i></p>
@@ -3173,6 +3179,7 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                                         <button type="button" class="btn btn-warning waves-effect waves-float waves-light">Warning</button>
                                         <button type="button" class="btn btn-info waves-effect waves-float waves-light">Info</button>
                                         <button type="button" class="btn btn-dark waves-effect waves-float waves-light">Dark</button>
+                                        <button type="button" class="btn btn-light waves-effect waves-float waves-light">Light</button>
                                     </div>
                                 </div>
                             </div>
@@ -3202,6 +3209,7 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                                         <button type="button" class="btn btn-outline-warning waves-effect">Warning</button>
                                         <button type="button" class="btn btn-outline-info waves-effect">Info</button>
                                         <button type="button" class="btn btn-outline-dark waves-effect">Dark</button>
+                                        <button type="button" class="btn btn-outline-light waves-effect">Light</button>
                                     </div>
                                 </div>
                             </div>
@@ -3228,6 +3236,7 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                                         <button type="button" class="btn btn-flat-warning waves-effect">Warning</button>
                                         <button type="button" class="btn btn-flat-info waves-effect">Info</button>
                                         <button type="button" class="btn btn-flat-dark waves-effect">Dark</button>
+                                        <button type="button" class="btn btn-flat-light waves-effect">Light</button>
                                     </div>
                                 </div>
                             </div>
@@ -3256,6 +3265,7 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                                         <button type="button" class="btn btn-textonly-warning">Warning</button>
                                         <button type="button" class="btn btn-textonly-info">Info</button>
                                         <button type="button" class="btn btn-textonly-dark">Dark</button>
+                                        <button type="button" class="btn btn-textonly-light">Light</button>
                                     </div>
                                 </div>
                             </div>
@@ -3285,6 +3295,7 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                                         <button type="button" class="btn btn-outline-warning round waves-effect">Warning</button>
                                         <button type="button" class="btn btn-outline-info round waves-effect">Info</button>
                                         <button type="button" class="btn btn-outline-dark round waves-effect">Dark</button>
+                                        <button type="button" class="btn btn-outline-light round waves-effect">Light</button>
                                     </div>
                                 </div>
                             </div>
@@ -3542,9 +3553,9 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                                     <div class="demo-inline-spacing">
                                         <a class="btn btn-primary waves-effect waves-float waves-light" href="https://pixinvent.com/" role="button" target="_blank">Link</a>
                                         <button class="btn btn-primary waves-effect waves-float waves-light" type="submit">Button</button>
-                                        <i class="btn btn-primary waves-input-wrapper waves-effect waves-float waves-light" style="color:rgb(255, 255, 255);background:rgba(0, 0, 0, 0)"><input class="waves-button-input" type="button" value="Input" style="background-color:rgba(0,0,0,0);"></i>
-                                        <i class="btn btn-primary waves-input-wrapper waves-effect waves-float waves-light" style="color:rgb(255, 255, 255);background:rgba(0, 0, 0, 0)"><input class="waves-button-input" type="submit" value="Submit" style="background-color:rgba(0,0,0,0);"></i>
-                                        <i class="btn btn-primary waves-input-wrapper waves-effect waves-float waves-light" style="color:rgb(255, 255, 255);background:rgba(0, 0, 0, 0)"><input class="waves-button-input" type="reset" value="Reset" style="background-color:rgba(0,0,0,0);"></i>
+                                        <i class="btn btn-primary waves-input-wrapper waves-effect waves-float waves-light" ><input class="waves-button-input" type="button" value="Input" ></i>
+                                        <i class="btn btn-primary waves-input-wrapper waves-effect waves-float waves-light" ><input class="waves-button-input" type="submit" value="Submit"></i>
+                                        <i class="btn btn-primary waves-input-wrapper waves-effect waves-float waves-light" ><input class="waves-button-input" type="reset" value="Reset" ></i>
                                     </div>
                                 </div>
                             </div>

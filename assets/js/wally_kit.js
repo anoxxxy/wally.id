@@ -16,7 +16,7 @@
     asset
     options (saveSettings, showMessage (about updated settings) )
   */
-  wally_kit.setNetwork = function (network_var = 'mainnet', asset_var = 'bitcoin', options = {saveSettings: false, showMessage: false, renderFields: true}) {
+  wally_kit.setNetwork = async function (network_var = 'mainnet', asset_var = 'bitcoin', options = {saveSettings: false, showMessage: false, renderFields: true}) {
     console.log('===wally_kit.setNetwork===');
 
 
@@ -55,7 +55,7 @@
 
       //update coinjs settings: merge settings with coinjs and overwrite existing properties,
       if (options.saveSettings) {
-        $.extend(coinjs, wally_fn.networks[network_var][asset_var])
+        $.extend(coinjs, wally_fn.networks[network_var][asset_var]);
         //Object.assign(coinjs, (wally_fn.networks[network_var][asset_var]))
         //options.showMessage = true;
 
@@ -92,18 +92,21 @@
 
       }
 
+      //update list for supported assets for choosen network 
+      if(options.renderFields)
+        wally_kit.settingsListAssets(network_var);
+
+      //show message for changing network & asset
       if (options.showMessage) {
-        modalMessage = '<div class="text-center text-primary"><p>You just changed blockchain network settings:</p>' 
-          + newNetwork.asset.name + ' ('+newNetwork.asset.symbol+' '+newNetwork.asset.network+')</div>';
-        modalMessage += '<img src="'+newNetwork.asset.icon+'" class="icon-center icon64 ">'
-        modalMessage += '<br><div class="text-center text-muted">API Providers:</p><br> Unspent outputs: '+wally_fn.provider.utxo+'<br>Broadcast: '+wally_fn.provider.broadcast+'</div>';
+        modalMessage = '<div class="text-center text-primary mb-3"><p class="mb-2">You have updated Blockchain Network settings to:</p>' 
+          + newNetwork.asset.name + ' <strong>('+newNetwork.asset.symbol+' '+newNetwork.asset.network+')</strong></div>';
+        modalMessage += '<img src="'+newNetwork.asset.icon+'" class="icon-center icon64 mb-2">'
+        modalMessage += '<div class="text-center text-muted">API Providers:<br> Unspent outputs: '+wally_fn.provider.utxo+'<br>Broadcast: '+wally_fn.provider.broadcast+'</div>';
 
         custom.showModal(modalTitle, modalMessage);
       }
 
-      //update list for supported assets for choosen network 
-      if(options.renderFields)
-        wally_kit.settingsListAssets(network_var);
+
 
       
     } catch (e) {
@@ -120,18 +123,85 @@
   @ Check if Network Type is set
   */
 
+  wally_kit.checkUrlParams = async function () {
+    console.log('===checkUrlParams===');
+
+    var network_var = 'mainnet', asset_var = 'bitcoin';
+
+    //get all url params
+    var urlParams = wally_fn.getAllUrlParams();
+
+    //get & set Network type, default(mainnet)
+    if (urlParams.network !== undefined) {
+      if(urlParams.network == 'testnet')
+        network_var = urlParams.network;
+    }
+
+    console.log('network: ' + network_var);
+
+    //get & set asset type, default(bitcoin)
+    if (urlParams.asset !== undefined) {
+      /*
+      if (wally_fn.networks[ network ][ urlParams.asset] ) {
+        console.log ('network: ' + network + '|  asset: ' + urlParams.asset );
+      }
+      */
+      //search for asset name and symbol for i.e (bitcoin/btc)
+      for (var [key, value] of Object.entries(wally_fn.networks[ network_var ])) {
+
+        if ( (value.asset.symbols).includes(urlParams.asset) ) {
+          asset_var = key;
+          console.log('asset was found: ', value.asset.symbol);
+          console.log('asset key was found: ', key);
+
+          await wally_kit.setNetwork(network_var, asset_var, {saveSettings: true, showMessage: true, renderFields: true});
+        }
+      }
+
+      //if(!listChainTypes.includes(chainType))
+
+    }
+
+
+
+    //set Network depending on URL parameters
+    //is network and asset set by page url?
+    var _getNetworkParam = wally_fn._searchURLParam("network");
+    var _getAssetParam = wally_fn._searchURLParam("asset");
+    console.log('_searchURLParam setAsset to: ' + _getAssetParam);
+    console.log('_searchURLParam setNetwork to: ' + _getNetworkParam);
+
+
+    //Load pages depending on URL parameters
+    var _getBroadcast = wally_fn._searchURLParam("broadcast");
+    if(_getBroadcast[0]){
+      $("#rawTransaction").val(_getBroadcast[0]);
+      $("#rawSubmitBtn").click();
+      window.location.hash = "#broadcast";
+    }
+
+    var _getVerify = wally_fn._searchURLParam("verify");
+    if(_getVerify[0]){
+      $("#verifyScript").val(_getVerify[0]);
+      $("#verifyBtn").click();
+      window.location.hash = "#verify";
+    }
+  }
 
 
 
   /*
   @ Initialize Network Settings!
   */
-  wally_kit.initNetwork = function (networkTypesRadio) {
+  wally_kit.initNetwork = async function (networkTypesRadio) {
 
     console.log('===initNetwork===');
     try {
       //set Host
       wally_fn.setHost();
+
+      //get pageURL Parameters
+      await this.checkUrlParams();
 
       console.log('networkType: ', networkTypesRadio);
 
@@ -139,7 +209,7 @@
       if (coinjs.asset === undefined)
         wally_kit.setNetwork('mainnet', 'bitcoin', {saveSettings: true, showMessage: false, renderFields: true});
 
-      //if defined, set to currenct Chain Network
+      //if defined, set to selected/active Network
       if(coinjs.asset.network) {
         networkTypesRadio.parent().removeClass('active');
         $('input[type=radio][name=radio_selectNetworkType][data-network-type='+coinjs.asset.network+']').prop('checked', true).parent().addClass('active');
@@ -152,7 +222,7 @@
       } 
 
     } catch (e) {
-      //not network is choosen, default to mainnet
+      //no network is choosen, set default to mainnet
         networkTypesRadio.parent().removeClass('active');
         $('input[type=radio][name=radio_selectNetworkType][data-network-type=mainnet]').prop('checked', true).parent().addClass('active');
         console.log('No Network Type! Set to Default!', e);
@@ -323,7 +393,7 @@ $(document).ready(function() {
 
 
   //***Set default Network
-  wally_kit.initNetwork(portfolioNetworkType);
+  //wally_kit.initNetwork(portfolioNetworkType);
 
   /*
   @ Network Settings on Change handler!

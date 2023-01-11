@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+	//***Initialize/Set default Network
+  	wally_kit.initNetwork($('input[type=radio][name=radio_selectNetworkType]'));
+
 	/* open wallet code */
 
 	var explorer_tx = "https://coinb.in/tx/"
@@ -576,15 +579,19 @@ profile_data = {
 	/* new -> multisig code */
 
 	$("#newMultiSigAddress").click(function(){
+		var parentRow = $("#multisigPubKeys .pubkey").parent().parent();
+		var inputKeys = $("#multisigPubKeys input.pubkey");
 
 		$("#multiSigData").removeClass('show').addClass('hidden').fadeOut();
-		$("#multisigPubKeys .pubkey").parent().removeClass('has-error');
+
+		inputKeys.removeClass('is-invalid');
+		parentRow.removeClass('has-error');
 		$("#releaseCoins").parent().removeClass('has-error');
 		$("#multiSigErrorMsg").hide();
 
 		if((isNaN($("#releaseCoins option:selected").html())) || ((!isNaN($("#releaseCoins option:selected").html())) && ($("#releaseCoins option:selected").html()>$("#multisigPubKeys .pubkey").length || $("#releaseCoins option:selected").html()*1<=0 || $("#releaseCoins option:selected").html()*1>8))){
 			$("#releaseCoins").parent().addClass('has-error');
-			$("#multiSigErrorMsg").html('<span class="glyphicon glyphicon-exclamation-sign"></span> Minimum signatures required is greater than the amount of public keys provided').fadeIn();
+			$("#multiSigErrorMsg").html(' Minimum signatures required is greater than the amount of public keys provided').fadeIn();
 			return false;
 		}
 
@@ -592,19 +599,26 @@ profile_data = {
 		$.each($("#multisigPubKeys .pubkey"), function(i,o){
 			if(coinjs.pubkeydecompress($(o).val())){
 				keys.push($(o).val());
-				$(o).parent().removeClass('has-error');
+				$(o).parent().parent().removeClass('has-error');
+				$(o).removeClass('is-invalid');
 			} else {
-				$(o).parent().addClass('has-error');
+				$(o).parent().parent().addClass('has-error');
+				$(o).addClass('is-invalid');
 			}
 		});
 
-		if(($("#multisigPubKeys .pubkey").parent().hasClass('has-error')==false) && $("#releaseCoins").parent().hasClass('has-error')==false){
+		if((parentRow.hasClass('has-error')==false) && $("#releaseCoins").parent().hasClass('has-error')==false){
 			var sigsNeeded = $("#releaseCoins option:selected").html();
 			var multisig =  coinjs.pubkeys2MultisigAddress(keys, sigsNeeded);
 			if(multisig.size <= 520){
 				$("#multiSigData .address").val(multisig['address']);
 				$("#multiSigData .script").val(multisig['redeemScript']);
-				$("#multiSigData .scriptUrl").val(document.location.origin+''+document.location.pathname+'?verify='+multisig['redeemScript']+'#verify');
+				//$("#multiSigData .scriptUrl").val(document.location.origin+''+document.location.pathname+'?verify='+multisig['redeemScript']+'#verify');
+
+				$("#multiSigData .scriptUrl").val(wally_fn.host+'?asset='+coinjs.asset.slug+'&verify='+multisig['redeemScript']+'#verify');
+				history.pushState({}, null, $("#multiSigData .scriptUrl").val());
+
+
 				$("#multiSigData").removeClass('hidden').addClass('show').fadeIn();
 				$("#releaseCoins").removeClass('has-error');
 			} else {
@@ -629,6 +643,8 @@ profile_data = {
 
 			$("#multisigPubKeys .bi-plus:last").removeClass('bi-plus').addClass('bi-dash');
 			$("#multisigPubKeys .bi-dash:last").parent().removeClass('pubkeyAdd').addClass('pubkeyRemove');
+
+			$("#multisigPubKeys input.pubkey").change();
 		}
 	});
 
@@ -710,6 +726,7 @@ profile_data = {
 				    .catch(function(error) { console.log("Rejected."); });
 				    */
 
+				$("#multisigPubKeys input.pubkey").change();
 			});
 
 	$("#mediatorList").change(function(){
@@ -793,7 +810,11 @@ profile_data = {
 	            var hodl = coinjs.simpleHodlAddress($("#timeLockedPubKey").val(), nLockTime);
 	            $("#timeLockedData .address").val(hodl['address']);
 	            $("#timeLockedData .script").val(hodl['redeemScript']);
-	            $("#timeLockedData .scriptUrl").val(document.location.origin+''+document.location.pathname+'?verify='+hodl['redeemScript']+'#verify');
+	            //$("#timeLockedData .scriptUrl").val(document.location.origin+''+document.location.pathname+'?verify='+hodl['redeemScript']+'#verify');
+
+	            $("#timeLockedData .scriptUrl").val(wally_fn.host+'?asset='+coinjs.asset.slug+'&verify='+hodl['redeemScript']+'#verify');
+				history.pushState({}, null, $("#timeLockedData .scriptUrl").val());
+
 	            $("#timeLockedData").removeClass('hidden').addClass('show').fadeIn();
 	        } catch(e) {
 	        	$("#timeLockedErrorMsg").html('<span class="glyphicon glyphicon-exclamation-sign"></span> ' + e).fadeIn();
@@ -2102,7 +2123,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 
 			//add link for sharing to verify page
 			if ($("#verifyStatus").hasClass('hidden')) {
-				$("#verify input.verifyLink").val(wally_fn.host+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val()).trigger('change');
+				$("#verify input.verifyLink").val(wally_fn.host+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val()+'#verify').trigger('change');
 				history.pushState({}, null, $("#verify input.verifyLink").val());
 				console.log('add share link');
 			}else
@@ -2523,36 +2544,8 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		}
 	});
 
-	/* page load code */
 
-	function _get(value) {
-		var dataArray = (document.location.search).match(/(([a-z0-9\_\[\]]+\=[a-z0-9\_\.\%\@]+))/gi);
-		var r = [];
-		if(dataArray) {
-			for(var x in dataArray) {
-				if((dataArray[x]) && typeof(dataArray[x])=='string') {
-					if((dataArray[x].split('=')[0].toLowerCase()).replace(/\[\]$/ig,'') == value.toLowerCase()) {
-						r.push(unescape(dataArray[x].split('=')[1]));
-					}
-				}
-			}
-		}
-		return r;
-	}
 
-	var _getBroadcast = _get("broadcast");
-	if(_getBroadcast[0]){
-		$("#rawTransaction").val(_getBroadcast[0]);
-		$("#rawSubmitBtn").click();
-		window.location.hash = "#broadcast";
-	}
-
-	var _getVerify = _get("verify");
-	if(_getVerify[0]){
-		$("#verifyScript").val(_getVerify[0]);
-		$("#verifyBtn").click();
-		window.location.hash = "#verify";
-	}
 
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		if(e.target.hash == "#fees"){
@@ -3342,7 +3335,7 @@ scrollIntoView(target, {
 		$("#sign #signedData").addClass("hidden");
 	});
 
-	$("#multisigPubKeys .list").on('input change', '.pubkey', function(){
+	$("#multisigPubKeys").on('input change', '.pubkey', function(){
 		$("#multiSigData").addClass("hidden");
 	});
 

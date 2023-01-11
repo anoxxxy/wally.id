@@ -9,6 +9,7 @@
 
   wally_fn.host = '';
   wally_fn.network = 'mainnet';
+  wally_fn.asset = 'bitcoin';
   wally_fn.provider = {utxo:'', broadcast:''};
   
   /*
@@ -32,6 +33,107 @@
   wally_fn.validatePassword = function (password) {
     var regex = /^(?=.{16,255})(?=.*[\d])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$€§%^£!»©«&*|←↓→+=¥½&<>;:.µ,^~¨¤{}´?`+"()'/ \\-]).{1,255}$/g
     return regex.test(password);
+  }
+
+/*
+ @ url= 'http://example.com/?product=shirt&color=blue&newuser&size=m#verify';
+ Get all url parameters and hashtag and save to an object
+ @url is a url string and optional
+ */
+
+  wally_fn.getAllUrlParams = function(url) {
+
+    // get query string from url (optional) or window
+    var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+    var pageHash = '';
+    if (url )
+      queryString = url.split('?')[1];
+    else {
+      queryString = window.location.search.slice(1);
+      pageHash = (window.location.hash).replace('#', '');
+    }
+    // we'll store the parameters here
+    var obj = {};
+
+    // if query string exists
+    if (queryString) {
+
+      // stuff after # is not part of query string, so get rid of it
+      var getAllParams = queryString.split('#');
+      queryString = getAllParams[0];  //get the parameters
+      
+      //get the hashtag
+      if (getAllParams[1] !== undefined)
+        obj._hashtag_ = (getAllParams[1] ? getAllParams[1] : pageHash);
+
+      // split our query string into its component parts
+      var arr = queryString.split('&');
+
+      for (var i = 0; i < arr.length; i++) {
+        // separate the keys and the values
+        var a = arr[i].split('=');
+
+        // set parameter name and value (use 'true' if empty)
+        var paramName = a[0];
+        var paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
+
+        // (optional) keep case consistent
+        paramName = paramName.toLowerCase();
+        if (typeof paramValue === 'string') paramValue = paramValue.toLowerCase();
+
+        // if the paramName ends with square brackets, e.g. colors[] or colors[2]
+        if (paramName.match(/\[(\d+)?\]$/)) {
+
+          // create key if it doesn't exist
+          var key = paramName.replace(/\[(\d+)?\]/, '');
+          if (!obj[key]) obj[key] = [];
+
+          // if it's an indexed array e.g. colors[2]
+          if (paramName.match(/\[\d+\]$/)) {
+            // get the index value and add the entry at the appropriate position
+            var index = /\[(\d+)\]/.exec(paramName)[1];
+            obj[key][index] = paramValue;
+          } else {
+            // otherwise add the value to the end of the array
+            obj[key].push(paramValue);
+          }
+        } else {
+          // we're dealing with a string
+          if (!obj[paramName]) {
+            // if it doesn't exist, create property
+            obj[paramName] = paramValue;
+          } else if (obj[paramName] && typeof obj[paramName] === 'string'){
+            // if property does exist and it's a string, convert it to an array
+            obj[paramName] = [obj[paramName]];
+            obj[paramName].push(paramValue);
+          } else {
+            // otherwise add the property
+            obj[paramName].push(paramValue);
+          }
+        }
+      }
+    }
+
+    return obj;
+  }
+
+  /* 
+   @ get page url params / load code params 
+  */
+
+  wally_fn._searchURLParam = function(p) {
+    var dataArray = (document.location.search).match(/(([a-z0-9\_\[\]]+\=[a-z0-9\_\.\%\@]+))/gi);
+    var r = [];
+    if(dataArray) {
+      for(var x in dataArray) {
+        if((dataArray[x]) && typeof(dataArray[x])=='string') {
+          if((dataArray[x].split('=')[0].toLowerCase()).replace(/\[\]$/ig,'') == p.toLowerCase()) {
+            r.push(unescape(dataArray[x].split('=')[1]));
+          }
+        }
+      }
+    }
+    return r;
   }
 
   /*
@@ -470,6 +572,7 @@ wally_fn.decodeHexPrivKey = function(key){
           name: 'Bitcoin',
           slug: 'bitcoin',
           symbol: 'BTC',
+          symbols: ['btc', 'bitcoin'],
           icon: './assets/images/crypto/bitcoin-btc-logo.svg',
           network: 'mainnet',
           supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
@@ -515,6 +618,7 @@ wally_fn.decodeHexPrivKey = function(key){
           name: 'Litecoin',
           slug: 'litecoin',
           symbol: 'LTC',
+          symbols: ['ltc', 'litecoin'],
           icon: './assets/images/crypto/litecoin-ltc-logo.svg',
           network: 'mainnet',
           supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
@@ -555,6 +659,7 @@ wally_fn.decodeHexPrivKey = function(key){
           name: 'Dogecoin',
           slug: 'dogecoin',
           symbol: 'DOGE',
+          symbols: ['doge', 'dogecoin'],
           icon: './assets/images/crypto/dogecoin-doge-logo.svg',
           network: 'mainnet',
           supports_address : ['compressed', 'uncompressed', 'segwit'],
@@ -593,6 +698,7 @@ wally_fn.decodeHexPrivKey = function(key){
           name: 'BitBay',
           slug: 'bitbay',
           symbol: 'BAY',
+          symbols: ['bay', 'bitbay'],
           icon: './assets/images/crypto/bitbay-bay-logo-purple.svg',
           network: 'mainnet',
           supports_address : ['compressed', 'uncompressed'],
@@ -628,6 +734,7 @@ wally_fn.decodeHexPrivKey = function(key){
           name: 'Blackcoin',
           slug: 'blackcoin',
           symbol: 'BLK',
+          symbols: ['blk', 'blackcoin'],
           icon: './assets/images/crypto/blackcoin-blk-logo.svg',
           network: 'mainnet',
           supports_address : ['compressed', 'uncompressed'],
@@ -661,6 +768,7 @@ wally_fn.decodeHexPrivKey = function(key){
           name: 'Lynx',
           slug: 'lynx',
           symbol: 'LYNX',
+          symbols: ['lynx'],
           icon: './assets/images/crypto/lynx-lynx-logo.svg',
           network: 'mainnet',
           supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
@@ -696,6 +804,7 @@ wally_fn.decodeHexPrivKey = function(key){
           name: 'Bitcoin',
           slug: 'bitcoin',
           symbol: 'tBTC',
+          symbols: ['btc', 'bitcoin'],
           icon: './assets/images/crypto/bitcoin-btc-logo.svg',
           network: 'testnet',
           supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
@@ -737,6 +846,7 @@ wally_fn.decodeHexPrivKey = function(key){
           name: 'Litecoin',
           slug: 'litecoin',
           symbol: 'tLTC',
+          symbols: ['ltc', 'litecoin'],
           icon: './assets/images/crypto/litecoin-ltc-logo.svg',
           network: 'testnet',
           supports_address : ['compressed', 'uncompressed'],
@@ -771,6 +881,7 @@ wally_fn.decodeHexPrivKey = function(key){
           name: 'Dogecoin',
           slug: 'dogecoin',
           symbol: 'tDOGE',
+          symbols: ['doge', 'dogecoin'],
           icon: './assets/images/crypto/dogecoin-doge-logo.svg',
           network: 'testnet',
           supports_address : ['compressed', 'uncompressed'],
