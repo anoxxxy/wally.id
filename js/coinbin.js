@@ -2193,7 +2193,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			if(!decode)
 				return false;
 			//if the transaction has no inputs: this is not a transaction!
-			if(!decode.ins.length && !decode.ins.length)	//iceeee add back
+			if(!decode.ins.length)	//iceeee add back
 				throw false;
 
 			$("#verifyTransactionData .transactionVersion").html(decode['version']);
@@ -2403,27 +2403,40 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 	}
 
 	function decodePubKey(){
-		var pubkey = $("#verifyScript").val();
+		console.log('===decodePubKey===')
+		var pubkey = $("#verifyScript").val().trim();
 		if(pubkey.length==66 || pubkey.length==130){
 			try {
+				console.log('correct format!')
 				$("#verifyPubKey .verifyDataSw").addClass('hidden');
 				$("#verifyPubKey .address").val(coinjs.pubkey2address(pubkey));
 				if(pubkey.length == 66){
-					var sw = coinjs.segwitAddress(pubkey);
-					$("#verifyPubKey .addressSegWit").val(sw.address);
-					$("#verifyPubKey .addressSegWitRedeemScript").val(sw.redeemscript);
 
-					var b32 = coinjs.bech32Address(pubkey);
-					$("#verifyPubKey .addressBech32").val(b32.address);
-					$("#verifyPubKey .addressBech32RedeemScript").val(b32.redeemscript);
 
-					$("#verifyPubKey .verifyDataSw").removeClass('hidden');
+					//check if other address types is supported!
+					if ( (coinjs.asset.supports_address).includes('segwit')) {
+						console.log('segwit support');
+						var sw = coinjs.segwitAddress(pubkey);
+						$("#verifyPubKey .addressSegWit").val(sw.address);
+						$("#verifyPubKey .addressSegWitRedeemScript").val(sw.redeemscript);
+						$("#verifyPubKey .verifyDataSw").removeClass('hidden');
+					}
+
+
+					if ( (coinjs.asset.supports_address).includes('bech32')) {
+						console.log('bech32 support');
+						var b32 = coinjs.bech32Address(pubkey);
+						$("#verifyPubKey .addressBech32").val(b32.address);
+						$("#verifyPubKey .addressBech32RedeemScript").val(b32.redeemscript);
+						$("#verifyPubKey .verifyDataBech32").removeClass('hidden');
+					}
+
 				}
 				$("#verifyPubKey").removeClass("hidden");
 
-
 				return true;
 			} catch (e) {
+				console.log('decodePubKey error: ', e);
 				return false;
 			}
 		} else {

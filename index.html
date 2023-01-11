@@ -95,7 +95,7 @@
     <!-- Custom Code -->
     <!-- Internal Wally DOM functions -->
     <script type="text/javascript" src="./assets/js/wally_kit.js"></script>
-    
+
     <script type="text/javascript" src="./assets/js/custom.js"></script>
     <script type="text/javascript" src="./assets/js/openwallet_formwizard.js"></script>
     
@@ -2899,18 +2899,23 @@
                         <input type="text" class="form-control addressSegWitRedeemScript" readonly>
                       </div>
                     </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="callout-title text-muted text-primary">Bech32 Address</div>
-                        <input type="text" class="form-control addressBech32" readonly>
+
+                    <div class="hidden verifyDataBech32">
+                      <hr>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="callout-title text-muted text-primary">Bech32 Address</div>
+                          <input type="text" class="form-control addressBech32" readonly>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="callout-title text-muted text-primary">Bech32 Redeem Script</div>
+                          <input type="text" class="form-control addressBech32RedeemScript" readonly>
+                        </div>
                       </div>
-                      <div class="col-md-6">
-                        <div class="callout-title text-muted text-primary">Bech32 Redeem Script</div>
-                        <input type="text" class="form-control addressBech32RedeemScript" readonly>
-                      </div>
+
+                      <br>
                     </div>
-                    <br>
+
                   </div>
                 </div>
                 <div class="hidden verifyData" id="verifyHDaddress">

@@ -680,15 +680,15 @@ wally_fn.decodeHexPrivKey = function(key){
         priv : 0x9e,     //wif
         multisig : 0x16, //scriptHash
           hdkey : {'prv':0x089944e4, 'pub':0x0827421e},
-          //bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'},
-          bech32 : {},
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'doge'},
+          
           
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
-        txRBFTransaction: false,
+        txRBFTransaction: true,
         developer: 'iceeeee',
       },
       bitbay : {
@@ -905,7 +905,7 @@ wally_fn.decodeHexPrivKey = function(key){
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
-        txRBFTransaction: false,
+        txRBFTransaction: true,
         developer: 'iceeeee',
       },
     }
