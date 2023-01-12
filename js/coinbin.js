@@ -759,11 +759,31 @@ profile_data = {
 
 	/* new -> time locked code */
 
+	
+	//$("#timeLockedDateTimePicker .flatpickr").flatpickr({
+	$("#newTimeLocked .flatpickr").flatpickr({
+		//optional_config
+		//format: "MM/DD/YYYY HH:mm",
+		defaultHour: 0,
+		defaultMinute: 0,
+		allowInvalidPreload: true,
+		/*allowInput: true,*/
+		minDate: "today",
+		enableTime: true,
+    	time_24hr: true,
+    	dateFormat: "m/d/Y H:i",
+    	allowInvalidPreload: true,
+    	wrap: true,
+
+    	//appendTo: $('#timeLockedDateTimePicker .flatpickr'),
+	});
+	
 	/*
 	$('#timeLockedDateTimePicker').datetimepicker({
 		format: "MM/DD/YYYY HH:mm",
 	});
 	*/
+	
 	
 	$('#timeLockedRbTypeBox input').change(function(){
 		if ($('#timeLockedRbTypeDate').is(':checked')){
@@ -790,18 +810,43 @@ profile_data = {
 
         if ($('#timeLockedRbTypeDate').is(':checked')){
         	// by date
-	        var date = $('#timeLockedDateTimePicker').data("DateTimePicker").date();
+	        var date = parseInt(Math.floor(new Date($('#timeLockedDateTimePicker input.flatpickr-input').val()).getTime() / 1000));	//make it unix timestamp
+	        var date = new Date($('#timeLockedDateTimePicker input.flatpickr-input').val());
+	        /*
 	        if(!date || !date.isValid()) {
 	        	$('#timeLockedDateTimePicker').parent().addClass('has-error');
 	        }
-	        nLockTime = date.unix()
+	        */
+
+	        //https://stackoverflow.com/a/1353711
+	        if (Object.prototype.toString.call(date) === "[object Date]") {
+			  if (isNaN(date)) { // d.getTime() or d.valueOf() will also work
+			    // date object is not valid
+			    $('#timeLockedDateTimePicker').parent().addClass('has-error');
+			    $('#timeLockedDateTimePicker input.flatpickr-input').addClass('is-invalid').removeClass('is-valid');
+			  } else {
+			    // date object is valid
+			    $('#timeLockedDateTimePicker').parent().removeClass('has-error');
+			  	$('#timeLockedDateTimePicker input.flatpickr-input').removeClass('is-invalid').addClass('is-valid');
+			  }
+			} else {
+			  // not a date object
+			  $('#timeLockedDateTimePicker').parent().addClass('has-error');
+			  $('#timeLockedDateTimePicker input.flatpickr-input').addClass('is-invalid').removeClass('is-valid');
+			}
+
+
+			  
+	        nLockTime = parseInt(Math.floor(date.getTime()) / 1000);
 	        if (nLockTime < 500000000) {
 	        	$('#timeLockedDateTimePicker').parent().addClass('has-error');
+	        	$('#timeLockedDateTimePicker input.flatpickr-input').addClass('is-invalid').removeClass('is-valid');
 	        }
         } else {
 			nLockTime = parseInt($('#timeLockedBlockHeightVal').val(), 10);
 	        if (nLockTime >= 500000000) {
 	        	$('#timeLockedDateTimePicker').parent().addClass('has-error');
+	        	$('#timeLockedDateTimePicker input.flatpickr-input').addClass('is-invalid').removeClass('is-valid');
 	        }
         }
 
@@ -1950,7 +1995,15 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
           dataType: "text", //"json",
           error: function(data, status, error) {
             
-            var dataJson = $.parseJSON((data.responseText).split('\n', 1)[0]);	//get the first line
+            var dataJson, r = 'Failed to broadcast!<br>';
+            try {
+            	dataJson = $.parseJSON((data.responseText).split('\n', 1)[0]);	//get the first line
+            	r += 'Error: '+dataJson.error.code+"<br>";
+	            r += 'Message: '+dataJson.error.message;
+	            r += '<br><div class="alert alert-light">'+data.responseText+'</div>';
+            } catch (e) {
+            	dataJson = ((data.responseText).split('\n', 1)[0]);	//get the first line
+            }
             //var data = data.responseText;
             /*
             //console.log('broadcast cryptoid: error');
@@ -1966,10 +2019,9 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
             	console.log('Failed to broadcast!');
             }
             */
-            var r = 'Failed to broadcast!<br>';
-            r += 'Error: '+dataJson.error.code+"<br>";
-            r += 'Message: '+dataJson.error.message;
-            r += '<br><div class="alert alert-light">'+data.responseText+'</div>';
+            
+
+            
 
             $("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
           },
@@ -2190,10 +2242,10 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		try {
 			var decode = tx.deserialize($("#verifyScript").val());
 			console.log('decode: ', decode);
-			if(!decode)
+			if (!decode)
 				return false;
 			//if the transaction has no inputs: this is not a transaction!
-			if(!decode.ins.length)	//iceeee add back
+			if (!decode.ins.length)	//iceeee add back
 				throw false;
 
 			$("#verifyTransactionData .transactionVersion").html(decode['version']);
@@ -2223,7 +2275,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			if (decode.witness.length>=1) {
 				$("#verifyTransactionData .transactionSegWit").show();
 			}
-			$("#verifyTransactionData").removeClass("hidden");
+			
 			$("#verifyTransactionData tbody").html("");
 
 			//add lock time information to the user
@@ -2302,6 +2354,10 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 					h += '</tr>';
 				}
 			});
+
+			$("#verifyTransactionData").removeClass("hidden");
+
+
 			$(h).appendTo("#verifyTransactionData .outs tbody");
 
 			console.log('return decodeTransactionScript');

@@ -249,7 +249,9 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
 
     try {
       console.log('key before: '+ key);
-      
+
+      if(key.length > 78) //highest possible decimal length for last crypto address
+        return false;
 
       //use max safe integer to determine if key is valid
       if (key <= 9007199254740991 )//Number.MAX_SAFE_INTEGER
@@ -361,7 +363,9 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
     */
     try {
       
-      
+      if(h.length > 78) //highest possible decimal length for last crypto address
+        return false;
+
       //convert decimal to hex if needed
       console.log('h before: '+h)
       if(this.isDecimal(h)){
@@ -800,6 +804,7 @@ wally_fn.decodeHexPrivKey = function(key){
         symbol: 'POT',      //ticker
         asset: {
           name: 'PotCoin',
+          version: 4,
           slug: 'potcoin',
           symbol: 'POT',
           symbols: ['pot', 'potcoin'],
@@ -815,14 +820,20 @@ wally_fn.decodeHexPrivKey = function(key){
             }
           }
         },
+        /*oinjs_multisig").value = "0x5";
+        
         pub : 55,      //pubKeyHash
-        priv : 183,     //wif
+        priv : 183,     //wif, or is it 189??
         multisig : 5, //scriptHash
+        */
+        pub : 0x37,      //pubKeyHash
+        priv : 0xb7,     //wif
+        multisig : 0x05, //scriptHash
           hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
           bech32 : {},
           //magic: hex('fbc0b6db'),
           
-        txExtraTimeField: true,    //Set to true for PoS coins
+        txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
@@ -899,7 +910,7 @@ wally_fn.decodeHexPrivKey = function(key){
         priv : 0xef,     //wif
         multisig : 0xc4, //scriptHash
           hdkey : {'prv':0x04358394, 'pub':0x043587cf},
-          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'},
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'litecointestnet'},
           
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
@@ -919,7 +930,7 @@ wally_fn.decodeHexPrivKey = function(key){
           symbols: ['doge', 'dogecoin'],
           icon: './assets/images/crypto/dogecoin-doge-logo.svg',
           network: 'testnet',
-          supports_address : ['compressed', 'uncompressed'],
+          supports_address : ['compressed', 'uncompressed', 'segwit'],
           api : {
             unspent_outputs: {
               'Chain.so': 'DOGETEST',
@@ -933,7 +944,7 @@ wally_fn.decodeHexPrivKey = function(key){
         priv : 0xf1,     //wif
         multisig : 0xc4, //scriptHash
           hdkey : {'prv':0x04358394, 'pub':0x043587cf},
-          bech32 : {},
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'litecointestnet'},
           
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,

@@ -1078,7 +1078,8 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 	coinjs.transaction = function() {
 
 		var r = {};
-		r.version = 1;
+		//r.version = 1;
+		r.version = (coinjs.asset.version !== undefined ? coinjs.asset.version : 1);
 		r.lock_time = 0;
 		r.ins = [];
 		r.outs = [];
