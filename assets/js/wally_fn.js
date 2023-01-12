@@ -795,6 +795,41 @@ wally_fn.decodeHexPrivKey = function(key){
         txRBFTransaction: false,
         developer: 'iceeeee',
       },
+      potcoin : {
+        coinName: 'PotCoin',
+        symbol: 'POT',      //ticker
+        asset: {
+          name: 'PotCoin',
+          slug: 'potcoin',
+          symbol: 'POT',
+          symbols: ['pot', 'potcoin'],
+          icon: './assets/images/crypto/potcoin-pot-logo.svg',
+          network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed'],
+          api : {
+            unspent_outputs: {
+              'Cryptoid.info': 'pot'
+            },
+            broadcast: {
+              'Cryptoid.info': 'pot'
+            }
+          }
+        },
+        pub : 55,      //pubKeyHash
+        priv : 183,     //wif
+        multisig : 5, //scriptHash
+          hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
+          bech32 : {},
+          //magic: hex('fbc0b6db'),
+          
+        txExtraTimeField: true,    //Set to true for PoS coins
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:8,
+        txRBFTransaction: false,
+        developer: 'iceeeee',
+      },
     },
     testnet : {
       bitcoin : {
