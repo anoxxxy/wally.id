@@ -825,6 +825,15 @@ wally_fn.decodeHexPrivKey = function(key){
         pub : 55,      //pubKeyHash
         priv : 183,     //wif, or is it 189??
         multisig : 5, //scriptHash
+
+
+    // template matching params
+    https://github.com/potcoin/potcoin/blob/master/src/script.h#L206
+    https://github.com/potcoin/PotcoinJS/blob/master/potcoinjs-lib/src/networks.js
+    OP_SMALLINTEGER = 0xfa,
+    OP_PUBKEYS = 0xfb,
+    OP_PUBKEYHASH = 0xfd,
+    OP_PUBKEY = 0xfe,
         */
         pub : 0x37,      //pubKeyHash
         priv : 0xb7,     //wif

@@ -221,7 +221,7 @@ profile_data = {
 			$("#openLoginStatus").html("Your email address doesn't appear to be valid").removeClass("hidden").fadeOut().fadeIn();
 		}
 
-		$("#openLoginStatus").prepend('<span class="glyphicon glyphicon-exclamation-sign"></span> ');
+		$("#openLoginStatus").prepend('<i class="bi bi-exclamation-triangle-fill"></i> ');
 	});
 
 	$("#walletLogout").click(function(){
@@ -426,7 +426,7 @@ profile_data = {
 			}
 		} else {
 			$("#walletSpend .has-error").fadeOut().fadeIn();
-			$("#walletSendStatus").removeClass("hidden").html('<span class="glyphicon glyphicon-exclamation-sign"></span> One or more input has an error');
+			$("#walletSendStatus").removeClass("hidden").html('<i class="bi bi-exclamation-triangle-fill"></i> One or more input has an error');
 		}
 	});
 
@@ -622,10 +622,10 @@ profile_data = {
 				$("#multiSigData").removeClass('hidden').addClass('show').fadeIn();
 				$("#releaseCoins").removeClass('has-error');
 			} else {
-				$("#multiSigErrorMsg").html('<span class="glyphicon glyphicon-exclamation-sign"></span> Your generated redeemscript is too large (>520 bytes) it can not be used safely').fadeIn();
+				$("#multiSigErrorMsg").html('<i class="bi bi-exclamation-triangle-fill"></i> Your generated redeemscript is too large (>520 bytes) it can not be used safely').fadeIn();
 			}
 		} else {
-			$("#multiSigErrorMsg").html('<span class="glyphicon glyphicon-exclamation-sign"></span> One or more public key is invalid!').fadeIn();
+			$("#multiSigErrorMsg").html('<i class="bi bi-exclamation-triangle-fill"></i> One or more public key is invalid!').fadeIn();
 		}
 	});
 
@@ -758,12 +758,7 @@ profile_data = {
 	});
 
 	/* new -> time locked code */
-
-	
-	//$("#timeLockedDateTimePicker .flatpickr").flatpickr({
-	$("#newTimeLocked .flatpickr").flatpickr({
-		//optional_config
-		//format: "MM/DD/YYYY HH:mm",
+	$("#timeLockedDateTimePicker.flatpickr").flatpickr({
 		defaultHour: 0,
 		defaultMinute: 0,
 		allowInvalidPreload: true,
@@ -777,12 +772,6 @@ profile_data = {
 
     	//appendTo: $('#timeLockedDateTimePicker .flatpickr'),
 	});
-	
-	/*
-	$('#timeLockedDateTimePicker').datetimepicker({
-		format: "MM/DD/YYYY HH:mm",
-	});
-	*/
 	
 	
 	$('#timeLockedRbTypeBox input').change(function(){
@@ -862,10 +851,10 @@ profile_data = {
 
 	            $("#timeLockedData").removeClass('hidden').addClass('show').fadeIn();
 	        } catch(e) {
-	        	$("#timeLockedErrorMsg").html('<span class="glyphicon glyphicon-exclamation-sign"></span> ' + e).fadeIn();
+	        	$("#timeLockedErrorMsg").html('<i class="bi bi-exclamation-triangle-fill"></i> ' + e).fadeIn();
 	        }
         } else {
-            $("#timeLockedErrorMsg").html('<span class="glyphicon glyphicon-exclamation-sign"></span> Public key and/or date is invalid!').fadeIn();
+            $("#timeLockedErrorMsg").html('<i class="bi bi-exclamation-triangle-fill"></i> Public key and/or date is invalid!').fadeIn();
         }
     });
 
@@ -899,23 +888,53 @@ profile_data = {
 
 	$("#recipients .addressAddTo").click(function(){
 		if($("#recipients .addressRemoveTo").length<19){
-			var clone = '<div class="row no-gutter py-2 recipient">'+$(this).parent().parent().html()+'</div>';
+			var clone = '<div class="row no-gutter hidden py-2 recipient">'+$(this).parent().parent().html()+'</div>';
 			$("#recipients").append(clone);
+
+			$('#recipients .row:last-child').removeClass('hidden').velocity('slideDown', { duration: 200 });
+
+
 			$("#recipients .bi-plus:last").removeClass('bi-plus').addClass('bi-dash');
-			$("#recipients .bi-dash:last").parent().removeClass('addressAdd').addClass('addressRemoveTo');
+			$("#recipients .bi-dash:last").parent().removeClass('addressAddTo').addClass('addressRemoveTo');
+			/*
 			$("#recipients .addressRemoveTo").unbind("");
 			$("#recipients .addressRemoveTo").click(function(){
 				$(this).parent().parent().fadeOut().remove();
 				validateOutputAmount();
 			});
-			validateOutputAmount();
+			*/
+
+			//validateOutputAmount();
 		}
 	});
 
+	$("body").on("click", "#recipients .addressRemoveTo", function(e){
+	//$("#recipients .addressRemoveTo").click(function(){
+		var thisRowParent = $(this).parent().parent();
+		
+		thisRowParent.velocity(
+				  "slideUp",	//transition.slideUpIn
+				  { 
+				    duration: 200,
+				    complete: function() {
+				      console.log("animation complete")
+				      thisRowParent.remove();
+
+				    }
+				  });
+
+		validateOutputAmount();
+
+	});
+
+				
+
+
+
 	$("#inputs .txidAdd").click(function(){
-		var clone = '<div class="row no-gutter inputs">'+$(this).parent().parent().html()+'</div>';
+		var clone = '<div class="row no-gutter py-2 inputs">'+$(this).parent().parent().html()+'</div>';
 		$("#inputs").append(clone);
-		$("#inputs .txidClear:last").remove();
+		//$("#inputs .txidClear:last").remove();
 		$("#inputs .bi-plus:last").removeClass('bi-plus').addClass('bi-dash');
 		$("#inputs .bi-dash:last").parent().removeClass('txidAdd').addClass('txidRemove');
 		$("#inputs .txidRemove").unbind("");
@@ -1205,6 +1224,7 @@ profile_data = {
 	/* redeem from button code */
 
 	$("#redeemFromBtn").click(function(){
+		console.log('miauu');
 		var redeemEl = $("#redeemFrom");
 		var redeemValue = redeemEl.val().trim();
 		redeemEl.val(redeemValue);
@@ -1219,12 +1239,12 @@ profile_data = {
 		$('#putTabs a[href="#txoutputs"]').removeClass('text-danger');
 
 		if(redeem.from=='multisigAddress'){
-			$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> You should use the redeem script, not its address!');
+			$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> You should use the redeem script, not its address!');
 			return false;
 		}
 
 		if(redeem.from=='other'){
-			$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> The address or redeem script you have entered is invalid');
+			$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> The string you have entered is invalid, sorry...');
 			return false;
 		}
 
@@ -1443,7 +1463,7 @@ profile_data = {
 		if(redeem.from == 'txid'){
 			tx.getTransaction(redeem.addr, function(data){
 
-				$("#redeemFromAddress").removeClass('hidden').html('<span class="glyphicon glyphicon-info-sign"></span> Attempted to rebuild transaction id <a href="'+explorer_tx+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
+				$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Attempted to rebuild transaction id <a href="'+explorer_tx+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
 
 				$.each($(data).find("inputs").children(), function(i,o){
 					var tx = $(o).find("txid").text();
@@ -1477,7 +1497,7 @@ profile_data = {
 
 		tx.listUnspent(redeem.addr, function(data){
 			if(redeem.addr) {
-				$("#redeemFromAddress").removeClass('hidden').html('<span class="glyphicon glyphicon-info-sign"></span> Retrieved unspent inputs from address <a href="'+explorer_addr+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
+				$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="'+explorer_addr+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
 
 				$.each($(data).find("unspent").children(), function(i,o){
 					var tx = $(o).find("tx_hash").text();
@@ -1512,11 +1532,11 @@ profile_data = {
 			url: apiUrl,
 			dataType: "json",
 			error: function(data) {
-				$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs!');
+				$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs!');
 			},
 			success: function(data) {
 				if (data.address) { // address field will always be present, txrefs is only present if there are UTXOs
-					$("#redeemFromAddress").removeClass('hidden').html('<span class="glyphicon glyphicon-info-sign"></span> Retrieved unspent inputs from address <a href="https://live.blockcypher.com/'+network+'/address/'+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
+					$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="https://live.blockcypher.com/'+network+'/address/'+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
 					for(var i in data.txrefs){
 						var o = data.txrefs[i];
 						var tx = ((""+o.tx_hash).match(/.{1,2}/g).reverse()).join("")+'';
@@ -1528,7 +1548,7 @@ profile_data = {
 						}
 					}
 				} else {
-					$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs.');
+					$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs.');
 				}
 			},
 			complete: function(data, status) {
@@ -1568,12 +1588,12 @@ profile_data = {
 			url: apiUrl,
 			dataType: "json",
 			error: function(data) {
-				$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs! <div class="alert alert-light">'+data.responseJSON.context.error+' </div>');
+				$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs! <div class="alert alert-light">'+data.responseJSON.context.error+' </div>');
 				console.log('erro: ', data.responseJSON.context.error);
 			},
 			success: function(data) {
 				if((data.context && data.data) && data.context.code =='200'){
-					$("#redeemFromAddress").removeClass('hidden').html('<span class="glyphicon glyphicon-info-sign"></span> Retrieved unspent inputs from address <a href="'+explorer_addr+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
+					$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="'+explorer_addr+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
 					var all_info = data.data[redeem.addr];
 					for(var i in all_info.utxo){
 						var o = all_info.utxo[i];
@@ -1586,7 +1606,7 @@ profile_data = {
 						}
 					}
 				} else {
-					$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs. <div class="alert alert-light">'+data.context.error+' </div>');
+					$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs. <div class="alert alert-light">'+data.context.error+' </div>');
 				}
 			},
 			complete: function(data, status) {
@@ -1606,11 +1626,11 @@ profile_data = {
 			url: "https://chain.so/api/v2/get_tx_unspent/"+network+"/"+redeem.addr,
 			dataType: "json",
 			error: function(data) {
-				$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs!');
+				$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs!');
 			},
 			success: function(data) {
 				if((data.status && data.data) && data.status=='success'){
-					$("#redeemFromAddress").removeClass('hidden').html('<span class="glyphicon glyphicon-info-sign"></span> Retrieved unspent inputs from address <a href="https://chain.so/address/'+network+'/'+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
+					$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="https://chain.so/address/'+network+'/'+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
 					for(var i in data.data.txs){
 						var o = data.data.txs[i];
 						var tx = ((""+o.txid).match(/.{1,2}/g).reverse()).join("")+'';
@@ -1622,7 +1642,7 @@ profile_data = {
 						}
 					}
 				} else {
-					$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs.');
+					$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs.');
 				}
 			},
 			complete: function(data, status) {
@@ -1724,11 +1744,11 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 			url: "https://chain.so/api/v2/get_tx_unspent/"+network+"/"+redeem.addr,
 			dataType: "json",
 			error: function(data) {
-				$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs!');
+				$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs!');
 			},
 			success: function(data) {
 				if (data.length) {	//unspent is in an array, so if empty then wallet is empty
-					$("#redeemFromAddress").removeClass('hidden').html('<span class="glyphicon glyphicon-info-sign"></span> Retrieved unspent inputs from address <a href="'+explorer_addr+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
+					$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="'+explorer_addr+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
 
 					for(var i in data){
 						var o = data[i];
@@ -1744,11 +1764,11 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 					}
 
 				} else {
-					$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs.');
+					$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs.');
 				}
 
 				if((data.status && data.data) && data.status=='success'){
-					$("#redeemFromAddress").removeClass('hidden').html('<span class="glyphicon glyphicon-info-sign"></span> Retrieved unspent inputs from address <a href="'+explorer_addr+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
+					$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="'+explorer_addr+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
 					for(var i in data.data.txs){
 						var o = data.data.txs[i];
 						var tx = ((""+o.txid).match(/.{1,2}/g).reverse()).join("")+'';
@@ -1760,7 +1780,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 						}
 					}
 				} else {
-					$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs.');
+					$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs.');
 				}
 			},
 			complete: function(data, status) {
@@ -1781,11 +1801,11 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 		  url: "https://blockchain.info/unspent?active="+ redeem.addr,
 		  dataType: "json",
 		  error: function() {
-			$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs! blk test function error');
+			$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs! blk test function error');
 		  },
 		  success: function(data) {
 			//if($(data).find("unspent_outputs").text()==1){
-			  $("#redeemFromAddress").removeClass('hidden').html('<span class="glyphicon glyphicon-info-sign"></span> Retrieved unspent inputs from address <a href="https://www.blockchain.com/explorer/addresses/'+network+'/'+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
+			  $("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="https://www.blockchain.com/explorer/addresses/'+network+'/'+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
 
 				for(i = 0; i < data.unspent_outputs.length; ++i){
 						var o = data.unspent_outputs[i];
@@ -1816,11 +1836,11 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 		  url: "https://chainz.cryptoid.info/"+network+"/api.dws?key=1205735eba8c&q=unspent&active="+ redeem.addr,
 		  dataType: "json",
 		  error: function() {
-			$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs! blk test function error');
+			$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs! blk test function error');
 		  },
 		  success: function(data) {
 			//if($(data).find("unspent_outputs").text()==1){
-			  $("#redeemFromAddress").removeClass('hidden').html('<span class="glyphicon glyphicon-info-sign"></span> Retrieved unspent inputs from address <a href="https://chainz.cryptoid.info/'+network+'/address.dws?'+redeem.addr+'.htm" target="_blank">'+redeem.addr+'</a>');
+			  $("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="https://chainz.cryptoid.info/'+network+'/address.dws?'+redeem.addr+'.htm" target="_blank">'+redeem.addr+'</a>');
 
 				for(i = 0; i < data.unspent_outputs.length; ++i){
 						var o = data.unspent_outputs[i];
@@ -1848,43 +1868,63 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 	/* math to calculate the inputs and outputs */
 
 	function totalInputAmount(){
-		$("#totalInput").html('0.00');
+		console.log('===totalInputAmount===');
+		$("#totalInput").text('0.00');
+		var ia =0;
 		$.each($("#inputs .txIdAmount"), function(i,o){
-			if(isNaN($(o).val())){
+			ia = $(o).val()*1
+			if(isNaN(ia)){
 				$(o).parent().addClass('has-error');
+				$(o).addClass('is-invalid');
 			} else {
 				$(o).parent().removeClass('has-error');
+				$(o).removeClass('is-invalid');
 				var f = 0;
-				if(!isNaN($(o).val())){
-					f += $(o).val()*1;
+				if(!isNaN(ia)){
+					f += ia*1;
 				}
-				$("#totalInput").html((($("#totalInput").html()*1) + (f*1)).toFixed(8));
+				$("#totalInput").text((($("#totalInput").text()*1) + (f)).toFixed(8));
 			}
 		});
 		totalFee();
 	}
 
 	function validateOutputAmount(){
-		$("#recipients .amount").unbind('');
+		console.log('===validateOutputAmount===');
+		
 		$("#recipients .amount").keyup(function(){
 			if(isNaN($(this).val())){
 				$(this).parent().addClass('has-error');
+				$(this).addClass('is-invalid');
 			} else {
 				$(this).parent().removeClass('has-error');
+				$(this).removeClass('is-invalid');
 				var f = 0;
 				$.each($("#recipients .amount"),function(i,o){
 					if(!isNaN($(o).val())){
 						f += $(o).val()*1;
 					}
 				});
-				$("#totalOutput").html((f).toFixed(8));
+				$("#totalOutput").text((f).toFixed(8));
 			}
 			totalFee();
 		}).keyup();
 	}
 
+	$("body").on("keyup", "#recipients .address", function(e){
+		//$("#recipients .address").keyup(function(){
+		/*if (wally_fn.isHex($(this).val()))
+			$(this).removeClass('is-invalid');
+		else
+			$(this).addClass('is-invalid');
+		*/
+	});
+
 	function totalFee(){
-		var fee = (($("#totalInput").html()*1) - ($("#totalOutput").html()*1)).toFixed(8);
+		console.log('===totalFee===');
+		var fee = (($("#totalInput").text()*1) - ($("#totalOutput").text()*1)).toFixed(8);
+		console.log('insAmount:'+$("#totalInput").text()*1);
+		console.log('outsAmount:'+$("#totalOutput").text()*1);
 		$("#transactionFee").val((fee>0)?fee:'0.00');
 	}
 
@@ -1925,14 +1965,14 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 			data: {'rawtx':$("#rawTransaction").val()},
 			dataType: "xml",
 			error: function(data) {
-				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(" There was an error submitting your request, please try again").prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(" There was an error submitting your request, please try again").prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
 			},
               success: function(data) {
 				$("#rawTransactionStatus").html(unescape($(data).find("response").text()).replace(/\+/g,' ')).removeClass('hidden');
 				if($(data).find("result").text()==1){
 					$("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden").html('Your transaction was sent!<br> TXID: ' + $(data).find("txid").text() + '<br> <a href="https://coinb.in/tx/' + $(data).find("txid").text() + '" target="_blank">View on Blockchain</a>');
 				} else {
-					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').prepend('<span class="glyphicon glyphicon-exclamation-sign"></span> ');
+					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').prepend('<i class="bi bi-exclamation-triangle-fill"></i> ');
 				}
 			},
 			complete: function(data, status) {
@@ -1955,13 +1995,13 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 				var r = ' ';
 				r += (obj.data.tx_hex) ? obj.data.tx_hex : '';
 				r = (r!='') ? r : ' Failed to broadcast'; // build response 
-				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
 			},
                         success: function(data) {
 				if(data.status && data.data.txid){
 					$("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden").html(' TXID: ' + data.data.txid + '<br> <a href="https://chain.so/tx/'+network+'/' + data.data.txid + '" target="_blank">View on Blockchain Explorer</a>');
 				} else {
-					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
 				}				
 			},
 			complete: function(data, status) {
@@ -2023,7 +2063,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 
             
 
-            $("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+            $("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
           },
             success: function(data) {
             
@@ -2036,7 +2076,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 			if(txid){
               $("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden").html(' TXID: ' + txid + '<br> <a href="https://chainz.cryptoid.info/'+network+'/tx.dws?'+txid+'.htm" target="_blank">View on Blockchain Explorer</a>');
             } else {
-              $("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+              $("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
             }
           },
           complete: function(data, status) {
@@ -2074,7 +2114,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 			error: function(data) {
 				console.log('Blockstream error data: ', data);
 				var r = 'Failed to broadcast: error code=' + data.status.toString() + ' ' + data.statusText;
-				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
 			},
             success: function(data) {
             	console.log('Blockstream success data: ', data);
@@ -2083,7 +2123,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 					$("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden")
                     .html(' TXID: ' + txid + '<br> <a href="https://live.blockcypher.com/tx/' + txid + '" target="_blank">View on Blockchain Explorer</a>');
 				} else {
-					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
 				}
 			},
 			complete: function(data, status) {
@@ -2105,14 +2145,14 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 			data: JSON.stringify({"tx":$("#rawTransaction").val()}),
 			error: function(data) {
 				var r = 'Failed to broadcast: error code=' + data.status.toString() + ' ' + data.statusText;
-				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
 			},
                         success: function(data) {
 				if((data.tx) && data.tx.hash){
 					$("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden")
                     .html(' TXID: ' + data.tx.hash + '<br> <a href="https://live.blockcypher.com/'+network+'/tx/' + data.tx.hash + '" target="_blank">View on Blockchain Explorer</a>');
 				} else {
-					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
 				}
 			},
 			complete: function(data, status) {
@@ -2132,7 +2172,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
                         dataType: "json",
                         error: function(data) {
 				var r = 'Failed to broadcast: error code=' + data.status.toString() + ' ' + data.statusText;
-				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
 			//	console.error(JSON.stringify(data, null, 4));
                         },
                         success: function(data) {
@@ -2141,7 +2181,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 					$("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden")
                     .html(' TXID: ' + data.data.transaction_hash + '<br> <a href="https://blockchair.com/'+network+'/transaction/' + data.data.transaction_hash + '" target="_blank">View on Blockchain Explorer</a>');
 				} else {
-					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
 				}
 			},
 			complete: function(data, status) {
@@ -2844,7 +2884,8 @@ document.addEventListener('click', function (event) {
 
 	
 	//handles page tab content navigation
-	$('a').on('click', function(e) {
+	$('a[data-pagescroll="page_tab"]').on('click', function(e) {
+	//$('a').on('click', function(e) {
 		
 		
 		e.preventDefault();

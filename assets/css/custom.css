@@ -793,7 +793,9 @@ vertical-align: -8px;
 /*custom buttons*/
 
 .btn {
-box-shadow: 0 0 0 1px rgba(43,45,80,.1),0 2px 5px 0 rgba(43,45,80,.1),0 3px 9px 0 rgba(43,45,80,.08),0 1px 1.5px 0 rgba(0,0,0,.08),0 1px 2px 0 rgba(0,0,0,.08);
+/*box-shadow: 0 0 0 1px rgba(43,45,80,.1),0 2px 5px 0 rgba(43,45,80,.1),0 3px 9px 0 rgba(43,45,80,.08),0 1px 1.5px 0 rgba(0,0,0,.08),0 1px 2px 0 rgba(0,0,0,.08);*/
+box-shadow: -1px -1px 1px 0px rgba(43,45,80,.1),0 2px 5px 0 rgba(43,45,80,.1),0 3px 9px 0 rgba(43,45,80,.08),0 1px 1.5px 0 rgba(0,0,0,.08),0 1px 2px 0 rgba(0,0,0,.08);
+
 line-height: 1.5;
 font-size: 1rem;
 /*padding: 0.375rem;*/
@@ -833,13 +835,21 @@ input.form-control, .input-group input, .input-group .input-group-append > span,
  transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 
 
-box-shadow: 0 0 0 1px rgba(43,45,80,.1),0 2px 5px 0 rgba(43,45,80,.1),0 3px 9px 0 rgba(43,45,80,.08),0 1px 1.5px 0 rgba(0,0,0,.08),0 1px 2px 0 rgba(0,0,0,.08);
+/*box-shadow: 0 0 0 1px rgba(43,45,80,.1),0 2px 5px 0 rgba(43,45,80,.1),0 3px 9px 0 rgba(43,45,80,.08),0 1px 1.5px 0 rgba(0,0,0,.08),0 1px 2px 0 rgba(0,0,0,.08);*/
+box-shadow: -1px -1px 1px 0px rgba(43,45,80,.1),0 2px 5px 0 rgba(43,45,80,.1),0 3px 9px 0 rgba(43,45,80,.08),0 1px 1.5px 0 rgba(0,0,0,.08),0 1px 2px 0 rgba(0,0,0,.08)
+
 
 
 }
+/*
+icee
+messing up inputs!
+*/
 .input-group > input {
+	/*
 	border-left: 0;
 	border-right: 0;
+	*/
 }
 
 
@@ -1425,6 +1435,32 @@ right: 10px;
 
 /*<<form wizard end*/
 
+.input-group.has-validation > .input-group-append:nth-last-child(n+3) > .btn, .input-group.has-validation > .input-group-append:nth-last-child(n+3) > .input-group-text, .input-group:not(.has-validation) > .input-group-append:not(:last-child) > .btn, .input-group:not(.has-validation) > .input-group-append:not(:last-child) > .input-group-text, .input-group > .input-group-append:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group > .input-group-append:last-child > .input-group-text:not(:last-child), .input-group > .input-group-prepend > .btn, .input-group > .input-group-prepend > .input-group-text
+
+{
+border-top-left-radius: 0.375rem;
+border-bottom-left-radius: 0.375rem;
+}
+
+.input-group > .input-group-append > .btn, .input-group > .input-group-append > .input-group-text, .input-group > .input-group-prepend:first-child > .btn:not(:first-child), .input-group > .input-group-prepend:first-child > .input-group-text:not(:first-child), .input-group > .input-group-prepend:not(:first-child) > .btn, .input-group > .input-group-prepend:not(:first-child) > .input-group-text {
+  border-top-left-radius: 0 !important;
+	border-bottom-left-radius: 0 !important;
+}
+
+.input-group:not(.has-validation) > .custom-file:not(:last-child) .custom-file-label, .input-group:not(.has-validation) > .custom-file:not(:last-child) .custom-file-label::after, .input-group:not(.has-validation) > .custom-select:not(:last-child), .input-group:not(.has-validation) > .form-control:not(:last-child) {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+
+}
+.input-group > .custom-select:not(:first-child), .input-group > .form-control:not(:first-child) {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.input-group .input-group-prepend:hover i,
+.input-group .input-group-append:hover i{
+	color: #a258cd;
+}
 
 /*form checkbox radio*/
 
@@ -2161,3 +2197,129 @@ width: 96%;
  box-shadow:0 0 0 .2rem rgba(115, 103, 240, 0.2)
 }
 
+
+.nav-tabs .nav-link {
+	border-top-left-radius: .375rem;
+	border-top-right-radius: .375rem;
+}
+
+
+
+.project-tab {
+}
+.project-tab #tabs{
+    background: #007b5e;
+    color: #eee;
+}
+
+.project-tab  .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #7367f0;
+    background-color: transparent;
+    border-color: transparent transparent #f3f3f3;
+    border-bottom: 3px solid !important;
+    font-size: 16px;
+    font-weight: bold;
+}
+.project-tab .nav-link {
+    border: 1px solid transparent;
+    
+    color: #AAA;
+    font-size: 16px;
+    font-weight: 600;
+}
+.project-tab .nav-link:hover {
+    border-color: transparent;
+}
+.project-tab a{
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+}
+
+/*responsive table, tabs, laptops and up*/
+
+@media (min-width: 576px) {
+
+}
+
+
+
+.cancelled {
+  color:red;
+  font-weight: bold;
+}
+
+/*mobile devices*/
+@media (max-width: 575px) {
+
+    table.table_flex thead {
+        display: none;
+    }
+
+    table.table_flex tr {
+        display: flex;
+        flex-direction: column;
+        border: 3px solid white;
+        padding: 1px;
+    }
+    table.table_flex td[data-table-label] {
+        display: flex;
+        font-weight: bold;
+    }
+
+    table.table_flex td[data-table-label]::before {
+        content: attr(data-table-label);
+        color: lightgrey;
+        font-weight: 100;
+        width: 50%;
+    }
+
+
+    /*inputs/outputs tab*/
+    .nav-link {
+		  display: block;
+		  padding: .5rem 0.5rem;
+		}
+
+		/*inputs*/
+		#inputs .row [class*="col"], 
+		#recipients .row [class*="col"]{
+		  padding-right: 5px;
+		  padding-left: 5px;
+		}
+		#inputs .row [class*="col"]:last-child, 
+		#recipients .row [class*="col"]:last-child {
+		  margin-right: 0;
+		  padding-right: 0;
+		  padding-left: 5px;
+		}
+		#inputs .row [class*="col"]:first-child, 
+		#recipients .row [class*="col"]:first-child {
+		  margin-left: 0;
+		  padding-right: 5px;
+		  padding-left: 0;
+		}
+
+		
+		#recipients .addressRemoveTo,
+		#recipients .addressAddTo,
+		#inputs .txidRemove,
+		#inputs .txidAdd {
+		  max-width: 24px;
+		  padding: 4px;
+		}
+		input.form-control, .input-group input, .input-group .input-group-append > span, .input-group .input-group-append > div, .input-group .input-group-prepend > span, .input-group .input-group-prepend > div {
+			padding-left: 0.3rem;
+			padding-right: 0.3rem;
+		}
+
+		#recipients div {
+			
+		}
+
+}
+
+.table-hover tbody tr:hover{
+	background-color: #f9f9f9;
+	color: #6c48af;
+}

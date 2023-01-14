@@ -25,7 +25,7 @@
     <link rel="icon" href="./assets/images/logo/favicon.svg" type="image/svg+xml">
     <!-- Icons and Fonts -->
     <link rel="stylesheet" href="./assets/css/icons/bootstrap-icons_v1.83.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="./assets/css/datetime-flatpickr.min.css">
     <link rel="stylesheet" href="./assets/css/waves.css" media="screen">
     <link rel="stylesheet" href="./assets/css/menu.css" media="screen">
     <link rel="stylesheet" href="./assets/css/animate.min.css" media="screen">
@@ -1198,7 +1198,7 @@
                   Your Keys, Your Crypto!
                 </h5>
                 <!-- Text -->
-                <p class="text-muted text-center mb-0">
+                <p class="text-muted text-center mb-0" >
                   Wally.id - The most powerful, non-custodial decentralized cold wallet that connects you to the crypto space!
                 </p>
               </div>
@@ -1978,7 +1978,7 @@
                       <div class="callout-title text-muted text-primary">Public Key <span class="pubkeyNumber">1</span></div>
                       <input type="text" class="form-control pubkey" placeholder="">
                     </div>
-                    <div class="col-auto col-auto d-flex flex-column-reverse">
+                    <div class="col-auto d-flex flex-column-reverse">
                       <a href="javascript:;" class="btn btn-flat-primary pubkeyAdd"><i class="bi bi-plus"></i></a>
                     </div>
                   </div>
@@ -2077,7 +2077,7 @@
                       <div id="timeLockedDateTimePicker" class="input-group date mb-3 flatpickr">
                         <input type="text" class="form-control" value="" placeholder="MM/DD/YYYY hh:mm" data-input>
                         <div class="input-group-append">
-                          <button id="redeemFromBtn" class="btn btn-flat-primary" type="button" data-toggle><i class="bi bi-calendar2-date-fill"></i> </button>
+                          <button class="form-control btn btn-flat-primary" type="button" data-toggle><i class="bi bi-calendar2-date-fill"></i> </button>
                         </div>
                       </div>
 
@@ -2161,11 +2161,11 @@
                 <b>Address, WIF key, Redeem Script or Transaction ID</b>:
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
-                    <button class="btn btn-light input-group-text qrcodeScanner" type="button" data-toggle="modal" data-target="#modalQrcodeScanner" forward-result="#redeemFrom"><i class="bi bi-camera-fill"></i></button>
+                    <button class=" btn btn-flat-primary input-group-text qrcodeScanner" type="button" data-toggle="modal" data-target="#modalQrcodeScanner" forward-result="#redeemFrom"><i class="bi bi-camera-fill"></i></button>
                   </div>
                   <input type="text" id="redeemFrom" class="form-control" value="" placeholder="Address, WIF key, Redeem Script or Transaction ID">
                   <div class="input-group-append">
-                    <button id="redeemFromBtn" class="btn btn-alt-primary" type="button">Load</button>
+                    <button id="redeemFromBtn" class="form-control btn btn-flat-primary" type="button">Load</button>
                   </div>
                 </div>
                 
@@ -2235,7 +2235,7 @@
     </div>
 
                
-                <div class="row no-gutters">
+                <div class="row no-gutters hidden iceeeee-remove">
                   <div class="col-12">
                     <div class="card mt-3 tab-card">
                       <div class="card-header tab-card-header">
@@ -2271,33 +2271,105 @@
                     </div>
                   </div>
                 </div>
-                <hr>
-                <br><br>
-                <ul class="nav nav-tabs" id="putTabs" role="tablist">
+
+<div class="row no-gutters hidden iceee-remove">
+                  <div class="col-12">
+<table class="table table-hover table_flex">
+                <thead>
+                    <tr>
+                        <th>Transaction ID:</th>
+                        <th>N</th>
+                        <th>Script</th>
+                        <th>Amount</th>
+                        <th>Add</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-table-label="Transaction ID"><input type="text" class="form-control txId" placeholder=""></td>
+                        <td data-table-label="N"><input type="text" class="form-control txIdN" placeholder="0"></td>
+                        <td data-table-label="Script"><input type="text" class="form-control txIdScript"></td>
+                        <td data-table-label="Amount"><input type="text" class="form-control txIdAmount" placeholder="0.00"></td>
+                        <td data-table-label="Status">
+                          <a href="javascript:;" class="txidAdd"><i class="bi bi-plus"></i></a>
+                          <a href="javascript:;" class="txidClear"><i class="bi bi-dash"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-table-label="Transaction ID"><input type="text" class="form-control txId" placeholder=""></td>
+                        <td data-table-label="N"><input type="text" class="form-control txIdN" placeholder="0"></td>
+                        <td data-table-label="Script"><input type="text" class="form-control txIdScript"></td>
+                        <td data-table-label="Amount"><input type="text" class="form-control txIdAmount" placeholder="0.00"></td>
+                        <td data-table-label="Status">
+                          <a href="javascript:;" class="txidAdd"><i class="bi bi-plus"></i></a>
+                          <a href="javascript:;" class="txidClear"><i class="bi bi-dash"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-table-label="Transaction ID"><input type="text" class="form-control txId" placeholder=""></td>
+                        <td data-table-label="N"><input type="text" class="form-control txIdN" placeholder="0"></td>
+                        <td data-table-label="Script"><input type="text" class="form-control txIdScript"></td>
+                        <td data-table-label="Amount"><input type="text" class="form-control txIdAmount" placeholder="0.00"></td>
+                        <td data-table-label="Status">
+                          <a href="javascript:;" class="txidAdd"><i class="bi bi-plus"></i></a>
+                          <a href="javascript:;" class="txidClear"><i class="bi bi-dash"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-table-label="Transaction ID"><input type="text" class="form-control txId" placeholder=""></td>
+                        <td data-table-label="N"><input type="text" class="form-control txIdN" placeholder="0"></td>
+                        <td data-table-label="Script"><input type="text" class="form-control txIdScript"></td>
+                        <td data-table-label="Amount"><input type="text" class="form-control txIdAmount" placeholder="0.00"></td>
+                        <td data-table-label="Status">
+                          <a href="javascript:;" class="txidAdd"><i class="bi bi-plus"></i></a>
+                          <a href="javascript:;" class="txidClear"><i class="bi bi-dash"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+</div></div>
+
+                <br>
+                <ul class="nav nav-tabs project-tab d-flex flex-row justify-content-between" id="putTabs" role="tablist">
                   <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#txoutputs" role="tab" aria-controls="txoutputs" aria-selected="true">Outputs</a>
+                    
+                    
+                      <a class="nav-link active" data-toggle="tab" href="#txoutputs" role="tab" aria-controls="txoutputs" aria-selected="true">
+                        <div>Outputs</div>
+                          <div class="text-muted text-primary"> <small>(<span id="totalOutput">0.00000000</span>)</small></div>
+                      </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#txinputs" role="tab" aria-controls="txinputs" aria-selected="false">Inputs <small>(<span id="totalInput">0.00000000</span>)</small></a>
+                    
+                    
+                      <a class="nav-link" data-toggle="tab" href="#txinputs" role="tab" aria-controls="txinputs" aria-selected="false">
+                        
+                          <div>Inputs </div>
+                          <div class="text-muted text-primary"><small>(<span id="totalInput">0.00000000</span>)</small></div>
+                      </a>
+                  
                   </li>
                 </ul>
-                <div class="tab-content m-2 mt-3" id="inputsOutputsTab">
+                <div class="tab-content ml-0 mr-0 mt-3" id="inputsOutputsTab">
                   <div class="tab-pane fade show active" id="txoutputs" role="tabpanel" >
 
-                  	<span class="float-right">
-                    	<a class="item-donations btn btn-sm btn-flat-secondary waves-effect" id="donateTxBtn" data-toggle="popover" data-trigger="click" data-placement="top" title="Thank You!" data-content="Wanna support Wally.id? <br>Show us some love :)">
-      		              <svg xmlns="http://www.w3.org/2000/svg" class="icon heart-fill" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-      		                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-      		                <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
-      		              </svg>
-      		               Donate
-  		                </a>
-		                </span>
 
 
-                    <p>Enter the address and amount you wish to make a payment to.</p>
+
+                    <div class="alert alert-light d-flex justify-content-between">
+                      <span class="text-muted text-secondary mr-2">Enter the address and amount you wish to make a payment to.</span>
+                      <span >
+                      <a class="item-donations btn btn-sm btn-flat-secondary waves-effect" id="donateTxBtn" data-toggle="popover" data-trigger="hover" data-placement="top" title="Thank You!" data-content="Wanna support Wally.id? <br>Show us some love :)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon heart-fill" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+                        </svg>
+                      </a>
+                    </span>
+
+                    </div>
                     <div class="">
-                      <br>
+                      
                       <div class="row no-gutter recipient_header">
                         <div class="col-8">
                           <label><abbr title="Address to send to">Address</abbr></label>
@@ -2313,51 +2385,56 @@
                           <div class="col-8">
                             <input type="text" class="form-control address" placeholder="1">
                           </div>
-                          <div class="col-3">
+                          <div class="col">
                             <input type="text" class="form-control amount" placeholder="0.00">
                           </div>
-                          <div class="col-1">
-                            <a href="javascript:;" class="addressAddTo"><i class="bi bi-plus"></i></a>
+                          <div class="col-auto">
+                            <!-- <a href="javascript:;" class="addressAddTo"><i class="bi bi-plus"></i></a>-->
+                            <a href="javascript:;" class="form-control btn btn-flat-primary addressAddTo" data-toggle="popover" data-trigger="hover" data-placement="top" title="Add new address" data-content="Add a recipient to the Output"><i class="bi bi-plus"></i></a>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="tab-pane fade" id="txinputs" role="tabpanel" aria-labelledby="profile-tab">
-                    <p>Enter the details of inputs you wish to spend.</p>
+                    <div class="alert alert-light d-flex justify-content-between">
+                      <span class="text-muted text-secondary">Enter the details of inputs you wish to spend.</span>
+                    </div>
+
                     <div class="row no-gutter">
-                      <div class="col-5">
-                        <label><abbr title="Transaction ID">Transaction ID:</abbr></label>
+                      <div class="col-4">
+                        <label><abbr title="Transaction ID">TX ID:</abbr></label>
                       </div>
                       <div class="col-1">
                         <label><abbr title="Transaction Input Number">N</abbr></label>
                       </div>
-                      <div class="col-3">
+                      <div class="col">
                         <label>Script</label>
                       </div>
                       <div class="col-2">
                         <label><abbr title="This field is for accounting purposes only - the entire input will be spent!">Amount</abbr></label>
                       </div>
-                      <div class="col-1">Add
+                      <div class="col-1">&nbsp;
                       </div>
                     </div>
                     <div id="inputs">
-                      <div class="row no-gutter inputs">
-                        <div class="col-5">
+                      <div class="row no-gutter py-2 inputs">
+                        <div class="col-4">
                           <input type="text" class="form-control txId" placeholder="">
                         </div>
                         <div class="col-1">
                           <input type="text" class="form-control txIdN" placeholder="0">
                         </div>
-                        <div class="col-3">
+                        <div class="col">
                           <input type="text" class="form-control txIdScript">
                         </div>
                         <div class="col-2">
                           <input type="text" class="form-control txIdAmount" placeholder="0.00">
                         </div>
-                        <div class="col-1">
-                          <a href="javascript:;" class="txidAdd"><i class="bi bi-plus"></i></a>
-                          <a href="javascript:;" class="txidClear"><i class="bi bi-dash"></i></a>
+                        <div class="col-auto">
+                          
+                          <!-- <a href="javascript:;" class="txidClear"><i class="bi bi-dash"></i></a>-->
+                          <a href="javascript:;" class="form-control btn btn-flat-primary txidAdd"><i class="bi bi-plus"></i></a>
                         </div>
                       </div>
                     </div>
@@ -3576,9 +3653,23 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                 </section>
                 <!-- Button tags end -->
 
+
+
+
             </div>
               </div>
             </div>
+
+
+
+
+
+
+
+
+
+
+
           </div>
           <!-- Converter -->
           <div class="tab-pane tab-content" id="converter">

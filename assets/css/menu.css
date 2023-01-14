@@ -21,23 +21,7 @@ a {
   height: 100%;
 }
 */
-body {
-  /*
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  font-size: 80%;
-  */
-  
-  font-weight: 400;
-  font-style: normal;
-  -webkit-text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  font-feature-settings: "pnum";
-  font-variant-numeric: proportional-nums;
-}
+
 /*
 .globalContent {
   flex-grow: 1;

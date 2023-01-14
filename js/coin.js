@@ -1329,6 +1329,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				buffer = buffer.concat(coinjs.numToBytes(parseInt(shType), 4));
 				var hash = Crypto.SHA256(buffer, {asBytes: true});
 				var r = Crypto.util.bytesToHex(Crypto.SHA256(hash, {asBytes: true}));
+				console.log('generated TXID: ', r);
 				return r;
 			} else {
 				return false;
@@ -1505,6 +1506,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 			var shType = sigHashType || 1;
 			var hash = txhash || Crypto.util.hexToBytes(this.transactionHash(index, shType));
+			console.log('tx hash: ', hash);
 
 			if(hash){
 				var curve = EllipticCurve.getSECCurveByName("secp256k1");
@@ -1779,7 +1781,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 			var buffer = [];
 			buffer = buffer.concat(coinjs.numToBytes(parseInt(this.version),4));
 
-			//PoS coins
+			//PoS coins, add extra timefield to TX
 			if (coinjs.txExtraTimeField) {
 				buffer = buffer.concat(coinjs.numToBytes(parseInt(this.nTime),4));
 			}
@@ -1820,7 +1822,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 			buffer = buffer.concat(coinjs.numToBytes(parseInt(this.lock_time),4));
 
-			//Additional TxUnit field
+			//Additional TxUnit field, add extra unit field to TX
 			if (coinjs.txExtraUnitField) {
 				buffer = buffer.concat(coinjs.numToBytes(parseInt(coinjs.txExtraUnitFieldValue),1));
 			}
