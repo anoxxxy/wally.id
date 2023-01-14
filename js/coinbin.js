@@ -963,16 +963,23 @@ profile_data = {
 		}
 
 		$("#inputs .row").removeClass('has-error');
+		$("#inputs .row input").removeClass('is-invalid');
 
-		$('#putTabs a[href="#txinputs"], #putTabs a[href="#txoutputs"]').attr('style','');
+		//$('#putTabs a[href="#txinputs"], #putTabs a[href="#txoutputs"]').attr('style','');
 
 		$.each($("#inputs .row"), function(i,o){
 			if(!($(".txId",o).val()).match(/^[a-f0-9]+$/i)){
 				$(o).addClass("has-error");
-			} else if((!($(".txIdScript",o).val()).match(/^[a-f0-9]+$/i)) && $(".txIdScript",o).val()!=""){
+				$(o).find('.txId').addClass('is-invalid');
+			} else if((!($(".txIdScript",o).val()).match(/^[a-f0-9]+$/i))){
 				$(o).addClass("has-error");
+				$(o).find('.txIdScript').addClass('is-invalid');
 			} else if (!($(".txIdN",o).val()).match(/^[0-9]+$/i)){
 				$(o).addClass("has-error");
+				$(o).find('.txIdN').addClass('is-invalid');
+			} else if (!($(".txIdAmount",o).val()).match(/^[0-9.]+$/i)){
+				$(o).addClass("has-error");
+				$(o).find('.txIdAmount').addClass('is-invalid');
 			}
 
 			if(!$(o).hasClass("has-error")){
@@ -995,33 +1002,58 @@ profile_data = {
 				}
 
 				tx.addinput($(".txId",o).val(), $(".txIdN",o).val(), $(".txIdScript",o).val(), seq);
+				$('#putTabs a[href="#txinputs"]').removeClass('text-danger');
+				//console.log('txInputs no error rows');
 			} else {
-				//$('#putTabs a[href="#txinputs"]').attr('style','color:#a94442;');
 				$('#putTabs a[href="#txinputs"]').addClass('text-danger');
+				//console.log('txInputs have error rows');
 			}
 		});
 
 		$("#recipients .row").removeClass('has-error');
+		$("#recipients .row input").removeClass('is-invalid');
+
 
 		$.each($("#recipients .row"), function(i,o){
+			
+
 			var a = ($(".address",o).val());
+			var am = ($(".amount",o).val());
+			var amIsValid = am.match(/^[0-9.]+$/i);
 			var ad = coinjs.addressDecode(a);
-			if(((a!="") && (ad.version == coinjs.pub || ad.version == coinjs.multisig || ad.type=="bech32")) && $(".amount",o).val()!=""){ // address
+			//if(((a!="") && (ad.version == coinjs.pub || ad.version == coinjs.multisig || ad.type=="bech32")) && $(".amount",o).val()!=""){ // address
+			if(((a!="") && (ad.version == coinjs.pub || ad.version == coinjs.multisig || ad.type=="bech32")) && amIsValid ){ // address
 				// P2SH output is 32, P2PKH is 34
 				estimatedTxSize += (ad.version == coinjs.pub ? 34 : 32)
-				tx.addoutput(a, $(".amount",o).val());
-			} else if (((a!="") && ad.version === 42) && $(".amount",o).val()!=""){ // stealth address
+				tx.addoutput(a, am);
+			} else if (((a!="") && ad.version === 42) && amIsValid){ // stealth address
 				// 1 P2PKH and 1 OP_RETURN with 36 bytes, OP byte, and 8 byte value
 				estimatedTxSize += 78
-				tx.addstealth(ad, $(".amount",o).val());
+				tx.addstealth(ad, am);
 			} else if (((($("#opReturn").is(":checked")) && a.match(/^[a-f0-9]+$/ig)) && a.length<160) && (a.length%2)==0) { // data
 				estimatedTxSize += (a.length / 2) + 1 + 8
 				tx.adddata(a);
 			} else { // neither address nor data
-				$(o).addClass('has-error');
-				//$('#putTabs a[href="#txoutputs"]').attr('style','color:#a94442;');
-				$('#putTabs a[href="#txoutputs"]').addClass('text-danger');
+				
 			}
+
+			if(!a.match(/^[a-z0-9]+$/i)) {
+				$(o).addClass("has-error");
+				$(o).find('.address').addClass('is-invalid');
+			}
+			if (!amIsValid){
+				$(o).addClass("has-error");
+				$(o).find('.amount').addClass('is-invalid');
+			}
+
+			if(!$(o).hasClass("has-error")){
+				$('#putTabs a[href="#txoutputs"]').removeClass('text-danger');
+				console.log('txOutputs no error rows');
+			}else {
+				$('#putTabs a[href="#txoutputs"]').addClass('text-danger');
+				console.log('txOutputs we have error rows');
+			}
+			
 		});
 
 
