@@ -32,6 +32,9 @@
     <link rel="stylesheet" href="./assets/css/style.css" media="screen">
     <link rel="stylesheet" href="./assets/css/custom.css" media="screen">
     
+    <!-- router library-->
+    <script type="text/javascript" src="./assets/js/router.js" ></script>
+
     <!-- animation library-->
     <script type="text/javascript" src="./assets/js/anime-v.3.2.1..min.js" ></script>
 
@@ -275,7 +278,7 @@
     </div>
   </div>
 </div>
-            <a class="rootLink item-open-wallet colorize stripe-button stripe-button-two" href="#wallet" data-pagescroll="page_tab">
+            <a class="rootLink item-open-wallet colorize stripe-button stripe-button-two" href="#wallet" data-route="link" data-pagescroll="page_tab_iceee">
             <img src="./assets/images/purse_wallet.svg" class="icon24" alt="Open Wallet"> Open Wallet
             </a>
           </li>
@@ -285,14 +288,14 @@
           <!--	<a class="rootLink item-choose-currency colorize stripe-button stripe-button-two" href="#github">
             <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32">
             </a>
-            <a class="rootLink item-dashboard colorize stripe-button stripe-button-two" href="#wallet" data-pagescroll="page_tab">
+            <a class="rootLink item-dashboard colorize stripe-button stripe-button-two" href="#wallet" data-route="link" data-pagescroll="page_tab_iceee">
             <img src="./assets/images/purse_wallet.svg" class="icon24" alt="Open Wallet">
             </a>
         -->
         <a class="rootLink item-choose-currency colorize stripe-button stripe-button-two" href="#github">
             <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32">
             </a>
-            <a class="rootLink item-open-wallet colorize stripe-button stripe-button-two" href="#wallet" data-pagescroll="page_tab">
+            <a class="rootLink item-open-wallet colorize stripe-button stripe-button-two" href="#wallet" data-route="link" data-pagescroll="page_tab_iceee">
             <img src="./assets/images/purse_wallet.svg" class="icon24" alt="Open Wallet">
             </a>
 
@@ -344,12 +347,12 @@
                     <li><a class="item-documentation" href="#">Documentation</a></li>
                   </ul>
                   <ul>
-                    <li><a class="item-help popupCloseLink" href="#help" data-pagescroll="page_tab">Help</a></li>
-                    <li><a class="item-settings popupCloseLink" href="#settings" data-pagescroll="page_tab">Settings</a></li>
-                    <li><a class="item-about popupCloseLink" href="#about" data-pagescroll="page_tab">About Wally</a></li>
+                    <li><a class="item-help popupCloseLink" href="#help" data-route="link" data-pagescroll="page_tab_iceee">Help</a></li>
+                    <li><a class="item-settings popupCloseLink" href="#settings" data-route="link" data-pagescroll="page_tab_iceee">Settings</a></li>
+                    <li><a class="item-about popupCloseLink" href="#about" data-route="link" data-pagescroll="page_tab_iceee">About Wally</a></li>
                   </ul>
                 </div>
-                <a class="mobileSignIn " href="#wallet" data-pagescroll="page_tab">Sign in</a>
+                <a class="mobileSignIn " href="#wallet" data-route="link" data-pagescroll="page_tab_iceee">Sign in</a>
               </div>
             </div>
           </li>
@@ -620,7 +623,7 @@
             </h1>
             <!-- Buttons -->
             <div class="text-center">
-              <a href="#wallet" class="btn btni btni-primary btni-lg shadow" alt="Open Wallet" data-pagescroll="page_tab">
+              <a href="#wallet" class="btn btni btni-primary btni-lg shadow" alt="Open Wallet" data-route="link" data-pagescroll="page_tab_iceee">
               Open Wallet!
               </a>
             </div>
@@ -869,7 +872,7 @@
               <!-- GET STARTED END -->
             </div>
           </div>
-          <div class="tab-pane tab-content" id="wallet">
+          <div class="tab-pane tab-content" id="wallet" data-route="wallet">
             
             <!--
             <div class="card-openwallet-box">
@@ -1839,7 +1842,7 @@
             </div>	<-- old login box
             -->
           </div>
-          <div class="tab-pane tab-content" id="newAddress">
+          <div class="tab-pane tab-content" id="newAddress" data-route="newAddress">
             <div class="row no-gutters tab-body">
               <div class="col-md-12">
                 <h2 class="card-title">New Address</h2>
@@ -1906,7 +1909,7 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane tab-content" id="newSegWit">
+          <div class="tab-pane tab-content" id="newSegWit" data-route="newSegWit">
             <div class="row no-gutters tab-body">
               <div class="col-md-12">
                 <h2 class="card-title">New SegWit Address</h2>
@@ -1953,7 +1956,7 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane tab-content" id="newMultiSig">
+          <div class="tab-pane tab-content" id="newMultiSig" data-route="newMultiSig">
             <div class="row no-gutters tab-body">
               <div class="col-md-12">
                 <h2 class="card-title">New Multisig Address</h2>
@@ -2038,7 +2041,7 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane tab-content" id="newTimeLocked">
+          <div class="tab-pane tab-content" id="newTimeLocked" data-route="newTimeLocked">
             <div class="row no-gutters tab-body">
               <div class="col-md-12">
                 <h2 class="card-title">New Time Locked Address</h2>
@@ -2119,7 +2122,7 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane tab-content" id="newHDaddress">
+          <div class="tab-pane tab-content" id="newHDaddress" data-route="newHDaddress">
             <div class="row no-gutters tab-body">
               <div class="col-md-12">
                 <h2 class="card-title">New HD Address</h2>
@@ -2152,7 +2155,7 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane tab-content" id="newTransaction">
+          <div class="tab-pane tab-content" id="newTransaction" data-route="newTransaction">
             <div class="row no-gutters tab-body">
               <div class="col-md-12">
                 <h2 class="card-title">Transaction</h2>
@@ -2330,10 +2333,16 @@
 </div></div>
 
                 <br>
+                <a href="#kalle" data-route="link" data-pagescroll="page_tab_iceee">
+                New Address testar
+                </a>
+
                 <ul class="nav nav-tabs project-tab d-flex flex-row justify-content-between" id="putTabs" role="tablist">
                   <li class="nav-item">
                     
-                    
+                    <a class="nav-link" href="#kalle"  data-route="link" data-pagescroll="page_tab_iceee" data-toggle="tab" role="tab" aria-controls="txoutputs" aria-selected="true">
+                        txOutputs
+                      </a>
                       <a class="nav-link active" data-toggle="tab" href="#txoutputs" role="tab" aria-controls="txoutputs" aria-selected="true">
                         <div>Outputs</div>
                           <div class="text-muted text-primary"> <small>(<span id="totalOutput">0.00000000</span>)</small></div>
@@ -2341,8 +2350,10 @@
                   </li>
                   <li class="nav-item">
                     
-                    
-                      <a class="nav-link" data-toggle="tab" href="#txinputs" role="tab" aria-controls="txinputs" aria-selected="false">
+                      <a class="nav-link" data-toggle="tab" href="#newTransaction/txinputs=true" role="tab" aria-controls="txinputs" aria-selected="false">
+                        txInputs
+                      </a>
+                      <a class="nav-link" data-toggle="tab" href="newTransaction#txinputs" role="tab" aria-controls="txinputs" aria-selected="false">
                         
                           <div>Inputs </div>
                           <div class="text-muted text-primary"><small>(<span id="totalInput">0.00000000</span>)</small></div>
@@ -2434,7 +2445,7 @@
                         <div class="col-auto">
                           
                           <!-- <a href="javascript:;" class="txidClear"><i class="bi bi-dash"></i></a>-->
-                          <a href="javascript:;" class="form-control btn btn-flat-primary txidAdd"><i class="bi bi-plus"></i></a>
+                          <a href="javascript:;" class="form-control btn btn-flat-primary txidAdd" data-toggle="popover" data-trigger="hover" data-placement="top" title="Add Input" data-content="Add new Input fields"><i class="bi bi-plus"></i></a>
                         </div>
                       </div>
                     </div>
@@ -2462,23 +2473,23 @@
                 </div>
 
                 <!-- -What do to after creating transaction -->
-                  <div id="transactionCreateOptions" class="hidden">
-                    <div class="mt-4 mb-4">
-                      <div class="text-right text-primary text-bold">
-                        If you are sure: &nbsp;
+                <div id="transactionCreateOptions" class="hidden">
+                  <div class="mt-4 mb-4">
+                    <div class="text-right text-primary text-bold">
+                      If you are sure: &nbsp;
 
-                        <div class="btn-group" >
-                            <label class="btn btn-flat-warning waves-effect transactionToVerify">
-                                <i class="bi bi-patch-check"></i> Continue to Verify
-                            </label>
-                            <label class="btn btn-flat-success waves-effect transactionToSign">
-                                 Continue to Sign <i class="bi bi-pen"></i>
-                            </label>
-                        </div>
-
+                      <div class="btn-group" >
+                          <label class="btn btn-flat-warning waves-effect transactionToVerify">
+                              <i class="bi bi-patch-check"></i> Continue to Verify
+                          </label>
+                          <label class="btn btn-flat-success waves-effect transactionToSign">
+                               Continue to Sign <i class="bi bi-pen"></i>
+                          </label>
                       </div>
+
                     </div>
                   </div>
+                </div>
 
                 <div class="mt-4">
                   <input type="button" value="Submit" class="btn btn-primary" id="transactionBtn">
@@ -2660,7 +2671,7 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane tab-content" id="verify">
+          <div class="tab-pane tab-content" id="verify" data-route="verify">
             <div class="row no-gutters tab-body">
               <div class="col-md-12">
                 <h2 class="card-title">Verify</h2>
@@ -3105,7 +3116,7 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane tab-content" id="sign">
+          <div class="tab-pane tab-content" id="sign" data-route="sign">
             <div class="row no-gutters tab-body">
               <div class="col-md-12">
                 <h2 class="card-title">Sign Transaction</h2>
@@ -3128,10 +3139,10 @@
                     <textarea type="text" id="signTransaction" class="form-control" style="height:125px"></textarea>
                   </div>
                 </div>
-                <br>
+                
 
 
-                <div class="accordion mt-3" id="signAdvancedOptionsButton">
+                <div class="accordion mt-4 mb-2" id="signAdvancedOptionsButton">
       <div class="card accordion-item">
         <h2 class="accordion-header d-flex align-items-center">
           <button type="button" class="accordion-button collapsed" data-toggle="collapse" data-target="#signAdvancedOptions" aria-expanded="false">
@@ -3175,19 +3186,40 @@
                 <div class="alert alert-danger hidden" id="signedDataError">
                   <span class="glyphicon glyphicon-exclamation-sign"></span> There is a problem with one or more of your inputs, please check and try again
                 </div>
-                <div class="alert alert-success hidden" id="signedData">
-                  <label>Signed transaction</label>
-                  <button class="qrcodeBtn btn btn-flat-primary" type="button" data-toggle="modal" data-target="#modalQrcode" style="float:right;"><i class="bi bi-qr-code"></i></button>
-                  <p>The above transaction has been signed:</p>
-                  <textarea class="form-control script" style="height:160px" readonly></textarea>
-                  <p class="text-muted">Size: <span class="txSize">0</span> <i>bytes</i></p>
+                <div class="hidden" id="signedData">
+                  <div class="alert alert-success" >
+                    <label>Signed transaction</label>
+                    <button class="qrcodeBtn btn btn-flat-primary" type="button" data-toggle="modal" data-target="#modalQrcode" style="float:right;"><i class="bi bi-qr-code"></i></button>
+                    <p>The above transaction has been signed:</p>
+                    <textarea class="form-control script" style="height:160px" readonly></textarea>
+                    <p class="text-muted">Size: <span class="txSize">0</span> <i>bytes</i></p>
+                  </div>
+                  <!-- -What do to after creating transaction -->
+                  <div id="signCreateOptions">
+                    <div class="mt-4 mb-4">
+                      <div class="text-right text-primary text-bold">
+                        If you are sure: &nbsp;
+
+                        <div class="btn-group" >
+                            <label class="btn btn-flat-primary waves-effect broadcastSignedData">
+                                <i class="bi bi-globe"></i> Continue to Broadcast
+                            </label>
+                            <label class="btn btn-flat-warning waves-effect verifySignedData">
+                                 Verify <i class="bi bi-patch-check"></i>
+                            </label>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
                 <input type="button" value="Submit" class="btn btn-primary" id="signBtn">
                 <br>
               </div>
             </div>
           </div>
-          <div class="tab-pane tab-content" id="broadcast">
+          <div class="tab-pane tab-content" id="broadcast" data-route="broadcast">
             <div class="row no-gutters tab-body">
               <div class="col-md-12">
                 <h2 class="card-title">Broadcast Transaction</h2>
@@ -3672,7 +3704,7 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
 
           </div>
           <!-- Converter -->
-          <div class="tab-pane tab-content" id="converter">
+          <div class="tab-pane tab-content" id="converter" data-route="converter">
             <div class="row no-gutters tab-body">
               <div class="col-md-12">
                 <h2 class="card-title">Converter</h2>
@@ -3720,7 +3752,7 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
               </div>
             </div>
           </div>
-          <div class="tab-pane tab-content" id="settings">
+          <div class="tab-pane tab-content" id="settings" data-route="settings">
             
             <div class="card-openwallet">
               <div class="card-openwallet-header ">
@@ -4024,7 +4056,7 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
             <!-- Brand -->
             <div class="footer-brand img-fluid mb-2 "><a href="index.html"><img src="./assets/images/logo/favicon.svg" class="icon48 "> Wally.id</a></div>
             <!-- Text -->
-            <p class="mb-2">
+            <p class="mb-2 text-muted">
               your Keys, your Crypto! 
               <p>The most powerful, non-custodial decentralized cold wallet!</p>
             </p>
@@ -4050,59 +4082,59 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
             <!-- List -->
             <ul class="list-unstyled text-muted mb-6 mb-md-8 mb-lg-0">
               <li class="mb-0">
-                <a href="#newAddress" data-pagescroll="page_tab">
+                <a href="#newAddress" data-route="link" data-pagescroll="page_tab_iceee">
                 New Address
                 </a>
               </li>
               <li class="mb-0">
-                <a href="#newSegWit" data-pagescroll="page_tab">
+                <a href="#newSegWit" data-route="link" data-pagescroll="page_tab_iceee">
                 New SegWit Address
                 </a>
               </li>
               <li class="mb-0">
-                <a href="#newMultiSig" data-pagescroll="page_tab">
+                <a href="#newMultiSig" data-route="link" data-pagescroll="page_tab_iceee">
                 New Multisig Address
                 </a>
               </li>
               <li class="mb-0">
-                <a href="#newHDaddress" data-pagescroll="page_tab">
+                <a href="#newHDaddress" data-route="link" data-pagescroll="page_tab_iceee">
                 New HD Address
                 </a>
               </li>
               <li class="mb-0">
-                <a href="#newTimeLocked" data-pagescroll="page_tab">
+                <a href="#newTimeLocked" data-route="link" data-pagescroll="page_tab_iceee">
                 New Time Locked Address
                 </a>
               </li>
               
               
               <li class="mb-1">
-                <a href="#newTransaction" data-pagescroll="page_tab">
-                Transaction
+                <a href="#newTransaction" data-route="link" data-pagescroll="page_tab_iceee">
+                New Transaction
                 </a>
               </li>
               <li class="mb-1">
-                <a href="#verify" data-pagescroll="page_tab">
+                <a href="#verify" data-route="link" data-pagescroll="page_tab_iceee">
                 Verify
                 </a>
               </li>
               <li class="mb-1">
-                <a href="#sign" data-pagescroll="page_tab">
+                <a href="#sign" data-route="link" data-pagescroll="page_tab_iceee">
                 Sign
                 </a>
               </li>
               <li class="mb-1">
-                <a href="#broadcast" data-pagescroll="page_tab">
+                <a href="#broadcast" data-route="link" data-pagescroll="page_tab_iceee">
                 Broadcast
                 </a>
               </li>
               <li class="mb-1">
-                <a href="#converter" data-pagescroll="page_tab">
+                <a href="#converter" data-route="link" data-pagescroll="page_tab_iceee">
                 Converter
                 </a>
               </li>
               <li class="mb-1">
-                <a href="#settings" data-pagescroll="page_tab">
+                <a href="#settings" data-route="link" data-pagescroll="page_tab_iceee">
                 Settings
                 </a>
               </li>
@@ -4150,7 +4182,7 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
                 </a>
               </li>
               <li class="mb-0">
-                <a href="#about" data-pagescroll="page_tab">
+                <a href="#about" data-route="link" data-pagescroll="page_tab_iceee">
                 About us
                 </a>
               </li>

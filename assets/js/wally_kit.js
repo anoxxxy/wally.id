@@ -411,14 +411,219 @@
   }
   */
 
-  
 
+//handles smooth scroll to tab content
+wally_fn.scrollFunction = function (scrollToId = Router.urlParams.page) {
+
+    //scrollToId.replace('#', '');
+    //console.log('scrolledID: ' + scrollToId.replace('#', ''));
+        var target = document.getElementById(scrollToId.replace('#', ''));
+if(target === null)
+          return;
+
+       // combine it with any of the other options from 'scroll-into-view-if-needed'
+
+//document.getElementById("tab-content").scrollIntoView({ behavior: 'smooth', block: 'start' });
+//window.scrollBy({ top: -40, left: 0, behavior: 'smooth' });
+
+
+if(scrollToId == "#home" || scrollToId == "#verify")
+  window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+  //window.scrollBy({ top: -400, left: 0, behavior: 'smooth' });
+else{
+  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  //window.scrollBy({ top: -20, left: 0, behavior: 'smooth' });
+}
+
+//await window.scrollBy({ top: -100, left: 0, behavior: 'smooth' });
+
+
+/*
+scrollIntoView(target, {
+  scrollMode: 'if-needed',
+  block: 'start',
+  inline: 'center',
+});
+*/
+
+
+/*
+        if(target === null)
+          return;
+        //var e = document.getElementById("tab-content");
+        
+
+        // This start the block to the window 
+        // bottom and also aligns the view to the center 
+        target.scrollIntoView({
+          block: 'start',
+          behavior: 'smooth',
+          inline: 'start'
+        });
+        */
+
+      }
+
+  wally_kit.pageHandler = function (pageHash, show=false) {
+    
+    console.log('===wally_kit.landingPage===');
+    //show landing page specific active page/tab
+    if (Router.urlParams.page == "home" || Router.urlParams.page == "about") {
+      $('.landing_box').removeClass("hidden");
+    }else 
+      $('.landing_box').addClass("hidden");
+
+    //remove active class from the previous active page 
+    var tabPages = document.querySelectorAll('.tab-pane.tab-content.active');
+    tabPages.forEach(allTabs => {
+          allTabs.classList.remove("active");
+          console.log("navigationPageHideAll --> active pages removed!");
+      });
+
+    //todo: remain on same page when clicking on inputs/outputs tab
+
+    //set active page
+    document.getElementById(Router.urlParams.page).classList.add("active");
+
+    //smooth scroll to active page
+    wally_fn.scrollFunction();
+
+  }
+
+  /*
+https://benalman.com/projects/jquery-hashchange-plugin/
+
+https://gist.github.com/atelierbram/18d7489b81dc9acf0747
+
+https://alloyui.com/api/files/yui3_src_history_js_history-hash.js.html#
+*/
 
 })();
 
 
 $(document).ready(function() {
+    'use strict';
 
+/*<<< Start Router*/
+    var show_about = function () {
+        alert('This is the application "About".\n\nCopyright ©2018-2019 Interart');
+    }
+
+    var show_number = function (num) {
+        alert('Number: ' + num);
+        console.log('num: ', num)
+    }
+
+    Router   
+        .add(/newAddress(.*)/, function(data) {
+            console.log('#newAddress');
+            //Router.navigate('newAddress', 'newAddress');
+            //alert('newAddress');
+            wally_kit.pageHandler();
+        })
+        .add(/newSegWit(.*)/, function(data) {
+            console.log('#newSegWit');
+            //Router.navigate('newSegWit', 'newSegWit');
+            //alert('newSegWit');
+            wally_kit.pageHandler();
+        })
+        .add(/newMultiSig(.*)/, function(data) {
+            console.log('#newMultiSig');
+            //Router.navigate('newMultiSig', 'newMultiSig');
+            //alert('newMultiSig');
+            wally_kit.pageHandler();
+        })
+        .add(/newHDaddress(.*)/, function(data) {
+            console.log('#newHDaddress');
+            //Router.navigate('newMultiSig', 'newMultiSig');
+            //alert('newHDaddress');
+            wally_kit.pageHandler();
+        })
+        .add(/newTimeLocked(.*)/, function(data) {
+            console.log('#newTimeLocked');
+            //Router.navigate('newTimeLocked', 'newTimeLocked');
+            //alert('newTimeLocked');
+            wally_kit.pageHandler();
+        })
+        .add(/newTransaction(.*)/, function(data) {
+            console.log('#newTransaction');
+            //Router.navigate('newTransaction', 'newTransaction');
+            //alert('newTransaction');
+            wally_kit.pageHandler();
+        })
+        .add(/kalle(.*)/, function(data) {
+            console.log('#kalle');
+            //Router.navigate('newTransaction', 'newTransaction');
+            alert('kalle');
+            //wally_kit.pageHandler();
+        })
+        .add(/wallet(.*)/, function(data) {
+            console.log('#wallet');
+            //Router.navigate('settings', 'hemma');
+            //alert('wallet');
+            wally_kit.pageHandler();
+        })
+
+        .add(/home(.*)/, function(data) {
+            console.log('#home');
+            //Router.navigate('settings', 'hemma');
+            //alert('home');
+            wally_kit.pageHandler();
+        })
+        .add(/about(.*)/, show_about)
+        .add(/(verify)(.*)/, function(data) {
+          console.log('verify page');
+          //alert('verify page');
+          wally_kit.pageHandler();
+        })
+        .add(/(sign)(.*)/, function(data) {
+          console.log('sign page');
+          //alert('sign page');
+          wally_kit.pageHandler();
+        })
+        .add(/(broadcast)(.*)/, function(data) {
+          console.log('broadcast page');
+          //alert('broadcast page');
+          wally_kit.pageHandler();
+        })
+        .add(/(converter)(.*)/, function(data) {
+          console.log('converter page');
+          //alert('converter page');
+          wally_kit.pageHandler();
+        })
+        .add(/(fee)(.*)/, function(data) {
+          console.log('fee page');
+          //alert('fee page');
+          wally_kit.pageHandler();
+        })
+        //.add(/(settings\/)(.*)/, function(data) {
+        .add(/(settings)(.*)/, function(data) {
+            //console.log('settings page', data);
+            //console.log('parsedUrl: ', Router.parseUrl(data[1]));
+            console.log('parsedUrl: ', Router.urlParams);
+            wally_kit.pageHandler();
+        })
+
+        .add(/(number)=([0-9]+)&(n)=([0-9]+)/i, function(params) {
+            console.log('number=page, data:', params);
+            wally_kit.pageHandler();
+            
+        })
+        .add(/number=([0-9]+)/i, show_number)
+        .add('', function(data) {
+          Router.navigate('home', 'Start');
+        })
+        .add('', function(data) {
+            console.log('här var det tomt!');
+            //alert('startpage');
+            wally_kit.pageHandler();
+        })
+        .apply()
+        .start();
+
+    //Router.navigate();
+
+/*<<< End Router*/
   //***Vars
   var portfolioNetworkType = $('input[type=radio][name=radio_selectNetworkType]');
   var portfolioAsset = $('#coinjs_network');

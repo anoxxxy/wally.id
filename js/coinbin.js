@@ -1084,13 +1084,19 @@ profile_data = {
 	});
 
 	$("#transactionCreateOptions .transactionToSign").on( "click", function() {
-		$("#signTransaction").val( $('#transactionCreate textarea').val() ).fadeOut().fadeIn();;
+		$("#signTransaction").val( $('#transactionCreate textarea').val() ).fadeOut().fadeIn();
 		window.location.hash = "#sign";
 	});
 
-	$("#transactionCreateOptions .transactionToVerify").on( "click", function() {
-		$("#verifyScript").val( $('#transactionCreate textarea').val() ).fadeOut().fadeIn();;
-		window.location.hash = "#verify";
+	$("#transactionCreateOptions .transactionToVerify, #signCreateOptions .verifySignedData").on( "click", function() {
+		if ($(this).hasClass('verifySignedData')){
+			console.log('verifySignedData');
+			$("#verifyScript").val( $('#signedData textarea').val() ).fadeOut().fadeIn();
+		}
+		else
+			$("#verifyScript").val( $('#transactionCreate textarea').val() ).fadeOut().fadeIn();
+		
+		//window.location.hash = "#verify";
 		$("#verifyBtn").click();
 	});
 
@@ -1833,7 +1839,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 		  url: "https://blockchain.info/unspent?active="+ redeem.addr,
 		  dataType: "json",
 		  error: function() {
-			$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs! blk test function error');
+			$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs! ');
 		  },
 		  success: function(data) {
 			//if($(data).find("unspent_outputs").text()==1){
@@ -2248,6 +2254,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 			//add link for sharing to verify page
 			if ($("#verifyStatus").hasClass('hidden')) {
 				$("#verify input.verifyLink").val(wally_fn.host+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val()+'#verify').trigger('change');
+				window.location.hash = "#verify";
 				history.pushState({}, null, $("#verify input.verifyLink").val());
 				console.log('add share link');
 			}else
@@ -2442,11 +2449,16 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 	$("#verifyTransactionData .verifyToSign").on( "click", function() {
 		$("#signTransaction").val( $('#verifyScript').val() ).fadeOut().fadeIn();
+		$('#signedData').addClass('hidden');
 		window.location.hash = "#sign";
 	});
 
-	$("#verifyTransactionData .verifyToBroadcast").on( "click", function() {
-		$("#broadcast #rawTransaction").val( $('#verifyScript').val() ).fadeOut().fadeIn();
+	$("#verifyTransactionData .verifyToBroadcast, #signCreateOptions .broadcastSignedData").on( "click", function() {
+		if ($(this).hasClass('broadcastSignedData'))
+			$("#broadcast #rawTransaction").val( $('#signedData textarea').val() ).fadeOut().fadeIn();
+		else
+			$("#broadcast #rawTransaction").val( $('#verifyScript').val() ).fadeOut().fadeIn();
+		
 		window.location.hash = "#broadcast";
 	});
 
@@ -2731,14 +2743,8 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 	//init load #hashpage
 	//load browser #hashpage on load
-	if (location.hash !== ''){
-		$('a[href="' + location.hash + '"]').tab('show');
+	
 
-		landingPage(location.hash);
-	 	//scrollFunction(location.hash);
-
-		console.log('location.hash clicked');
-	}
 
 	$(".showKey").click(function(){
 		var parentNode = $(this).parent().parent();
@@ -2758,456 +2764,9 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 	});
 
-	$("#homeBtn").click(function(e){
-		console.log('homeBtn clicked');
-
-		landingPage("#home");
-
-		e.preventDefault();
-		history.pushState(null, null, '#home');
-		$("#header .active, #content .tab-content").removeClass("active");
-		$("#home").addClass("active");
-		
-	});
-
-	//popstate pushstate history on tabs
-	$('a[data-toggle="tab"]').on('click', function(e) {
-		console.log('a[data-toggle="tab"] clicked');
-
-		e.preventDefault();
-		if(e.target && $(e.target).attr('href')) {
-			history.pushState(null, null, '#'+$(e.target).attr('href').substr(1));
-		}
-
-	});
 	
 
-	async function navigationPageHideAll(pageHash){
-		//remove active class from the active page contents
-		var tabPages = document.querySelectorAll('.tab-pane.tab-content.active');
-		tabPages.forEach(allTabs => {
-            allTabs.classList.remove("active");
-            console.log("navigationPageHideAll --> active pages removed!");
-        });
 
-		var anchorHashBelongsToPage = await navigationPageValidate(pageHash);
-		console.log('anchorHashBelongsToPage: ' + anchorHashBelongsToPage);
-		
-		if(anchorHashBelongsToPage){
-			navigationPageShow(pageHash);
-			console.log('anchorHashBelongsToPage: ' + anchorHashBelongsToPage);
-			document.getElementById(anchorHashBelongsToPage).classList.add("active");
-		}else
-			navigationPageShow(pageHash);
-
-        
-        scrollFunction(pageHash);
-        
-	}
-	async function navigationPageShow(pageHash){
-		console.log('navigationPageShow: '+ pageHash);
-
-		
-		/*
-		var anchorHashBelongsToPage = await navigationPageValidate(pageHash);
-		console.log('anchorHashBelongsToPage: ' + anchorHashBelongsToPage);
-		
-		if(anchorHashBelongsToPage){
-			console.log('anchorHashBelongsToPage: ' + anchorHashBelongsToPage);
-			document.getElementById(anchorHashBelongsToPage).classList.add("active");
-		}else
-			document.getElementById(pageHash).classList.add("active");
-		*/
-
-		document.getElementById(pageHash).classList.add("active");
-		
-		
-		//scrollFunction(pageHash);
-	}
-
-		//document.querySelectorAll('[data-pagescroll="page_tab"]');
-
-	//$('a[data-pagescroll="page_tab"]').on('click', function(e) {
-
-/*
-var pageNavigationLinks = document.querySelectorAll('a[data-pagescroll="page_tab"]');
-
-pageNavigationLinks.forEach(navigateLinks => {
-        navigateLinks.addEventListener("click", function (e) {
-            //t.closeAllPopups();
-            //e.preventDefault();
-            console.log('navigateLinks clicked: ', navigateLinks);
-            console.log('navigateLinks hash: ', this.hash);
-
-            //remove active class from the clicked link
-			(this).classList.remove("active");
-			//this.classList.remove("shadow");
-
-			
-
-
-			//remove active class from the active page contents
-			navigationPageHideAll();
-			
-			//var tabPages = document.querySelectorAll('.tab-pane.tab-content.active');
-			//tabPages.forEach(allTabs => {
-	          //  allTabs.classList.remove("active");
-	          //  console.log("--> active class removed!");
-	          //  console.log('changeTab: ', allTabs);
-	        //});
-	        
-
-	        //active tab content on clicked link
-			(this).classList.add("active");
-
-			var newPushState = (this.hash).replace('#', '');
-
-			console.log(`History.state before pushState: ${history.state}`);
-			if(history.state != newPushState) {
-				history.pushState((this.hash).replace('#', ''), null, this.hash);
-				console.log('History.state after pushState: ', history.state);
-
-				//show/hide landing page
-				landingPage(history.state);
-
-				//show clicked page 
-				navigationPageShow(newPushState);
-				location.hash = history.state;
-				
-				//scroll to the new page tab
-				scrollFunction("tab-content");
-
-			}
-			
-			console.log('newPushState: '+ newPushState);
-
-			
-
-			
-
-
-
-        });
-        console.log('loop');
-    })
-*/
-
-/*
-btn.addEventListener('click', event => {
-  // {bar: 'foo'}
-  console.log(event.target.dataset);
-
-  // "foo"
-  console.log(event.target.getAttribute('data-bar'));
-});
-*/
-/*
-document.addEventListener('click', function (event) {
-
-	// Only run if a [data-dropdown] button was clicked
-	if (!event.target.matches('[data-pagescroll="page_tab"]')) return;
-
-	console.log("page_tab was clicked");
-
-	// Show or hide the dropdown menu...
-
-});
-*/
-
-	
-	//handles page tab content navigation
-	$('a[data-pagescroll="page_tab"]').on('click', function(e) {
-	//$('a').on('click', function(e) {
-		
-		
-		e.preventDefault();
-		console.log('this.href: ', this);
-
-		console.log('this.dataset.pagescroll: '+ this.dataset.pagescroll)
-		/*if(!this.dataset.pagescroll)
-			return;
-		if(this.dataset.pagescroll != "page_tab")
-			return;
-		*/
-
-		//icee - add try catch
-		if(this.dataset.pagescroll && this.dataset.pagescroll == "page_tab"){
-
-			//remove active class from the clicked link
-			this.classList.remove("active");
-
-			//scroll to the new page tab
-			//scrollFunction("tab-content");
-
-			
-
-			
-			
-			//var tabPages = document.querySelectorAll('.tab-pane.tab-content.active');
-			//tabPages.forEach(allTabs => {
-	            //allTabs.classList.remove("active");
-	            //console.log("--> active class removed!");
-	            //console.log('changeTab: ', allTabs);
-	        //});
-	        
-
-			//activate tab content on clicked link
-			//document.querySelector(this.hash).classList.add("active");
-
-			var newPushState = (this.hash).replace('#', '');
-
-			console.log(`History.state before pushState: ${history.state}`);
-			if(history.state != newPushState) {
-				history.pushState((this.hash).replace('#', ''), null, this.hash);
-				console.log('History.state after pushState: ', history.state);
-				//landingPage(newPushState);
-			}
-
-			
-			landingPage(newPushState);
-
-		}
-
-	});
-	
-
-//check if anchor/Hash exists among available pages!
-	async function navigationPageValidate(anchorHash) {
-		
-		console.log("=========navigationPageValidate==============");
-		console.log("anchorHash: "+ anchorHash);
-
-		if(!anchorHash)
-			return false;
-		var searchHash = anchorHash.replace('#', '');
-		console.log("searchHash: "+ searchHash);
-
-		//var pageFound = async () => {
-			Object.entries(navigationPages).forEach(([key, value]) => {
-			  
-			  //check for mainPages
-			  if(key == searchHash){
-			    //console.log ("key= searchHash: " + searchHash);
-			    //console.log("return: " + key);
-			    //pageFound=1;
-			    console.log('key found in pages: '+key);
-			    return key;
-			  }
-			  
-			  //check for subPages
-			  if(value.length){
-			    Object.entries(value).forEach(([keySub, valueSub]) => {
-			      if(valueSub == searchHash){
-			        //console.log ("valueSub= searchHash: " + valueSub);
-			        //console.log("returnsub: " + key);
-			        //pageFound=1;
-			        console.log('key found in pages: '+key);
-			        
-			        navigationPageShow(key);
-			        $('[href="#'+valueSub+'"]').click();	//click/focus  on the anchor link 
-
-			        //location.hash = key;
-			        return key;
-			      }
-			    });
-			    
-			    
-			      
-			  }
-			});
-			return false;
-		//}
-		//return pageFound;
-		//console.log('pageFound: ' + pageFound)
-	}
-/*
-window.addEventListener('hashchange', () => {
-  alert('The hash has changed!');
-}, false);
-*/
-	//browser history hash changed
-	window.onhashchange = async function() {
-	 console.log('=============onhashchange===============');
-
-	 console.log('History.state after pushState: ', history.state);
-	 console.log('History.state', history);
-	 console.log('location.hash: ', location.hash);
-
-
-	 /*
-	 var currentPageHash = location.hash.replace('#', '');
-	 if(availablePages.indexOf(history.state) !== -1) {
-	 	console.log('page found!');
-	 	landingPage(history.state);
-	 	scrollFunction(history.state);
-	 }else if(availablePages.indexOf(currentPageHash) !== -1) {
-	 	scrollFunction(currentPageHash);
-	 	landingPage(currentPageHash);
-	 }else {
-	 	console.log('page not found!');
-	 }
-	 */
-	 /*
-	 var navigationPageIsValid = await navigationPageValidate(history.state);
-	console.log('navigationPageIsValid 1: '+navigationPageIsValid + ', history.state: '+history.state);
-	 if(navigationPageIsValid) {
-	 	console.log('page found! history.state');
-	 	landingPage(history.state);
-	 	//scrollFunction(history.state);
-	 	return true;
-	 }
-	 navigationPageIsValid = await navigationPageValidate(location.hash);
-	 console.log('navigationPageIsValid 2: '+navigationPageIsValid + ', location.hash: '+location.hash);
-
-	 if(navigationPageIsValid) {
-	 	console.log('page found! location.hash');
-	 	//scrollFunction(location.hash);
-	 	landingPage(location.hash);
-	 	return true;
-	 }
-	 */
-
-	 /*else {
-	 	console.log('page not found! history.state: ' + history.state + ', location.hash: '+location.hash);
-	 }*/
-	 if (location.hash.length > 0){
-        // Navigate to the hash
-        //document.getElementById(location.hash.substr(1)).scrollIntoView();
-        console.log('user clicked back 1!: '+ location.hash);
-        landingPage(location.hash);
-    } else {
-    	console.log('user clicked back 2!');
-    	
-    	}
-
-	 console.log('page not found! history.state: ' + history.state + ', location.hash: '+location.hash);
-	 return false;
-
-
-	}
-
-
-	
-
-//handles smooth scroll to tab content
-function scrollFunction(scrollToId) {
-
-		//scrollToId.replace('#', '');
-		//console.log('scrolledID: ' + scrollToId.replace('#', ''));
-        var target = document.getElementById(scrollToId.replace('#', ''));
-if(target === null)
-        	return;
-
-       // combine it with any of the other options from 'scroll-into-view-if-needed'
-
-//document.getElementById("tab-content").scrollIntoView({ behavior: 'smooth', block: 'start' });
-//window.scrollBy({ top: -40, left: 0, behavior: 'smooth' });
-
-
-if(scrollToId == "#home" || scrollToId == "#verify")
-	window.scroll({ top: 0, left: 0, behavior: 'smooth' });
-	//window.scrollBy({ top: -400, left: 0, behavior: 'smooth' });
-else{
-	target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-	//window.scrollBy({ top: -20, left: 0, behavior: 'smooth' });
-}
-
-//await window.scrollBy({ top: -100, left: 0, behavior: 'smooth' });
-
-
-/*
-scrollIntoView(target, {
-  scrollMode: 'if-needed',
-  block: 'start',
-  inline: 'center',
-});
-*/
-
-
-/*
-        if(target === null)
-        	return;
-        //var e = document.getElementById("tab-content");
-        
-
-        // This start the block to the window 
-        // bottom and also aligns the view to the center 
-        target.scrollIntoView({
-          block: 'start',
-          behavior: 'smooth',
-          inline: 'start'
-        });
-        */
-
-      }
-
-      async function landingPage(pageHash, show=false) {
-		
-		//if(landingPageShowOnPages.indexOf("") !== -1)
-		console.log('====landingPage===');
-
-		pageHash = pageHash.replace("#", "");
-		//hide landing page for other active tabs
-		if (pageHash == "home" || pageHash == "about") {
-			$('.landing_box').removeClass("hidden");
-		}else 
-			$('.landing_box').addClass("hidden");
-
-		console.log("pageHash: " + pageHash);
-		//remove active class from the active page contents
-		navigationPageHideAll(pageHash);
-
-		console.log(`History.state: ${history.state}`);
-		console.log('History: ',  history);
-
-		/*
-		//is the anchorLink a subpage, redirect to its main page!
-		var anchorHashBelongsToPage = await navigationPageValidate(pageHash);
-		console.log('anchorHashBelongsToPage: ' + anchorHashBelongsToPage);
-		
-		if(anchorHashBelongsToPage)
-			pageHash = anchorHashBelongsToPage;
-
-		//show validated page
-		navigationPageShow(pageHash);
-		*/
-
-		//scrollFunction(pageHash);
-
-      }
-     //popstate pushstate history on links
-	window.addEventListener("popstate", function(e) {
-		
-		/*
-		var activeTab = $('[href="' + location.hash + '"]');
-
-		
-		//hide landing page for other active tabs
-		landingPage(location.hash);
-
-
-		console.log('clicked popstate hash: ', location.hash);
-
-		console.log('activeTab', activeTab);
-
-		console.log('activeTab.length: ' + activeTab.length);
-		//show clicked tab
-		if (activeTab.length) {
-			//scrollFunction(location.hash);
-			activeTab.tab('show');	//disabled for smoot scrolling, remove if u dont want any smooth scroll
-
-		} else {
-			//$('#tab-content div:first').tab('show').addClass("hejsan");
-			//set home page tab as default!
-			$("#homeBtn").click();
-		}
-
-		//remove the active class from the clicked a link
-		activeTab.removeClass("active");
-
-		*/
-
-	});
 
 	/* add three pubkeys for multisig address creation*/
 	for(i=1;i<3;i++){

@@ -408,12 +408,12 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				throw "Invalid checksum";
 			}
 		} catch(e) {
-			bech32rs = coinjs.bech32redeemscript(addr);
-			if(bech32rs){
-				return {'type':'bech32', 'redeemscript':bech32rs};
-			} else {
-				return false;
+			if(coinjs.bech32.charset !== undefined) {
+				bech32rs = coinjs.bech32redeemscript(addr);
+				if(bech32rs)
+					return {'type':'bech32', 'redeemscript':bech32rs};
 			}
+			return false;
 		}
 	}
 

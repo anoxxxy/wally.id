@@ -35,16 +35,84 @@
     return regex.test(password);
   }
 
+
+/**
+https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+*/
+wally_fn.getUrlParams = function (url) {
+    
+    // get query string from url (optional) or window
+    var qs = url ? url : window.location.search.slice(1);
+    var qsHash = url ? url : window.location.hash.slice(1);
+
+    var qs = qs.substring(qs.indexOf('?') + 1).split('&');
+    var qsHash = qsHash.substring(qsHash.indexOf('#') + 1).split('&');
+
+    console.log('qs',qs);
+    console.log('qsHash',qsHash);
+    /*
+    //do we have any hash?
+    qsSplit = qs.split('#');  //cointains only search params
+    qs = qsSplit[0];
+    var qsHash = qsSplit[1];  //contains hash if there is any
+    qsHash = qsHash.split('&');
+    */
+
+
+    var result = {'search_params': {}, 'hash_params': {}};
+
+    //var qs = url.substring(url.indexOf('?') + 1).split('&');
+    //search params
+    for(var i = 0, tmp; i < qs.length; i++){
+        qs[i] = qs[i].split('=');
+
+        if (qs[i][0].includes('#')) {
+          tmp = qs[i][0].split('#');
+          qs[i][0] = tmp[0];
+          result.search_params['_hashtag_'] = tmp[1];
+        }
+
+        if (qs[i][0] != '') 
+          result.search_params[qs[i][0]] = (typeof(qs[i][1]) === 'undefined' ? undefined : decodeURIComponent(qs[i][1]) );
+    }
+
+    //hashtag params
+    for(var i = 0, tmp; i < qsHash.length; i++){
+        qsHash[i] = qsHash[i].split('=');
+        if (qsHash[i][0].includes('?')) {
+          tmp = qsHash[i][0].split('?');
+          qsHash[i][0] = tmp[1];
+          result.hash_params['_hashtag_'] = tmp[0];
+        }
+        if (qsHash[i][0] != '') 
+          result.hash_params[qsHash[i][0]] = (typeof(qsHash[i][1]) === 'undefined' ? undefined : decodeURIComponent(qsHash[i][1]) );
+    }
+
+    result = Object.assign(result.search_params, result.hash_params)
+
+    if(result['_hashtag_'] === undefined)
+      result['_hashtag_'] = window.location.hash.slice(1);
+    
+    return result;
+}
+
+
 /*
- @ url= 'http://example.com/?product=shirt&color=blue&newuser&size=m#verify';
+ @ url= 'http://example.com/?product=shirt&color=blue&color[]=blue2&color[]=blue3&newuser&size=m#verify';
  Get all url parameters and hashtag and save to an object
  @url is a url string and optional
  */
 
   wally_fn.getAllUrlParams = function(url) {
 
+    
+
     // get query string from url (optional) or window
     var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+    
+    //make it lowercase
+    queryString = queryString.toLowerCase();
+
     var pageHash = '';
     if (url )
       queryString = url.split('?')[1];
@@ -75,42 +143,13 @@
 
         // set parameter name and value (use 'true' if empty)
         var paramName = a[0];
-        var paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
+        var paramValue = typeof (a[1]) === 'undefined' ? undefined : a[1];
 
-        // (optional) keep case consistent
-        paramName = paramName.toLowerCase();
-        if (typeof paramValue === 'string') paramValue = paramValue.toLowerCase();
-
-        // if the paramName ends with square brackets, e.g. colors[] or colors[2]
-        if (paramName.match(/\[(\d+)?\]$/)) {
-
-          // create key if it doesn't exist
-          var key = paramName.replace(/\[(\d+)?\]/, '');
-          if (!obj[key]) obj[key] = [];
-
-          // if it's an indexed array e.g. colors[2]
-          if (paramName.match(/\[\d+\]$/)) {
-            // get the index value and add the entry at the appropriate position
-            var index = /\[(\d+)\]/.exec(paramName)[1];
-            obj[key][index] = paramValue;
-          } else {
-            // otherwise add the value to the end of the array
-            obj[key].push(paramValue);
-          }
-        } else {
           // we're dealing with a string
           if (!obj[paramName]) {
             // if it doesn't exist, create property
             obj[paramName] = paramValue;
-          } else if (obj[paramName] && typeof obj[paramName] === 'string'){
-            // if property does exist and it's a string, convert it to an array
-            obj[paramName] = [obj[paramName]];
-            obj[paramName].push(paramValue);
-          } else {
-            // otherwise add the property
-            obj[paramName].push(paramValue);
-          }
-        }
+          } 
       }
     }
 
