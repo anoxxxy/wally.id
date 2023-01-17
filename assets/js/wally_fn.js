@@ -1005,7 +1005,20 @@ wally_fn.decodeHexPrivKey = function(key){
     }
 
   };
+/*
 
+paccoin
+
+
+  name: 'livenet',
+  alias: 'mainnet',
+  pubkeyhash: 0x37,
+  privatekey: 0xcc,
+  scripthash: 0x0a,
+  xpubkey: 0x03dd3e31,    // 'xpub' (Bitcoin Default)
+  xprivkey: 0x03dd3e5a,   // 'xprv' (Bitcoin Default)
+  networkMagic: 0xc8e5612c,
+*/
   
 
   /*

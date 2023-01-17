@@ -698,7 +698,7 @@ const getActivePanel = () => {
 
 const setActivePanel = (activePanelNum, setClassName='animate__fadeInUp') => {
 
-  console.log('===============activePanel===============');
+  console.log('===============activePanel:'+activePanelNum+'===============');
   removeClasses(wizardEl.stepFormPanels, 'js-active');
   removeClasses(wizardEl.stepFormPanels, stepNextAnimation);
   removeClasses(wizardEl.stepFormPanels, stepPrevAnimation);
@@ -709,7 +709,7 @@ const setActivePanel = (activePanelNum, setClassName='animate__fadeInUp') => {
   if (!Number.isInteger(activePanelNum)) {
     activePanelName = activePanelNum;
     activePanelNum = getStepNumberFromName(activePanelNum);
-    //console.log('called getStepNumberFromName: '+ activePanelNum);
+    console.log('called getStepNumberFromName: '+ activePanelNum);
     currentFormStep.value = activePanelNum;
   }
   //return if no step is found!
@@ -741,6 +741,11 @@ const setActivePanel = (activePanelNum, setClassName='animate__fadeInUp') => {
 
       //setFormHeight(elem);
     }
+
+    activePanelNum
+    
+    //http://site.com#products/param1=val1&param2&val2.....
+    window.location.hash = '#wallet/login='+activePanelName;
 
   });
 

@@ -412,57 +412,85 @@
   */
 
 
-//handles smooth scroll to tab content
-wally_fn.scrollFunction = function (scrollToId = Router.urlParams.page) {
-
-    //scrollToId.replace('#', '');
-    //console.log('scrolledID: ' + scrollToId.replace('#', ''));
-        var target = document.getElementById(scrollToId.replace('#', ''));
-if(target === null)
-          return;
-
-       // combine it with any of the other options from 'scroll-into-view-if-needed'
-
-//document.getElementById("tab-content").scrollIntoView({ behavior: 'smooth', block: 'start' });
-//window.scrollBy({ top: -40, left: 0, behavior: 'smooth' });
-
-
-if(scrollToId == "#home" || scrollToId == "#verify")
-  window.scroll({ top: 0, left: 0, behavior: 'smooth' });
-  //window.scrollBy({ top: -400, left: 0, behavior: 'smooth' });
-else{
-  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  //window.scrollBy({ top: -20, left: 0, behavior: 'smooth' });
-}
-
-//await window.scrollBy({ top: -100, left: 0, behavior: 'smooth' });
-
+/*
+ @ Handles the navigation to the selected page
+ use transition, animation, scroll etc...
+*/
+wally_fn.pageNavigator = function (_elId_ = Router.urlParams.page) {
 
 /*
-scrollIntoView(target, {
-  scrollMode: 'if-needed',
-  block: 'start',
-  inline: 'center',
+var pageElement = document.getElementById(_elId_);
+//sections.hide(250);
+//$(_elId_).show(250);
+
+
+const pageAnimation = anime.timeline({
+  easing: "easeOutCubic",
+  autoplay: true });
+
+const scrollElement = window.document.scrollingElement || window.document.body || window.document.documentElement;
+
+pageAnimation.
+add({
+  targets: scrollElement,
+  //scrollTop: 0,
+  scrollTop: pageElement.offsetTop,
+  
+  duration: 500,
+  easing: 'easeInOutQuad',
+  changeBegin: function() {
+    //document.querySelector('#js_folder-content').style.position = "absolute";
+  }
 });
+
+
+return;
 */
 
 
-/*
-        if(target === null)
+var target = document.getElementById(_elId_);
+if(target === null)
           return;
-        //var e = document.getElementById("tab-content");
-        
 
-        // This start the block to the window 
-        // bottom and also aligns the view to the center 
-        target.scrollIntoView({
-          block: 'start',
-          behavior: 'smooth',
-          inline: 'start'
-        });
-        */
 
+if(_elId_ == "home" || _elId_ == "about"){
+  window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+  //window.scrollBy({ top: -400, left: 0, behavior: 'smooth' });
+  console.log('scroll top')
+}else{
+  console.log('scroll specific')
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    
+    /*
+    var onePromise = new Promise((resolve, reject) => {
+      try {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        resolve();
+      } catch (e) {
+            reject('boo');
       }
+    });
+      
+    onePromise.then((successMessage) => {
+      // successMessage is whatever we passed in the resolve(...) function above.
+      // It doesn't have to be a string, but if it is only a succeed message, it probably will be.
+      console.log(successMessage);
+      window.scrollBy({ top: -24, left: 0, behavior: 'smooth' });
+      console.log('promise done!');
+      //window.scrollBy(0, -30);
+    }).catch((reason) => {
+        console.log(reason);
+    });
+    */
+
+
+
+  }
+  
+  
+
+
+}
 
   wally_kit.pageHandler = function (pageHash, show=false) {
     
@@ -473,20 +501,28 @@ scrollIntoView(target, {
     }else 
       $('.landing_box').addClass("hidden");
 
-    //remove active class from the previous active page 
+    //remove active class from the previous active page
     var tabPages = document.querySelectorAll('.tab-pane.tab-content.active');
     tabPages.forEach(allTabs => {
-          allTabs.classList.remove("active");
-          console.log("navigationPageHideAll --> active pages removed!");
+          if (allTabs.classList.contains('active')) {
+            allTabs.classList.remove("active");
+            console.log("navigationPageHideAll --> active pages removed!");
+          }
       });
 
-    //todo: remain on same page when clicking on inputs/outputs tab
+    //todo: remain on same page when clicking on hashtags inside a page (which also is hashtag based) (for i.e inputs/outputs tab)
 
-    //set active page
-    document.getElementById(Router.urlParams.page).classList.add("active");
-
-    //smooth scroll to active page
-    wally_fn.scrollFunction();
+    //set active page if set
+    if (Router.urlParams.page && Router.urlParams.page != 'home') {
+      document.getElementById(Router.urlParams.page).classList.add("active");
+      //smooth scroll to active page
+      wally_fn.pageNavigator();
+    } else {
+      document.getElementById('home').classList.add("active");
+      $('.landing_box').removeClass("hidden");
+      //no active pag is set, show start page/landing page
+    }
+    
 
   }
 
@@ -504,6 +540,62 @@ https://alloyui.com/api/files/yui3_src_history_js_history-hash.js.html#
 $(document).ready(function() {
     'use strict';
 
+/*<<< START PROMISE FUNCTION*/
+/*
+let url = "https://api.chucknorris.io/jokes/random";
+
+// A function that returns a promise to resolve into the data //fetched from the API or an error
+let getChuckNorrisFact = (url) => {
+  return new Promise(
+    (resolve, reject) => {
+      request.get(url, function(error, response, data){
+        if (error) reject(error);
+          
+let content = JSON.parse(data);
+        let fact = content.value;
+        resolve(fact);
+      })
+   }
+ );
+};
+
+getChuckNorrisFact(url).then(
+   fact => console.log(fact) // actually outputs a string
+).catch(
+   error => console.(error)
+);
+*/
+
+
+var promiseIt = function (data) {
+  return new Promise ((resolve, reject) => {
+    // ...  
+    return;
+  })
+  .then(data => {/* Do something with data */})
+  .catch(err => {/* Handle error */});
+}
+
+//https://github.com/g6123/promisify
+//https://www.freecodecamp.org/news/how-to-make-a-promise-out-of-a-callback-function-in-javascript-d8ec35d1f981/
+//https://zellwk.com/blog/converting-callbacks-to-promises/
+/*
+const shootPeasPromise = (...args) => {
+  return new Promise((resolve, reject) => {
+    // This is not a Node styled callback. 
+    // 1. data is the first argument 
+    // 2. err is the second argument
+    shootPeas(...args, (data, err) => {
+      if (err) return reject(err)
+      resolve(data)
+    })
+  })
+}
+*/
+
+/*<<<END PROMISE FUNCTION*/
+
+
 /*<<< Start Router*/
     var show_about = function () {
         alert('This is the application "About".\n\nCopyright ©2018-2019 Interart');
@@ -514,109 +606,75 @@ $(document).ready(function() {
         console.log('num: ', num)
     }
 
-    Router   
-        .add(/newAddress(.*)/, function(data) {
-            console.log('#newAddress');
-            //Router.navigate('newAddress', 'newAddress');
-            //alert('newAddress');
-            wally_kit.pageHandler();
-        })
-        .add(/newSegWit(.*)/, function(data) {
-            console.log('#newSegWit');
-            //Router.navigate('newSegWit', 'newSegWit');
-            //alert('newSegWit');
-            wally_kit.pageHandler();
-        })
-        .add(/newMultiSig(.*)/, function(data) {
-            console.log('#newMultiSig');
-            //Router.navigate('newMultiSig', 'newMultiSig');
-            //alert('newMultiSig');
-            wally_kit.pageHandler();
-        })
-        .add(/newHDaddress(.*)/, function(data) {
-            console.log('#newHDaddress');
-            //Router.navigate('newMultiSig', 'newMultiSig');
-            //alert('newHDaddress');
-            wally_kit.pageHandler();
-        })
-        .add(/newTimeLocked(.*)/, function(data) {
-            console.log('#newTimeLocked');
-            //Router.navigate('newTimeLocked', 'newTimeLocked');
-            //alert('newTimeLocked');
-            wally_kit.pageHandler();
-        })
-        .add(/newTransaction(.*)/, function(data) {
-            console.log('#newTransaction');
-            //Router.navigate('newTransaction', 'newTransaction');
-            //alert('newTransaction');
-            wally_kit.pageHandler();
-        })
-        .add(/kalle(.*)/, function(data) {
-            console.log('#kalle');
-            //Router.navigate('newTransaction', 'newTransaction');
-            alert('kalle');
-            //wally_kit.pageHandler();
-        })
-        .add(/wallet(.*)/, function(data) {
-            console.log('#wallet');
-            //Router.navigate('settings', 'hemma');
-            //alert('wallet');
-            wally_kit.pageHandler();
-        })
+    var prepareAddAll = function (data) {
+      console.log('===prepareAddAll===');
+      wally_kit.pageHandler();
+      console.log('data: ', data);
+    }
 
-        .add(/home(.*)/, function(data) {
-            console.log('#home');
-            //Router.navigate('settings', 'hemma');
-            //alert('home');
-            wally_kit.pageHandler();
+    Router
+        .add(/home(.*)/, prepareAddAll)
+        .add(/newAddress(.*)/, prepareAddAll)
+        .add(/newSegWit(.*)/, prepareAddAll)
+        .add(/newMultiSig(.*)/, prepareAddAll)
+        .add(/newHDaddress(.*)/, prepareAddAll)
+        .add(/newTimeLocked(.*)/, prepareAddAll)
+        .add(/newTransaction(.*)/, prepareAddAll)
+        .add(/kalle(.*)/, prepareAddAll)
+        .add(/wallet(.*)/, function(data) {
+          console.log('wallet page');
+          //alert('sign page');
+          prepareAddAll(data);
+
+          //
+          //set view to (history-hash) wallet type
+          if (Router.urlParams.login) {
+            $('#js_folder-content li.folder-item[data-wallet-type="'+Router.urlParams.login+'"]').click();
+          }
         })
-        .add(/about(.*)/, show_about)
+        .add(/about(.*)/, prepareAddAll)
         .add(/(verify)(.*)/, function(data) {
           console.log('verify page');
           //alert('verify page');
-          wally_kit.pageHandler();
+          prepareAddAll(data);
         })
         .add(/(sign)(.*)/, function(data) {
           console.log('sign page');
           //alert('sign page');
-          wally_kit.pageHandler();
+          prepareAddAll(data);
         })
         .add(/(broadcast)(.*)/, function(data) {
           console.log('broadcast page');
           //alert('broadcast page');
-          wally_kit.pageHandler();
+          prepareAddAll(data);
         })
         .add(/(converter)(.*)/, function(data) {
           console.log('converter page');
           //alert('converter page');
-          wally_kit.pageHandler();
+          prepareAddAll(data);
         })
-        .add(/(fee)(.*)/, function(data) {
-          console.log('fee page');
-          //alert('fee page');
-          wally_kit.pageHandler();
-        })
+        .add(/(fee)(.*)/, prepareAddAll)
         //.add(/(settings\/)(.*)/, function(data) {
         .add(/(settings)(.*)/, function(data) {
-            //console.log('settings page', data);
-            //console.log('parsedUrl: ', Router.parseUrl(data[1]));
+            console.log('settings page', data);
             console.log('parsedUrl: ', Router.urlParams);
-            wally_kit.pageHandler();
+            prepareAddAll(data);
         })
 
-        .add(/(number)=([0-9]+)&(n)=([0-9]+)/i, function(params) {
+        /*.add(/(number)=([0-9]+)&(n)=([0-9]+)/i, function(params) {
             console.log('number=page, data:', params);
-            wally_kit.pageHandler();
+            prepareAddAll;
             
         })
-        .add(/number=([0-9]+)/i, show_number)
+        */
+        //.add(/number=([0-9]+)/i, show_number)
+
+        //default page
         .add('', function(data) {
-          Router.navigate('home', 'Start');
-        })
-        .add('', function(data) {
-            console.log('här var det tomt!');
-            //alert('startpage');
-            wally_kit.pageHandler();
+          console.log('===EMPTY_PAGE_HASH===');
+          console.log('__REDIRECT_TO_STARTPAGE_PERHAPS__');
+          prepareAddAll;
+          //Router.navigate('home', 'Start');
         })
         .apply()
         .start();
