@@ -10,7 +10,31 @@
   wally_fn.host = '';
   wally_fn.network = 'mainnet';
   wally_fn.asset = 'bitcoin';
+  wally_fn.chainModel = 'utxo';
   wally_fn.provider = {utxo:'', broadcast:''};
+
+  //wally_fn.availablePages = ["home", "newAddress", "newSegWit", "newMultiSig", "newTimeLocked", "newHDaddress", "newTransaction", "verify", "sign", "broadcast", "wallet", "settings", "about", "fees", "converter"];
+  
+  wally_fn.navigationPages = { //unused for now
+    "home" : ['utxo', 'account'],
+    "newAddress" : ['utxo', 'account'],
+    "newSegWit" : ['utxo'],
+    "newMultiSig" : ['utxo'],
+    "newTimeLocked" : ['utxo'],
+    "newHDaddress" : ['utxo', 'account'],
+    "newTransaction" : ['utxo', 'account'],
+    "verify" : ['utxo', 'account'],
+    "sign" : ['utxo', 'account'],,
+    "broadcast" : ['utxo', 'account'],
+    "wallet" : ['utxo', 'account'],
+    "settings" : ['utxo', 'account'],
+    "about" : ['utxo', 'account'],
+    "fees" : {},
+    "converter" : ['utxo', 'account'],
+    "components" : ['utxo', 'account'],
+  };
+
+
   
   /*
    @ Validate Email address
@@ -611,7 +635,6 @@ wally_fn.decodeHexPrivKey = function(key){
   wally_fn.networks = {
     mainnet : {
       bitcoin : {
-        coinName: 'Bitcoin',
         symbol: 'BTC',      //ticker
         asset: {
           chainModel: 'utxo',
@@ -658,7 +681,6 @@ wally_fn.decodeHexPrivKey = function(key){
         developer: 'iceeeee',
       },
       litecoin : {
-        coinName: 'Litecoin',
         symbol: 'LTC',      //ticker
         asset: {
           chainModel: 'utxo',
@@ -700,10 +722,9 @@ wally_fn.decodeHexPrivKey = function(key){
         developer: 'iceeeee',
       },
       dogecoin : {
-        chainModel: 'utxo',
-        coinName: 'Dogecoin',
         symbol: 'DOGE',      //ticker
         asset: {
+          chainModel: 'utxo',
           name: 'Dogecoin',
           slug: 'dogecoin',
           symbol: 'DOGE',
@@ -740,7 +761,6 @@ wally_fn.decodeHexPrivKey = function(key){
         developer: 'iceeeee',
       },
       bitbay : {
-        coinName: 'BitBay',
         symbol: 'BAY',      //ticker
         asset: {
           chainModel: 'utxo',
@@ -777,7 +797,6 @@ wally_fn.decodeHexPrivKey = function(key){
         developer: 'iceeeee',
       },
       blackcoin : {
-        coinName: 'Blackcoin',
         symbol: 'BLK',      //ticker
         asset: {
           chainModel: 'utxo',
@@ -812,7 +831,6 @@ wally_fn.decodeHexPrivKey = function(key){
         developer: 'iceeeee',
       },
       lynx : {
-        coinName: 'Lynx',
         symbol: 'LYNX',      //ticker
         asset: {
           chainModel: 'utxo',
@@ -847,7 +865,6 @@ wally_fn.decodeHexPrivKey = function(key){
         developer: 'iceeeee',
       },
       potcoin : {
-        coinName: 'PotCoin',
         symbol: 'POT',      //ticker
         asset: {
           chainModel: 'utxo',
@@ -901,7 +918,6 @@ wally_fn.decodeHexPrivKey = function(key){
     },
     testnet : {
       bitcoin : {
-        coinName: 'Bitcoin',
         symbol: 'tBTC',      //ticker
         asset: {
           chainModel: 'utxo',
@@ -944,7 +960,6 @@ wally_fn.decodeHexPrivKey = function(key){
         developer: 'iceeeee',
       },
       litecoin : {
-        coinName: 'Litecoin',
         symbol: 'tLTC',      //ticker
         asset: {
           chainModel: 'utxo',
@@ -980,7 +995,6 @@ wally_fn.decodeHexPrivKey = function(key){
         developer: 'iceeeee',
       },
       dogecoin : {
-        coinName: 'Dogecoin',
         symbol: 'tDOGE',      //ticker
         asset: {
           chainModel: 'utxo',
@@ -1015,7 +1029,6 @@ wally_fn.decodeHexPrivKey = function(key){
         developer: 'iceeeee',
       },
       wally : {
-        coinName: 'Wally',
         symbol: 'tWAY',      //ticker
         asset: {
           chainModel: 'utxo/account',
@@ -1058,10 +1071,9 @@ wally_fn.decodeHexPrivKey = function(key){
         developer: 'iceeeee',
       },
       dogecoin : {
-        coinName: 'Ethereum',
         symbol: 'tETH',      //ticker
         asset: {
-          chainModel: 'account',
+          chainModel: 'eth-account',
           name: 'Ethereum',
           slug: 'ethereum',
           symbol: 'tETH',

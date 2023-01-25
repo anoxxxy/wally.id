@@ -55,9 +55,13 @@
 
       //update coinjs settings: merge variable settings with coinjs and overwrite existing properties,
       if (options.saveSettings) {
+
+
         $.extend(coinjs, wally_fn.networks[network_var][asset_var]);
         //Object.assign(coinjs, (wally_fn.networks[network_var][asset_var]))
         //options.showMessage = true;
+
+        wally_fn.chainModel = coinjs.asset.chainModel;
 
         //hide/show fields relative to updated Network
         if (coinjs.txRBFTransaction) {
@@ -625,19 +629,43 @@ if(_elId_ == "home" || _elId_ == "about"){
           }
       });
 
+    //Pagehandling for UTXO model
     //todo: remain on same page when clicking on hashtags inside a page (which also is hashtag based) (for i.e inputs/outputs tab)
+    if (wally_fn.chainModel == 'utxo') {
 
-    //set active page if set
-    if (Router.urlParams.page && Router.urlParams.page != 'home') {
-      document.getElementById(Router.urlParams.page).classList.add("active");
-      //smooth scroll to active page
-      wally_fn.pageNavigator();
-    } else {
-      document.getElementById('home').classList.add("active");
-      $('.landing_box').removeClass("hidden");
-      //no active pag is set, show start page/landing page
+      //set active page if set
+      if (Router.urlParams.page && Router.urlParams.page != 'home') {
+        document.getElementById(Router.urlParams.page).classList.add("active");
+        //smooth scroll to active page
+        wally_fn.pageNavigator();
+      } else {
+        document.getElementById('home').classList.add("active");
+        $('.landing_box').removeClass("hidden");
+        //no active pag is set, show start page/landing page
+      }
+
     }
-    
+
+    //Pagehandling for Account model
+    if (wally_fn.chainModel == 'eth-account') {
+
+      new BootstrapDialog.alert('Transactions for this asset is not implemented yet!');
+
+      //set active page if set
+      if (Router.urlParams.page != 'home') {
+        document.getElementById('settings').classList.add("active");
+        //smooth scroll to active page
+        wally_fn.pageNavigator();
+      } else {
+        document.getElementById('home').classList.add("active");
+        $('.landing_box').removeClass("hidden");
+        //no active pag is set, show start page/landing page
+      }
+
+      
+    }
+
+
 
   }
 

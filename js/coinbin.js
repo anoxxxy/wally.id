@@ -9,32 +9,6 @@ $(document).ready(function() {
 	var explorer_addr = "https://coinb.in/addr/"
 	var explorer_block = "https://coinb.in/block/"
 
-	var browserHistoryState = [];
-	var availablePages = ["home", "newAddress", "newSegWit", "newMultiSig", "newTimeLocked", "newHDaddress", "newTransaction", "verify", "sign", "broadcast", "wallet", "settings", "about", "fees", "converter"];
-	
-	var navigationPages = {	//unused for now
-		"home" : {},
-		"newAddress" : {},
-		"newSegWit" : {},
-		"newMultiSig" : {},
-		"newTimeLocked" : {},
-		"newHDaddress" : {},
-		"newTransaction" : [
-			"txinputs",
-			"txoutputs"
-		],
-		"verify" : {},
-		"sign" : {},
-		"broadcast" : {},
-		"wallet" : {},
-		"settings" : {},
-		"about" : {},
-		"fees" : {},
-		"converter" : {},
-		"components" : {}
-	};
-
-
 /*
 
 
@@ -58,55 +32,6 @@ $(document).ready(function() {
 		"fees" : {},
 		"converter" : {}
 	};
-
-
-console.log(navigationPages);
-console.log('navigationPages.length: '+ Object.keys(navigationPages).length);
-
-console.log("Page 'about' exists?: " + navigationPages.hasOwnProperty("about"));
-
-console.log(navigationPages.about);
-
-console.log("Page 'about' has subpages? "+ Object.keys(navigationPages.about).length);
-
-console.log("Page 'newTransaction' has subpages? "+ Object.keys(navigationPages.newTransaction).length);
-if(navigationPages.hasOwnProperty("about")){}
-
-/////////////////////////////////////
-  var searchHash = "newTransaction";
-	var navigationPages = {	//unused for now
-		"home" : {},
-		"newAddress" : {},
-		"newSegWit" : {},
-		"newMultiSig" : {},
-		"newTimeLocked" : {},
-		"newHDaddress" : {},
-		"newTransaction" : [
-			"txinputs",
-			"txoutputs"
-		],
-		"verify" : {},
-		"sign" : {},
-		"broadcast" : {},
-		"wallet" : {},
-		"settings" : {},
-		"about" : {},
-		"fees" : {},
-		"converter" : {}
-	};
-
-
-console.log(navigationPages);
-console.log('navigationPages.length: '+ Object.keys(navigationPages).length);
-
-console.log("Page '"+searchHash+"' exists?: " + navigationPages.hasOwnProperty( searchHash ));
-
-console.log(navigationPages[searchHash]);
-
-console.log("Page '"+searchHash+""' has subpages? "+ Object.keys(navigationPages[searchHash]).length);
-
-console.log("Page 'newTransaction' has subpages? "+ Object.keys(navigationPages.newTransaction).length);
-if(navigationPages.hasOwnProperty("about")){}
 
 
 
