@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="./assets/css/colors.min.css" >
     <link rel="stylesheet" href="./assets/css/components.css" >
     <link rel="stylesheet" href="./assets/css/bootstrap-dialog.css" >
-    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-popover-x@1.5.1/css/bootstrap-popover-x.min.css" media="all" rel="stylesheet" type="text/css" />
+    <!-- <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-popover-x@1.5.1/css/bootstrap-popover-x.min.css" media="all" rel="stylesheet" type="text/css" />-->
     <!-- Favicons -->
     <link rel="icon" href="./assets/images/logo/favicon.ico" sizes="any">
     <link rel="icon" href="./assets/images/logo/favicon.svg" type="image/svg+xml">
@@ -47,7 +47,7 @@
     <script type="text/javascript" src="./assets/js/velocity.ui.min.js" ></script>
 
     
-    <script type="text/javascript" src="./assets/js/domready.js" ></script>
+    <!-- <script type="text/javascript" src="./assets/js/domready.js" ></script>-->
 
     <!-- <script src="./assets/js/smoothscroll.js" ></script> -->
     <script type="text/javascript" src="./assets/js/menu.js" ></script>
@@ -63,11 +63,13 @@
 
     
 
-    <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-popover-x@1.5.1/js/bootstrap-popover-x.min.js" type="text/javascript"></script>
+    <!--<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-popover-x@1.5.1/js/bootstrap-popover-x.min.js" type="text/javascript"></script>-->
     <script src="./assets/js/bootstrap-dialog.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/moment.min.js"></script>
+    <!--
     <script type="text/javascript" src="js/transition.js"></script>
     <script type="text/javascript" src="js/collapse.js"></script>
+  -->
     <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script> -->
     <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script> -->
     <script type="text/javascript" src="./assets/js/datetime-flatpickr.js"></script>
@@ -671,7 +673,10 @@
                       </h3>
                       <!-- Text -->
                       <p class="text-muted mb-0">
-                        We support <a href="#newAddress">regular addresses</a>, <a href="#newMultiSig">multisig</a>, <a href="#newSegWit">segwit / bech32</a>, <a href="#newTimeLocked">time locked</a> and stealth all with access to your own private keys!
+                        We support <a href="#newAddress">regular addresses</a>, <a href="#newMultiSig">multisig</a>, <a href="#newSegWit">segwit / bech32</a> and <a href="#newTimeLocked">time locked</a> addresses.
+
+                        <br>Wally.id has zero access to your credentials. Your privacy is our top priority!
+
                       </p>
                     </div>
                   </div>
@@ -679,12 +684,11 @@
                 </div>
                 <!-- / .container -->
               </section>
-              <section class="py-1 py-md-11">
-                <div class="col-12  py-3 mt-6">
-                  <div class="row no-gutters">
-                    <div class="col-12 px-2 text-center">
-                      <div class="callout py-3 mb-3">
-                        <!-- Heading -->
+              <section class="py-3 mt-6 text-center">
+                <div class="">
+                  
+                    
+                      <div class="callout m-0 py-3 mb-3">
                         <!-- Heading -->
                         <h3 class="mb-1">
                           <!-- Icon -->
@@ -694,18 +698,16 @@
                           Wallet
                         </h3>
                         <!-- Text -->
-                        <p class="text-muted mb-6 mb-md-0">
-                          Quick access to your <a href="#wallet">wallet</a> where only you have access to your own private keys &amp; can <a href="#fees">calculate your own fee</a>!
-                          <p>
-                            -Secure cold storage of your coins with the help of top quality encrypted wallets<br>
+                        <div class="text-primary mb-md-0">
+                          You might store your funds on a software- or hardware-wallet, <br>but with our <a href="#wallet">wallet</a> you can always access them wherever you are and whenever you need!
+                        </div>
+                        <div class="text-muted py-2">
+                          You can do that by using the <a href="#wallet/login=private_key_wallet" data-set-wallet-type="private_key_wallet">private key</a> login option.<br><br>
 
-                            -Ability to transfer funds quickly and easily, with support for sending payments in multiple currencies <br>
+                          Wally.id have also a <a href="#fees">transaction fee calculator</a>, adapt the fees for your needs!
 
-                            -Full control over your own funds with no third party involvement or counterparty risk <br>
-                            </p>
-                        </p>
-                      </div>
-                    </div>
+                        </div>
+                    
                     <!-- / .col -->  
                   </div>
                   <!-- / .row -->
@@ -790,20 +792,25 @@
                       <h3 class="mb-1">
                         <!-- Icon -->
                         <span class="icon">
-                        <img src="./assets/images/inquiry.svg" class="icon48">
+                          <img src="./assets/images/inquiry.svg" class="icon48">
                         </span>
                         Connect with us
                       </h3>
+                      <div class="p-2 m-2 text-center">
+                        Do you need help or have questions?<br>
+                        Feel free to join us on Telegram!
+                      </div>
+
                       <!-- Connect logos -->
                       <div class="row mt-3 py-3">
                         <div class="col-6 ">
                           <div class="text-center">
-                            <a href="https://t.me/wallyOfficial" alt="Wally.id - Official Telegram group"><img src="./assets/images/brands/telegram_logo.svg" class="icon64"></a>
+                            <a href="https://t.me/+x0S7bF6Whuo5Y2I0" alt="Wally.id - Official Telegram group"><img src="./assets/images/brands/telegram_logo.svg" class="icon64"></a>
                           </div>
                         </div>
                         <div class="col-6">
                           <div class="text-center">
-                            <a href="#" alt="Wally.id - Official Twitter group"><img src="./assets/images/brands/twitter_logo.svg" class="icon64"></a>
+                            <a href="https://twitter.com/WallyIDOfficial" alt="Wally.id - Official Twitter group"><img src="./assets/images/brands/twitter_logo.svg" class="icon64"></a>
                           </div>
                         </div>
                       </div>
@@ -843,7 +850,7 @@
                       </h3>
                       <!-- Text -->
                       <p class="text-muted mb-6 mb-md-0">
-                        "The phrase 'Not Your Keys, Not Your Coins' is a popular and essential mantra in the world of cryptocurrencies. Without owning your private keys, you lack full control over your coins; thus, it is vital to understand and abide by this expression."
+                        The phrase 'Not Your Keys, Not Your Coins' is a popular and essential mantra in the world of cryptocurrencies. Without owning your private keys, you lack full control over your coins; thus, it is vital to understand and abide by this expression.
                       </p>
                     </div>
                   </div>
@@ -854,7 +861,7 @@
               <div class="row no-gutters align-items-center justify-content-center text-center  py-6 mt-6 mb-6">
                 <div class="col-12 callout card" >
                   <div class="mb-3">
-                    <img src="./assets/images/large/16.svg" class="img-fluid landing_image">
+                    <img src="./assets/images/large/13.svg" class="img-fluid landing_image">
                   </div>
                   <!-- Heading -->
                   <h2>
@@ -1629,7 +1636,7 @@
                               <input type="text" class="form-control" value="0.00001000" id="txFee">
                             </div>
                             <div class="col-5">
-                              <label><abbr title="the amount to donate to coinb.in">Donation</abbr></label>
+                              <label><abbr title="the amount to donate to Wally.id">Donation</abbr></label>
                               <input type="text" class="form-control" value="0.001" id="developerDonation">
                             </div>
                           </div>
@@ -1846,10 +1853,10 @@
           <div class="tab-pane tab-content" id="newAddress" data-route="newAddress">
             <div class="pageScrollSpace">&nbsp;</div>
             <div class="row no-gutters tab-body">
-              <div class="col-md-12">
+              <div class="col-12">
                 <h2 class="card-title">New Address</h2>
                 <h4 class="card-subtitle mb-3 text-muted">Create a new address</h4>
-                <p>Any keys used you will need to manually store safely as they will be needed later to redeem the bitcoins.</p>
+                <p>Keep the keys safe, you'll need them later to access your funds.</p>
                 <label>Address (Share)</label>
                 <div class="input-group">
                   <input id="newBitcoinAddress" type="text" class="form-control address" value="" readonly>
@@ -1867,13 +1874,20 @@
                   <span class="showKey input-group-text cursor-pointer"><i class="bi bi-eye-fill"></i></span>
                   </div>
                 </div>
+                <label>Private key (HEX key)</label>
+                <div class="input-group">
+                  <input id="newPrivKeyHex" type="password" class="form-control" value="" readonly>
+                  <div class="input-group-append">
+                  <span class="showKey input-group-text cursor-pointer"><i class="bi bi-eye-fill"></i></span>
+                  </div>
+                </div>
                 <div id="aes256wifkey" class="hidden">
                   <label>AES-256 Encrypted WIF key</label>
                   <input id="newPrivKeyEnc" type="text" class="form-control" value="" readonly>
                 </div>
 
                 <h5 class="py-2 mt-4">Address Options</h5>
-                <p class="mb-1">You can use the advanced options below to generate different kind of keys and addresses.</p>
+                <p class="mb-1">Advanced options can be used to create different types of keys and addresses.</p>
                 <div class="checkbox">
                   <label><input type="checkbox" id="newCompressed" class="checkbox-inline" checked> Compress <span class="text-muted">(recommended)</span></label>
                 </div>
@@ -1881,18 +1895,18 @@
                   <label><input type="checkbox" id="newBrainwallet" class="checkbox-inline"> Custom Seed or Brain Wallet</label>
                   <input type="text" class="form-control mb-2 hidden" id="brainwallet">
                 </div>
-                <div class="checkbox">
+                <div class="checkbox hidden">
                   <label><input type="checkbox" id="encryptKey" class="checkbox-inline"> Encrypt Private Key with AES-256 Password</label>
                   <div id="aes256passform" class="row hidden">
-                    <div class="col-md-6">
+                    <div class="col-6">
                       <input type="password" class="form-control" id="aes256pass" placeholder="Password">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-6">
                       <input type="password" class="form-control" id="aes256pass_confirm" placeholder="Confirm Password">
                     </div>
                   </div>
                   <div id="aes256passStatus" class="row hidden">
-                    <div class="col-md-12">
+                    <div class="col-12">
                       <br>
                       <div class="alert alert-danger"> <span class="glyphicon glyphicon-exclamation-sign"></span> Your passwords do not match, please try again!</div>
                     </div>
@@ -1914,10 +1928,10 @@
           <div class="tab-pane tab-content" id="newSegWit" data-route="newSegWit">
             <div class="pageScrollSpace">&nbsp;</div>
             <div class="row no-gutters tab-body">
-              <div class="col-md-12">
+              <div class="col-12">
                 <h2 class="card-title">New SegWit Address</h2>
                 <h4 class="card-subtitle mb-3 text-muted">Smaller &amp; Faster Transactions</h4>
-                <p>Any keys used you will need to manually store safely as they will be needed later to redeem the bitcoins.</p>
+                <p>Keep the keys safe, you'll need them later to access your funds.</p>
                 <label>SegWit Address (Share)</label>
                 <div class="input-group">
                   <input id="newSegWitAddress" type="text" class="form-control address" value="" readonly>
@@ -1936,8 +1950,15 @@
                   <span class="showKey input-group-text cursor-pointer"><i class="bi bi-eye-fill"></i></span>
                   </div>
                 </div>
+                <label>Private key (HEX key)</label>
+                <div class="input-group">
+                  <input id="newSegWitPrivKeyHex" type="password" class="form-control" value="" readonly>
+                  <div class="input-group-append">
+                  <span class="showKey input-group-text cursor-pointer"><i class="bi bi-eye-fill"></i></span>
+                  </div>
+                </div>
                 <h5 class="py-2 mt-4">Address Options</h5>
-                <p class="mb-1">You can use the advanced options below to generate different kind of keys and addresses.</p>
+                <p class="mb-1">Advanced options can be used to create different types of keys and addresses.</p>
                 <div class="checkbox">
                   <label><input type="checkbox" id="newSegWitBech32addr" class="checkbox-inline" checked> Enable <a href="https://en.bitcoin.it/wiki/Bech32" target="_blank">Bech32</a>?</label>
                 </div>
@@ -1962,20 +1983,25 @@
           <div class="tab-pane tab-content" id="newMultiSig" data-route="newMultiSig">
             <div class="pageScrollSpace">&nbsp;</div>
             <div class="row no-gutters tab-body">
-              <div class="col-md-12">
+              <div class="col-12">
                 <h2 class="card-title">New Multisig Address</h2>
                 <h4 class="card-subtitle mb-3 text-muted">Secure multisig address (m-of-n)</h4>
                 <div class="row no-gutters">
-                  <div class="col-md-8">
-                    <p>Public keys can be <a href="#newAddress">generated in your browser</a> or from your bitcoin client.</p>
+                  <div class="col-md-9 col-12">
                     <p>
-                      Enter the public keys of all the participants, to create a <a href="https://en.bitcoin.it/wiki/Address#Multi-signature_addresses" target="_blank">multi signature address</a>. Maximum of 16 allowed. Compressed and uncompressed public keys are accepted.
+                      To create a <a href="https://en.bitcoin.it/wiki/Multi-signature" target="_blank">multi-signature address</a>, 
+                    you need to enter the public keys of all the participants involved.</p>
+                    <p><a href="#newAddress">Public keys can be generated here </a> or by using a crypto wallet client.<br>
+
+                    A maximum of 16 keys are allowed. Public keys can be either compressed or uncompressed.</p>
+
+                  </div>
+                  <div class="col-md-3 col-12">
+                    <p class="alert alert-info">
+                      <i class="bi bi-info-circle-fill"></i> <a href="javascript:;" data-toggle="modal" data-target="#modalMediator">
+                        <abbr>Need a Mediator?</abbr></a>
+                        hejsan sade katten
                     </p>
-                  </div>
-                  <div class="col-md-3">
-                    <p class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> <a href="javascript:;" data-toggle="modal" data-target="#modalMediator"><abbr>Need a Mediator?</abbr></a></p>
-                  </div>
-                  <div class="col-md-1">
                   </div>
                 </div>
                 <div id="multisigPubKeys" class="mt-1 mb-3">
@@ -2048,21 +2074,21 @@
           <div class="tab-pane tab-content" id="newTimeLocked" data-route="newTimeLocked">
             <div class="pageScrollSpace">&nbsp;</div>
             <div class="row no-gutters tab-body">
-              <div class="col-md-12">
+              <div class="col-12">
                 <h2 class="card-title">New Time Locked Address</h2>
                 <h4 class="card-subtitle mb-3 text-muted">Release assets only after a specific date</h4>
                 <div class="row no-gutters">
-                  <div class="col-md-11">
+                  <div class="col-11">
                     <p>Use 
                       <i>
                       <a href="https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki" target="_blank">OP_CHECKLOCKTIMEVERIFY </a>
                       </i> 
                       (OP_HODL) to create a time locked address where the funds are unspendable until a set date and time has passed.
                     </p>
-                    <p>Public keys can be <a href="#newAddress">generated in your browser</a> or from your bitcoin client.</p>
+                    <p><a href="#newAddress">Public keys can be generated here </a> or by using a crypto wallet client.</p>
                     <p>Enter the public key that will be able to unlock the funds after the a certain date.</p>
                   </div>
-                  <div class="col-md-1">
+                  <div class="col-1">
                   </div>
                 </div>
                 <div class="row py-3">
@@ -2073,14 +2099,14 @@
                 <p id="timeLockedRbTypeBox">
                   Enter the 
                   <input type="radio" id="timeLockedRbTypeDate" name="timeLockedRbType" value="date" checked="checked"> 
-                  <label for="timeLockedRbTypeDate">date and time</label> 
+                  <label for="timeLockedRbTypeDate" class="text-bold">date and time</label> 
                   or                         		
                   <input type="radio" id="timeLockedRbTypeBlockHeight" name="timeLockedRbType" value="blockheight">
-                  <label for="timeLockedRbTypeBlockHeight">blockheight</label>
+                  <label for="timeLockedRbTypeBlockHeight" class="text-bold">blockheight</label>
                   required to release the coins: 
                 </p>
                 <div class="row py-2">
-                  <div class="col-md-6">
+                  <div class="col-md-6 col-12">
                     <div class="form-group">
                       <div id="timeLockedDateTimePicker" class="input-group date mb-3 flatpickr">
                         <input type="text" class="form-control" value="" placeholder="MM/DD/YYYY hh:mm" data-input>
@@ -2130,11 +2156,16 @@
           <div class="tab-pane tab-content" id="newHDaddress" data-route="newHDaddress">
             <div class="pageScrollSpace">&nbsp;</div>
             <div class="row no-gutters tab-body">
-              <div class="col-md-12">
+              <div class="col-12">
                 <h2 class="card-title">New HD Address</h2>
                 <h4 class="card-subtitle mb-3 text-muted">Making bip32 even easier</h4>
-                <p>Use the form below to generate a <i>master</i> hierarchical deterministic address.</p>
+                <p>Use the form below to generate a 
+                  <a href="https://en.bitcoin.it/wiki/Deterministic_wallet" target="_blank"><i>master</i> Hierarchical Deterministic address (HD address).</a>
+                </p>
+
                 <label>xPub Address</label>
+
+
                 <div class="input-group">
                   <input id="newHDxpub" type="text" class="form-control" value="" readonly>
                   <div class="input-group-append">
@@ -2149,7 +2180,7 @@
                   </div>
                 </div>
                 <h5 class="py-2 mt-4">Address Options</h5>
-                <p class="mb-1">You can use the advanced options below to generate different kinds of master addresses.</p>
+                <p class="mb-1">You can use the advanced options below to generate different kinds of HD addresses.</p>
                 <div class="checkbox">
                   <label><input type="checkbox" id="newHDBrainwallet" class="checkbox-inline"> Custom Seed or Brain Wallet</label>
                   <input type="text" class="form-control mb-2 hidden" id="HDBrainwallet">
@@ -2164,7 +2195,7 @@
           <div class="tab-pane tab-content" id="newTransaction" data-route="newTransaction">
             <div class="pageScrollSpace">&nbsp;</div>
             <div class="row no-gutters tab-body">
-              <div class="col-md-12">
+              <div class="col-12">
                 <h2 class="card-title">Transaction</h2>
                 <h4 class="card-subtitle mb-3 text-muted">Create a new transaction</h4>
                 <p>Use this page to create a raw transaction</p>
@@ -2368,6 +2399,10 @@
 
                     <div class="alert alert-light d-flex justify-content-between">
                       <span class="text-muted text-secondary mr-2">Enter the address and amount you wish to make a payment to.</span>
+                      <a class="btn btn-sm btn-flat-secondary waves-effect" data-toggle="popover" data-html="true" data-target="#kalle" data-placement="top" data-easein="slideUpBigIn">
+                        Popover - loading DOM content
+                      </a>
+
                       <span >
                       <a class="item-donations btn btn-sm btn-flat-secondary waves-effect" id="donateTxBtn" data-toggle="popover" data-trigger="hover" data-placement="top" title="Thank You!" data-content="Wanna support Wally.id? <br>Show us some love :)">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon heart-fill" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -2453,7 +2488,7 @@
                 <br>
                 <br>
                 <div class="row no-gutters">
-                	<div class="col-8 col-sm-4 col-md-3">
+                	<div class="col-8 col-sm-4 col-3">
                   
                     <label><abbr title="What is not spent will be used as a transaction fee, so remember to add a &quot;change address&quot;">Transaction Fee</abbr>&nbsp;&nbsp;<a href="javascript:;" id="feesestnewtx"><i class="bi bi-question-lg"></i></a></label>
                     <input type="text" id="transactionFee" class="form-control" value="0.0000" readonly>
@@ -2499,111 +2534,173 @@
           </div>
           <div class="tab-pane tab-content" id="fees">
             <div class="row no-gutters tab-body">
-              <div class="col-md-12">
-                <h2 class="card-title">Bitcoin Fee Calculator</h2>
+              <div class="col-12">
+                <h2 class="card-title">Blockchain Fee Calculator</h2>
                 <h4 class="card-subtitle mb-3 text-muted">Calculate lowest possible fees on transactions</h4>
                 <p>This page will give you a guide on the lowest fee to use to get your transaction included within the next few blocks. It works by predicting the size of a transaction and comparing it to another transaction in a recent block to determine an appropriate fee.</p>
                 <div align="center" class="alert alert-info">
-                  <h2><span class="glyphicon glyphicon-question-sign"></span> Recommended Fee: <span class="recommendedFee">0.00000000</span> BTC <small> <br> for a transaction of <span class="feeTxSize">0</span> bytes</small></h2>
+                  <h4><span class="glyphicon glyphicon-question-sign"></span> Recommended Fee: <span class="recommendedFee">0.00000000</span> "BTC" <small> <br> for a transaction of <span class="feeTxSize">0</span> bytes</small></h4>
                   <span class="text-muted"><i><span class="feeSatByte">?</span> Sat/Byte</i></span>
                 </div>
                 <div id="txsliders" class="row">
-                  <div class="col-md-6 txinputs">
-                    <div align="center"><b><span class="txtotal total">0</span><br>Inputs</b></div>
+
+
+
+
+                  <div class="col-md-6 col-12 txinputs text-center">
+                    <h2><span class="txtotal total">0</span><br>Inputs</h2>
                     <div id="txinputstype" align="center" class="small text-muted">
                       <br>
                       <span><span class="txsize">0</span> Bytes</span>
                     </div>
+                    
+                    <hr>
+                    
+
+
+
                     <h4 class="regular"><abbr title="Spending from a compressed legacy address. p2pkh">Regular</abbr> <small>Compressed</small> 
                       <span class="tag tag-pill inputno" title="Number of Regular Inputs">1</span> 
                       <small><span class="bytes">148</span> bytes</small>
                       <small class="estimate hidden"><em> *estimate</em></small>
                     </h4>
-                    <div class="input-group">
-                      <span class="input-group-append"><button class="btn sliderbtn down" type="button"><span class="glyphicon glyphicon-chevron-left"></span></button></span>
-                      <input type="range" min="0" max="100" value="1" class="slider txinput txi_regular" rel="regular">
-                      <span class="input-group-append"><button class="btn sliderbtn up" type="button"><span class="glyphicon glyphicon-chevron-right"></span></button></span>
+                    <hr>
+
+
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <button class="btn sliderbtn down"><i class="bi bi-caret-left-fill"></i></button>
+                      </div>
+                      <input type="range" min="0" max="100" value="1" class="form-control slider txinput txi_regular" rel="regular">
+                      <div class="input-group-append">
+                        <button  class="btn sliderbtn up" type="button"><i class="bi bi-caret-right-fill"></i></button>
+                      </div>
                     </div>
+
+
+                    
                     <h4 class="segwit"><abbr title="Spending from a segwit address. p2sh">SegWit</abbr> 
                       <span class="tag tag-pill inputno" title="Number of SegWit Inputs">0</span>
                       <small><span class="bytes">0</span> bytes</small>
                       <small class="estimate hidden"><em> *estimate</em></small>
                     </h4>
-                    <div class="input-group">
-                      <span class="input-group-append"><button class="btn sliderbtn down" type="button"><span class="glyphicon glyphicon-chevron-left"></span></button></span>
-                      <input type="range" min="0" max="100" value="0" class="slider txinput txi_segwit" rel="segwit">
-                      <span class="input-group-append"><button class="btn sliderbtn up" type="button"><span class="glyphicon glyphicon-chevron-right"></span></button></span>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <button class="btn sliderbtn down"><i class="bi bi-caret-left-fill"></i></button>
+                      </div>
+                      <input type="range" min="0" max="100" value="0" class="form-control slider txinput txi_segwit" rel="segwit">
+                      <div class="input-group-append">
+                        <button  class="btn sliderbtn up" type="button"><i class="bi bi-caret-right-fill"></i></button>
+                      </div>
                     </div>
+
+
                     <h4 class="multisig"><abbr title="Spending from a multisig address. p2sh">MultiSig</abbr>  
                       <span class="tag tag-pill inputno" title="Number of MultiSig Inputs">0</span>
                       <small><span class="bytes">0</span> bytes</small>
                       <small class="estimate hidden"><em> *estimate</em></small>
                     </h4>
-                    <div class="input-group">
-                      <span class="input-group-append"><button class="btn sliderbtn down" type="button"><span class="glyphicon glyphicon-chevron-left"></span></button></span>
-                      <input type="range" min="0" max="100" value="0" class="slider txinput txi_multisig" rel="multisig">
-                      <span class="input-group-append"><button class="btn sliderbtn up" type="button"><span class="glyphicon glyphicon-chevron-right"></span></button></span>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <button class="btn sliderbtn down"><i class="bi bi-caret-left-fill"></i></button>
+                      </div>
+                      <input type="range" min="0" max="100" value="0" class="form-control slider txinput txi_multisig" rel="multisig">
+                      <div class="input-group-append">
+                        <button  class="btn sliderbtn up" type="button"><i class="bi bi-caret-right-fill"></i></button>
+                      </div>
                     </div>
+
+
                     <h4 class="hodl"><abbr title="Spending from a time locked address. p2sh">Hodl</abbr> <small>Time Locked</small> 
                       <span class="tag tag-pill inputno" title="Number of Hodl Inputs">0</span>
                       <small><span class="bytes">0</span> bytes</small>
                       <small class="estimate hidden"><em> *estimate</em></small>
                     </h4>
-                    <div class="input-group">
-                      <span class="input-group-append"><button class="btn sliderbtn down" type="button"><span class="glyphicon glyphicon-chevron-left"></span></button></span>
-                      <input type="range" min="0" max="100" value="0" class="slider txinput txi_hodl" rel="hodl">
-                      <span class="input-group-append"><button class="btn sliderbtn up" type="button"><span class="glyphicon glyphicon-chevron-right"></span></button></span>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <button class="btn sliderbtn down"><i class="bi bi-caret-left-fill"></i></button>
+                      </div>
+                      <input type="range" min="0" max="100" value="0" class="form-control slider txinput txi_hodl" rel="hodl">
+                      <div class="input-group-append">
+                        <button  class="btn sliderbtn up" type="button"><i class="bi bi-caret-right-fill"></i></button>
+                      </div>
                     </div>
+
+
                     <h4 class="unknown"><abbr title="Spending from an unrecognized input. p2sh">Unknown</abbr> 
                       <span class="tag tag-pill inputno" title="Number of Unknown Inputs">0</span>
                       <small><span class="bytes">0</span> bytes</small>
                       <small class="estimate hidden"><em> *estimate</em></small>
                     </h4>
-                    <div class="input-group">
-                      <span class="input-group-append"><button class="btn sliderbtn down" type="button"><span class="glyphicon glyphicon-chevron-left"></span></button></span>
-                      <input type="range" min="0" max="100" value="0" class="slider txinput txi_unknown" rel="unknown">
-                      <span class="input-group-append"><button class="btn sliderbtn up" type="button"><span class="glyphicon glyphicon-chevron-right"></span></button></span>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <button class="btn sliderbtn down"><i class="bi bi-caret-left-fill"></i></button>
+                      </div>
+                      <input type="range" min="0" max="100" value="0" class="form-control slider txinput txi_unknown" rel="unknown">
+                      <div class="input-group-append">
+                        <button  class="btn sliderbtn up" type="button"><i class="bi bi-caret-right-fill"></i></button>
+                      </div>
                     </div>
+
+
                     <br>
                   </div>
-                  <div class="col-md-6 txoutputs">
-                    <div align="center"><b><span class="txtotal total">0</span><br>Outputs</b></div>
+                  <div class="col-md-6 col-12 txoutputs text-center">
+                    <h2><span class="txtotal total">0</span><br>Outputs</h2>
+
                     <div id="txoutputtype" align="center" class="small text-muted">
                       <br>
                       <span><span class="txsize">0</span> Bytes</span>
                     </div>
+                    <hr>
                     <h4 class="p2pkh"><abbr title="A pay 2 public key hash. Starts with 1. Used with legacy addresses">Regular</abbr> <small>p2pkh (1...)</small> 
                       <span class="tag tag-pill outputno" title="Number of p2pkh Outputs">2</span> 
                       <small><span class="bytes">68</span> bytes</small>
                       <small class="estimate hidden"><em> *estimate</em></small>
                     </h4>
-                    <div class="input-group">
-                      <span class="input-group-append"><button class="btn sliderbtn down" type="button"><span class="glyphicon glyphicon-chevron-left"></span></button></span>
-                      <input type="range" min="0" max="100" value="2" class="slider txoutput txo_p2pkh" rel="p2pkh">
-                      <span class="input-group-append"><button class="btn sliderbtn up" type="button"><span class="glyphicon glyphicon-chevron-right"></span></button></span>
+                    <hr>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <button class="btn sliderbtn down"><i class="bi bi-caret-left-fill"></i></button>
+                      </div>
+                      <input type="range" min="0" max="100" value="2" class="form-control slider txoutput txo_p2pkh" rel="p2pkh">
+                      <div class="input-group-append">
+                        <button  class="btn sliderbtn up" type="button"><i class="bi bi-caret-right-fill"></i></button>
+                      </div>
                     </div>
+
+
                     <h4 class="p2sh"><abbr title="A pay 2 script hash address. Starts with a 3. For example a segwit or multisig address">Regular</abbr> <small>p2sh (3...)</small> 
                       <span class="tag tag-pill outputno" title="Number of p2sh Outputs">0</span> 
                       <small><span class="bytes">0</span> bytes</small>
                       <small class="estimate hidden"><em> *estimate</em></small>
                     </h4>
-                    <div class="input-group">
-                      <span class="input-group-append"><button class="btn sliderbtn down" type="button"><span class="glyphicon glyphicon-chevron-left"></span></button></span>
-                      <input type="range" min="0" max="100" value="0" class="slider txoutput txo_p2sh" rel="p2sh">	
-                      <span class="input-group-append"><button class="btn sliderbtn up" type="button"><span class="glyphicon glyphicon-chevron-right"></span></button></span>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <button class="btn sliderbtn down"><i class="bi bi-caret-left-fill"></i></button>
+                      </div>
+                      <input type="range" min="0" max="100" value="0" class="form-control slider txoutput txo_p2sh" rel="p2sh">
+                      <div class="input-group-append">
+                        <button  class="btn sliderbtn up" type="button"><i class="bi bi-caret-right-fill"></i></button>
+                      </div>
                     </div>
+
                     <br>
                   </div>
+                 
+
+
+
                 </div>
                 <br>
                 <div class="row">
-                  <div class="col-md-12">
+                  <div class="col-12">
                     <div class="text-muted">Chargable Transaction Size: <span class="feeTxSize">0</span> bytes</div>
                   </div>
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-md-12 recommended">
+                  <div class="col-12 recommended">
                     <h3>Blockchain Data <span class="float-xs-right"><button type="button" id="feeStatsReload" class="btn btn-secondary btn-sm"><span class="glyphicon glyphicon-refresh"></span></button></span></h3>
                     <p>This is based on us comparing your transaction against a very recent transaction found in a very recent block</p>
                     <p><b>Block Height</b>: <span class="blockHeight">?</span></p>
@@ -2618,14 +2715,14 @@
                 </div>
                 <br>
                 <div class="row">
-                  <div class="col-md-12">
+                  <div class="col-12">
                     <a href="javascript:;" id="advancedFeesCollapse">
                       <div class="well well-sm"><span class="glyphicon glyphicon-collapse-down"></span> Advanced Options &amp; Raw Transaction</div>
                     </a>
                   </div>
                 </div>
                 <div class="row hidden" id="advancedFees">
-                  <div class="col-md-12">
+                  <div class="col-12">
                     <p>Enter your unsigned or signed hex encoded transaction below:</p>
                     <textarea class="form-control txhex" style="height:160px"></textarea>
                     <br>
@@ -2673,12 +2770,12 @@
           <div class="tab-pane tab-content" id="verify" data-route="verify">
             <div class="pageScrollSpace">&nbsp;</div>
             <div class="row no-gutters tab-body">
-              <div class="col-md-12">
+              <div class="col-12">
                 <h2 class="card-title">Verify</h2>
                 <h4 class="card-subtitle mb-3 text-muted">transactions and other scripts</h4>
                 <div class="row no-gutters mb-3">
                   <div class="alert alert-light">
-                    <p>Enter the raw transaction, redeem script, public key, HD address or private key to convert it into a readable format that can be verified manually.</p>
+                    <p>Enter the raw transaction, redeem script, public key, HD address, or private key and the system will convert it into a clear and easily readable format that can be manually verified and confirmed.</p>
                     <textarea type="text" id="verifyScript" class="form-control" style="height:125px"></textarea>
                   </div>
                 </div>
@@ -2736,7 +2833,7 @@
                   <div class="hidden verifyData" id="verifyRsDataHodl">
                     <div class="callout-title text-muted text-primary">Hodl Address</div>
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-12">
                         <div class="input-group">
                           <input type="text" class="form-control address" value="" readonly>
                           <span class="input-group-append">
@@ -2747,7 +2844,7 @@
                     </div>
                     <div class="callout-title text-muted text-primary">Required Signature</div>
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-12">
                         <div class="input-group">
                           <input type="text" class="form-control address pubkey" value="" readonly>
                           <span class="input-group-append">
@@ -2758,7 +2855,7 @@
                     </div>
                     <div class="callout-title text-muted text-primary">Unlock Time</div>
                     <div class="row">
-                      <div class="col-md-4">
+                      <div class="col-4">
                         <div class="input-group">
                           <input type="text" class="form-control date" value="" readonly>
                         </div>
@@ -2985,11 +3082,11 @@
                   <div class="hidden verifyDataSw">
                     <hr>
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-6">
                         <div class="callout-title text-muted text-primary">P2SH Segwit Address</div>
                         <input type="text" class="form-control addressSegWit" readonly>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-6">
                         <div class="callout-title text-muted text-primary">P2SH Segwit Redeem Script</div>
                         <input type="text" class="form-control addressSegWitRedeemScript" readonly>
                       </div>
@@ -2998,11 +3095,11 @@
                     <div class="hidden verifyDataBech32">
                       <hr>
                       <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-6">
                           <div class="callout-title text-muted text-primary">Bech32 Address</div>
                           <input type="text" class="form-control addressBech32" readonly>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-6">
                           <div class="callout-title text-muted text-primary">Bech32 Redeem Script</div>
                           <input type="text" class="form-control addressBech32RedeemScript" readonly>
                         </div>
@@ -3029,33 +3126,33 @@
                 
 
                   <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-2">
                       <b>Type</b><br>
                       <span class="key_type"></span>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-5">
                       <b>Chain Code</b><br>
                       <input type="text" class="form-control chain_code" value="" readonly>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-5">
                       <b>Key</b><br>
                       <input type="text" class="form-control hdwifkey" value="" readonly>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-3">
                       <b>Version</b><br>
                       <input type="text" class="form-control version" value="" readonly>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-3">
                       <b>Parent FingerPrint</b><br>
                       <input type="text" class="form-control parent_fingerprint" value="" readonly>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-3">
                       <b>Depth</b><br>
                       <input type="text" class="form-control depth" value="" readonly>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-3">
                       <b>Index</b><br>
                       <input type="text" class="form-control child_index" value="" readonly>
                     </div>
@@ -3066,7 +3163,7 @@
                   <h4>Key Derivation</h4>
                   <p>The path of key derivation</p>
                   <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-8">
                       <b>Path</b><br>
                       <select class="form-control" id="hdpathtype">
                         <option value="simple">Simple: m/i</option>
@@ -3079,11 +3176,11 @@
                         </span>
                       </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-2">
                       <b><u>I</u>ndex (Start)</b><br>
                       <input type="text" class="form-control derivation_index_start" value="0">
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-2">
                       <b><u>I</u>ndex (End)</b><br>
                       <input type="text" class="form-control derivation_index_end" value="1">
                     </div>
@@ -3119,12 +3216,12 @@
           <div class="tab-pane tab-content" id="sign" data-route="sign">
             <div class="pageScrollSpace">&nbsp;</div>
             <div class="row no-gutters tab-body">
-              <div class="col-md-12">
+              <div class="col-12">
                 <h2 class="card-title">Sign Transaction</h2>
                 <h4 class="card-subtitle mb-3 text-muted">once a transaction has been verified</h4>
                 <p>Once you have <a href="#verify">verified</a> a transaction you can sign and then <a href="#broadcast">broadcast</a> it into the network.</p>
                 <div class="row no-gutters">
-                  <div class="col-md-12">
+                  <div class="col-12">
                     <label for="signPrivateKey">Private key</label>
                     <div class="input-group">
                       <input id="signPrivateKey" type="password" class="form-control" value="">
@@ -3136,7 +3233,7 @@
                 </div>
                 <br>
                 <div class="row no-gutters">
-                  <div class="col-md-12">
+                  <div class="col-12">
                     <textarea type="text" id="signTransaction" class="form-control" style="height:125px"></textarea>
                   </div>
                 </div>
@@ -3157,7 +3254,7 @@
             <div class="options">
 	            <div id="signAdvanced" >
                   <div class="row no-gutters">
-                    <div class="col-md-12">
+                    <div class="col-12">
                       <label for="sighashType">Sig Hash Type</label>
                       <select id="sighashType" class="form-control">
                         <option value="1" rel="SIGHASH_ALL: Signs all the inputs and outputs, protecting everything against modification.">ALL (default)</option>
@@ -3215,15 +3312,18 @@
                   </div>
 
                 </div>
-                <input type="button" value="Submit" class="btn btn-primary" id="signBtn">
-                <br>
+                
+                <div class="btn-group mt-3">
+                  <input type="button" value="Submit" class="btn btn-primary" id="signBtn">
+                </div>
+                
               </div>
             </div>
           </div>
           <div class="tab-pane tab-content" id="broadcast" data-route="broadcast">
             <div class="pageScrollSpace">&nbsp;</div>
             <div class="row no-gutters tab-body">
-              <div class="col-md-12">
+              <div class="col-12">
                 <h2 class="card-title">Broadcast Transaction</h2>
                 <h4 class="card-subtitle mb-3 text-muted">into the bitcoin network</h4>
                 <a href="#settings" style="float:right;"><span class="glyphicon glyphicon-cog"></span></a>
@@ -3240,7 +3340,7 @@
           <div class="tab-pane tab-content" id="dev" data-route="dev">
             <div class="pageScrollSpace">&nbsp;</div>
             <div class="row no-gutters tab-body">
-              <div class="col-md-12">
+              <div class="col-12">
                 <h2 class="card-title">Wally.id - Development</h2>
                 <h4 class="card-subtitle mb-3 text-muted">The most powerful, non-custodial decentralized cold wallet!</h4>
                 <div class="alert alert-info">Our aim is to offer people the most powerful tools for crypto wallet!</div>
@@ -3250,32 +3350,62 @@
           <div class="tab-pane tab-content" id="about" data-route="about">
             <div class="pageScrollSpace">&nbsp;</div>
             <div class="row no-gutters tab-body">
-              <div class="col-md-12">
+              <div class="col-12">
                 <h2 class="card-title">About Wally.id</h2>
                 <h4 class="card-subtitle mb-3 text-muted">
-                  your Keys, your Crypto | The most powerful, non-custodial decentralized cold wallet!
+                  - your Keys, your Crypto 
+                  <p>The most powerful, non-custodial decentralized cold wallet!</p>
                 </h4>
                 <p>Version 1.7</p>
-                <p>Compatible with bitcoin core</p>
-                <p>Github <a href="https://github.com/OutCast3k/coinbin/">https://github.com/OutCast3k/coinbin/</a></p>
-                <p style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">TOR <a href="http://coinbin3ravkwb24f7rmxx6w3snkjw45jhs5lxbh3yfeg3vpt6janwqd.onion"><i>coinbin</i>3ravkwb24f7rmxx6w3snkjw45jhs5lxbh3yfeg3vpt6janwqd.onion</a> | <i><s><a href="http://4zpinp6gdkjfplhk.onion">4zpinp6gdkjfplhk.onion</a></s></i></p>
-                <h3>What is Cold Wallet</h3>
+                <p>Compatible with Bitcoin core and all other crypto core assets we have on our list.</p>
+                Wally.id is a fork of <a href="https://github.com/OutCast3k/coinbin/" target="_blank">Coinb.in</a>.
+                <p>We decided to make it powerful through different options and re-construct UI for your needs!</p>
+                
+                <br>
+                <h5>What is Wally.id</h5>
                 <p>
 
-A cold wallet is a cryptocurrency wallet that stores private keys on an offline device. Cold wallets are considered the most secure way to store and access digital assets because they are not connected to the internet, making them immune to malicious attacks or hacks. They can be physical devices such as hardware wallets or paper wallets, or software solutions such as desktop wallets.
-</p>
-                <h3>What is Bitcoin?</h3>
+                  <ul>
+                    <li>We offer a pure decentralized multi-blockchain cold wallet</li>
+                    <li>We will repeat it: We do not log any data related to your private keys or IP address!</li>
+                    <li>Access your funds wherever you have your funds stored.</li>
+                    <li>Secure cold storage of your coins with the help of top quality encrypted wallets.</li>
+                    <li>Ability to transfer funds quickly and easily, with support for sending payments in multiple currencies.</li>
+                    <li>Full control over your own funds with no third party involvement or counterparty risk.</li>
+                  </ul>
+                </p>
+
+                <br>
+                <h5>What is Cold Wallet</h5>
+                <p>
+                  A cold wallet is a way to keep your digital money safe by storing the secret code that allows you to access it, called private key, on a device that is not connected to internet, this makes it harder for someone to hack or steal it. Cold wallets can be a physical thing like a special USB drive or a piece of paper, or a computer program.
+                </p>
+                <br>
+                <h5>What is Bitcoin?</h5>
                 <p>Bitcoin is a type of digital currency in which encryption techniques are used to regulate the generation of units of currency and verify the transfer of funds, operating independently of a central bank. See <a href="http://www.weusecoins.com/" target="_blank">weusecoins.com</a> for more information.</p>
-                <h3>Information</h3>
-                <p>Coinb.in is a free and open source project released under the MIT license, originally by <a href="https://bitcointalk.org/index.php?action=profile;u=34834" target="_blank">OutCast3k</a> in 2013. Discussion of the project can be found at <a href="https://bitcointalk.org/index.php?topic=390046" target="_blank">bitcointalk.org</a> during its early testing stages when its primary focus was to develop a proof of concept multisig solution in javascript.</p>
-                <p>Coinb.in is run and funded by the generosity of others in terms of <a href="https://github.com/OutCast3k/coinbin/graphs/contributors" target="_blank">development</a> and hosting.</p>
-                <p>Coinb.in is kindly hosted by <a href="https://www.bitvps.com/" target="_blank">BitVPS.com</a>.</p>
-                <h3>Privacy</h3>
-                <p>Coinb.in believes strongly in privacy, not only do we support the use of TOR, the site does not collect and store IP or transaction data via our servers nor do we store your bitcoins private key. We do route traffic via cloudflare using an SSL certificate.</p>
-                <h3>Support</h3>
-                <p>We recommend that you first check our <a href="https://status.coinb.in/" target="_blank">service status</a> page and then <a href="https://blog.coinb.in/" target="_blank">blog</a> page which has multiple <a href="https://blog.coinb.in/guides" target="_blank">guides</a>. However if the problem persists you can contact us by emailing support{at}coinb.in.</p>
-                <h3>Donate</h3>
-                <p>Please donate to <a href="bitcoin:33tht1bKDgZVxb39MnZsWa8oxHXHvUYE4G">33tht1bKDgZVxb39MnZsWa8oxHXHvUYE4G</a> if you found this project useful or want to see more features!</p>
+                
+                <br>
+
+                <br>
+                <h5>Privacy</h5>
+                <p>Wally.id believes strongly in privacy,we do not collect and store IP or transaction data via our servers nor do we store your  private keys.</p>
+                <p>We do route traffic via cloudflare using a SSL certificate.</p>
+
+                <br>
+                <h5>Support</h5>
+                <p>You can find us at <a href="https://twitter.com/WallyIDOfficial" target="_blank">Twitter</a> and <a href="https://t.me/+x0S7bF6Whuo5Y2I0" target="_blank">Telegram</a>, feel free to join our Official Telegram group if you need support.</p>
+                
+                <br>
+                
+                <div class="alert alert-info mb-3">
+                  <h5><i class="bi bi-heart-fill"></i> Donate</h5>
+                  <p>Do you like what we do? <br>
+                  Thanks for supporting us!<br></p>
+                </div>
+                <div class="donation_list mb-4">
+                  
+                </div>
+
               </div>
             </div>
           </div>
@@ -3713,7 +3843,7 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
             <div class="row no-gutters tab-body">
               <div class="col-md-12">
                 <h2 class="card-title">Converter</h2>
-                <h4 class="card-subtitle mb-3 text-muted">Powerful converter-tool!</h4>
+                <h4 class="card-subtitle mb-3 text-muted">Powerful Encoder and Decoder tool!</h4>
                 
                 <div class="form-group">
                   <label class="" for="enc_from">Source Encoding</label>
@@ -4069,12 +4199,12 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
             <!-- Social -->
             <ul class="list-unstyled list-inline list-social mb-6 mb-md-0">
               <li class="list-inline-item list-social-item">
-                <a href="#twitter" class="text-decoration-none">
+                <a href="https://twitter.com/WallyIDOfficial" class="text-decoration-none" target="_blank">
                 <i class="bi bi-twitter"></i>
                 </a>
               </li>
               <li class="list-inline-item list-social-item">
-                <a href="https://t.me/wallyOfficial" class="text-decoration-none">
+                <a href="https://t.me/+x0S7bF6Whuo5Y2I0" class="text-decoration-none" target="_blank">
                 <i class="bi bi-telegram"></i>
                 </a>
               </li>
@@ -4457,6 +4587,50 @@ A cold wallet is a cryptocurrency wallet that stores private keys on an offline 
     </div>
   </div>
 </div>
+</div>
+
+<!-- Popover -->
+<div id="kalle" class="popover hidden">
+    <div class="arrow"></div>
+    <div class="popover-header popover-title"><button class="close" data-dismiss="popover">&times;</button>Title</div>
+    <div class="popover-body popover-content">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+        
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Username</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Jacob</td>
+              <td>Thornton</td>
+              <td>@fat</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Larry</td>
+              <td>the Bird</td>
+              <td>@twitter</td>
+            </tr>
+          </tbody>
+        </table>
+
+    </div>
+    <div class="popover-footer">
+        <button type="button" class="btn btn-sm btn-primary">Submit</button>  <button type="button" class="btn btn-sm btn-secondary">Reset</button>
+    </div>
 </div>
 
     <!-- choose currency wallet modal -->

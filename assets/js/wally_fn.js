@@ -101,7 +101,7 @@ wally_fn.getUrlParams = function (url) {
  @ url= 'http://example.com/?product=shirt&color=blue&color[]=blue2&color[]=blue3&newuser&size=m#verify';
  Get all url parameters and hashtag and save to an object
  @url is a url string and optional
- */
+ 
 
   wally_fn.getAllUrlParams = function(url) {
 
@@ -155,10 +155,11 @@ wally_fn.getUrlParams = function (url) {
 
     return obj;
   }
+  */
 
   /* 
    @ get page url params / load code params 
-  */
+  
 
   wally_fn._searchURLParam = function(p) {
     var dataArray = (document.location.search).match(/(([a-z0-9\_\[\]]+\=[a-z0-9\_\.\%\@]+))/gi);
@@ -174,6 +175,7 @@ wally_fn.getUrlParams = function (url) {
     }
     return r;
   }
+  */
 
   /*
   @ sleep promise
@@ -612,6 +614,7 @@ wally_fn.decodeHexPrivKey = function(key){
         coinName: 'Bitcoin',
         symbol: 'BTC',      //ticker
         asset: {
+          chainModel: 'utxo',
           name: 'Bitcoin',
           slug: 'bitcoin',
           symbol: 'BTC',
@@ -658,6 +661,7 @@ wally_fn.decodeHexPrivKey = function(key){
         coinName: 'Litecoin',
         symbol: 'LTC',      //ticker
         asset: {
+          chainModel: 'utxo',
           name: 'Litecoin',
           slug: 'litecoin',
           symbol: 'LTC',
@@ -696,6 +700,7 @@ wally_fn.decodeHexPrivKey = function(key){
         developer: 'iceeeee',
       },
       dogecoin : {
+        chainModel: 'utxo',
         coinName: 'Dogecoin',
         symbol: 'DOGE',      //ticker
         asset: {
@@ -738,6 +743,7 @@ wally_fn.decodeHexPrivKey = function(key){
         coinName: 'BitBay',
         symbol: 'BAY',      //ticker
         asset: {
+          chainModel: 'utxo',
           name: 'BitBay',
           slug: 'bitbay',
           symbol: 'BAY',
@@ -774,6 +780,7 @@ wally_fn.decodeHexPrivKey = function(key){
         coinName: 'Blackcoin',
         symbol: 'BLK',      //ticker
         asset: {
+          chainModel: 'utxo',
           name: 'Blackcoin',
           slug: 'blackcoin',
           symbol: 'BLK',
@@ -808,6 +815,7 @@ wally_fn.decodeHexPrivKey = function(key){
         coinName: 'Lynx',
         symbol: 'LYNX',      //ticker
         asset: {
+          chainModel: 'utxo',
           name: 'Lynx',
           slug: 'lynx',
           symbol: 'LYNX',
@@ -842,6 +850,7 @@ wally_fn.decodeHexPrivKey = function(key){
         coinName: 'PotCoin',
         symbol: 'POT',      //ticker
         asset: {
+          chainModel: 'utxo',
           name: 'PotCoin',
           version: 4,
           slug: 'potcoin',
@@ -895,6 +904,7 @@ wally_fn.decodeHexPrivKey = function(key){
         coinName: 'Bitcoin',
         symbol: 'tBTC',      //ticker
         asset: {
+          chainModel: 'utxo',
           name: 'Bitcoin',
           slug: 'bitcoin',
           symbol: 'tBTC',
@@ -937,6 +947,7 @@ wally_fn.decodeHexPrivKey = function(key){
         coinName: 'Litecoin',
         symbol: 'tLTC',      //ticker
         asset: {
+          chainModel: 'utxo',
           name: 'Litecoin',
           slug: 'litecoin',
           symbol: 'tLTC',
@@ -972,6 +983,7 @@ wally_fn.decodeHexPrivKey = function(key){
         coinName: 'Dogecoin',
         symbol: 'tDOGE',      //ticker
         asset: {
+          chainModel: 'utxo',
           name: 'Dogecoin',
           slug: 'dogecoin',
           symbol: 'tDOGE',
@@ -1002,12 +1014,166 @@ wally_fn.decodeHexPrivKey = function(key){
         txRBFTransaction: true,
         developer: 'iceeeee',
       },
+      wally : {
+        coinName: 'Wally',
+        symbol: 'tWAY',      //ticker
+        asset: {
+          chainModel: 'utxo/account',
+          name: 'Wally',
+          slug: 'wally',
+          symbol: 'tWAY',
+          symbols: ['way', 'wally'],
+          icon: './assets/images/crypto/wally-way-logo.svg',
+          network: 'testnet',
+          supports_address : ['compressed', 'uncompressed', 'segwit', 'bech32'],
+          api : {
+            unspent_outputs: {
+              'Wally.id': 'way',
+              //https://github.com/qtumproject/qtuminfo-api
+              //https://github.com/qtumproject/qtuminfo-api/blob/master/doc/address.md#Address-UTXO-List
+            },
+            broadcast: {
+              'Wally.id': 'way',
+            }
+          }
+        },
+        pub : 120,      //pubKeyHash
+        priv : 239,     //wif
+        //pub : 0x00,      //pubKeyHash
+        //priv : 0x80,     //wif
+        //https://github.com/qtumproject/qtum/issues/612
+        //https://blog.qtum.org/wallet-import-format-3497f670b6aa
+        //https://github.com/qtumproject/documents/tree/master/en/QTUM-WebWallet-usage#4-restore-from-wif
+
+        multisig : 110, //scriptHash
+          hdkey : {'prv':70615956, 'pub':70617039},
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'tb'},
+
+        txExtraTimeField: false,    //Set to true for PoS coins
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:8,
+        txRBFTransaction: false,
+        developer: 'iceeeee',
+      },
+      dogecoin : {
+        coinName: 'Ethereum',
+        symbol: 'tETH',      //ticker
+        asset: {
+          chainModel: 'account',
+          name: 'Ethereum',
+          slug: 'ethereum',
+          symbol: 'tETH',
+          symbols: ['eth', 'ethereum'],
+          icon: './assets/images/crypto/ethereum-eth-logo.svg',
+          network: 'testnet',
+          supports_address : ['compressed', 'uncompressed', 'segwit'],
+          api : {
+            unspent_outputs: {
+              '': '',
+            },
+            broadcast: {
+              '': '',
+            }
+          }
+        },
+        pub : 0x71,      //pubKeyHash
+        priv : 0xf1,     //wif
+        multisig : 0xc4, //scriptHash
+          hdkey : {'prv':0x04358394, 'pub':0x043587cf},
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'litecointestnet'},
+          
+        txExtraTimeField: false,    //Set to true for PoS coins
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:8,
+        txRBFTransaction: true,
+        developer: 'iceeeee',
+      },
     }
 
   };
 /*
+https://testnet.qtum.info/
+https://testnet.qtum.org/
 
-paccoin
+API testnet
+https://testnet.qtum.info/api/
+https://testnet.qtum.info/api/address/QReceive4V6rE6XU5dqoGLokwhcLnoKnUH/utxo
+
+push raw tx:
+https://testnet.qtum.info/api/tx/send
+
+POST
+rawtx=01000000016a7a005ad482e7aa2b7d18d1b1b3d89304f7f939393481139655c7665e01c3a0000000006b483045022100a7d8a9b3a9741f87dc298b799d5aec2774a4d43be959314b2872c015c083b9ac022066792718420e488b5f6f68d016332299de7457c1a18856262be7214e8bbde267012103e4fe6c71ca115bcb8ef10c91bd7ec57f926b485af9d265e2d175d02ff623e57dfeffffff01c0705465010000001976a914b103edfb0cd4cd56023030b93b4b707843f19c5688ac00000000
+
+Response
+
+{
+  "status": 0,
+  "id": "56daa4ae91c07b84aad5bcab74bfe0c12e14b228ed755c2aaabc6b027f8698a0"
+}
+/// or
+{
+  "status": 1,
+  "message": "{error message}"
+}
+-----------------------
+
+address: qZhMU25uxChirtGJg34on7JGEN2EN6dFSX
+wif: cPYMu3fzacYhQ2AfeQgeE7ovYN7muduRT6nqRRiBq1AZxBpu5tV5
+
+
+
+qtum mainnet
+coinjs.pub = 58;
+coinjs.priv = 128;
+coinjs.multisig = 50;
+
+        pub : 58,      //pubKeyHash
+        priv : 128,     //wif
+        multisig : 50, //scriptHash
+          hdkey : {'prv':76066276, 'pub':76067358},
+bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'},
+
+qtum testnet
+coinjs.pub = 120;
+coinjs.priv = 239;
+coinjs.multisig = 110;
+
+        pub : 120,      //pubKeyHash
+        priv : 239,     //wif
+        multisig : 110, //scriptHash
+          hdkey : {'prv':70615956, 'pub':70617039},
+bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'tb'},
+
+          [l.MAINNET]: {
+            name: l.MAINNET,
+            messagePrefix: "Qtum Signed Message:\n",
+            bech32: "bc",
+            bip32: { public: 76067358, private: 76066276 },
+            pubKeyHash: 58,
+            scriptHash: 50,
+            wif: 128,
+          },
+          [l.TESTNET]: {
+            name: l.TESTNET,
+            messagePrefix: "Qtum Signed Message:\n",
+            bech32: "tb",
+            bip32: { public: 70617039, private: 70615956 },
+            pubKeyHash: 120,
+            scriptHash: 110,
+            wif: 239,
+
+
+paccoin mainnet
+        pub : 0x37,      //pubKeyHash
+        priv : 0xcc,     //wif
+        multisig : 0x0a, //scriptHash
+          hdkey : {'prv':0x03dd3e5a, 'pub':0x03dd3e31},
+
 
 
   name: 'livenet',

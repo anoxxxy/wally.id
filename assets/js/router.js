@@ -62,6 +62,7 @@
                     //console.log('matches shift: ', matches);
                     if (!self.history[fragment]) {
                         this.history.push(fragment);
+
                     }
                     //console.log('before this.routes[i]: ', this.routes[i].handler);
                     this.routes[i].handler.apply({}, [matches]); //pass parameter as array
@@ -104,6 +105,8 @@
             console.log('===clearHash===');
             window.location.hash = '#';
             history.pushState(null, document.title, window.location.pathname + window.location.search);
+
+
         },
         back: function () {
             console.log('===back===');
@@ -125,15 +128,28 @@
             var tmp;
             //turn array into string with first hashtag (before slash) as "page"-key
             if (Array.isArray(url)) {
-                if (url[0].includes('/')) {
-                    tmp = url[0].split('/');
-                    url = 'page='+tmp[0];
+                if (url[0].includes('/') || url[0].includes('?')) {
+                    
+                    if (url[0].includes('/')) {
+                        tmp = url[0].split('/');
+                        url = 'page='+tmp[0];
 
-                    url+= '&'+tmp[1];
-               } else {
+                        url+= '&'+tmp[1];
+                    }
+
+                    if (url[0].includes('?')) {
+                        tmp = url[0].split('?');
+                        url = 'page='+tmp[0];
+
+                        url+= '&'+tmp[1];
+                    }
+
+                } else {
                     //we have only a string without parameters, return it with the page name
                     return this.urlParams =  {'page': url[0]};
-               }
+                }
+
+
             }
 
             url = url.trim();

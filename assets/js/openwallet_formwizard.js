@@ -1397,6 +1397,32 @@ const folderContentItems = document.querySelectorAll(".folder-content li.js_fold
 
 
 
+    /***** Dismiss all popovers by clicking outside, don't dismiss if clicking inside the popover content  **************/
+    $('body').on('click', function(e) {
+      console.log('nothing to dismiss');
+
+      //hide popovers if visible
+      if ($('.popover').hasClass('show')) {
+        console.log('popover is open!');
+        if (typeof $(e.target).data('original-title') == 'undefined' &&
+           !$(e.target).parents().is('.popover.show')) {
+          $('[data-original-title]').popover('hide');
+          console.log('dismiss-popover')
+        }
+      }
+
+      //hide portfolio dropdown if visible
+      if ($('#js_folder-backdrop').hasClass('show')) {        
+        console.log('portfolio is open');
+        if ($(e.target).attr('id') == 'js_folder-backdrop') {
+          console.log('dismiss-portfolio');
+          toggleFolder.click();
+        }
+
+      }
+    });
+
+
 ///*** Open Wallet - Next button
 loginBtnNext.on("click",function() {
   

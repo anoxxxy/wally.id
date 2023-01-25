@@ -123,24 +123,119 @@
   @ Check if Network Type is set
   */
 
-  wally_kit.checkUrlParams = async function () {
-    console.log('===checkUrlParams===');
+  wally_kit.routerSettings = async function () {
+    console.log('===routerSettings===');
+
+
+
+//title: "(string|element|function)",
+/*<<< Start Router*/
+    var show_about = function () {
+        alert('This is the application "About".\n\nCopyright ©2018-2019 Wally.id');
+    }
+
+    var show_number = function (num) {
+        alert('Number: ' + num);
+        console.log('num: ', num)
+    }
+
+    var prepareAddAll = function (data) {
+      console.log('===prepareAddAll===');
+      wally_kit.pageHandler();
+      console.log('data: ', data);
+    }
+
+    Router
+        .add(/home(.*)/, prepareAddAll)
+        .add(/newAddress(.*)/, prepareAddAll)
+        .add(/newSegWit(.*)/, prepareAddAll)
+        .add(/newMultiSig(.*)/, prepareAddAll)
+        .add(/newHDaddress(.*)/, prepareAddAll)
+        .add(/newTimeLocked(.*)/, prepareAddAll)
+        .add(/newTransaction(.*)/, prepareAddAll)
+        .add(/kalle(.*)/, prepareAddAll)
+        .add(/wallet(.*)/, function(data) {
+          console.log('wallet page');
+          //alert('sign page');
+          prepareAddAll(data);
+
+          //
+          //set view to (history-hash) wallet type
+          if (Router.urlParams.login) {
+            $('#js_folder-content li.folder-item[data-wallet-type="'+Router.urlParams.login+'"]').click();
+          }
+        })
+        .add(/about(.*)/, prepareAddAll)
+        .add(/(verify)(.*)/, function(data) {
+          console.log('verify page');
+          //alert('verify page');
+          prepareAddAll(data);
+        })
+        .add(/(sign)(.*)/, function(data) {
+          console.log('sign page');
+          //alert('sign page');
+          prepareAddAll(data);
+        })
+        .add(/(broadcast)(.*)/, function(data) {
+          console.log('broadcast page');
+          //alert('broadcast page');
+          prepareAddAll(data);
+        })
+        .add(/(converter)(.*)/, function(data) {
+          console.log('converter page');
+          //alert('converter page');
+          prepareAddAll(data);
+        })
+        .add(/(fee)(.*)/, prepareAddAll)
+        //.add(/(settings\/)(.*)/, function(data) {
+        .add(/(settings)(.*)/, function(data) {
+            console.log('settings page', data);
+            console.log('parsedUrl: ', Router.urlParams);
+            prepareAddAll(data);
+        })
+
+        /*.add(/(number)=([0-9]+)&(n)=([0-9]+)/i, function(params) {
+            console.log('number=page, data:', params);
+            prepareAddAll;
+            
+        })
+        */
+        //.add(/number=([0-9]+)/i, show_number)
+
+        //default page
+        .add('', function(data) {
+          console.log('===EMPTY_PAGE_HASH===');
+          console.log('__REDIRECT_TO_STARTPAGE_PERHAPS__');
+          prepareAddAll;
+          //Router.navigate('home', 'Start');
+        })
+        .apply()
+        .start();
+
+    //Router.navigate();
+
+/*<<< End Router*/
+
+
 
     var network_var = 'mainnet', asset_var = 'bitcoin';
 
     //get all url params
-    var urlParams = wally_fn.getAllUrlParams();
+    //var urlParams = wally_fn.getAllUrlParams();
 
     //get & set Network type, default(mainnet)
-    if (urlParams.network !== undefined) {
-      if(urlParams.network == 'testnet')
-        network_var = urlParams.network;
+    if (Router.urlParams.network !== undefined) {
+      if(Router.urlParams.network == 'testnet')
+        network_var = Router.urlParams.network;
     }
 
     console.log('network: ' + network_var);
+    console.log('coinjs.asset: ' + coinjs.asset);
+    console.log('Router.urlParams.asset: ' + Router.urlParams.asset);
 
     //get & set asset type, default(bitcoin)
-    if (urlParams.asset !== undefined) {
+    if (Router.urlParams.asset !== undefined) {
+      console.log('check for Router.urlParams.asset: ' + Router.urlParams.asset);
       /*
       if (wally_fn.networks[ network ][ urlParams.asset] ) {
         console.log ('network: ' + network + '|  asset: ' + urlParams.asset );
@@ -148,8 +243,9 @@
       */
       //search for asset name and symbol for i.e (bitcoin/btc)
       for (var [key, value] of Object.entries(wally_fn.networks[ network_var ])) {
+        console.log('loop for key, value: '+ key);
 
-        if ( (value.asset.symbols).includes(urlParams.asset) ) {
+        if ( (value.asset.symbols).includes(Router.urlParams.asset) ) {
           asset_var = key;
           console.log('asset was found: ', value.asset.symbol);
           console.log('asset key was found: ', key);
@@ -166,6 +262,7 @@
 
     //set Network depending on URL parameters
     //is network and asset set by page url?
+    /*
     var _getNetworkParam = wally_fn._searchURLParam("network");
     var _getAssetParam = wally_fn._searchURLParam("asset");
     console.log('_searchURLParam setAsset to: ' + _getAssetParam);
@@ -186,6 +283,7 @@
       $("#verifyBtn").click();
       window.location.hash = "#verify";
     }
+    */
   }
 
 
@@ -201,7 +299,7 @@
       wally_fn.setHost();
 
       //get pageURL Parameters
-      await this.checkUrlParams();
+      await this.routerSettings();
 
       console.log('networkType: ', networkTypesRadio);
 
@@ -219,16 +317,33 @@
         //wally_kit.settingsListAssets(coinjs.asset.network)
         //wally_kit.settingsListChainProviders(coinjs.asset.network)
 
-      } 
-
-    } catch (e) {
+    } else {
       //no network is choosen, set default to mainnet
-        networkTypesRadio.parent().removeClass('active');
-        $('input[type=radio][name=radio_selectNetworkType][data-network-type=mainnet]').prop('checked', true).parent().addClass('active');
-        console.log('No Network Type! Set to Default!', e);
+      networkTypesRadio.parent().removeClass('active');
+      $('input[type=radio][name=radio_selectNetworkType][data-network-type=mainnet]').prop('checked', true).parent().addClass('active');
+      console.log('No Network Type! Set to Default!');
+      throw('No Network Type! Set to Default!')
     }
 
+    //list donation addresses
+    var donationList = '';
+    for (var [key, value] of Object.entries(wally_fn.networks.mainnet)) {
+      console.log(key+':'+value.developer);
+      console.log(value.asset.icon)
+      donationList +=('<a class="list-group-item list-group-item-action" alt="Donate to us in '+value.asset.name+' ('+value.asset.symbol+')" href="'+key+':'+value.developer+'"><img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')</a>');
+    }
+
+    
+
+    $('#about .donation_list').html('<div class="list-group">'+donationList+'</div>');
+
+      //list donation addresses
+
+
+  } catch (e) {
+      console.log('wally_kit.initNetwork ERROR: ', e)
   }
+}
 
   /*
   @ show a list of Chains: Bitcoin, Litecoin, Bitbay etc..
@@ -596,92 +711,6 @@ const shootPeasPromise = (...args) => {
 /*<<<END PROMISE FUNCTION*/
 
 
-/*<<< Start Router*/
-    var show_about = function () {
-        alert('This is the application "About".\n\nCopyright ©2018-2019 Interart');
-    }
-
-    var show_number = function (num) {
-        alert('Number: ' + num);
-        console.log('num: ', num)
-    }
-
-    var prepareAddAll = function (data) {
-      console.log('===prepareAddAll===');
-      wally_kit.pageHandler();
-      console.log('data: ', data);
-    }
-
-    Router
-        .add(/home(.*)/, prepareAddAll)
-        .add(/newAddress(.*)/, prepareAddAll)
-        .add(/newSegWit(.*)/, prepareAddAll)
-        .add(/newMultiSig(.*)/, prepareAddAll)
-        .add(/newHDaddress(.*)/, prepareAddAll)
-        .add(/newTimeLocked(.*)/, prepareAddAll)
-        .add(/newTransaction(.*)/, prepareAddAll)
-        .add(/kalle(.*)/, prepareAddAll)
-        .add(/wallet(.*)/, function(data) {
-          console.log('wallet page');
-          //alert('sign page');
-          prepareAddAll(data);
-
-          //
-          //set view to (history-hash) wallet type
-          if (Router.urlParams.login) {
-            $('#js_folder-content li.folder-item[data-wallet-type="'+Router.urlParams.login+'"]').click();
-          }
-        })
-        .add(/about(.*)/, prepareAddAll)
-        .add(/(verify)(.*)/, function(data) {
-          console.log('verify page');
-          //alert('verify page');
-          prepareAddAll(data);
-        })
-        .add(/(sign)(.*)/, function(data) {
-          console.log('sign page');
-          //alert('sign page');
-          prepareAddAll(data);
-        })
-        .add(/(broadcast)(.*)/, function(data) {
-          console.log('broadcast page');
-          //alert('broadcast page');
-          prepareAddAll(data);
-        })
-        .add(/(converter)(.*)/, function(data) {
-          console.log('converter page');
-          //alert('converter page');
-          prepareAddAll(data);
-        })
-        .add(/(fee)(.*)/, prepareAddAll)
-        //.add(/(settings\/)(.*)/, function(data) {
-        .add(/(settings)(.*)/, function(data) {
-            console.log('settings page', data);
-            console.log('parsedUrl: ', Router.urlParams);
-            prepareAddAll(data);
-        })
-
-        /*.add(/(number)=([0-9]+)&(n)=([0-9]+)/i, function(params) {
-            console.log('number=page, data:', params);
-            prepareAddAll;
-            
-        })
-        */
-        //.add(/number=([0-9]+)/i, show_number)
-
-        //default page
-        .add('', function(data) {
-          console.log('===EMPTY_PAGE_HASH===');
-          console.log('__REDIRECT_TO_STARTPAGE_PERHAPS__');
-          prepareAddAll;
-          //Router.navigate('home', 'Start');
-        })
-        .apply()
-        .start();
-
-    //Router.navigate();
-
-/*<<< End Router*/
   //***Vars
   var portfolioNetworkType = $('input[type=radio][name=radio_selectNetworkType]');
   var portfolioAsset = $('#coinjs_network');
@@ -800,7 +829,164 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
 
   
 
+  //change portfolio type
+  $('a[data-set-wallet-type]').on('click', function() {
+    console.log('===setWalletPortfolio===');
+    var setWalletPortfolio = $(this).attr('data-set-wallet-type');
+    console.log('wallet_type_clicked: ', setWalletPortfolio);
+
+    //$('#js_folder-content li.folder-item[data-wallet-type="'+setWalletPortfolio+'"]').click();
+
+  });
+
+  
+
 
 
 
 });
+
+/*
+https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+
+
+var url = "http://www.example.com/folder/mypage.html?myparam1=1&myparam2=2#something";
+
+function URLParser(u){
+    var path="",query="",hash="",params;
+    if(u.indexOf("#") > 0){
+        hash = u.substr(u.indexOf("#") + 1);
+        u = u.substr(0 , u.indexOf("#"));
+    }
+    if(u.indexOf("?") > 0){
+        path = u.substr(0 , u.indexOf("?"));
+        query = u.substr(u.indexOf("?") + 1);
+        params= query.split('&');
+    }else
+        path = u;
+    return {
+        getHost: function(){
+            var hostexp = /\/\/([\w.-]*)/;
+            var match = hostexp.exec(path);
+            if (match != null && match.length > 1)
+                return match[1];
+            return "";
+        },
+        getPath: function(){
+            var pathexp = /\/\/[\w.-]*(?:\/([^?]*))/;
+            var match = pathexp.exec(path);
+            if (match != null && match.length > 1)
+                return match[1];
+            return "";
+        },
+        getHash: function(){
+            return hash;
+        },
+        getParams: function(){
+            return params
+        },
+        getQuery: function(){
+            return query;
+        },
+        setHash: function(value){
+            if(query.length > 0)
+                query = "?" + query;
+            if(value.length > 0)
+                query = query + "#" + value;
+            return path + query;
+        },
+        setParam: function(name, value){
+            if(!params){
+                params= new Array();
+            }
+            params.push(name + '=' + value);
+            for (var i = 0; i < params.length; i++) {
+                if(query.length > 0)
+                    query += "&";
+                query += params[i];
+            }
+            if(query.length > 0)
+                query = "?" + query;
+            if(hash.length > 0)
+                query = query + "#" + hash;
+            return path + query;
+        },
+        getParam: function(name){
+            if(params){
+                for (var i = 0; i < params.length; i++) {
+                    var pair = params[i].split('=');
+                    if (decodeURIComponent(pair[0]) == name)
+                        return decodeURIComponent(pair[1]);
+                }
+            }
+            console.log('Query variable %s not found', name);
+        },
+        hasParam: function(name){
+            if(params){
+                for (var i = 0; i < params.length; i++) {
+                    var pair = params[i].split('=');
+                    if (decodeURIComponent(pair[0]) == name)
+                        return true;
+                }
+            }
+            console.log('Query variable %s not found', name);
+        },
+        removeParam: function(name){
+            query = "";
+            if(params){
+                var newparams = new Array();
+                for (var i = 0;i < params.length;i++) {
+                    var pair = params[i].split('=');
+                    if (decodeURIComponent(pair[0]) != name)
+                          newparams .push(params[i]);
+                }
+                params = newparams;
+                for (var i = 0; i < params.length; i++) {
+                    if(query.length > 0)
+                        query += "&";
+                    query += params[i];
+                }
+            }
+            if(query.length > 0)
+                query = "?" + query;
+            if(hash.length > 0)
+                query = query + "#" + hash;
+            return path + query;
+        },
+    }
+}
+
+document.write("Host: " + URLParser(url).getHost() + '<br>');
+document.write("Path: " + URLParser(url).getPath() + '<br>');
+document.write("Query: " + URLParser(url).getQuery() + '<br>');
+document.write("Hash: " + URLParser(url).getHash() + '<br>');
+document.write("Params Array: " + URLParser(url).getParams() + '<br>');
+document.write("Param: " + URLParser(url).getParam('myparam1') + '<br>');
+document.write("Has Param: " + URLParser(url).hasParam('myparam1') + '<br>');
+
+document.write(url + '<br>');
+
+// Remove the first parameter
+url = URLParser(url).removeParam('myparam1');
+document.write(url + ' - Remove the first parameter<br>');
+
+// Add a third parameter
+url = URLParser(url).setParam('myparam3',3);
+document.write(url + ' - Add a third parameter<br>');
+
+// Remove the second parameter
+url = URLParser(url).removeParam('myparam2');
+document.write(url + ' - Remove the second parameter<br>');
+
+// Add a hash
+url = URLParser(url).setHash('newhash');
+document.write(url + ' - Set Hash<br>');
+
+// Remove the last parameter
+url = URLParser(url).removeParam('myparam3');
+document.write(url + ' - Remove the last parameter<br>');
+
+// Remove a parameter that doesn't exist
+url = URLParser(url).removeParam('myparam3');
+document.write(url + ' - Remove a parameter that doesn\"t exist<br>');
+*/
