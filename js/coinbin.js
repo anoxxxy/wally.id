@@ -2415,8 +2415,10 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				var w2privkey = coinjs.wif2privkey(privkey);
 				var w2pubkeyhash = coinjs.address2ripemd160(w2address['address']);
 				
-				var privkeyHex = (w2privkey['privkey']).replace(/^0+/, '');
-				privkeyHex = privkeyHex.padStart(64, '0');
+
+				var privkeyHex = (w2privkey['privkey']).replace(/^0+/, '');	//remove leading zeros
+				privkeyHex = (privkeyHex.toString()).padStart(64, '0');
+
 
 				console.log('w2pubkeyhash: ',w2pubkeyhash);
 

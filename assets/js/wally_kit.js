@@ -620,7 +620,7 @@ if(_elId_ == "home" || _elId_ == "about"){
     }else 
       $('.landing_box').addClass("hidden");
 
-    //remove active class from the previous active page
+    //remove active-class from pages
     var tabPages = document.querySelectorAll('.tab-pane.tab-content.active');
     tabPages.forEach(allTabs => {
           if (allTabs.classList.contains('active')) {
@@ -630,6 +630,7 @@ if(_elId_ == "home" || _elId_ == "about"){
       });
 
 
+    //check if page is available for the current chainModel
     if (wally_fn.navigationPages[Router.urlParams.page].includes(wally_fn.chainModel)) {
       console.log(Router.urlParams.page + ' is availabe for: '+ wally_fn.navigationPages[Router.urlParams.page].toString());
     } else {
@@ -656,11 +657,16 @@ if(_elId_ == "home" || _elId_ == "about"){
     //Pagehandling for Account model
     if (wally_fn.chainModel == 'account') {
 
-      new BootstrapDialog.alert({
+      console.log('chainModel is : ', wally_fn.chainModel);
+      var testar = new BootstrapDialog.alert({
         title: 'Whooops...', 
-        message: 'Transactions for this asset is not implemented yet!',
-        buttonLabel: 'Okidoki',
+        //message: 'Transactions for this asset is not implemented yet!',
+        message: '<div class="alert alert-danger text-center"><p>We do not have fully support for this asset yet.</p> <p><img src="'+coinjs.asset.icon+'" class="icon-center icon64 mt-3 mb-2"></p> <strong>'+coinjs.asset.name + ' ('+coinjs.asset.symbol+') <br>'+coinjs.asset.network+'</strong> </div>',
+        buttonLabel: 'Ohhh okey...',
+        cssClass: 'modal-dialog-centered',
+        verticalCentered:true,
       });
+      
 
       //set active page if set
       if (Router.urlParams.page != 'home') {

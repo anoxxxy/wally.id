@@ -589,7 +589,7 @@ wally_fn.decodeHexPrivKey = function(key){
       //if yes, add padding so its value is in 32bit/64char format
       if (this.isHex(key)) {
         if(key.length < 64)
-          key = key.padStart(64, '0');
+          key = (key.toString()).padStart(64, '0')
       }
 
       //try to decode the address
@@ -709,6 +709,9 @@ https://blog.logrocket.com/write-declarative-javascript-promise-wrapper/#declara
 
        */
 
+//const wait = async (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+
 /*
 //https://medium.com/bithubph/creating-a-promise-wrapper-for-old-callback-api-methods-fa1b03b82a90
 //https://javascript.info/promisify
@@ -716,6 +719,7 @@ https://blog.logrocket.com/write-declarative-javascript-promise-wrapper/#declara
 
 //https://www.freecodecamp.org/news/write-your-own-promisify-function-from-scratch/
 */
+
 wally_fn.myPromisify = function (fn) {
   console.log('===wally_fn.myPromisify===');
    return (...args) => {
@@ -745,13 +749,14 @@ wally_fn.myPromisify = function (fn) {
         var res = fn.call(this, args);
         console.log('res: ', res);
 
+        //setTimeout(() => reject('hello'), 2000);
+
         if (res) 
           resolve(res);
 
         reject(res);
       })
    }
-   console.log('end promisfy');
 }
 /*
 use like:
@@ -783,6 +788,8 @@ wally_fn.promisify =  function(fn) {
     //const args = Array.prototype.slice.call(arguments);
     //console.log('args: ', args);
     return new Promise((resolve, reject) => {
+
+      //setTimeout(() => reject('hello'), 2000);
 
       //console.log('resolve: ', resolve);
       //console.log('reject: ', reject);
