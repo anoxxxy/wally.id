@@ -629,6 +629,13 @@ if(_elId_ == "home" || _elId_ == "about"){
           }
       });
 
+
+    if (wally_fn.navigationPages[Router.urlParams.page].includes(wally_fn.chainModel)) {
+      console.log(Router.urlParams.page + ' is availabe for: '+ wally_fn.navigationPages[Router.urlParams.page].toString());
+    } else {
+      console.log(Router.urlParams.page + ' is ONLY availabe for: '+ wally_fn.navigationPages[Router.urlParams.page].toString());
+    }
+
     //Pagehandling for UTXO model
     //todo: remain on same page when clicking on hashtags inside a page (which also is hashtag based) (for i.e inputs/outputs tab)
     if (wally_fn.chainModel == 'utxo') {
@@ -647,9 +654,13 @@ if(_elId_ == "home" || _elId_ == "about"){
     }
 
     //Pagehandling for Account model
-    if (wally_fn.chainModel == 'eth-account') {
+    if (wally_fn.chainModel == 'account') {
 
-      new BootstrapDialog.alert('Transactions for this asset is not implemented yet!');
+      new BootstrapDialog.alert({
+        title: 'Whooops...', 
+        message: 'Transactions for this asset is not implemented yet!',
+        buttonLabel: 'Okidoki',
+      });
 
       //set active page if set
       if (Router.urlParams.page != 'home') {

@@ -24,12 +24,12 @@
     "newHDaddress" : ['utxo', 'account'],
     "newTransaction" : ['utxo', 'account'],
     "verify" : ['utxo', 'account'],
-    "sign" : ['utxo', 'account'],,
+    "sign" : ['utxo', 'account'],
     "broadcast" : ['utxo', 'account'],
     "wallet" : ['utxo', 'account'],
     "settings" : ['utxo', 'account'],
     "about" : ['utxo', 'account'],
-    "fees" : {},
+    "fees" : ['utxo'],
     "converter" : ['utxo', 'account'],
     "components" : ['utxo', 'account'],
   };
@@ -410,7 +410,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
    @Generate all addresses for supported assets
   */
     /* decode/convert HEX privkey to addresses, privkeys, compressed and uncompressed*/
-  wally_fn.hexPrivKeyDecode = function (h, options = {'supports_address':[], 'show_error': true}) {
+  wally_fn.hexPrivKeyDecode = function (h, options = {'supports_address':['compressed', 'uncompressed'], 'show_error': true}) {
 
     //generate legacy compressed and uncompressed wif keys
 
@@ -426,6 +426,9 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
     }
 
     */
+    console.log('=wally_fn.hexPrivKeyDecode=');
+    console.log('h: ', h);
+
     try {
       
       if(h.length > 78) //highest possible decimal length for last crypto address
@@ -440,7 +443,10 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
         console.log('we got a digit in hexdecode');
       }
 
-      h = h.padStart(64, '0');  //wif should always be in 32bit/64 chars!
+      if (!this.isHex(h))
+        throw ('Parameter is not in HEX format!');
+
+      h = (h.toString()).padStart(64, '0');  //wif should always be in 32bit/64 chars!
 
       console.log('h after: '+h)
 
@@ -474,6 +480,8 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
       //generate additional addresses like bech32 and segwit ?
       var address_formats = {};
       console.log('options.length: '+options.length);
+      console.log('options: '+options);
+      
       if (options.supports_address.length){
         if (options.supports_address.includes('bech32')){
           var swbech32C = coinjs.bech32Address(pubKeyC.pubkey);
@@ -571,7 +579,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
 wally_fn.decodeHexPrivKey = function(key){
     
     console.log('=wally_fn.decodePrivKey=');
-
+    console.log('key: ', key);
     try {
       //if int, convert to hex and then try to validate address
       if (Number.isInteger(key))
@@ -627,9 +635,183 @@ wally_fn.decodeHexPrivKey = function(key){
     return (x && y && typeof x === 'object' && typeof y === 'object') ?
       (Object.keys(x).length === Object.keys(y).length) &&
         Object.keys(x).reduce(function(isEqual, key) {
-          return isEqual && wally_fn.isObjectEqual(x[key], y[key]);
+          return isEqual && this.isObjectEqual(x[key], y[key]);
         }, true) : (x === y);
   }
+
+  /*
+  https://blog.logrocket.com/write-declarative-javascript-promise-wrapper/#declarative-programming
+  @ Promiser Wrapper
+  
+  wally_fn.promiser = function (_promise_) {
+    
+    new Promise(function (resolve, reject) {
+      var t = _promise_;
+
+      console.log('ttt:', t);
+
+      if (t){
+        resolve("I am surely going to get resolved!");
+      }else {
+        reject(new Error('Will this be ignored?')); // ignored
+      }
+    }).then((data) => {
+      console.log('then yeah', data);
+    }).catch((error) => {
+      console.log('then catch', error);
+    });
+    
+
+  }
+
+  
+  //promiseAllWrapper
+  
+  wally_fn.promiserAll = function (_promise_) {
+    if (Array.isArray(_promise_)) _promise_ = Promise.all(_promise_);
+    return _promise_.then((data) => [data, null]).catch((error) => [null, error]);
+  };
+
+  
+  //run promise
+  
+
+  wally_fn.runPromise = async function (requests) {
+    console.log('===wally_fn.runPromise===');
+    var [data, error] = await this.promiser(requests);
+    if (error) {
+      console.error(error?.response?.data);
+      return;
+    }
+    console.log('wally_fn.runPromise ERROR: ', data);
+  }
+
+  wally_fn.demoPromise = function() {
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        // resolve("Yaa!!");
+        reject("Naahh!!");
+      }, 5000);
+    });
+  }
+*/
+  /*
+
+
+https://blog.logrocket.com/write-declarative-javascript-promise-wrapper/#declarative-programming
+
+
+  const promisify = (fn, context) => (...args) => 
+         Promise.resolve(context ? fn.call(context, ...args) : fn(...args))
+          .then((err, result) => err ? Promise.reject(err) : result),
+
+       promisifyMethods = (obj, ...methods) => methods.map(m => promisify(m, obj))
+
+       */
+
+/*
+//https://medium.com/bithubph/creating-a-promise-wrapper-for-old-callback-api-methods-fa1b03b82a90
+//https://javascript.info/promisify
+
+
+//https://www.freecodecamp.org/news/write-your-own-promisify-function-from-scratch/
+*/
+wally_fn.myPromisify = function (fn) {
+  console.log('===wally_fn.myPromisify===');
+   return (...args) => {
+    console.log('return (...args) => ', ...args);
+     return new Promise((resolve, reject) => {
+      console.log('return new Promise((resolve, reject) => {');
+      //do we have callbacks from the requested "fn" (as parameter) function?
+       function customCallback(err, ...results) {
+        console.log('=customCallback=');
+
+        console.log('err: ', err);
+        console.log('results: ', results);
+         if (err) {
+          console.log('reject error: ', err);
+           return reject(err);
+         }
+         console.log('resolve: ', resolve);
+         return resolve(results.length === 1 ? results[0] : results);
+        }
+
+        //add callback parameter to the requested function
+        //args.push(customCallback);
+        
+        //handle the return accordingly
+        console.log('args: ', args);
+        
+        var res = fn.call(this, args);
+        console.log('res: ', res);
+
+        if (res) 
+          resolve(res);
+
+        reject(res);
+      })
+   }
+   console.log('end promisfy');
+}
+/*
+use like:
+wally_fn.myPromisify( (wally_fn.decodeHexPrivKey()) );
+
+
+var getSumPromise = wally_fn.myPromisify(wally_fn.decodeHexPrivKey);
+getSumPromise('3ö').then((data) => {
+      console.log('then yeah', data);
+    }).catch((error) => {
+      console.log('then catch', error);
+    })
+
+*/
+
+/*
+//https://masteringjs.io/tutorials/fundamentals/this
+
+  @ A Promise handler
+  @ simplified implementation of `util.promisify()`
+
+*/
+
+wally_fn.promisify =  function(fn) {
+  console.log('===wally_fn.promisify===');
+  return (...args) => {
+    console.log('=return function() {=', fn);
+    //console.log('arguments: ', arguments);
+    //const args = Array.prototype.slice.call(arguments);
+    //console.log('args: ', args);
+    return new Promise((resolve, reject) => {
+
+      //console.log('resolve: ', resolve);
+      //console.log('reject: ', reject);
+      console.log('return new Promise((resolve, reject) => {');
+      //var res = fn.call(this, ...args);
+      var res = fn.call(this, ...args);
+
+      console.log('res: ', res);
+      if (res)
+        resolve(res);
+
+      reject(res);
+          
+    });
+  }
+}
+/*
+**use it like:
+testar = wally_fn.promisify( wally_fn.hexPrivKeyDecode );
+console.log(testar('3aa'));
+**or
+testar('3aa').then((data) => {
+    console.log('then yeah', data);
+  }).catch((error) => {
+    console.log('then catch', error);
+  });
+*/
+
+
 
 
   wally_fn.networks = {
@@ -1031,7 +1213,7 @@ wally_fn.decodeHexPrivKey = function(key){
       wally : {
         symbol: 'tWAY',      //ticker
         asset: {
-          chainModel: 'utxo/account',
+          chainModel: 'utxo',
           name: 'Wally',
           slug: 'wally',
           symbol: 'tWAY',
@@ -1071,9 +1253,43 @@ wally_fn.decodeHexPrivKey = function(key){
         developer: 'iceeeee',
       },
       dogecoin : {
+        symbol: 'tDOGE',      //ticker
+        asset: {
+          chainModel: 'utxo',
+          name: 'Dogecoin',
+          slug: 'dogecoin',
+          symbol: 'tDOGE',
+          symbols: ['doge', 'dogecoin'],
+          icon: './assets/images/crypto/dogecoin-doge-logo.svg',
+          network: 'testnet',
+          supports_address : ['compressed', 'uncompressed', 'segwit'],
+          api : {
+            unspent_outputs: {
+              'Chain.so': 'DOGETEST',
+            },
+            broadcast: {
+              'Chain.so': 'DOGETEST',
+            }
+          }
+        },
+        pub : 0x71,      //pubKeyHash
+        priv : 0xf1,     //wif
+        multisig : 0xc4, //scriptHash
+          hdkey : {'prv':0x04358394, 'pub':0x043587cf},
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'litecointestnet'},
+          
+        txExtraTimeField: false,    //Set to true for PoS coins
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:8,
+        txRBFTransaction: true,
+        developer: 'iceeeee',
+      },
+      ethereum : {
         symbol: 'tETH',      //ticker
         asset: {
-          chainModel: 'eth-account',
+          chainModel: 'account',
           name: 'Ethereum',
           slug: 'ethereum',
           symbol: 'tETH',
