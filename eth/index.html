@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  <script src="./js/ethers-5.6.umd.min.js" type="text/javascript"></script>
+  <!--<script src="https://cdn.ethers.io/lib/ethers-5.6.umd.min.js" type="text/javascript"></script>-->
+  
+  
+
+  <script type="text/javascript">
+
+
+    //api key to etherscan
+    var apikey = 'X4Q94Q3ECUW2726542QEAFADQ11GZF8TB5';
+
+    //9D13ZE7XSBTJ94N9BNJ2MA33VMAY2YPIRB
+
+
+
+    /**
+     * 
+     * https://github.com/ethers-io/ethers.js
+     * https://playground.ethers.org/
+     * //https://docs.ethers.org/v5/api/providers/provider/#Provider--account-methods
+     * 
+     * tutorial etherjs
+     * https://blog.logrocket.com/building-dapp-ethers-js/
+     * 
+     * https://stackoverflow.com/questions/74366956/ethers-js-sending-a-transaction-to-a-smart-contract-gives-intrinsic-gas-too-low
+     * 
+     * define signer
+     * https://ethereum.stackexchange.com/questions/103502/how-to-set-private-key-for-ethers-signer
+     * 
+     * //old tutorial?
+     * https://ethereum.org/fr/developers/tutorials/send-token-etherjs/
+    */
+
+    var privateKey = "69327b77f67b18b903fda6975fa2ee9f6fcfc5dda443d8d5b53d1301560303d4";  //should generate address "0x17b8646e20F444ecDD5cef1f1fDC5F95c30f1946"
+    var network = ethers.providers.getNetwork("goerli");
+    console.log('network: ', network);
+
+    provider = new ethers.providers.EtherscanProvider('goerli', apikey);
+    console.log('provider: ', provider);
+
+
+    //var walletPrivateKey = new ethers.Wallet(privateKey, provider);
+    var walletPrivateKey = new ethers.Wallet(privateKey);
+    var signer = walletPrivateKey.connect(provider);
+    console.log('signer: ', signer);
+    console.log('walletPrivateKey: ', walletPrivateKey);
+
+    // Creating a signing account from a private key
+    //var signer = new ethers.Wallet(privateKey, provider);
+
+    async function getBalance(wallet) {
+      var balance = await provider.getBalance(wallet);
+      // we use the code below to convert the balance from wei to eth
+      balance = ethers.utils.formatEther(balance);
+      console.log('balance: ', balance);
+    }
+
+    async function signTx(wallet) {
+      //transaction contract
+      var tx = {
+        type: 2,  //why type 2?, https://github.com/ethers-io/ethers.js/discussions/2268
+        from: wallet.address,
+        to: wallet.address,
+        //data: '',
+        value: 123456, 
+        gasLimit: 30000,
+        //gasPrice: 100,  //You must not include a gasPrice in an EIP-1559 transaction when using serialized transaction.
+        //maxFeePerGas: 100000,
+        //maxPriorityFeePerGas: 200000,
+        
+
+        ///The total fee is calculated as: (totalFees = gasLimit * gasPrice (in Wei).).
+      };
+      console.log('tx before: ', tx);
+
+      // Signing a transaction
+      var signedTransaction = await signer.signTransaction(tx);
+
+      console.log('signedTransaction: ', signedTransaction);
+      return signedTransaction;
+
+    }
+
+    async function sendTx(wallet) {
+
+      var tx_options = {
+        type: 2,  //why type 2?, https://github.com/ethers-io/ethers.js/discussions/2268
+        from: wallet.address,
+        to: wallet.address,
+        //data: '',
+        value: 12345, 
+        gasLimit: 21000,
+        //gasPrice: 100,  //You must not include a gasPrice in an EIP-1559 transaction when using serialized transaction.
+        
+        maxPriorityFeePerGas: 5,
+        maxFeePerGas: 10,
+        
+
+        ///The total fee is calculated as: (totalFees = gasLimit * gasPrice (in Wei).).
+      };
+
+      // Creating and sending the transaction object
+
+      console.log('tx before: ', tx_options);
+      var tx = await signer.sendTransaction(tx_options);
+      console.log('tx sent: ', tx);
+
+      console.log("Mining transaction...");
+      console.log(`https://${network.name}.etherscan.io/tx/${tx.hash}`);
+
+
+      // Waiting for the transaction to be mined
+      const receipt = await tx.wait();
+      // The transaction is now on chain!
+      console.log(`Mined in block ${receipt.blockNumber}`);
+      console.log('receipt: ', receipt);
+
+
+
+    }
+
+
+    
+
+
+    /*
+    @ ajax call for retriving balance
+    */
+    var ajax = function(u, f, m, a){
+    var x = false;
+    try{
+      x = new ActiveXObject('Msxml2.XMLHTTP')
+    } catch(e) {
+      try {
+        x = new ActiveXObject('Microsoft.XMLHTTP')
+      } catch(e) {
+        x = new XMLHttpRequest()
+      }
+    }
+
+    if(x==false) {
+      return false;
+    }
+
+    x.open(m, u, true);
+    x.onreadystatechange=function(){
+      if((x.readyState==4) && f)
+        f(x.responseText);
+    };
+
+    if(m == 'POST'){
+      x.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+    }
+
+    x.send(a);
+  }
+
+  
+
+    //Docs
+    //https://web3js.readthedocs.io/en/v1.2.4/web3-eth.html
+
+    /*
+      https://docs.alchemy.com/docs/choosing-a-web3-network
+      
+      Goerli Testnet
+
+      Chain ID: 5
+      Currency: ETH
+      Block Explorer: https://goerli.etherscan.io/
+      RPC URL: https://eth-goerli.g.alchemy.com/v2/your-alchemy-api-key
+      Public RPC Endpoint: https://eth-goerli.g.alchemy.com/v2/demo
+      Faucet: https://goerlifaucet.com/
+
+      //api docs
+      //https://docs.etherscan.io/v/goerli-etherscan/
+
+      api: https://api-goerli.etherscan.io/api?module=account&action=balance&address=0x17b8646e20F444ecDD5cef1f1fDC5F95c30f1946&tag=latest&apikey=X4Q94Q3ECUW2726542QEAFADQ11GZF8TB5
+
+
+    
+    //https://web3auth.io/docs/connect-blockchain/ethereum/web
+    
+    //https://stackoverflow.com/questions/74659175/retrieving-the-transaction-value-from-georli-network-using-web3-and-javascript
+
+
+    */
+    
+
+    
+    // Connect to mainnet (homestead)
+    //var provider = new EtherscanProvider();
+
+    /*
+    // Connect to goerli testnet (these are equivalent)
+    
+    provider = new EtherscanProvider(5);
+
+    network = ethers.providers.getNetwork("goerli");
+    //provider = new EtherscanProvider(network);
+    */
+    //var provider = ethers.getDefaultProvider(); 
+    
+
+    getBalance(walletPrivateKey.address);
+    //var rawTxSigned = signTx(walletPrivateKey);
+    sendTx(walletPrivateKey);
+
+
+  /*
+  var balance = provider.getBalance("0x17b8646e20F444ecDD5cef1f1fDC5F95c30f1946");
+
+    console.log('balance: ', balance);
+
+
+  var walletPrivateKey = new Wallet(walletMnemonic.privateKey);
+
+
+    // The gas price (in wei)...
+    var gasPrice = await provider.getGasPrice();
+    // { BigNumber: "14184772639" }
+
+    // ...often this gas price is easier to understand or
+    // display to the user in gwei
+    gasPrice = utils.formatUnits(gasPrice, "gwei");
+    // '14.184772639'
+
+
+    await provider.estimateGas({
+      // Wrapped ETH address
+      to: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+
+      // `function deposit() payable`
+      data: "0xd0e30db0",
+
+      // 1 ether
+      value: parseEther("1.0")
+    });
+    // { BigNumber: "27938" }
+*/
+  /*
+
+
+  */
+
+  //getAccount(privateKey);
+  
+  //sendTransaction(from, to, amount);
+  </script>
+  
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.8.1/dist/web3.min.js" integrity="sha256-cdcyjItaOZqsMpqD2GtRBYwB4OBBT8RXfav8ecUYxtg=" crossorigin="anonymous"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>-->
+  
+
+  <!--<script src="./js/web3.min.js"></script> -->
+  <script src="./js/human_standard_token_abi.js"></script>
+
+
+  <script type="text/javascript">
+
+    /*
+    @ get specific balance of a token, given a contractAddress/tokenContract
+    */
+    function getTokenBalance(tokenContract, accountAddress) {
+      
+      //https://api-goerli.etherscan.io/api?module=account&action=tokenbalance&contractaddress='+tokenContract+'&address='+accountAddress+'&tag=latest&apikey=X4Q94Q3ECUW2726542QEAFADQ11GZF8TB5
+
+      //https://api-goerli.etherscan.io/api?module=account&action=tokenbalance&contractaddress=0x790E1526014C5c32c1D06C528EbC070041c658B5&address=0x17b8646e20F444ecDD5cef1f1fDC5F95c30f1946&tag=latest&apikey=X4Q94Q3ECUW2726542QEAFADQ11GZF8TB5
+
+    }
+    //api key to etherscan
+    var apikey = 'X4Q94Q3ECUW2726542QEAFADQ11GZF8TB5';
+
+    /*
+    @ ajax call for retriving balance
+    */
+    var ajax = function(u, f, m, a){
+    var x = false;
+    try{
+      x = new ActiveXObject('Msxml2.XMLHTTP')
+    } catch(e) {
+      try {
+        x = new ActiveXObject('Microsoft.XMLHTTP')
+      } catch(e) {
+        x = new XMLHttpRequest()
+      }
+    }
+
+    if(x==false) {
+      return false;
+    }
+
+    x.open(m, u, true);
+    x.onreadystatechange=function(){
+      if((x.readyState==4) && f)
+        f(x.responseText);
+    };
+
+    if(m == 'POST'){
+      x.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+    }
+
+    x.send(a);
+  }
+
+  
+
+    //Docs
+    //https://web3js.readthedocs.io/en/v1.2.4/web3-eth.html
+
+    /*
+      https://docs.alchemy.com/docs/choosing-a-web3-network
+      
+      Goerli Testnet
+
+      Chain ID: 5
+      Currency: ETH
+      Block Explorer: https://goerli.etherscan.io/
+      RPC URL: https://eth-goerli.g.alchemy.com/v2/your-alchemy-api-key
+      Public RPC Endpoint: https://eth-goerli.g.alchemy.com/v2/demo
+      Faucet: https://goerlifaucet.com/
+
+      //api docs
+      //https://docs.etherscan.io/v/goerli-etherscan/
+
+
+      api: https://eth-goerli.g.alchemy.com/v2/demo
+      api: https://api-goerli.etherscan.io/api?module=account&action=balance&address=0x17b8646e20F444ecDD5cef1f1fDC5F95c30f1946&tag=latest&apikey=X4Q94Q3ECUW2726542QEAFADQ11GZF8TB5
+
+
+    
+    //https://web3auth.io/docs/connect-blockchain/ethereum/web
+    
+    //https://stackoverflow.com/questions/74659175/retrieving-the-transaction-value-from-georli-network-using-web3-and-javascript
+    */
+    //web3.setProvider(myProvider)
+
+    var privateKey = "69327b77f67b18b903fda6975fa2ee9f6fcfc5dda443d8d5b53d1301560303d4";
+
+    //var web3 = new Web3();
+
+    var ethNetwork = 'https://api-goerli.etherscan.io';
+    //var web3 = new Web3(new Web3.providers.HttpProvider(ethNetwork));
+    var web3 = new Web3(ethNetwork);
+
+    /*
+var web3 = new Web3('http://localhost:8545');
+// or
+var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+
+// change provider
+web3.setProvider('ws://localhost:8546');
+// or
+web3.setProvider(new Web3.providers.WebsocketProvider('ws://localhost:8546'));
+
+    */
+
+
+    console.log('web3: ', web3);
+    // set the default chain
+    //not needed now?
+    /*
+    var test = web3.eth.defaultChain = 'goerli';
+    console.log('test goerli: ',test );
+    var test = web3.eth.defaultChain = '0x5';
+    console.log('test', test);
+    */
+
+    //Checks whether the node is mining or not.
+    //web3.eth.isMining().then(console.log);
+
+    //generate address form privkey
+    var accountInfo = web3.eth.accounts.privateKeyToAccount(privateKey);
+    //web3.eth.getAccounts(console.log);
+    
+    console.log('accountInfo: ', accountInfo);
+    console.log('myAddress: ', accountInfo.address);  //should generate "0x17b8646e20F444ecDD5cef1f1fDC5F95c30f1946"
+
+//https://api-goerli.etherscan.io/api?module=proxy&action=eth_getTransactionCount&address=0x17b8646e20F444ecDD5cef1f1fDC5F95c30f1946&tag=latest&apikey=X4Q94Q3ECUW2726542QEAFADQ11GZF8TB5
+
+    //get balance
+    var ETHBalance = 0;
+    ajax('https://api-goerli.etherscan.io/api?module=account&action=balance&address='+accountInfo.address+'&tag=latest&apikey='+apikey, function(data) {
+      console.log('getBalance: ', data);
+      var r = JSON.parse(data);
+
+      console.log('r: ', r);
+      if (r.status = '1' ) {
+        ETHBalance = web3.utils.fromWei(r.result, 'ether');
+        console.log('your ETH balance is:'+ ETHBalance);
+        
+      }
+    }, "GET");
+
+
+
+    
+    //const fromAddress = (await web3.eth.getAccounts())[0];  // Get user's Ethereum public address
+
+    var destinationAddress = "0x7aFac68875d2841dc16F1730Fba43974060b907A";
+    //const amountToSend = web3.utils.toWei('1'); // Convert 1 ether to wei
+
+
+
+async function signTx(privkey) {
+  /*
+  var nonce = await web3.eth.getTransactionCount(accountInfo.address, 'latest', function (data) {
+    console.log('data: ', data);
+  } );
+  
+
+  ajax('https://api-goerli.etherscan.io/api?module=account&action=balance&address='+accountInfo.address+'&tag=latest&apikey='+apikey, function(data) {
+      console.log('getBalance: ', data);
+      var r = JSON.parse(data);
+
+      console.log('r: ', r);
+      if (r.status = '1' ) {
+        ETHBalance = web3.utils.fromWei(r.result, 'ether');
+        console.log('your ETH balance is:'+ ETHBalance);
+        
+      }
+    }, "GET");
+    var nonce='';
+    */
+
+
+  var transaction = {
+  from: accountInfo.address,
+  to: '0x7aFac68875d2841dc16F1730Fba43974060b907A',
+  value: web3.utils.toWei('1', 'gwei'),
+  data: '',
+  gas: 30000,
+  baseChain: 'goerli',
+  };
+
+  //var signedTx = await web3.eth.accounts.signTransaction(transaction, privkey);
+  web3.eth.accounts.signTransaction(transaction, privateKey).then(console.log);
+
+  
+}
+
+
+    async function signAndSend(tx_i, privkey) {
+      
+      try{
+        var signedTx = await web3.eth.accounts.signTransaction(tx_i, privkey);
+        console.log('signedTransaction: ', signedTx);
+      } catch(e){
+          console.log('catch: ', JSON.stringify(e, null, 3), e)
+      }
+    
+
+      /*try{
+        var signedTx = await web3.eth.accounts.signTransaction(tx_i, privkey);
+        console.log('signedTransaction: ', signedTx);
+      } catch(e){
+          console.log(JSON.stringify(e, null, 3),)
+      }
+      */
+
+      // Submit transaction to the blockchain and wait for it to be mined
+      //https://web3auth.io/docs/connect-blockchain/ethereum/web#send-transaction
+      
+      /*
+      web3.eth.sendSignedTransaction(signedTx.rawTransaction, function(error, hash) {
+        if (!error) {
+          console.log("🎉 The hash of your transaction is: ", hash, "\n Check Alchemy's Mempool to view the status of your transaction!");
+        } else {
+          console.log("❗Something went wrong while submitting your transaction:", error)
+        }
+       });
+      */
+
+      /*      
+      var deployTransaction = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+      console.log('deploy: ', deploy);
+      console.log("Address of deployed contract : ", deploy.contractAddress);  
+      */
+    }
+
+
+    //sign and send transaction
+    //signAndSend(tx_inputs, privateKey);
+    signTx(privateKey);
+    
+
+
+    
+
+    //so now I got the balance, I want to send 9 ETH to myself!
+    //also I want to send 2 BAY to myself
+    //how do I do that ?
+
+    //var tokenInst = new web3.eth.Contract(human_standard_token_abi, myAddress);
+    
+
+
+  </script>
+  
+</head>
+<body>
+
+</body>
+</html>
