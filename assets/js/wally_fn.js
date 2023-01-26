@@ -15,8 +15,8 @@
 
   //wally_fn.availablePages = ["home", "newAddress", "newSegWit", "newMultiSig", "newTimeLocked", "newHDaddress", "newTransaction", "verify", "sign", "broadcast", "wallet", "settings", "about", "fees", "converter"];
   
-  wally_fn.navigationPages = { //unused for now
-    "home" : ['utxo', 'account'],
+  wally_fn.navigationPages = { 
+    "home" : ['all'],
     "newAddress" : ['utxo', 'account'],
     "newSegWit" : ['utxo'],
     "newMultiSig" : ['utxo'],
@@ -28,10 +28,10 @@
     "broadcast" : ['utxo', 'account'],
     "wallet" : ['utxo', 'account'],
     "settings" : ['utxo', 'account'],
-    "about" : ['utxo', 'account'],
+    "about" : ['all'],
     "fees" : ['utxo'],
-    "converter" : ['utxo', 'account'],
-    "components" : ['utxo', 'account'],
+    "converter" : ['all'],
+    "components" : ['all'],
   };
 
 
@@ -755,7 +755,7 @@ wally_fn.myPromisify = function (fn) {
           resolve(res);
 
         reject(res);
-      })
+      });
    }
 }
 /*

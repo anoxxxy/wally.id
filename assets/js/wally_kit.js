@@ -631,17 +631,14 @@ if(_elId_ == "home" || _elId_ == "about"){
 
 
     //check if page is available for the current chainModel
-    if (wally_fn.navigationPages[Router.urlParams.page].includes(wally_fn.chainModel)) {
+    //is asset supported on the navigated page
+    if (wally_fn.navigationPages[Router.urlParams.page].includes(wally_fn.chainModel) || wally_fn.navigationPages[Router.urlParams.page].includes('all')) {
       console.log(Router.urlParams.page + ' is availabe for: '+ wally_fn.navigationPages[Router.urlParams.page].toString());
-    } else {
-      console.log(Router.urlParams.page + ' is ONLY availabe for: '+ wally_fn.navigationPages[Router.urlParams.page].toString());
-    }
 
-    //Pagehandling for UTXO model
-    //todo: remain on same page when clicking on hashtags inside a page (which also is hashtag based) (for i.e inputs/outputs tab)
-    if (wally_fn.chainModel == 'utxo') {
+      //check asset is supported on the navigated page
+      //if (wally_fn.navigationPages).hasOwnProperty(Router.urlParams.page)
 
-      //set active page if set
+      //add active to navigated page element
       if (Router.urlParams.page && Router.urlParams.page != 'home') {
         document.getElementById(Router.urlParams.page).classList.add("active");
         //smooth scroll to active page
@@ -652,34 +649,17 @@ if(_elId_ == "home" || _elId_ == "about"){
         //no active pag is set, show start page/landing page
       }
 
-    }
-
-    //Pagehandling for Account model
-    if (wally_fn.chainModel == 'account') {
+    } else {
+      console.log(Router.urlParams.page + ' is ONLY availabe for: '+ wally_fn.navigationPages[Router.urlParams.page].toString());
 
       console.log('chainModel is : ', wally_fn.chainModel);
-      var testar = new BootstrapDialog.alert({
-        title: 'Whooops...', 
-        //message: 'Transactions for this asset is not implemented yet!',
-        message: '<div class="alert alert-danger text-center"><p>We do not have fully support for this asset yet.</p> <p><img src="'+coinjs.asset.icon+'" class="icon-center icon64 mt-3 mb-2"></p> <strong>'+coinjs.asset.name + ' ('+coinjs.asset.symbol+') <br>'+coinjs.asset.network+'</strong> </div>',
-        buttonLabel: 'Ohhh okey...',
-        cssClass: 'modal-dialog-centered',
-        verticalCentered:true,
-      });
-      
 
-      //set active page if set
-      if (Router.urlParams.page != 'home') {
-        document.getElementById('settings').classList.add("active");
-        //smooth scroll to active page
-        wally_fn.pageNavigator();
-      } else {
-        document.getElementById('home').classList.add("active");
-        $('.landing_box').removeClass("hidden");
-        //no active pag is set, show start page/landing page
-      }
+      var modalTitle = 'Whooops...';
+      var modalMessage = '<div class="alert alert-danger text-center"><p>We do not have fully support for this asset yet.</p> <p><img src="'+coinjs.asset.icon+'" class="icon-center icon64 mt-3 mb-2"></p> <strong>'+coinjs.asset.name + ' ('+coinjs.asset.symbol+') <br>'+coinjs.asset.network+'</strong> </div>';
+      custom.showModal(modalTitle, modalMessage);
 
-      
+      //no active pag is set, show start page/landing page
+      Router.navigate('home');
     }
 
 
