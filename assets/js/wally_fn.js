@@ -627,6 +627,7 @@ wally_fn.decodeHexPrivKey = function(key){
     return Crypto.util.bytesToHex(front);
   }
 
+
   /*
    @ Compare if two objects is equal
    param object1, object 2
@@ -638,6 +639,46 @@ wally_fn.decodeHexPrivKey = function(key){
           return isEqual && this.isObjectEqual(x[key], y[key]);
         }, true) : (x === y);
   }
+
+
+/*
+ @ 
+ given a parameter @word (string)
+ shuffle it and get randomized characters from it with a given @maxLength, return
+ * 
+ console.log(generateString(5));
+*/
+wally_fn.generateString = function(word, maxLength) {
+    var result = ' ';
+    var chars = this.shuffleWord(word);
+    var charsLength = chars.length;
+    for ( let i = 0; i < maxLength; i++ ) {
+        result += chars.charAt(Math.floor(Math.random() * charsLength));
+    }
+    return result;
+}
+
+
+/**
+ * Shuffle an array using the modern Fisher–Yates shuffle algorithm.
+ *
+ * https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
+ *
+ * @param (string) word
+ * @returns {word}
+ * 
+ * 
+ */
+wally_fn.shuffleWord = function (word){
+  var array = word.split("");
+  var i = array.length;
+  while (--i > 0) {
+      var rndIndex = Math.floor(Math.random() * (i + 1));
+      [array[rndIndex], array[i]] = [array[i], array[rndIndex]];
+   }
+   return array.join("");
+}
+
 
   /*
   https://blog.logrocket.com/write-declarative-javascript-promise-wrapper/#declarative-programming

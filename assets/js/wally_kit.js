@@ -694,6 +694,8 @@ $(document).ready(function() {
   };
 })();
 
+
+
 /*<<< START PROMISE FUNCTION*/
 /*
 let url = "https://api.chucknorris.io/jokes/random";

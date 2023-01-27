@@ -2676,10 +2676,6 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
   	
   	$('a[data-toggle="popover"][data-target], button[data-toggle="popover"][data-target], div[data-toggle="popover"][data-target], span[data-toggle="popover"][data-target]').each(function (i, e) {
     	
-    	//   var inputElPass = $el.attr( "data-input-for");
-    //$("#"+inputElPass).val( generatePassword() ).fadeOut().fadeIn();
-			//var $el = $(this);
-
 
 	  	console.log('index: ', i);
 	  	console.log('el: ', e);
@@ -3343,7 +3339,8 @@ function generatePassword(length = 64) {
     .map((x) => wishlist[x % wishlist.length])
     .join('');
 
-  return generatePass();  
+
+  return wally_fn.shuffleWord(generatePass());  
 }
 
 	//Crypto Random Password generator! 
@@ -3445,7 +3442,7 @@ function GeneratePasswordInPop(lower, upper, number, symbol, length) {
 	
 
 
-	//**set min max password if out of range!
+	//**set min/max password, if out of range!
 	if (length < 23)
 		length = 24;
 	if (length > 255)
@@ -3461,7 +3458,7 @@ function GeneratePasswordInPop(lower, upper, number, symbol, length) {
 	
 	var finalPassword = generatedPassword.slice(0, length);
 	
-	return finalPassword;
+	return wally_fn.shuffleWord(finalPassword);
 }
 
 function getRandomLower() {
