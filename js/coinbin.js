@@ -434,17 +434,19 @@ profile_data = {
 
 	$("#newBrainwallet").click(function(){
 		if($(this).is(":checked")){
-			$("#brainwallet").removeClass("hidden");
+			$("#brainwallet").parent().removeClass("hidden");
 		} else {
-			$("#brainwallet").addClass("hidden");
+			$("#brainwallet").parent().addClass("hidden");
 		}
 	});
 
+
+
 	$("#newSegWitBrainwallet").click(function(){
 		if($(this).is(":checked")){
-			$("#brainwalletSegWit").removeClass("hidden");
+			$("#brainwalletSegWit").parent().removeClass("hidden");
 		} else {
-			$("#brainwalletSegWit").addClass("hidden");
+			$("#brainwalletSegWit").parent().addClass("hidden");
 		}
 	});
 
@@ -809,11 +811,12 @@ profile_data = {
 
 	$("#newHDBrainwallet").click(function(){
 		if($(this).is(":checked")){
-			$("#HDBrainwallet").removeClass("hidden");
+			$("#HDBrainwallet").parent().removeClass("hidden");
 		} else {
-			$("#HDBrainwallet").addClass("hidden");
+			$("#HDBrainwallet").parent().addClass("hidden");
 		}
 	});
+
 
 	/* new -> transaction code */
 
@@ -2078,7 +2081,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
 		$.ajax ({
 			type: "POST",
-			url: apiUrl+tx,
+			url: apiUrl,
 			data: $("#rawTransaction").val(),
 			error: function(data) {
 				console.log('Blockstream error data: ', data);
@@ -2673,6 +2676,11 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
   	
   	$('a[data-toggle="popover"][data-target], button[data-toggle="popover"][data-target], div[data-toggle="popover"][data-target], span[data-toggle="popover"][data-target]').each(function (i, e) {
     	
+    	//   var inputElPass = $el.attr( "data-input-for");
+    //$("#"+inputElPass).val( generatePassword() ).fadeOut().fadeIn();
+			//var $el = $(this);
+
+
 	  	console.log('index: ', i);
 	  	console.log('el: ', e);
 	    var data = $(e).data();
@@ -2684,7 +2692,30 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 	        var contentTitle, contentFooter;
 	        var contentBody = $(data.target + ' .popover-body').html();
+
+	        //this is for generating passwords on popover so we can bind the generated value to the password-input field of the page!
+	        var inputFor = $(e).attr( "data-input-for");
+    			console.log('inputFor: '+ inputFor);
+
+	        console.log('contentBody: ', $(data.target ).find('#pwdGenerate').attr('data-input-for', inputFor));
+	        console.log('contentBody data-input-for: ', $(data.target + ' #pwdGenerate').attr('data-input-for'));
+
+	        var contentBody = $(data.target + ' .popover-body').html();
+
+
+	        /*
+	        //this is for generating passwords on popover so we can bind the generated value to the password-input field of the page!
+	        var inputFor = $(e).attr( "data-input-for");
+
+	        contentBody = $(data.target + ' .popover-body').find('#pwdGenerate').attr('data-input-for', inputFor);
+	        contentBody = $(data.target + ' .popover-body').html();
 	        
+	        console.log('contentBody: ', contentBody);
+	        console.log('contentBody data-input-for: ', $(data.target + ' .popover-body #pwdGenerate').attr('data-input-for'));
+
+	        */
+	        
+
 	        if ( $(data.target + ' .popover-title').length > 0 )
 	        	contentTitle = $(data.target + ' .popover-title').html();
 
@@ -2702,22 +2733,26 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 	  			delay: { "show": 100, "hide": 50000 },
 	  			//customClass: 'animate__animated animate__slideInDown',
 		    });
-	  	    var open = $(e).attr('data-easein');
-	  	    pooppis.velocity('transition.' + open);
+	  	    console.log('popover poppis: ', pooppis);
 
-	  	  /*
-		    var open = $(e).attr('data-easein');
-		    console.log('open: ' + open);
-		    targetEl.velocity('transition.' + open);
-		    */
+	  	    //var open = $(e).attr('data-easein');
+	  	    //pooppis.velocity('transition.' + open);
+
+	  	  
+		    //var open = $(e).attr('data-easein');
+		    //console.log('open: ' + open);
+		    //targetEl.velocity('transition.' + open);
+		    
 	    }
 	  });
-  	
+	  
+  	/*
 	  $('button[data-toggle="popover"], a[data-toggle="popover"], div[data-toggle="popover"], span[data-toggle="popover"]').popover({
   		html: true,
   		delay: { "show": 100, "hide": 500 },
   		customClass: '',
   	});
+  	*/
 
 	  /*
   	$('button[data-toggle="popover"], a[data-toggle="popover"], div[data-toggle="popover"], span[data-toggle="popover"]').popover({
@@ -3296,5 +3331,165 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 		return true;
 	};
+
+/* Generate Password Functions*/
+//https://stackoverflow.com/questions/9719570/generate-random-password-string-with-requirements-in-javascript
+function generatePassword(length = 64) {
+  var generatePass = (
+  //length = 20,
+  wishlist = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!"#$%&\'()*+,-.¨/¤:;<€½¶§=>?@[\]^_`{|}~'
+) =>
+  Array.from(crypto.getRandomValues(new Uint32Array(length)))
+    .map((x) => wishlist[x % wishlist.length])
+    .join('');
+
+  return generatePass();  
+}
+
+	//Crypto Random Password generator! 
+$('.generatePassword').on("click", function () {
+    var $el = $(this);
+
+    
+
+    if($el[0].dataset.inputFor == 'MnemonicBrainwallet') {
+      $("#newMnemonicxpub").val("");
+      $("#newMnemonicxprv").val("");
+    }
+
+    if($el[0].dataset.inputFor == 'HDBrainwallet') {
+      $("#newHDxpub").val("");
+      $("#newHDxprv").val("");
+    }
+
+    if($el[0].dataset.inputFor == 'brainwallet') {
+      $("#newBitcoinAddress").val("");
+      $("#newPubKey").val("");
+      $("#newPrivKey").val("");
+      $("#newPrivKeyHex").val("");
+    }
+
+    if($el[0].dataset.inputFor == 'brainwalletSegWit') {
+      $("#newSegWitAddress").val("");
+      $("#newSegWitRedeemScript").val("");
+      $("#newSegWitPubKey").val("");
+      $("#newSegWitPrivKey").val("");
+      $("#newSegWitPrivKeyHex").val("");
+    }
+
+    
+
+
+    var inputElPass = $el.attr( "data-input-for");
+    $("#"+inputElPass).val( generatePassword() ).fadeOut().fadeIn();
+  });
+
+
+
+
+const randomFunc = {
+	lower: getRandomLower,
+	upper: getRandomUpper,
+	number: getRandomNumber,
+	symbol: getRandomSymbol
+}
+
+$("body").on("click", "#pwdGenerate", function(e){
+	
+	console.log('this data-input-for: ', $(this).attr( "data-input-for"));
+	var generatePwdField = $('#'+ $(this).attr( "data-input-for"));
+
+	//get open popover
+	var poppis = $('.popover.show');
+	var lengthIs = 	poppis.find('#pwdLength').val();
+	var hasLower = 	((poppis.find('#pwdLowercase').is(":checked")) ? 1 : 0);;
+	var hasUpper = 	((poppis.find('#pwdUppercase').is(":checked")) ? 1 : 0);
+	var hasNumber = 	((poppis.find('#pwdNumbers').is(":checked")) ? 1 : 0);
+	var hasSymbol = 	((poppis.find('#pwdSymbols').is(":checked")) ? 1 : 0);
+
+	
+	console.log('hasLower: ', poppis.find('#hasLower'));
+	console.log('hasUpper: ', poppis.find('#hasUpper'));
+/*
+	const hasLength = +$('#pwdLength').val();
+	console.log('length: '+ hasLength);
+	
+	const hasLower = (($('#pwdLowercase').is(":checked")) ? 1 : 0);
+	const hasUpper = (($('#pwdUppercase').is(":checked")) ? 1 : 0);
+	const hasNumber = (($('#pwdNumbers').is(":checked")) ? 1 : 0);
+	const hasSymbol = (($('#pwdSymbols').is(":checked")) ? 1 : 0);
+	*/
+
+	console.log('lengthIs: '+ lengthIs);
+	console.log('hasLower: '+ hasLower);
+	console.log('hasUpper: '+ hasUpper);
+	console.log('hasNumber: '+ hasNumber);
+	console.log('hasSymbol: '+ hasSymbol);
+
+	console.log('.popover.show', $('.popover.show'));
+	
+	generatePwdField.val( GeneratePasswordInPop(hasLower, hasUpper, hasNumber, hasSymbol, lengthIs) );
+});
+
+function GeneratePasswordInPop(lower, upper, number, symbol, length) {
+	var generatedPassword = '';
+	var typesCount = parseInt(lower + upper + number + symbol);
+	//if there is no selected type, act as all checks are set to true	
+	if(typesCount <= 0 || typesCount > 4) {
+		typesCount = 4;
+		lower=1,  upper=1, number=1, symbol=1;
+		console.log('reset - use all checks');
+	}
+	var typesArr = [{lower}, {upper}, {number}, {symbol}].filter(item => Object.values(item)[0]);
+	
+	
+
+
+	//**set min max password if out of range!
+	if (length < 23)
+		length = 24;
+	if (length > 255)
+		length = 255;
+
+	// create a loop
+	for(var i=0; i<length; i+=typesCount) {
+		typesArr.forEach(type => {
+			var funcName = Object.keys(type)[0];
+			generatedPassword += randomFunc[funcName]();
+		});
+	}
+	
+	var finalPassword = generatedPassword.slice(0, length);
+	
+	return finalPassword;
+}
+
+function getRandomLower() {
+	return String.fromCharCode(Math.floor(Math.random() * 26) + 97);
+}
+
+function getRandomUpper() {
+	return String.fromCharCode(Math.floor(Math.random() * 26) + 65);
+}
+
+function getRandomNumber() {
+	return +String.fromCharCode(Math.floor(Math.random() * 10) + 48);
+}
+
+//https://www.tutorialstonight.com/password-generator-in-javascript
+//https://w3collective.com/random-password-generator-javascript/
+//https://en.wikipedia.org/wiki/List_of_Unicode_characters#Mathematical_symbols
+//https://grad.ucla.edu/gasaa/etd/specialcharacters.pdf
+
+//this one is good! https://stackoverflow.com/questions/1497481/javascript-password-generator
+//https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+
+
+function getRandomSymbol() {
+	const symbols = " !\"#$%&'()*+,-./:;¨<=>?@[\]^_`{|}~€£¶½¤";
+	return symbols[Math.floor(Math.random() * symbols.length)];
+}
+
+
 
 });

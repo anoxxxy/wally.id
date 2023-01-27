@@ -1303,7 +1303,7 @@ testar('3aa').then((data) => {
           symbols: ['eth', 'ethereum'],
           icon: './assets/images/crypto/ethereum-eth-logo.svg',
           network: 'testnet',
-          supports_address : ['compressed', 'uncompressed', 'segwit'],
+          supports_address : ['single'],
           api : {
             unspent_outputs: {
               '': '',
@@ -1313,19 +1313,19 @@ testar('3aa').then((data) => {
             }
           }
         },
-        pub : 0x71,      //pubKeyHash
-        priv : 0xf1,     //wif
-        multisig : 0xc4, //scriptHash
+        pub : 0,      //not used for account based chains
+        priv : 0,     //not used for ....
+        multisig : 0, //....
           hdkey : {'prv':0x04358394, 'pub':0x043587cf},
-          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'litecointestnet'},
+          bech32 : {},
           
-        txExtraTimeField: false,    //Set to true for PoS coins
-        txExtraTimeFieldValue: false,
+        txExtraTimeField: false,    //not used for ....
+        txExtraTimeFieldValue: false, //....
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
-        decimalPlaces:8,
-        txRBFTransaction: true,
-        developer: 'iceeeee',
+        decimalPlaces:16,
+        txRBFTransaction: false,
+        developer: '0x000',
       },
     }
 

@@ -46,10 +46,6 @@
     <script type="text/javascript" src="./assets/js/velocity.min.js" ></script>
     <script type="text/javascript" src="./assets/js/velocity.ui.min.js" ></script>
 
-    
-    <!-- <script type="text/javascript" src="./assets/js/domready.js" ></script>-->
-
-    <!-- <script src="./assets/js/smoothscroll.js" ></script> -->
     <script type="text/javascript" src="./assets/js/menu.js" ></script>
     
     <!-- 
@@ -63,15 +59,9 @@
 
     
 
-    <!--<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-popover-x@1.5.1/js/bootstrap-popover-x.min.js" type="text/javascript"></script>-->
     <script src="./assets/js/bootstrap-dialog.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/moment.min.js"></script>
-    <!--
-    <script type="text/javascript" src="js/transition.js"></script>
-    <script type="text/javascript" src="js/collapse.js"></script>
-  -->
-    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script> -->
-    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script> -->
+
     <script type="text/javascript" src="./assets/js/datetime-flatpickr.js"></script>
     <script type="text/javascript" src="js/crypto-min.js"></script>
     <script type="text/javascript" src="js/crypto-sha256.js"></script>
@@ -89,7 +79,11 @@
     <script type="text/javascript" src="js/converter/rfc1751.js"></script>
     <script type="text/javascript" src="js/converter/asn1.js"></script>
     <script type="text/javascript" src="js/converter/armory.js"></script>
+    
+
+    <script type="text/javascript" src="js/ethers-5.6.umd.min.js"></script>
     <script type="text/javascript" src="js/converter.base.js"></script>
+    
     
 
     
@@ -1893,7 +1887,16 @@
                 </div>
                 <div class="checkbox">
                   <label><input type="checkbox" id="newBrainwallet" class="checkbox-inline"> Custom Seed or Brain Wallet</label>
-                  <input type="text" class="form-control mb-2 hidden" id="brainwallet">
+                  
+
+                  <div class="input-group hidden">
+                    <input type="text" class="form-control mb-2" id="brainwallet">
+                    <div class="input-group-append">
+                      <span class="input-group-text cursor-pointer generatePassword" data-input-for="brainwallet">Generate</span>
+                      <span class="input-group-text cursor-pointer" data-input-for="brainwallet" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top" data-easein="slideUpBigIn" ><i class="bi bi-gear-fill"></i></span>
+                    </div>
+                  </div>
+
                 </div>
                 <div class="checkbox hidden">
                   <label><input type="checkbox" id="encryptKey" class="checkbox-inline"> Encrypt Private Key with AES-256 Password</label>
@@ -1915,7 +1918,7 @@
                 <div class="btn-group mt-3">
                   <button type="button" class="btn btn-primary" id="newKeysBtn">Generate</button>
                   <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="sr-only">Toggle Dropdown</span>
+                    <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <div class="dropdown-menu">
                     <a class="dropdown-item" href="#" id="newPaperwalletBtn">Print</a>
@@ -1964,7 +1967,15 @@
                 </div>
                 <div class="checkbox">
                   <label><input type="checkbox" id="newSegWitBrainwallet" class="checkbox-inline"> Custom Seed or Brain Wallet</label>
-                  <input type="text" class="form-control mb-2 hidden" id="brainwalletSegWit">
+
+                  <div class="input-group hidden">
+                    <input type="text" class="form-control mb-2" id="brainwalletSegWit">
+                    <div class="input-group-append">
+                      <span class="input-group-text cursor-pointer generatePassword" data-input-for="brainwalletSegWit">Generate</span>
+                      <span class="input-group-text cursor-pointer" data-input-for="brainwalletSegWit" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top" data-easein="slideUpBigIn"><i class="bi bi-gear-fill"></i></span>
+                    </div>
+                  </div>
+
                 </div>
                 <div class="btn-group mt-3">
                   <input type="button" class="btn btn-primary" value="Generate" id="newSegWitKeysBtn">
@@ -2183,7 +2194,16 @@
                 <p class="mb-1">You can use the advanced options below to generate different kinds of HD addresses.</p>
                 <div class="checkbox">
                   <label><input type="checkbox" id="newHDBrainwallet" class="checkbox-inline"> Custom Seed or Brain Wallet</label>
-                  <input type="text" class="form-control mb-2 hidden" id="HDBrainwallet">
+
+                  <div class="input-group hidden">
+                    <input type="text" class="form-control mb-2" id="HDBrainwallet">
+                    <div class="input-group-append">
+                      <span class="input-group-text cursor-pointer generatePassword" data-input-for="HDBrainwallet">Generate</span>
+                      <span class="input-group-text cursor-pointer" data-input-for="HDBrainwallet"  data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top" data-easein="slideUpBigIn"><i class="bi bi-gear-fill"></i></span>
+                    </div>
+                  </div>
+
+
                 </div>
                 
                 <div class="btn-group mt-3">
@@ -2399,9 +2419,6 @@
 
                     <div class="alert alert-light d-flex justify-content-between">
                       <span class="text-muted text-secondary mr-2">Enter the address and amount you wish to make a payment to.</span>
-                      <a class="btn btn-sm btn-flat-secondary waves-effect" data-toggle="popover" data-html="true" data-target="#kalle" data-placement="top" data-easein="slideUpBigIn">
-                        Popover - loading DOM content
-                      </a>
 
                       <span >
                       <a class="item-donations btn btn-sm btn-flat-secondary waves-effect" id="donateTxBtn" data-toggle="popover" data-trigger="hover" data-placement="top" title="Thank You!" data-content="Wanna support Wally.id? <br>Show us some love :)">
@@ -4330,6 +4347,41 @@
       <!-- / .container -->
     </div>
     <!-- wallet confirm send modal -->
+<div id="modalWalletConfirm" class="modal fade bootstrap-dialog" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="bootstrap-dialog-header">
+        <div class="bootstrap-dialog-title">Please confirm</div>
+        <div class="bootstrap-dialog-close-button">
+          <button class="close" aria-label="close" data-dismiss="modal">×</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body text-center">
+      <div class="bootstrap-dialog-body">
+        <div class="bootstrap-dialog-message">
+
+          <p>You are about to send a transaction to the value of <span id="spendAmount">0.00</span> BTC</p>
+            <br>
+            <div id="walletSendConfirmStatus" class="alert alert-danger hidden"></div>
+            <div id="walletSendFailTransaction" class="alert alert-info hidden">
+              <b>Raw Transaction:</b>
+              <p>Below is a copy of the transaction we tried to submit</p>
+              <textarea class="form-control" readonly></textarea>
+            </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" id="walletConfirmSend">Send</button>
+      <button class="btn btn-sm btn-primary bootstrap4-dialog-button" data-dismiss="modal" id="confirmClose">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+<!--
     <div class="modal fade" id="modalWalletConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -4354,9 +4406,39 @@
         </div>
       </div>
     </div>
+-->
+
     <!-- wallet confirm send modal -->
+
     <!-- qrcode modal -->
-    <div class="modal fade" id="modalQrcode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="modalQrcode" class="modal fade bootstrap-dialog" tabindex="-1" role="dialog">
+<div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="bootstrap-dialog-header">
+        <div class="bootstrap-dialog-title"><i class="bi bi-qr-code"></i> QRcode</div>
+        <div class="bootstrap-dialog-close-button">
+          <button class="close" aria-label="close" data-dismiss="modal">×</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body text-center">
+      <div class="bootstrap-dialog-body">
+        <div class="bootstrap-dialog-message d-flex justify-content-center">
+
+          <div id="qrcode"></div>
+
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-primary bootstrap4-dialog-button" data-dismiss="modal" id="qrCodeClose">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+
+    <!-- <div class="modal fade" id="modalQrcode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -4372,8 +4454,40 @@
         </div>
       </div>
     </div>
+  -->
     <!-- qrcode modal -->
+
     <!-- qrcode scanner modal -->
+<div id="modalQrcodeScanner" class="modal fade bootstrap-dialog" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="bootstrap-dialog-header">
+        <div class="bootstrap-dialog-title"><i class="bi bi-qr-code"></i> QRcode scanner</div>
+        <div class="bootstrap-dialog-close-button">
+          <button class="close" aria-label="close" data-dismiss="modal">×</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body text-center">
+      <div class="bootstrap-dialog-body">
+        <div class="bootstrap-dialog-message">
+
+          <select id="videoSource" class="form-control"></select>
+            <div id="videoReaderError" class="hidden">Your browser does not offer camera support</div>
+            <video id="videoReader" muted autoplay style="width:100%;height:100%"></video>
+            <div id="qrcode-scanner-callback-to" class="hidden"></div>
+
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-primary bootstrap4-dialog-button" data-dismiss="modal" id="qrScanClose">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+<!--
     <div class="modal fade" id="modalQrcodeScanner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -4393,8 +4507,66 @@
         </div>
       </div>
     </div>
+  -->
     <!-- qrcode scanner modal -->
+
     <!-- mediator modal -->
+    <div id="modalMediator" class="modal fade bootstrap-dialog" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="bootstrap-dialog-header">
+        <div class="bootstrap-dialog-title"><i class="bi bi-qr-code"></i> Transaction Mediation</div>
+        <div class="bootstrap-dialog-close-button">
+          <button class="close" aria-label="close" data-dismiss="modal">×</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body text-center">
+      <div class="bootstrap-dialog-body">
+        <div class="bootstrap-dialog-message">
+
+          <p>You can add a public key when creating a <i>2-of-3 multi signature address</i> and for a low fee your mediator will help with the recovery of the funds should any disputes arise.</p>
+            <p>Should a dispute arise please contact the below address for further information</p>
+            <div class="row">
+              <div class="col-md-5">
+                <label>Mediator:</label>
+                <!-- 
+                  You need to contact us before adding your pubkey 
+                  and submitting a pull request on github. 
+                  
+                  format is: pubkey;email;fee
+                  -->
+                <select id="mediatorList" class="form-control">
+                  <option value="02b6231cc602740c29436eafbb6448880f4058cc3d2745c709deee313104678277;support@coinb.in;1">Coinb.in</option>
+                </select>
+              </div>
+              <div class="col-md-5">
+                <label>Address:</label> <span class="text-muted">(for disputes)</span>
+                <input id="mediatorEmail" type="text" class="form-control address" value="" readonly> 
+              </div>
+              <div class="col-md-2">
+                <label>Fee (%):</label> 
+                <input id="mediatorFee" type="text" class="form-control address" value="" readonly> 
+              </div>
+            </div>
+            <br>
+            <label>Public Key:</label>
+            <input id="mediatorPubkey" type="text" class="form-control address" value="" readonly>
+            <br>
+
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" id="mediatorAddKey">Add Public Key</button>
+      <button class="btn btn-sm btn-primary bootstrap4-dialog-button" data-dismiss="modal" id="qrCodeClose">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+
+  <!--
     <div class="modal fade" id="modalMediator" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -4408,12 +4580,7 @@
             <div class="row">
               <div class="col-md-5">
                 <label>Mediator:</label>
-                <!-- 
-                  You need to contact us before adding your pubkey 
-                  and submitting a pull request on github. 
-                  
-                  format is: pubkey;email;fee
-                  -->
+                
                 <select id="mediatorList" class="form-control">
                   <option value="02b6231cc602740c29436eafbb6448880f4058cc3d2745c709deee313104678277;support@coinb.in;1">Coinb.in</option>
                 </select>
@@ -4439,8 +4606,37 @@
         </div>
       </div>
     </div>
+  -->
     <!-- mediator modal -->
+
     <!-- warning (fee) modal -->
+<div id="modalWarningFee" class="modal fade bootstrap-dialog" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="bootstrap-dialog-header">
+        <div class="bootstrap-dialog-title">Warning High Fee!</div>
+        <div class="bootstrap-dialog-close-button">
+          <button class="close" aria-label="close" data-dismiss="modal">×</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body text-center">
+      <div class="bootstrap-dialog-body">
+        <div class="bootstrap-dialog-message">
+
+          Please be aware that you have created a transaction with what seems to be a very high fee of <span id="modalWarningFeeAmount"></span> BTC!
+
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-primary bootstrap4-dialog-button" data-dismiss="modal" id="warningFeeClose">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+<!--
     <div class="modal fade" id="modalWarningFee" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -4457,6 +4653,7 @@
         </div>
       </div>
     </div>
+  -->
     <!-- warning (fee) modal -->
 
 
@@ -4481,7 +4678,7 @@
             <p>
               Cryptocurrencies provide people with the power to control and own their money. Cryptocurrency wallets are not a bank. Moving away from the use of the typical banking system requires new responsibilities upon cryptocurrency users. We highly recommend using the Markets wallet vs this web wallet for the sake of added security. This Wally.id wallet is a free, open-source, client-side interface. It allows you to transact and store coins/assets without the need to run a full node. <br>
 
-          		What makes it so secure</strong> is that <strong>legitimate website hosts</strong> do not in any way store any private data on their server for accessing the wallet - the wallet is completely independent of the website. This wallet grants the ability for websites to provide simplified payment services without any security risk on their part for hosting it. In other words, if the website is ever hacked, your wallet will still be safe! However, <strong>what makes it insecure</strong> is when entering your login credentials on a fraudulent website it will result in you losing your coins. Scammers tend to use fear tactics to startle your common sense. Any emails received pertaining to the security of your wallet will <strong>ALWAYS be malicious in nature</strong> and responding to these emails could lead to the <strong>LOSS OF YOUR COINS!</strong>
+          		What makes it so <strong>secure</strong> is that <strong>legitimate website hosts</strong> do not in any way store any private data on their server for accessing the wallet - the wallet is completely independent of the website. This wallet grants the ability for websites to provide simplified payment services without any security risk on their part for hosting it. In other words, if the website is ever hacked, your wallet will still be safe! However, <strong>what makes it insecure</strong> is when entering your login credentials on a fraudulent website it will result in you losing your coins. Scammers tend to use fear tactics to startle your common sense. Any emails received pertaining to the security of your wallet will <strong>ALWAYS be malicious in nature</strong> and responding to these emails could lead to the <strong>LOSS OF YOUR COINS!</strong>
             </p>
             <br>
             <h4>Notice of your Private Login Key</h4>
@@ -4632,6 +4829,46 @@
         <button type="button" class="btn btn-sm btn-primary">Submit</button>  <button type="button" class="btn btn-sm btn-secondary">Reset</button>
     </div>
 </div>
+
+<!-- -->
+
+<div id="popPasswordSettings" class="popover hidden">
+    <div class="arrow"></div>
+    <div class="popover-header popover-title">
+      <button class="close" data-dismiss="popover">&times;</button>Password Generator <small class="text-muted">(Crypto Random)</small>
+    </div>
+    <div class="popover-body popover-content">
+        
+        <div class="passwordSettings">
+          <div class="checkbox">
+            <label><input type="checkbox"  class="checkbox-inline" id="pwdUppercase" checked> Include uppercase letters</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" class="checkbox-inline" id="pwdLowercase" checked> Include lowercase letters</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox"  class="checkbox-inline" id="pwdNumbers" checked> Include numbers</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" class="checkbox-inline" id="pwdSymbols" checked> Include symbols</label>
+          </div>
+          <div>
+            <label>Password length
+              <input type="number" id="pwdLength" value="24" min='24' max='255' value='24' class="form-control"/>
+            </label>
+          </div>
+        </div>
+
+    </div>
+    <div class="popover-footer">
+        <input type="button" class="btn btn-block btn-sm btn-flat-primary" id="pwdGenerate" value="Generate">
+    </div>
+</div>
+
+
+<!-- -->
+
+
 
     <!-- choose currency wallet modal -->
     <div class="hidden" id="entropybucket"></div>

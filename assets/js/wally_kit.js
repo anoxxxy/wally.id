@@ -680,6 +680,20 @@ https://alloyui.com/api/files/yui3_src_history_js_history-hash.js.html#
 $(document).ready(function() {
     'use strict';
 
+
+// Auto-upgrade Math.random with a more secure implementation only if crypto is available
+//https://github.com/mdn/sprints/issues/2510
+(function() {
+  var rng = window.crypto || window.msCrypto;
+  if (rng === undefined)
+    return;
+
+  // Source: https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues#Examples
+  Math.random = function() {
+    return rng.getRandomValues(new Uint32Array(1))[0] / 4294967296;
+  };
+})();
+
 /*<<< START PROMISE FUNCTION*/
 /*
 let url = "https://api.chucknorris.io/jokes/random";
@@ -863,10 +877,24 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
     //$('#js_folder-content li.folder-item[data-wallet-type="'+setWalletPortfolio+'"]').click();
 
   });
+/*
+  https://github.com/twbs/bootstrap/issues/3722#issuecomment-26392191
+  //Generate Password Popover
+  $('.generatePasswordSettings').popover({
+    html: true,
+    //content: $("#generatePasswordSettings").html(),
+    content: function () {
+        console.log('content popover return generatePasswordSettings');
+        return $("#generatePasswordSettings").html();
+    }
+  }).on('hidden.bs.popover', function () {
+      //$(".popover.show.generatePassword").append($("#generatePasswordSettings"));
+      //$("#myPopoverContentContainer").append($("#generatePasswordSettings"));
+      //console.log('content popover append generatePasswordSettings');
+      //$("#generatePasswordSettings").append($("#generatePasswordSettings"));
+  });
 
-  
-
-
+*/
 
 
 });

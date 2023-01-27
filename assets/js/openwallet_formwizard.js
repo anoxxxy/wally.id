@@ -1403,7 +1403,8 @@ const folderContentItems = document.querySelectorAll(".folder-content li.js_fold
 
       //hide popovers if visible
       if ($('.popover').hasClass('show')) {
-        console.log('popover is open!');
+        //console.log('popover is open! e:', e);
+        //console.log('popover is open!', $('.popover'));
         if (typeof $(e.target).data('original-title') == 'undefined' &&
            !$(e.target).parents().is('.popover.show')) {
           $('[data-original-title]').popover('hide');
