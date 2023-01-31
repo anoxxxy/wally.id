@@ -57,11 +57,21 @@
       if (options.saveSettings) {
 
 
+        //extend coinjs with the updated asset configuration
         $.extend(coinjs, wally_fn.networks[network_var][asset_var]);
         //Object.assign(coinjs, (wally_fn.networks[network_var][asset_var]))
-        //options.showMessage = true;
+        
+        //updated network and assets settings should always be shown as a message!
+        options.showMessage = true;
+
+        //save copy of "asset" object, for data-binding purpose (UI) !
+        Object.assign(wally_fn.assetInfo, coinjs.asset);
 
         wally_fn.chainModel = coinjs.asset.chainModel;
+
+        
+        
+
 
         //hide/show fields relative to updated Network
         if (coinjs.txRBFTransaction) {
@@ -681,6 +691,8 @@ $(document).ready(function() {
     'use strict';
 
 
+
+
 // Auto-upgrade Math.random with a more secure implementation only if crypto is available
 //https://github.com/mdn/sprints/issues/2510
 (function() {
@@ -879,6 +891,17 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
     //$('#js_folder-content li.folder-item[data-wallet-type="'+setWalletPortfolio+'"]').click();
 
   });
+
+
+//***UI variable/object-bind (change to DOM)
+  //bind/change select coin icon
+  DaBi("#selectedAsset", wally_fn.assetInfo, "icon", "src");
+  wally_fn.assetInfo.icon = './assets/images/providers_icon.svg'
+  
+
+
+
+
 /*
   https://github.com/twbs/bootstrap/issues/3722#issuecomment-26392191
   //Generate Password Popover

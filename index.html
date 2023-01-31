@@ -19,8 +19,7 @@
     <link rel="stylesheet" href="./assets/css/colors.min.css" >
     <link rel="stylesheet" href="./assets/css/components.css" >
     <link rel="stylesheet" href="./assets/css/bootstrap-dialog.css" >
-    <!-- <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-popover-x@1.5.1/css/bootstrap-popover-x.min.css" media="all" rel="stylesheet" type="text/css" />-->
-    <!-- Favicons -->
+
     <link rel="icon" href="./assets/images/logo/favicon.ico" sizes="any">
     <link rel="icon" href="./assets/images/logo/favicon.svg" type="image/svg+xml">
     <!-- Icons and Fonts -->
@@ -32,6 +31,9 @@
     <link rel="stylesheet" href="./assets/css/style.css" media="screen">
     <link rel="stylesheet" href="./assets/css/custom.css" media="screen">
     
+    <!-- data-binder library-->
+    <script type="text/javascript" src="./assets/js/dabi.js" ></script>
+
     <!-- router library-->
     <script type="text/javascript" src="./assets/js/router.js" ></script>
 
@@ -141,7 +143,7 @@
           <li class="navSection secondary">
             <div class="btn-group dropdown">
   <a class="rootLink item-choose-currency colorize stripe-button stripe-button-two dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-            <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32">
+            <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32" id="selectedAsset">
             </a>
   <div class="dropdown-menu wallet-dropdown-menu dropdown-menu-right" onclick="event.stopPropagation()">
     
@@ -1892,10 +1894,12 @@
                   <div class="input-group hidden">
                     <input type="text" class="form-control mb-2" id="brainwallet">
                     <div class="input-group-append">
-                      <span class="input-group-text cursor-pointer generatePassword" data-input-for="brainwallet">Generate</span>
+                      <span class="input-group-text cursor-pointer generatePassword" data-input-for="brainwallet" data-toggle="popover" data-trigger="hover" data-placement="top"  data-content="We use Crypto Random and Fisher-Yates Shuffle Algorithm!">Generate</span>
                       <span class="input-group-text cursor-pointer" data-input-for="brainwallet" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top" data-easein="slideUpBigIn" ><i class="bi bi-gear-fill"></i></span>
                     </div>
                   </div>
+
+
 
                 </div>
                 <div class="checkbox hidden">

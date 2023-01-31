@@ -12,6 +12,7 @@
   wally_fn.asset = 'bitcoin';
   wally_fn.chainModel = 'utxo';
   wally_fn.provider = {utxo:'', broadcast:''};
+  wally_fn.assetInfo = {}; //has a copy of "coinjs.asset" object
 
   //wally_fn.availablePages = ["home", "newAddress", "newSegWit", "newMultiSig", "newTimeLocked", "newHDaddress", "newTransaction", "verify", "sign", "broadcast", "wallet", "settings", "about", "fees", "converter"];
   
@@ -670,13 +671,27 @@ wally_fn.generateString = function(word, maxLength) {
  * 
  */
 wally_fn.shuffleWord = function (word){
-  var array = word.split("");
+  /*var array = word.split("");
   var i = array.length;
   while (--i > 0) {
-      var rndIndex = Math.floor(Math.random() * (i + 1));
-      [array[rndIndex], array[i]] = [array[i], array[rndIndex]];
+      var swapIndex = Math.floor(Math.random() * (i + 1));
+      [array[swapIndex], array[i]] = [array[i], array[swapIndex]];
    }
    return array.join("");
+   */
+   
+   
+   word = word.split("");
+   for (var i = word.length - 1; i > 0; i--) {
+    var swapIndex = Math.floor(Math.random() * (i + 1))
+    var currentCard = word[i]
+    var cardToSwap = word[swapIndex]
+    word[i] = cardToSwap
+    word[swapIndex] = currentCard
+  }
+  return word.join("");
+  
+
 }
 
 

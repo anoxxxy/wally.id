@@ -2750,7 +2750,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
   	});
   	*/
 
-	  /*
+	  
   	$('button[data-toggle="popover"], a[data-toggle="popover"], div[data-toggle="popover"], span[data-toggle="popover"]').popover({
   		html: true,
   		delay: { "show": 100, "hide": 500 },
@@ -2759,7 +2759,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
   		//e.preventDefault();
   		$(this).next().velocity('transition.slideUpBigIn');
   	});
-  	*/
+  	
 
 	  //dismiss popover, close button
 	  $('body').on('click', '.popover > .popover-header [data-dismiss="popover"], .popover > .popover-header .close', function(e){
