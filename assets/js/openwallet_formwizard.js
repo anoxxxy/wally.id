@@ -240,21 +240,36 @@ last hexkey in address: fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8c
 
 hex key should not be higher then that!
 */
-      console.log('profile_data: ', profile_data);
+      console.log('profile_data: ', login_wizard.profile_data);
       //openUserWallet(profile_data); //checkUserLogin
 
       //***Set next step to terms and navigate
-      //this makes it -> //setActivePanel('terms');
-      login_wizard.openBtnNextStepPanel = 'terms';
+      
+
+
+      login_wizard.openBtnNextStepPanel = 'terms';  //this makes it -> //setActivePanel('terms');, the function is unreachable from here, thus the workaround
       $('#openBtnNext').click();
+
+      //hide next button
+      $('#openBtnNext').addClass('hidden');
+
+      //show open wallet button
+      $('#openBtn').removeClass('hidden');
+
+      //now we need to open an account with all addresses related to the specific hex key!
+      //iceeeeeeeeeee
       
       return ;
 
     } catch (err) {
+      //show Next button
+      $('#openBtnNext').addClass('hidden');
+
       login_wizard.openBtnNextStepPanel = ''; //reset the next internal step so validation must be valid!
       login_wizard.errorMessage = err;
       //$('#walletLoginValidationInfo').removeClass('animate__fadeInDown').addClass('animate__fadeOutUp').fadeOut();
       login_wizard.animateElementVelocity('#walletLoginValidationInfo', false);
+
 
 
       $('#walletLoginStatusBox').velocity('fadeIn').removeClass('hidden');
@@ -263,11 +278,59 @@ hex key should not be higher then that!
     }
     login_wizard.errorMessage = ''; //we need to empty the error message after it is shown!
 
+
+    /*
+// Wait Example 
+    wait(function(runNext){
+        log('Furst animation started');
+        
+        $('#div1').animate({
+            top: 30
+        }, 1000, function(){
+            runNext(1,2); //some arguments
+        });
+        
+    }).wait(function(runNext, a, b){
+        log('Second animation started, a='+a+' b='+b ); //arguments from previous chunk call
+        
+        $('#div2').animate({
+            top: 50
+        }, 1000, runNext);
+        
+    }).wait(function(runNext){
+        log('Wait 2 seconds');
+        
+        setTimeout(function(){
+            log('2 seconts is passed')
+            runNext();
+        }, 1000);
+        
+    }).wait(function(runNext){
+        log('Third animation started');
+        
+        $('#div3').animate({
+            left: 50
+        }, 1000, runNext);
+        
+    }).wait(function(runNext){
+        log('Last animation');
+        
+        $('#div1').animate({
+            top: 0,
+            left: 45
+        }, 1000, runNext);
+        
+    }).wait(function(){
+        log('The end');
+        
+    });
+    */
+
 }
 
 //***START Login/OpenWallet
   /*
-  @Check if user is logged in
+  @Check/Handle account Login (is logged in)
   */
   function openUserWallet(userData, session = false) {
 
@@ -342,7 +405,7 @@ hex key should not be higher then that!
         profile_data.private_keys.push(keys2.wif);
 
         var multisig = coinjs.pubkeys2MultisigAddress(keys_combined, 2); //create 2-of-2 multisig wallet
-        profile_data.address = multisig["address"]; //address, scriptHash, redeemScript
+        profile_data.address = multisig["address"]; //[address, scriptHash, redeemScript]
 
         privkeyaes = CryptoJS.AES.encrypt(keys.wif, s);
         //console.log('keys.wif: ', keys.wif);
@@ -359,7 +422,9 @@ hex key should not be higher then that!
     }
 
 
-    //***All good! Go on!
+    //***Validation and profile settings done,
+    //All good! Go on! 
+    //UI Settings
     if (userData.wallet_type == "regular") {
       $('.walletPubKeys .redeemScript_wallet').parent().addClass('hidden');
       $('.wallet_multisig_keys').addClass('hidden');
@@ -385,7 +450,7 @@ hex key should not be higher then that!
       $(".switch_pubkeys").removeClass("hidden");
 
       
-
+      //Check if pubkey is sorted
       profile_data.pubkey_sorted = isArraySorted(profile_data.public_keys);
 
       
@@ -417,7 +482,8 @@ hex key should not be higher then that!
 
     $("#walletQrCode").html("");
     var qrcode = new QRCode("walletQrCode");
-    qrcode.makeCode("bitbay:" + profile_data.address);
+    qrcode.makeCode(wally_fn.asset+":" + profile_data.address);
+    //qrcode.makeCode("bitcoin:" + profile_data.address);
 
 
     //console.log('keys: ', keys);

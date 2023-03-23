@@ -18,3 +18,10 @@ it could also have a description field for more info or the countries that this 
 
 yeah and most importantly, you can check the IP and see which of those APIs to use for clients so they dont need to get blocked independently where they are located
 :D
+
+*** remove moment.js and fix the dateformat!
+coinbin line:
+
+$("#verifyRsDataHodl .date").val(decode['checklocktimeverify'] >= 500000000? moment.unix(decode['checklocktimeverify']).format("MM/DD/YYYY HH:mm") : decode['checklocktimeverify']);
+
+**test transactions on all coins!

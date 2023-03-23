@@ -1,5 +1,5 @@
 /*!
-  * RouterJS v1.2.0 (https://wwwinterart.com/)
+  * RouterJS v1.3.0 (https://wwwinterart.com/)
   * Copyright 2018-2019 Silvio Delgado (https://github.com/silviodelgado)
   * Licensed under MIT (https://opensource.org/licenses/MIT)
   * https://github.com/silviodelgado/routerjs
@@ -18,11 +18,28 @@
 })(typeof global !== "undefined" ? global : this.window || this.global, function (root) {
     'use strict';
 
-    return {
+    let internal = {
         routes: [],
         history: [],
         urlParams: {},
-        getFragment: function () {
+        run_before: null,
+        run_after: null
+    };
+
+    const run_before = () => {
+        if (typeof internal.run_before == 'function' && internal.run_before) {
+            internal.run_before.call(this);
+        }
+    };
+
+    const run_after = () => {
+        if (typeof internal.run_after == 'function' && internal.run_after) {
+            internal.run_after.call(this);
+        }
+    };
+
+    const router = {
+        getFragment: () => {
             console.log('===getFragment===');
             var r;
             if(window.location.hash != "")
@@ -31,66 +48,76 @@
                 r = window.location.search.replace(/\/$/, '');
             console.log('>>r: ', r);
             return r;
+
         },
-        add: function (route, handler) {
+        add: (route, handler) => {
             console.log('===add===');
             console.log('route: : ', route);
             if (typeof route == 'function') {
                 handler = route;
                 route = '';
             }
-            this.routes.push({
+            internal.routes.push({
                 handler: handler,
                 route: route
             });
-            return this;
+            return router;
         },
-        apply: function (frg) {
+        beforeAll: (handler) => {
+            console.log('**beforeAll**');
+            internal.run_before = handler;
+            return router;
+        },
+        afterAll: (handler) => {
+            console.log('**afterAll**');
+            internal.run_after = handler;
+            return router;
+        },
+        apply: (frg) => {
             console.log('===apply===');
             console.log('frg: : ', frg);
 
-            var fragment = frg || this.getFragment();
+            let fragment = frg || router.getFragment();
             console.log('fragment: : ', fragment);
-            for (var i = 0; i < this.routes.length; i++) {
-                //console.log('>>for-loop');
-                //console.log('routes[i].route: ', this.routes[i].route);
-                var matches = fragment.match(this.routes[i].route);
+            for (let i = 0; i < internal.routes.length; i++) {
+                let matches = fragment.match(internal.routes[i].route);
                 console.log('matches: ', matches);
                 if (matches) {
                     //matches.shift(); //remove the matched string
-                    this.parseUrl(matches);    //parse url parameters
-                    //console.log('matches shift: ', matches);
-                    if (!self.history[fragment]) {
-                        this.history.push(fragment);
-
-                    }
-                    //console.log('before this.routes[i]: ', this.routes[i].handler);
-                    this.routes[i].handler.apply({}, [matches]); //pass parameter as array
-                    //this.routes[i].handler.apply({matches});  //pass parameter as string
-                    //console.log('after this.routes[i]: ', this.routes[i].handler);
-                    return this;
+                    router.parseUrl(matches);    //parse url parameters
+                    if (!internal.history[fragment])
+                        internal.history.push(fragment);
+                    run_before();
+                    //internal.routes[i].handler.apply({}, matches);
+                    console.log('internal.routes[i].handler: ', internal.routes[i].handler);
+                    
+                    internal.routes[i].handler.apply({}, [matches]);  //pass parameter as array, //this.routes[i].handler.apply({}, [matches]); 
+                    run_after();
+                    return router;
                 }
             }
 
-            return this;
+            return router;
         },
-        start: function () {
+        start: () => {
             console.log('===start===');
-            
-            var self = this;
-            var current = self.getFragment();
+            let current = router.getFragment();
             console.log('>>current: ', current);
             window.onhashchange = function () {
-                console.log('>>onhashchange');
-                if (current !== self.getFragment()) {
-                    current = self.getFragment();
-                    self.apply(current);
+                if (current !== router.getFragment()) {
+                    current = router.getFragment();
+                    router.apply(current);
                     console.log('>>self.apply(current): ', current);
                 }
             }
-            return this;
+            return router;
         },
-        navigate: function (path, title) {
+        navigate: (path, title) => {
+            /*document.title = title || document.title;
+            path = path.replace(/##/g, '#') || '';
+            window.location.hash = path ? '#' + path : '';
+            return router;
+            */
             console.log('===navigate===');
             document.title = title || document.title;
             path = path ? path : '';
@@ -101,25 +128,23 @@
             window.location.hash = path ? '#' + path : '';
             return this;
         },
-        clearHash: function () {
+        clearHash: () => {
             console.log('===clearHash===');
             window.location.hash = '#';
             history.pushState(null, document.title, window.location.pathname + window.location.search);
-
-
         },
-        back: function () {
+        back: () => {
             console.log('===back===');
-            this.history.pop();
-            var path = this.history.pop();
+            internal.history.pop();
+            let path = internal.history.pop();
             path = path || '';
             window.location.hash = path;
-            return this;
+            return router;
         },
-        checkFragment: function (current) {
+        checkFragment: (current) => {
             console.log('===checkFragment===');
             console.log('current: ', current);
-            return this.getFragment().indexOf(current) >= 0;
+            return router.getFragment().indexOf(current) >= 0;
         },
         parseUrl: function (url_) {
             console.log('===parseUrl===');
@@ -146,7 +171,7 @@
 
                 } else {
                     //we have only a string without parameters, return it with the page name
-                    return this.urlParams =  {'page': url[0]};
+                    return router.urlParams =  {'page': url[0]};
                 }
 
 
@@ -176,5 +201,7 @@
             }
             return this.urlParams = result;
         }
-    }
+    };
+
+    return router;
 });

@@ -900,6 +900,7 @@ testar('3aa').then((data) => {
               'Chain.so': 'BTC',
               'Coinb.in': 'Coinb.in',
               'Cryptoid.info': 'btc',
+              //'Mempool.space': 'btc',
             },
             broadcast: {
               'Blockchair.com': 'bitcoin',
@@ -908,6 +909,7 @@ testar('3aa').then((data) => {
               'Chain.so': 'BTC',
               'Coinb.in': 'Coinb.in',                 //no arguments needs to be passed
               'Cryptoid.info': 'btc',
+              //'Mempool.space': 'btc',
             }
           }
         },
@@ -1180,12 +1182,14 @@ testar('3aa').then((data) => {
               'Blockcypher.com': 'btc',
               //'Blockstream.info': 'Blockstream.info',
               'Chain.so': 'BTCTEST',
+              //'Mempool.space': 'testnet',
             },
             broadcast: {
               'Blockchair.com': 'bitcoin',
               'Blockcypher.com': 'btc',
               'Blockstream.info': 'Blockstream.info',
               'Chain.so': 'BTCTEST',
+              //'Mempool.space': 'testnet',
             }
           }
         },

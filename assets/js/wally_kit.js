@@ -153,25 +153,27 @@
         console.log('num: ', num)
     }
 
+    /*
     var prepareAddAll = function (data) {
       console.log('===prepareAddAll===');
       wally_kit.pageHandler();
       console.log('data: ', data);
     }
+    */
 
     Router
-        .add(/home(.*)/, prepareAddAll)
-        .add(/newAddress(.*)/, prepareAddAll)
-        .add(/newSegWit(.*)/, prepareAddAll)
-        .add(/newMultiSig(.*)/, prepareAddAll)
-        .add(/newHDaddress(.*)/, prepareAddAll)
-        .add(/newTimeLocked(.*)/, prepareAddAll)
-        .add(/newTransaction(.*)/, prepareAddAll)
-        .add(/kalle(.*)/, prepareAddAll)
+        .add(/home(.*)/, function(data){})
+        .add(/newAddress(.*)/, function(data){})
+        .add(/newSegWit(.*)/, function(data){})
+        .add(/newMultiSig(.*)/, function(data){})
+        .add(/newHDaddress(.*)/, function(data){})
+        .add(/newTimeLocked(.*)/, function(data){})
+        .add(/newTransaction(.*)/, function(data){})
+        .add(/kalle(.*)/, function(data){})
         .add(/wallet(.*)/, function(data) {
           console.log('wallet page');
           //alert('sign page');
-          prepareAddAll(data);
+          
 
           //
           //set view to (history-hash) wallet type
@@ -179,38 +181,34 @@
             $('#js_folder-content li.folder-item[data-wallet-type="'+Router.urlParams.login+'"]').click();
           }
         })
-        .add(/about(.*)/, prepareAddAll)
+        .add(/about(.*)/, function(data){})
         .add(/(verify)(.*)/, function(data) {
           console.log('verify page');
           //alert('verify page');
-          prepareAddAll(data);
         })
         .add(/(sign)(.*)/, function(data) {
           console.log('sign page');
           //alert('sign page');
-          prepareAddAll(data);
         })
         .add(/(broadcast)(.*)/, function(data) {
           console.log('broadcast page');
           //alert('broadcast page');
-          prepareAddAll(data);
         })
         .add(/(converter)(.*)/, function(data) {
           console.log('converter page');
           //alert('converter page');
-          prepareAddAll(data);
+          
         })
-        .add(/(fee)(.*)/, prepareAddAll)
+        .add(/(fee)(.*)/, function(data){})
         //.add(/(settings\/)(.*)/, function(data) {
         .add(/(settings)(.*)/, function(data) {
             console.log('settings page', data);
             console.log('parsedUrl: ', Router.urlParams);
-            prepareAddAll(data);
+            
         })
 
         /*.add(/(number)=([0-9]+)&(n)=([0-9]+)/i, function(params) {
             console.log('number=page, data:', params);
-            prepareAddAll;
             
         })
         */
@@ -220,8 +218,15 @@
         .add('', function(data) {
           console.log('===EMPTY_PAGE_HASH===');
           console.log('__REDIRECT_TO_STARTPAGE_PERHAPS__');
-          prepareAddAll;
+          
           //Router.navigate('home', 'Start');
+        })
+        .beforeAll( function(data) {
+            console.log('Run before all routes!')
+            wally_kit.pageHandler(data);
+        })
+        .afterAll( function(data) {
+            console.log('Run after all routes!')
         })
         .apply()
         .start();
@@ -623,6 +628,8 @@ if(_elId_ == "home" || _elId_ == "about"){
 
   wally_kit.pageHandler = function (pageHash, show=false) {
     
+    console.log('===wally_kit.pageHandler===');
+
     console.log('===wally_kit.landingPage===');
     //show landing page specific active page/tab
     if (Router.urlParams.page == "home" || Router.urlParams.page == "about") {

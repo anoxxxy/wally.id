@@ -83,7 +83,10 @@ profile_data = {
 		var email = $("#openEmail").val().toLowerCase();
 		if(email.match(/[\s\w\d]+@[\s\w\d]+/g)){
 			if($("#openPass").val().length>=10){
-				if($("#openPass").val()==$("#openPassConfirm").val()){
+
+				console.log('openPass: ' + $("#openPass").val());
+				console.log('openPass-confirm: ' + $("#openPass-confirm").val());
+				if($("#openPass").val()==$("#openPass-confirm").val()){
 					var email = $("#openEmail").val().toLowerCase();
 					var pass = $("#openPass").val();
 					var s = email;
@@ -152,7 +155,7 @@ profile_data = {
 	$("#walletLogout").click(function(){
 		$("#openEmail").val("");
 		$("#openPass").val("");
-		$("#openPassConfirm").val("");
+		$("#openPass-confirm").val("");
 
 		$("#openLogin").show();
 		$("#openWallet").addClass("hidden").show();
