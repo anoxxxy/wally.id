@@ -134,7 +134,7 @@
   }
 
   /*
-  @ Check if Network Type is set
+  @ Wallet Router settings
   */
 
   wally_kit.routerSettings = async function () {
@@ -142,8 +142,8 @@
 
 
 
-//title: "(string|element|function)",
-/*<<< Start Router*/
+
+  /*<<< Start Router*/
     var show_about = function () {
         alert('This is the application "About".\n\nCopyright ©2018-2019 Wally.id');
     }
@@ -152,14 +152,6 @@
         alert('Number: ' + num);
         console.log('num: ', num)
     }
-
-    /*
-    var prepareAddAll = function (data) {
-      console.log('===prepareAddAll===');
-      wally_kit.pageHandler();
-      console.log('data: ', data);
-    }
-    */
 
     Router
         .add(/home(.*)/, function(data){})
@@ -646,6 +638,10 @@ if(_elId_ == "home" || _elId_ == "about"){
           }
       });
 
+
+    //if no page-hash is set, default to "home"
+    if (Router.urlParams.page == '')
+      Router.urlParams.page = 'home';
 
     //check if page is available for the current chainModel
     //is asset supported on the navigated page

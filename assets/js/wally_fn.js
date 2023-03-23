@@ -1197,8 +1197,8 @@ testar('3aa').then((data) => {
         priv : 0xef,     //wif
         multisig : 0xc4, //scriptHash
           hdkey : {'prv':0x04358394, 'pub':0x043587cf},
-          //bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'tp'},
-          bech32 : {},
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'tb'},
+          //bech32 : {},
           
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
