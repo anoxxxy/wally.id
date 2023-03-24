@@ -145,13 +145,16 @@
 
   /*<<< Start Router*/
     var show_about = function () {
-        alert('This is the application "About".\n\nCopyright ©2018-2019 Wally.id');
+        alert('This is the application "About".\n\nCopyright ©2020-2023 Wally.id');
     }
 
     var show_number = function (num) {
         alert('Number: ' + num);
         console.log('num: ', num)
     }
+
+    
+    
 
     Router
         .add(/home(.*)/, function(data){})
@@ -161,7 +164,7 @@
         .add(/newHDaddress(.*)/, function(data){})
         .add(/newTimeLocked(.*)/, function(data){})
         .add(/newTransaction(.*)/, function(data){})
-        .add(/kalle(.*)/, function(data){})
+        //.add(/kalle(.*)/, function(data){})
         .add(/wallet(.*)/, function(data) {
           console.log('wallet page');
           //alert('sign page');
@@ -173,28 +176,32 @@
             $('#js_folder-content li.folder-item[data-wallet-type="'+Router.urlParams.login+'"]').click();
           }
         })
-        .add(/about(.*)/, function(data){})
+        .add(/about(.*)/, function(data){
+          console.log('**about page**');
+        })
+        //.add(/(.*)(verify)(.*)/, function(data) {
+        
         .add(/(verify)(.*)/, function(data) {
-          console.log('verify page');
+          console.log('**verify page**');
           //alert('verify page');
         })
         .add(/(sign)(.*)/, function(data) {
-          console.log('sign page');
+          console.log('**sign page**');
           //alert('sign page');
         })
         .add(/(broadcast)(.*)/, function(data) {
-          console.log('broadcast page');
+          console.log('**broadcast page**');
           //alert('broadcast page');
         })
         .add(/(converter)(.*)/, function(data) {
-          console.log('converter page');
+          console.log('**converter page**');
           //alert('converter page');
           
         })
         .add(/(fee)(.*)/, function(data){})
         //.add(/(settings\/)(.*)/, function(data) {
         .add(/(settings)(.*)/, function(data) {
-            console.log('settings page', data);
+            console.log('**settings page**', data);
             console.log('parsedUrl: ', Router.urlParams);
             
         })
@@ -207,7 +214,8 @@
         //.add(/number=([0-9]+)/i, show_number)
 
         //default page
-        .add('', function(data) {
+        .add(/(.*)/, function(data) {
+          console.log('**empty page**');
           console.log('===EMPTY_PAGE_HASH===');
           console.log('__REDIRECT_TO_STARTPAGE_PERHAPS__');
           
@@ -623,7 +631,7 @@ if(_elId_ == "home" || _elId_ == "about"){
     console.log('===wally_kit.pageHandler===');
 
     console.log('===wally_kit.landingPage===');
-    //show landing page specific active page/tab
+    //show landing page for specific active page/tab
     if (Router.urlParams.page == "home" || Router.urlParams.page == "about") {
       $('.landing_box').removeClass("hidden");
     }else 
@@ -638,21 +646,27 @@ if(_elId_ == "home" || _elId_ == "about"){
           }
       });
 
+    //Check if url hash exists
+    if(location.hash.length > 0) {
+      console.log('yep')
+      }else {
+         console.log('nop')
+      }
 
-    //if no page-hash is set, default to "home"
-    if (Router.urlParams.page == '')
+
+    //if no page-hash or non-valid page-hash is set, default to "home"
+    //if (Router.urlParams.page == '' || !wally_fn.navigationPages.hasOwnProperty(Router.urlParams.page) )
+    if (!wally_fn.navigationPages.hasOwnProperty(Router.urlParams.page) )
       Router.urlParams.page = 'home';
 
     //check if page is available for the current chainModel
-    //is asset supported on the navigated page
+    //check if asset is supported on the navigated page
     if (wally_fn.navigationPages[Router.urlParams.page].includes(wally_fn.chainModel) || wally_fn.navigationPages[Router.urlParams.page].includes('all')) {
       console.log(Router.urlParams.page + ' is availabe for: '+ wally_fn.navigationPages[Router.urlParams.page].toString());
 
-      //check asset is supported on the navigated page
-      //if (wally_fn.navigationPages).hasOwnProperty(Router.urlParams.page)
 
       //add active to navigated page element
-      if (Router.urlParams.page && Router.urlParams.page != 'home') {
+      if (Router.urlParams.page != 'home') {
         document.getElementById(Router.urlParams.page).classList.add("active");
         //smooth scroll to active page
         wally_fn.pageNavigator();

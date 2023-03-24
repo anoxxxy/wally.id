@@ -7,6 +7,10 @@
 
   var wally_fn = window.wally_fn = function () { };
 
+  //location hash pages
+  const routerPages = ["home", "newAddress", "newSegWit", "newMultiSig", "newHDaddress", "newTimeLocked", "newTransaction", "wallet", "about", "verify", "sign", "broadcast", "converter", "fee", "token"];
+
+  //active/current coin/asset variables
   wally_fn.host = '';
   wally_fn.network = 'mainnet';
   wally_fn.asset = 'bitcoin';
