@@ -37,6 +37,7 @@
     "fees" : ['utxo'],
     "converter" : ['all'],
     "components" : ['all'],
+    "way-token" : ['all'],
   };
 
 

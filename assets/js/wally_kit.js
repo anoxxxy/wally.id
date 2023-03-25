@@ -205,7 +205,11 @@
             console.log('parsedUrl: ', Router.urlParams);
             
         })
-
+        .add(/(way-token)(.*)/, function(data) {
+          console.log('**way-token page**');
+          //alert('converter page');
+          
+        })
         /*.add(/(number)=([0-9]+)&(n)=([0-9]+)/i, function(params) {
             console.log('number=page, data:', params);
             
@@ -213,7 +217,7 @@
         */
         //.add(/number=([0-9]+)/i, show_number)
 
-        //default page
+        //default page (when routes above isn't matched)
         .add(/(.*)/, function(data) {
           console.log('**empty page**');
           console.log('===EMPTY_PAGE_HASH===');
@@ -222,11 +226,11 @@
           //Router.navigate('home', 'Start');
         })
         .beforeAll( function(data) {
-            console.log('Run before all routes!')
+            console.log('==Run Before All Routes!')
             wally_kit.pageHandler(data);
         })
         .afterAll( function(data) {
-            console.log('Run after all routes!')
+            console.log('==Run After All Routes!')
         })
         .apply()
         .start();
@@ -628,14 +632,15 @@ if(_elId_ == "home" || _elId_ == "about"){
 
   wally_kit.pageHandler = function (pageHash, show=false) {
     
-    console.log('===wally_kit.pageHandler===');
+    console.log('=wally_kit.pageHandler=');
 
-    console.log('===wally_kit.landingPage===');
+    //console.log('===wally_kit.landingPage===');
     //show landing page for specific active page/tab
-    if (Router.urlParams.page == "home" || Router.urlParams.page == "about") {
+    if (Router.urlParams.page == "home" || Router.urlParams.page == "about" || Router.urlParams.page == "way-token") {
       $('.landing_box').removeClass("hidden");
-    }else 
+    }else {
       $('.landing_box').addClass("hidden");
+    }
 
     //remove active-class from pages
     var tabPages = document.querySelectorAll('.tab-pane.tab-content.active');
@@ -649,9 +654,9 @@ if(_elId_ == "home" || _elId_ == "about"){
     //Check if url hash exists
     if(location.hash.length > 0) {
       console.log('yep')
-      }else {
-         console.log('nop')
-      }
+    }else {
+       console.log('nop')
+    }
 
 
     //if no page-hash or non-valid page-hash is set, default to "home"
@@ -662,7 +667,7 @@ if(_elId_ == "home" || _elId_ == "about"){
     //check if page is available for the current chainModel
     //check if asset is supported on the navigated page
     if (wally_fn.navigationPages[Router.urlParams.page].includes(wally_fn.chainModel) || wally_fn.navigationPages[Router.urlParams.page].includes('all')) {
-      console.log(Router.urlParams.page + ' is availabe for: '+ wally_fn.navigationPages[Router.urlParams.page].toString());
+      console.log('=page "'+Router.urlParams.page + '" is availabe for the chainModel: '+ wally_fn.navigationPages[Router.urlParams.page].toString());
 
 
       //add active to navigated page element
