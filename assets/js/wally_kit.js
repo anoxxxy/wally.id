@@ -256,7 +256,7 @@
     console.log('coinjs.asset: ' + coinjs.asset);
     console.log('Router.urlParams.asset: ' + Router.urlParams.asset);
 
-    //get & set asset type, default(bitcoin)
+    //get & set asset type, default is bitcoin
     if (Router.urlParams.asset !== undefined) {
       console.log('check for Router.urlParams.asset: ' + Router.urlParams.asset);
       /*
@@ -445,11 +445,10 @@
     var selectNetworkUtxoAPIwIcons = $('#coinjs_utxo_api_select ul').text('');
 
 
-    //default asset if nothing is set!    
     
-    console.log('asset_var before: '+asset_var);
-
-    console.log('wally_fn.asset before: ', wally_fn.asset);
+    //console.log('asset_var before: '+asset_var);
+    //console.log('wally_fn.asset before: ', wally_fn.asset);
+    //no asset, set the default asset 
     if(asset_var !== undefined) {
       
 
@@ -594,10 +593,10 @@ if(target === null)
 if(_elId_ == "home" || _elId_ == "about"){
   window.scroll({ top: 0, left: 0, behavior: 'smooth' });
   //window.scrollBy({ top: -400, left: 0, behavior: 'smooth' });
-  console.log('scroll top')
+  //console.log('scroll top')
 }else{
-  console.log('scroll specific')
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  //console.log('scroll specific')
+  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     
     /*
     var onePromise = new Promise((resolve, reject) => {
@@ -651,12 +650,14 @@ if(_elId_ == "home" || _elId_ == "about"){
           }
       });
 
+    /*
     //Check if url hash exists
     if(location.hash.length > 0) {
       console.log('yep')
     }else {
        console.log('nop')
     }
+    */
 
 
     //if no page-hash or non-valid page-hash is set, default to "home"
@@ -690,7 +691,7 @@ if(_elId_ == "home" || _elId_ == "about"){
       var modalMessage = '<div class="alert alert-danger text-center"><p>We do not have fully support for this asset yet.</p> <p><img src="'+coinjs.asset.icon+'" class="icon-center icon64 mt-3 mb-2"></p> <strong>'+coinjs.asset.name + ' ('+coinjs.asset.symbol+') <br>'+coinjs.asset.network+'</strong> </div>';
       custom.showModal(modalTitle, modalMessage);
 
-      //no active pag is set, show start page/landing page
+      //no active page is set, show start-page
       Router.navigate('home');
     }
 

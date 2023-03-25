@@ -40,13 +40,13 @@
 
     const router = {
         getFragment: () => {
-            console.log('===getFragment===');
+            //console.log('===getFragment===');
             var r;
             if(window.location.hash != "")
                 r = window.location.hash.replace(/\/$/, '');
             else
                 r = window.location.search.replace(/\/$/, '');
-            console.log('>>r: ', r);
+            //console.log('>>r: ', r);
             return r;
 
         },
@@ -75,10 +75,10 @@
         },
         apply: (frg) => {
             console.log('===apply===');
-            console.log('frg: : ', frg);
+            //console.log('frg: : ', frg);
 
             let fragment = frg || router.getFragment();
-            console.log('fragment: : ', fragment);
+            //console.log('fragment: ', fragment);
             for (let i = 0; i < internal.routes.length; i++) {
                 let matches = fragment.match(internal.routes[i].route);
                 console.log('matches: ', matches);

@@ -2674,18 +2674,18 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
     	
   	})
 
-  	
+  	@ set Popover to DOM-target function
   	*/
   	
   	$('a[data-toggle="popover"][data-target], button[data-toggle="popover"][data-target], div[data-toggle="popover"][data-target], span[data-toggle="popover"][data-target]').each(function (i, e) {
     	
 
-	  	console.log('index: ', i);
-	  	console.log('el: ', e);
+	  	//console.log('index: ', i);
+	  	//console.log('el: ', e);
 	    var data = $(e).data();
 	    if (data.target) {
-	    		console.log('target found!'+ data.target);
-	    		var targetEl = $(data.target);
+    		//console.log('target found!'+ data.target);
+    		var targetEl = $(data.target);
 
 	        var contentHtml = targetEl.html();
 
@@ -2696,8 +2696,10 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 	        var inputFor = $(e).attr( "data-input-for");
     			console.log('inputFor: '+ inputFor);
 
-	        console.log('contentBody: ', $(data.target ).find('#pwdGenerate').attr('data-input-for', inputFor));
-	        console.log('contentBody data-input-for: ', $(data.target + ' #pwdGenerate').attr('data-input-for'));
+    		$(data.target ).find('#pwdGenerate').attr('data-input-for', inputFor);
+
+	        //console.log('contentBody: ', $(data.target ).find('#pwdGenerate').attr('data-input-for', inputFor));
+	        //console.log('contentBody data-input-for: ', $(data.target + ' #pwdGenerate').attr('data-input-for'));
 
 	        var contentBody = $(data.target + ' .popover-body').html();
 
@@ -2722,7 +2724,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 	        	contentFooter = $(data.target + ' .popover-footer').html();
 
 	        
-	        console.log('data.footer: ', contentFooter);
+	        //console.log('data.footer: ', contentFooter);
 
 	  	    var pooppis = $(e).popover( {
 		    	title: contentTitle,
