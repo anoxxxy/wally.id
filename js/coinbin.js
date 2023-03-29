@@ -1199,7 +1199,7 @@ profile_data = {
 	/* redeem from button code */
 
 	$("#redeemFromBtn").click(function(){
-		console.log('miauu');
+		console.log('==redeemFromBtn==');
 		var redeemEl = $("#redeemFrom");
 		var redeemValue = redeemEl.val().trim();
 		redeemEl.val(redeemValue);
@@ -1225,6 +1225,7 @@ profile_data = {
 
 		if($("#clearInputsOnLoad").is(":checked")){
 			$("#inputs .txidRemove, #inputs .txidClear").click();
+			$('#inputs input').val('');
 		}
 
 		$("#redeemFromBtn").html("Please wait, loading...").attr('disabled',true);

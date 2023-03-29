@@ -1779,13 +1779,18 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		/* serialize a transaction */
 		r.serialize = function(){
 			var buffer = [];
+
+			//version
 			buffer = buffer.concat(coinjs.numToBytes(parseInt(this.version),4));
 
-			//PoS coins, add extra timefield to TX
-			if (coinjs.txExtraTimeField) {
-				buffer = buffer.concat(coinjs.numToBytes(parseInt(this.nTime),4));
+			//time, PoS coins, add extra timefield to TX
+			if(coinjs.asset.slug != 'potcoin'){
+				if (coinjs.txExtraTimeField) {
+					buffer = buffer.concat(coinjs.numToBytes(parseInt(this.nTime),4));
+				}
 			}
 
+			//witness
 			if(coinjs.isArray(this.witness)){
 				buffer = buffer.concat([0x00, 0x01]);
 			}
@@ -1820,7 +1825,15 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				}
 			}
 
+			//locktime
 			buffer = buffer.concat(coinjs.numToBytes(parseInt(this.lock_time),4));
+
+			//time, PoS coins, add extra timefield to TX
+			if(coinjs.asset.slug == 'potcoin'){
+				if (coinjs.txExtraTimeField) {
+					buffer = buffer.concat(coinjs.numToBytes(parseInt(this.nTime),4));
+				}
+			}
 
 			//Additional TxUnit field, add extra unit field to TX
 			if (coinjs.txExtraUnitField) {
@@ -1877,9 +1890,11 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				obj.version = readAsInt(4);
 
 				//PoS coins
-				if (coinjs.txExtraTimeField) {
-					console.log('txExtra:');
-					obj.nTime = readAsInt(4);
+				if(coinjs.asset.slug != 'potcoin'){
+					if (coinjs.txExtraTimeField) {
+						console.log('txExtra:');
+						obj.nTime = readAsInt(4);
+					}
 				}
 
 				if(buffer[pos] == 0x00 && buffer[pos+1] == 0x01){
@@ -1930,6 +1945,15 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 	 			if (coinjs.txExtraUnitField) {
 					obj.nUnit = readAsInt(1);
 				}
+
+				//PoS coins
+				if(coinjs.asset.slug == 'potcoin'){
+					if (coinjs.txExtraTimeField) {
+						console.log('txExtra:');
+						obj.nTime = readAsInt(4);
+					}
+				}
+
 
 				return obj;
 			} catch (e) {

@@ -1135,7 +1135,20 @@ testar('3aa').then((data) => {
             broadcast: {
               'Cryptoid.info': 'pot'
             }
-          }
+          },
+          network_: {
+            protocol : {
+              chain: {
+                model: 'utxo',
+                family: '', //has to do with TX serialization and de-serialization
+              },
+              version: 4,
+              network: 'main',  //main,test
+
+
+            }
+
+          },
         },
         /*oinjs_multisig").value = "0x5";
         
@@ -1159,15 +1172,206 @@ testar('3aa').then((data) => {
           bech32 : {},
           //magic: hex('fbc0b6db'),
           
-        txExtraTimeField: false,    //Set to true for PoS coins
+        txExtraTimeField: true,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
         txRBFTransaction: false,
-        developer: 'iceeeee',
+        developer: 'PF2BMF6TwjAUp7omwgVJh3XmzjHXEYtpFf',
+      },
+      infiniloop: {
+        symbol: 'IL8P',      //ticker
+        asset: {
+          chainModel: 'utxo',
+          name: 'InfiniLooP',
+          slug: 'infiniloop',
+          symbol: 'IL8P',
+          symbols: ['il8p', 'infiniloop'],
+          icon: './assets/images/crypto/infiniloop-il8p-logo.svg',
+          network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed'],
+          api : {
+            unspent_outputs: {
+              'Cryptoid.info': 'il8p'
+            },
+            broadcast: {
+              'Cryptoid.info': 'il8p'
+            }
+          },
+          network_: {
+            protocol : {
+              chain: {
+                model: 'utxo',
+                family: '', //has to do with TX serialization and de-serialization
+              },
+              //version: 4,
+              network: 'main',  //main,test
+
+
+            }
+
+          },
+        },
+        pub : 0x21,      //pubKeyHash
+        priv : 0x99,     //wif
+        multisig : 0x55, //scriptHash
+          hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
+          bech32 : {},
+          
+        txExtraTimeField: true,    //Set to true for PoS coins
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:8,
+        txRBFTransaction: false,
+        developer: 'EMHj1vHhh8D5kxtK7NbNQw4qoW6Qeyz3Hd',
+      },
+      artbyte: {
+        symbol: 'ABY',      //ticker
+        asset: {
+          chainModel: 'utxo',
+          name: 'Artbyte',
+          slug: 'artbyte',
+          symbol: 'ABY',
+          symbols: ['aby', 'artbyte'],
+          icon: './assets/images/crypto/artbyte-aby-logo.svg',
+          network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed'],
+          api : {
+            unspent_outputs: {
+              'Cryptoid.info': 'aby'
+            },
+            broadcast: {
+              'Cryptoid.info': 'aby'
+            }
+          },
+          network_: {
+            protocol : {
+              chain: {
+                model: 'utxo',
+                family: '', //has to do with TX serialization and de-serialization
+              },
+              //version: 4,
+              network: 'main',  //main,test
+
+
+            }
+
+          },
+        },
+        pub : 28,      //pubKeyHash
+        priv : 153,     //wif
+        multisig : 85, //scriptHash
+          hdkey : {'prv':0x0488ade4 /*EXT_SECRET_KEY*/, 'pub':0x0488b21e /*EXT_PUBLIC_KEY*/},
+          bech32 : {},
+          
+        txExtraTimeField: true,    //Set to true for PoS coins
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:8,
+        txRBFTransaction: false,
+        developer: 'CeTNuWQ5pC3RS4NexFEeAysF7X25zp1qB4',
+      },
+      zetacoin: {
+        symbol: 'ZET',      //ticker
+        asset: {
+          chainModel: 'utxo',
+          name: 'Zetacoin',
+          slug: 'zetacoin',
+          symbol: 'ZET',
+          symbols: ['zet', 'zetacoin'],
+          icon: './assets/images/crypto/zetacoin-zet-logo.svg',
+          network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed'],
+          api : {
+            unspent_outputs: {
+              'Cryptoid.info': 'zet'
+            },
+            broadcast: {
+              'Cryptoid.info': 'zet'
+            }
+          },
+          network_: {
+            protocol : {
+              chain: {
+                model: 'utxo',
+                family: '', //has to do with TX serialization and de-serialization
+              },
+              //version: 4,
+              network: 'main',  //main,test
+
+
+            }
+
+          },
+        },
+        pub : 20,      //pubKeyHash
+        priv : 153,     //wif
+        multisig : 85, //scriptHash
+          hdkey : {'prv':0x0488ade4 /*EXT_SECRET_KEY*/, 'pub':0x0488b21e /*EXT_PUBLIC_KEY*/},
+          bech32 : {},
+          
+        txExtraTimeField: true,    //Set to true for PoS coins
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:8,
+        txRBFTransaction: false,
+        developer: '9HDfTd3VhF5RsSWfzrHvvonVzGjW3gQPcb',
+      },
+      vanillacash: {
+        symbol: 'XVC',      //ticker
+        asset: {
+          chainModel: 'utxo',
+          name: 'Vanillacash',
+          slug: 'vanillacash',
+          symbol: 'XVC',
+          symbols: ['xvc', 'vanillacash'],
+          icon: './assets/images/crypto/vanillacash-xvc-logo.svg',
+          network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed'],
+          api : {
+            unspent_outputs: {
+              'Cryptoid.info': 'xvc'
+            },
+            broadcast: {
+              'Cryptoid.info': 'xvc'
+            }
+          },
+          network_: {
+            protocol : {
+              chain: {
+                model: 'utxo',
+                family: '', //has to do with TX serialization and de-serialization
+              },
+              //version: 4,
+              network: 'main',  //main,test
+
+
+            }
+
+          },
+        },
+        pub : 18,      //pubKeyHash, PUBKEY_ADDRESS
+        priv : 181,     //wif, SECRET_KEY
+        multisig : 30, //scriptHash, SCRIPT_ADDRESS
+          hdkey : {'prv':0xe1a32b3e /*EXT_SECRET_KEY*/, 'pub':0xad1b12a4 /*EXT_PUBLIC_KEY*/},
+          bech32 : {},
+          
+        txExtraTimeField: true,    //Set to true for PoS coins
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:8,
+        txRBFTransaction: false,
+        developer: '8RTwrgaA9sSTokWJsJN5tc9f3QKWJuAdzD',
       },
     },
+
+
+    //TESTNET
     testnet : {
       bitcoin : {
         symbol: 'tBTC',      //ticker
@@ -1211,7 +1415,7 @@ testar('3aa').then((data) => {
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
         txRBFTransaction: true,
-        developer: 'iceeeee',
+        developer: 'moZx3Vhdj4xe1JbEp7BegcpVdMNWTpzWHh',
       },
       litecoin : {
         symbol: 'tLTC',      //ticker
@@ -1280,7 +1484,7 @@ testar('3aa').then((data) => {
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
         txRBFTransaction: true,
-        developer: 'iceeeee',
+        developer: 'ncFA1iJD9RtPeAsQrwrHesN4tMtPwuYTTo',
       },
       wally : {
         symbol: 'tWAY',      //ticker
