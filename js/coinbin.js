@@ -2269,7 +2269,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			
 			if (decode['nTime']){
 				$("#verifyTransactionData .txtime").removeClass("hidden");
-				$("#verifyTransactionData .transactionTime").html(new Date(decode['nTime']*1000).toUTCString());
+				$("#verifyTransactionData .transactionTime").html(new Date(decode['nTime']*1000).toUTCString() + '<small> (<b>Unix timestamp:</b> '+ decode['nTime']+')</small>');
 			}else {
 				if (!$("#verifyTransactionData .txtime").hasClass("hidden"))
 					$("#verifyTransactionData .txtime").addClass("hidden");
@@ -2607,15 +2607,50 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		if($("#sign .has-error").length==0){
 			$("#signedDataError").addClass('hidden');
 			try {
+
+				console.log('try to sign!');
+				
 				var tx = coinjs.transaction();
-				var t = tx.deserialize(script.val());
+				//var t = tx.deserialize(script.val());
+				var t;
+				
+
+				//if POSv coin
+				var scriptPOSv_rawtx, scriptPOSv_timestamp, script_rawtx = script.val();
+
+				if(coinjs.asset.slug == 'potcoin'){
+					scriptPOSv_rawtx = script_rawtx;
+					
+					console.log('scriptPOSv_rawtx.length before: ', scriptPOSv_rawtx.length);
+
+					scriptPOSv_timestamp = scriptPOSv_rawtx.slice(-8);	//get the timestamp
+					scriptPOSv_rawtx = scriptPOSv_rawtx.slice(0, -8) + '01000000';	//for POSv coins, remove timestamp, needs to be done before signing
+
+					t = tx.adeserialize(scriptPOSv_rawtx);
+
+				}else {
+					t = tx.deserialize(script_rawtx);
+				}
+
+				console.log('tx.deserialize: ', t);
 
 				var signed = t.sign(wifkey.val(), $("#sighashType option:selected").val());
+
+				console.log('signed: ', signed);
+
+				//time, PoS coins, add extra timefield to TX
+				if(coinjs.asset.slug == 'potcoin'){
+					//signed = scriptPOSv_rawtx.slice(0, -8) + scriptPOSv_timestamp;	//for POSv coins
+				}
+
+				
+
+
 				$("#signedData textarea").val(signed);
 				$("#signedData .txSize").html(t.size());
 				$("#signedData").removeClass('hidden').fadeIn();
 			} catch(e) {
-				// console.log(e);
+				 console.log(e);
 			}
 		} else {
 			$("#signedDataError").removeClass('hidden');

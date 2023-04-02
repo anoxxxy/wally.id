@@ -78,9 +78,10 @@
             var regex = /^(\w+script|data):/gi,
             whitespace = /[\x00-\x20\xA0\u1680\u180E\u2000-\u2029\u205f\u3000]/g;
             
-            //console.log('args type: ', typeof(args));
-            //console.log('args: ', args);
-            if (args[1] != -1 && args[1].replace(whitespace,'').match(regex)) {
+            console.log('jpurify args type: ', typeof(args));
+            console.log('jpurify  args: ', args);
+            //if (args[1] != -1 && args[1].replace(whitespace,'').match(regex)) {
+            if (args[1] != -1 && typeof(args[1]) == 'string'  && args[1].replace(whitespace,'').match(regex)) {
                 return false;
             }
         }

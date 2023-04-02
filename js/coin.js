@@ -1962,6 +1962,130 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 			return false;
 		}
 
+		/* deserialize a transaction */
+		r.adeserialize = function(buffer, options = {}){
+
+			try {
+				if (typeof buffer == "string") {
+					buffer = Crypto.util.hexToBytes(buffer)
+				}
+
+				console.log('r.adeserialize buffer: ', buffer);
+				console.log('r.adeserialize buffer.length: ', buffer.length);
+				var pos = 0;
+				var witness = false;
+
+				var readAsInt = function(bytes) {
+					if (bytes == 0) return 0;
+					pos++;
+
+					//dont go any further then buffer.length
+					if (pos > buffer.length)
+						throw ('Not Within Buffer Range (length), No need to read more!');
+
+					//console.log('pos: '+ pos);
+					return buffer[pos-1] + readAsInt(bytes-1) * 256;
+				}
+
+				var readVarInt = function() {
+					pos++;
+					if (buffer[pos-1] < 253) {
+						return buffer[pos-1];
+					}
+					return readAsInt(buffer[pos-1] - 251);
+				}
+
+				var readBytes = function(bytes) {
+					pos += bytes;
+					return buffer.slice(pos - bytes, pos);
+				}
+
+				var readVarString = function() {
+					var size = readVarInt();
+					return readBytes(size);
+				}
+
+				var obj = new coinjs.transaction();
+				obj.version = readAsInt(4);
+
+				//PoS coins
+				/*
+				if(coinjs.asset.slug != 'potcoin'){
+					if (coinjs.txExtraTimeField) {
+						console.log('txExtra:');
+						obj.nTime = readAsInt(4);
+					}
+				}
+				*/
+
+				if(buffer[pos] == 0x00 && buffer[pos+1] == 0x01){
+					// segwit transaction
+					witness = true;
+					obj.witness = [];
+					pos += 2;
+				}
+
+				var ins = readVarInt();
+				for (var i = 0; i < ins; i++) {
+					obj.ins.push({
+						outpoint: {
+							hash: Crypto.util.bytesToHex(readBytes(32).reverse()),
+	 						index: readAsInt(4)
+						},
+						script: coinjs.script(readVarString()),
+						sequence: readAsInt(4)
+					});
+				}
+
+				var outs = readVarInt();
+				for (var i = 0; i < outs; i++) {
+					obj.outs.push({
+						value: coinjs.bytesToNum(readBytes(8)),
+						script: coinjs.script(readVarString())
+					});
+				}
+
+				if(witness == true){
+					for (i = 0; i < ins; ++i) {
+						var count = readVarInt();
+						var vector = [];
+						for(var y = 0; y < count; y++){
+							var slice = readVarInt();
+							pos += slice;
+							if(!coinjs.isArray(obj.witness[i])){
+								obj.witness[i] = [];
+							}
+							obj.witness[i].push(Crypto.util.bytesToHex(buffer.slice(pos - slice, pos)));
+						}
+					}
+				}
+
+	 			obj.lock_time = readAsInt(4);
+
+	 			//Additional TxUnit field
+	 			if (coinjs.txExtraUnitField) {
+					obj.nUnit = readAsInt(1);
+				}
+
+				/*
+				//PoSv coins, we have already stripped out the txtime field before signing, coinbin.js around line: 26x9
+
+				if(coinjs.asset.slug == 'potcoin'){
+					if (coinjs.txExtraTimeField) {
+						console.log('txExtra:');
+						obj.nTime = readAsInt(4);
+					}
+				}
+				*/
+
+
+				return obj;
+			} catch (e) {
+				console.log('r.deserialize error: ', e);
+			}
+			return false;
+		}
+
 		r.size = function(){
 			return ((this.serialize()).length/2).toFixed(0);
 		}
@@ -2248,5 +2372,52 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
   return generatePass();  
 }
 
+//https://emn178.github.io/online-tools/js/main.js
+	coinjs.hexToString = function(hex) {
+    if (!hex.match(/^[0-9a-fA-F]+$/)) {
+      throw new Error('is not a hex string.');
+    }
+    if (hex.length % 2 !== 0) {
+      hex = '0' + hex;
+    }
+    var bytes = [];
+    for (var n = 0; n < hex.length; n += 2) {
+      var code = parseInt(hex.substr(n, 2), 16)
+      bytes.push(code);
+    }
+    return bytes;
+  }
 
+  coinjs.addressToScriptHash = function(address) {
+  	/*
+  	https://electrumx.readthedocs.io/en/latest/protocol-basics.html#script-hashes
+  	
+  	For example, the legacy Bitcoin address from the genesis block:
+		1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+
+		has P2PKH script:
+		76a91462e907b15cbf27d5425399ebf6f0fb50ebb88f1888ac
+
+		with SHA256 hash:
+		6191c3b590bfcfa0475e877c302da1e323497acf3b42c08d8fa28e364edf018b
+
+		which is sent to the server reversed as:
+		8b01df4e368ea28f8dc0423bcf7a4923e3a12d307c875e47a0cfbf90b5c39161
+
+		*/
+  	var script = coinjs.script();
+		//var address = '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa';
+
+
+		var pubkeyHashScript = coinjs.hexToString(Crypto.util.bytesToHex( script.pubkeyHash(address).buffer, {asBytes: true}));
+		//console.log('pubkeyHashScript: ', pubkeyHashScript);
+		var pubkeyHashScriptSHA256 = Crypto.SHA256(pubkeyHashScript);
+		//console.log('pubkeyHashScriptSHA256: ', pubkeyHashScriptSHA256);
+
+		var pubkeyHashScriptSHA256Reversed = Crypto.util.bytesToHex(Crypto.util.hexToBytes(pubkeyHashScriptSHA256).reverse());
+		//console.log('pubkeyHashScriptSHA256Reversed: ', pubkeyHashScriptSHA256Reversed);
+
+		return pubkeyHashScriptSHA256Reversed;
+
+  }
 })();
