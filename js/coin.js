@@ -1087,6 +1087,8 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		r.timestamp = null;
 		r.block = null;
 
+		r.rawTxSerialized = '';
+
 		//PoS coins
 		if (coinjs.txExtraTimeField) {
 			//r.nTime = (Date.now() / 1000)*1;
@@ -1271,6 +1273,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 			var extract = this.extractScriptKey(index);
 			clone.ins[index].script = coinjs.script(extract['script']);
 
+
 			if((clone.ins) && clone.ins[index]){
 
 				/* SIGHASH : For more info on sig hashs see https://en.bitcoin.it/wiki/OP_CHECKSIG
@@ -1330,6 +1333,12 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				var hash = Crypto.SHA256(buffer, {asBytes: true});
 				var r = Crypto.util.bytesToHex(Crypto.SHA256(hash, {asBytes: true}));
 				console.log('generated TXID: ', r);
+
+				this.rawTxSerialized = clone.serialize();	//added for REDD-family, iceee
+				console.log('_cloneTx '+index+': ', this.rawTxSerialized);
+
+
+
 				return r;
 			} else {
 				return false;
@@ -1485,6 +1494,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		/* generate a signature from a transaction hash */
 		r.transactionSig = function(index, wif, sigHashType, txhash){
 
+			console.log('===r.transactionSig===');
 			function serializeSig(r, s) {
 				var rBa = r.toByteArraySigned();
 				var sBa = s.toByteArraySigned();
@@ -1503,11 +1513,54 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 				return sequence;
 			}
+/*
+			function REDDFamilySign(txhash) {
+				var timestamp = txHash.slice(-8);	//get the timestamp
+				
+				for every (index)
+					txhash = txhash.slice(0, -8) + '01000000';	//for#strip the posv timestamp and add the hashcode (needs to be done before signing)
 
+				1. deserialise the rawtx
+				2. remove ALL script 	(newtx["ins"][i]["script"] = '') from INPUTS except for the currenct index input
+				3. serialize the rawtx
+				4. sign with low level s signature
+
+
+			}
+*/
 			var shType = sigHashType || 1;
-			var hash = txhash || Crypto.util.hexToBytes(this.transactionHash(index, shType));
-			console.log('tx hash: ', hash);
+			//var hash = txhash || Crypto.util.hexToBytes(this.transactionHash(index, shType, rawTx));
+			var hash = txhash || this.transactionHash(index, shType);
+			
 
+
+			
+				if(coinjs.asset.slug == 'potcoin'){
+					if (coinjs.txExtraTimeField) {
+						//hash = Crypto.SHA256(Crypto.SHA256())
+						//console.log('1: ', Crypto.SHA256(Crypto.SHA256(hash, {asBytes: true}), {asBytes: true}) );
+						//console.log('2: ', Crypto.util.bytesToHex(Crypto.SHA256(Crypto.SHA256(hash, {asBytes: true}), {asBytes: true}) ));
+						//console.log('3: ', Crypto.util.bytesToHex(Crypto.SHA256(Crypto.SHA256(hash, {asBytes: false}), {asBytes: true}) ));
+						//console.log('4: ', (Crypto.SHA256(Crypto.SHA256(hash, {asBytes: false}), {asBytes: false}) ));
+						//hash = Crypto.SHA256(Crypto.SHA256(hash));
+						
+
+
+						//var scriptPOSv_timestamp = this.rawTxSerialized.slice(-8);	//get the timestamp
+						this.rawTxSerialized = this.rawTxSerialized.slice(0, -8) + '01000000';	//for POSv coins, remove timestamp, needs to be done before signing
+
+						//console.log('this.rawTxSerialized redd: ', this.rawTxSerialized);
+
+						var hashPOT= Crypto.util.bytesToHex(Crypto.SHA256(coinjs.hexToString(this.rawTxSerialized),  {asBytes: true}));
+						hash = Crypto.util.bytesToHex(Crypto.SHA256(coinjs.hexToString(hashPOT),  {asBytes: true}));
+						//console.log('hash POT: ',hash);						
+
+					}
+				} 
+
+			hash = Crypto.util.hexToBytes(hash);
+
+			// Generate a low-S ECDSA signature
 			if(hash){
 				var curve = EllipticCurve.getSECCurveByName("secp256k1");
 				var key = coinjs.wif2privkey(wif);
@@ -1520,7 +1573,9 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 					var G = curve.getG();
 					var Q = G.multiply(k);
 					var r = Q.getX().toBigInteger().mod(n);
+
 					var s = k.modInverse(n).multiply(e.add(priv.multiply(r))).mod(n);
+
 					badrs++
 				} while (r.compareTo(BigInteger.ZERO) <= 0 || s.compareTo(BigInteger.ZERO) <= 0);
 
@@ -1529,15 +1584,142 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				if (s.compareTo(halfn) > 0) {
 					s = n.subtract(s);
 				};
+				
 
 				var sig = serializeSig(r, s);
+
+				//console.log('**sig: ', Crypto.util.bytesToHex(sig))
 				sig.push(parseInt(shType, 10));
 
+				//console.log('**sig.push: ', Crypto.util.bytesToHex(sig));
+
 				return Crypto.util.bytesToHex(sig);
+				
 			} else {
 				return false;
 			}
 		}
+
+
+/**
+ * Generate a low-S ECDSA signature
+ * @param {string} key - The private key in hexadecimal format
+ * @param {string} message - The message to sign
+ * @returns {Array} - The r and s components of the signature, as hexadecimal strings
+ *
+
+	function signNumberLowS(key, number) {
+	  const curve = EllipticCurve.getSECCurveByName("secp256k1");
+	  const G = curve.getG();
+	  const order = curve.n;	//curve.getN();
+
+	  const privateKey = new BigInteger(key);
+	  const eckey = new ECKey(privateKey);
+
+	  const sig = eckey.sign(BigInteger.fromHex(number), false);  // false means we do not want to use deterministic k
+
+	  let s = sig.s;
+	  if (s.compareTo(order.divide(BigInteger.valueOf(2))) > 0) {
+	    s = order.subtract(s);
+	  }
+
+	  const r = sig.r;
+	  return [r.toString(16), s.toString(16)];
+	}
+
+var ECDSA = {
+  signNumberLowSOlder: function(key, number) {
+    const curve = EllipticCurve.getSECCurveByName("secp256k1");
+    const G = curve.getG();
+    const order = curve.n;
+
+    const privateKey = potcoin.BigInteger.fromHex(key);
+console.log('privateKey: ', privateKey);
+    const eckey = potcoin.potcoin.ECKey.fromWIF(privateKey);
+console.log('eckey: ', eckey);
+
+    const hash = potcoin.BigInteger.fromHex(number);
+    const sig = ECDSA.sign(eckey, hash);
+console.log('sig: ', sig);
+
+    let s = sig.s;
+    if (s.compareTo(order.divide(BigInteger.valueOf(2))) > 0) {
+      s = order.subtract(s);
+    }
+
+    const r = sig.r;
+    return [r.toString(16), s.toString(16)];
+  },
+
+  sign: function(eckey, hash) {
+    const d = eckey.priv;
+    const n = EllipticCurve.getSECCurveByName("secp256k1").getN();
+    const e = hash;
+
+    let k = null;
+    let r = null;
+    let s = null;
+
+    do {
+      k = ECDSA.generateK(n);
+      const Q = G.multiply(k);
+      r = Q.getX().toBigInteger().mod(n);
+      s = k.modInverse(n).multiply(e.add(d.multiply(r))).mod(n);
+    } while (s.compareTo(n.divide(BigInteger.valueOf(2))) > 0);
+
+    return new Bitcoin.ECSignature(r, s);
+  },
+
+  generateK: function(n) {
+    const secureRandom = new SecureRandom();
+    const bytes = new Array(32);
+    secureRandom.nextBytes(bytes);
+    return BigInteger.fromByteArrayUnsigned(bytes).mod(n);
+  }
+};
+
+ECDSA.signNumberLowS('ed457c36da2618d0d467b24dbb67c75186511164e823a82aaaf6f6410f08ae59', 1)
+
+function signNumberLowS_older(key, number) {
+  var network = bitcoinjs.networks.bitcoin;
+console.log('network: ', network);
+  var keyPair = bitcoinjs.ECPair.fromPrivateKey(bitcoinjs.Buffer.from(key, 'hex'), { network });
+  var message = bitcoinjs.Buffer.from(number, 'hex');
+  //var hash = CryptoJS.SHA256(message).toString(CryptoJS.enc.Hex);
+	var hash = Crypto.SHA256(message);
+  var signature = keyPair.sign(bitcoinjs.Buffer.from(hash, 'hex'), { lowR: true });
+  var curve = bitcoinjs.ECPair.curve;
+  var order = curve.n;
+  var s = signature.s;
+  if (s.cmp(order.div(2)) > 0) {
+    s = order.sub(s);
+  }
+  return [signature.r.toString(16), s.toString(16)];
+}
+
+function signNumberLowS(key, number) {
+  const network = bitcoinjs.networks.bitcoin;
+  const keyPair = bitcoinjs.ECPair.fromPrivateKey(bitcoinjs.Buffer.from(key, 'hex'), { network });
+  const message = bitcoinjs.Buffer.from(number, 'hex');
+  //const hash = CryptoJS.SHA256(message).toString(CryptoJS.enc.Hex);
+var hash = Crypto.SHA256(message);
+  const signature = keyPair.sign(bitcoinjs.Buffer.from(hash, 'hex'), { lowR: true });
+  const curve = keyPair.getPublicKeyBuffer().slice(0, 1)[0] === 0x02 ? bitcoinjs.ECKey.Secp256k1 : bitcoinjs.ECKey.Secp256k1p;
+  const order = curve.getN();
+  let s = signature.s;
+  if (s.cmp(order.div(2)) > 0) {
+    s = order.sub(s);
+  }
+  return [signature.r.toString(16), s.toString(16)];
+}
+
+ signNumberLowS('936d57bc58e6b65840b9cdaa4f60ff4331f0f0eec0c75ed0fed6dce13997de7c', '68656c6c6f');
+
+
+
+
+*/
+
 
 		// https://tools.ietf.org/html/rfc6979#section-3.2
 		r.deterministicK = function(wif, hash, badrs) {
@@ -1602,10 +1784,11 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		};
 
 		/* sign a "standard" input */
-		r.signinput = function(index, wif, sigHashType){
+		r.signinput = function(index, wif, sigHashType, rawTx){
 			var key = coinjs.wif2pubkey(wif);
 			var shType = sigHashType || 1;
 			var signature = this.transactionSig(index, wif, shType);
+			//var signature = this.transactionSig(index, wif, shType, rawTx);
 			var s = coinjs.script();
 			s.writeBytes(Crypto.util.hexToBytes(signature));
 			s.writeBytes(Crypto.util.hexToBytes(key['pubkey']));
@@ -1748,8 +1931,12 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		}
 
 		/* sign inputs */
-		r.sign = function(wif, sigHashType){
+		r.sign = function(wif, sigHashType, rawTx){
 			var shType = sigHashType || 1;
+
+			console.log('===r.sign===');
+			console.log('rawTx: ', rawTx);
+
 			for (var i = 0; i < this.ins.length; i++) {
 				var d = this.extractScriptKey(i);
 
@@ -1758,7 +1945,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				var pubkeyHash = script.pubkeyHash(w2a['address']);
 
 				if(((d['type'] == 'scriptpubkey' && d['script']==Crypto.util.bytesToHex(pubkeyHash.buffer)) || d['type'] == 'empty') && d['signed'] == "false"){
-					this.signinput(i, wif, shType);
+					this.signinput(i, wif, shType, rawTx);
 
 				} else if (d['type'] == 'hodl' && d['signed'] == "false") {
 					this.signhodl(i, wif, shType);
@@ -2388,10 +2575,19 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
     return bytes;
   }
 
+  coinjs.addressToOutputScript = function(address){
+  	var script = coinjs.script();
+  	var pubkeyHashScript = Crypto.util.bytesToHex( script.pubkeyHash(address).buffer, {asBytes: false});
+  	return pubkeyHashScript;
+  }
+
+  /*
+ 	@ for ElectrumX integration
+  */
   coinjs.addressToScriptHash = function(address) {
   	/*
-  	https://electrumx.readthedocs.io/en/latest/protocol-basics.html#script-hashes
   	
+
   	For example, the legacy Bitcoin address from the genesis block:
 		1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
 
@@ -2403,6 +2599,35 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 		which is sent to the server reversed as:
 		8b01df4e368ea28f8dc0423bcf7a4923e3a12d307c875e47a0cfbf90b5c39161
+
+
+function hexToString(hex) {
+    if (!hex.match(/^[0-9a-fA-F]+$/)) {
+      throw new Error('is not a hex string.');
+    }
+    if (hex.length % 2 !== 0) {
+      hex = '0' + hex;
+    }
+    var bytes = [];
+    for (var n = 0; n < hex.length; n += 2) {
+      var code = parseInt(hex.substr(n, 2), 16)
+      bytes.push(code);
+    }
+    return bytes;
+  }
+
+var script = coinjs.script();
+var address = 'CeTNuWQ5pC3RS4NexFEeAysF7X25zp1qB4';
+
+
+var pubkeyHashScript = hexToString(Crypto.util.bytesToHex( script.pubkeyHash(address).buffer, {asBytes: true}));
+console.log('pubkeyHashScript: ', pubkeyHashScript);
+var pubkeyHashScriptSHA256 = Crypto.SHA256(pubkeyHashScript);
+console.log('pubkeyHashScriptSHA256: ', pubkeyHashScriptSHA256);
+
+var pubkeyHashScriptSHA256Reversed = Crypto.util.bytesToHex(Crypto.util.hexToBytes(pubkeyHashScriptSHA256).reverse());
+console.log('pubkeyHashScriptSHA256Reversed: ', pubkeyHashScriptSHA256Reversed);
+
 
 		*/
   	var script = coinjs.script();

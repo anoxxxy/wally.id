@@ -2614,7 +2614,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				//var t = tx.deserialize(script.val());
 				var t;
 				
-
+/*
 				//if POSv coin
 				var scriptPOSv_rawtx, scriptPOSv_timestamp, script_rawtx = script.val();
 
@@ -2631,10 +2631,12 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				}else {
 					t = tx.deserialize(script_rawtx);
 				}
+				*/
+				t = tx.deserialize(script.val());
 
 				console.log('tx.deserialize: ', t);
 
-				var signed = t.sign(wifkey.val(), $("#sighashType option:selected").val());
+				var signed = t.sign(wifkey.val(), $("#sighashType option:selected").val(), script.val());	// script.val() -> rawtx
 
 				console.log('signed: ', signed);
 

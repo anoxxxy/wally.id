@@ -2414,3 +2414,315 @@ border: 1px solid red;
 
 
 
+
+/* footer menu  */
+
+
+
+/*bottom bar*/
+.footer-menu {
+  z-index: 99;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  visibility: hidden;
+  background-color: #fff;
+
+  border-top: 1px solid rgb(231, 227, 235);
+
+  border-radius: 0 !important;
+  padding-top: 5px;
+  padding-right: 8px;
+  padding-left: 8px;
+  padding-bottom: env(safe-area-inset-bottom);
+
+  flex-direction: row;
+    height: 50px;
+    bottom: 0;
+    justify-content: space-around;
+    align-items: center;
+    /*padding: 0 1rem;*/
+  
+
+  }
+/*
+  @supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .footer-menu {
+      padding-bottom: calc(var(--safe-area-inset-bottom) + 1rem);
+    }
+  }
+  */
+
+.footer-menu .footer-menu-icon-block {
+  border: 0;
+  border-radius: 16px;
+background: transparent none repeat scroll 0% 0%;
+cursor: pointer;
+height: 44px;
+
+display: block;
+text-align: center;
+}
+
+.footer-menu .footer-menu-icon-block div {
+display: flex;
+flex-direction: column;
+-moz-box-pack: center;
+justify-content: center;
+-moz-box-align: center;
+align-items: center;
+}
+
+
+.footer-menu .footer-menu-icon-block:hover {
+  color: red;
+  
+  background: rgb(239, 244, 245) none repeat scroll 0% 0%;
+  /*padding: 0 10px;*/
+}
+
+.footer-menu .footer-menu-icon {
+  line-height: 1;
+  color: #6456ab;
+  font-size: 20px;
+  position: relative;
+  top: 2px;
+}
+
+.footer-menu .footer-menu-text {
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 2px;
+  color: #99A3BA;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+/*.dropdown-menu.navbar-toggle-menu {*/
+.footer-menu .dropup.open .dropdown-menu {
+  background-color: #4d3aaf;
+}
+
+
+.footer-menu .dropup .dropdown-menu {
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    
+
+    max-height: 0;
+    display: block;
+    overflow: hidden;
+    opacity: 0;
+
+    right: -40px;
+    position: absolute;
+}
+
+.footer-menu .dropup.open .dropdown-menu {
+    max-height: fit-content;
+    opacity: 1;
+    /*
+    transform: translateY(0);
+    */
+}
+
+.footer-menu .footer-menu-icon-block > a,
+.footer-menu .footer-menu-icon-block > button {
+display: inline-block;
+border: 1px solid #fefefe;
+padding: 1px 8px;
+/*border-radius: inherit;
+background-color: inherit;
+outline:  none;
+*/
+
+}
+
+.footer-menu .footer-menu-icon-block > a:focus,
+.footer-menu .footer-menu-icon-block > button:focus{
+  outline:none ;
+}
+
+/* btn dropdown-toggle */
+
+
+@media screen and (max-width: 550px) {
+  .footer-menu {
+    visibility: visible;
+  }
+
+
+
+
+  
+.menu__button {
+  --x: -50%;
+  --y: 0;
+  --z: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to right, var(--color-light), var(--color-dark));
+  padding: 10px 20px;
+  border-radius: 28px;
+  box-shadow: 0 2px 40px -10px var(--color);
+  color: var(--light);
+  font-size: 16px;
+  white-space: nowrap;
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translate3d(var(--x), var(--y), var(--z));
+  cursor: pointer;
+  z-index: 105;
+  transition: 0.15s cubic-bezier(0.33, 1, 0.53, 1);
+}
+.menu__button[hidden] {
+  --y: 200%;
+}
+.menu__button div {
+  display: flex;
+  align-items: center;
+  width: 12px;
+  height: 12px;
+  margin-right: 20px;
+}
+.menu__button div div {
+  display: table;
+  height: 1px;
+  background: var(--light);
+  box-shadow: 0 4px 0 var(--light), 0 -4px 0 var(--light);
+}
+
+.menu__overlay {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  position: absolute;
+  z-index: 100;
+}
+
+.menu__body {
+  --x: 0;
+  --y: 0;
+  --z: 0;
+  display: block;
+  width: 100%;
+  background: var(--light);
+  padding-bottom: 15px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  box-shadow: 0px -9px 50px -30px black;
+  font-family: "Montserrat", sans-serif;
+  position: absolute;
+  bottom: 0;
+  z-index: 105;
+  transform: translate3d(var(--x), var(--y), var(--z));
+  transition: 0.2s cubic-bezier(0.33, 1, 0.53, 1);
+}
+.menu__body[hidden] {
+  --y: 150%;
+}
+.menu__body > *:not(:last-child) {
+  border-bottom: 2px solid var(--neutral);
+}
+
+.menu__header {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 20px;
+}
+.menu__header label div {
+  width: 15px;
+  height: 15px;
+  border: 2px solid var(--dark);
+  border-radius: 50%;
+  position: relative;
+  transform: rotate(5.5rad);
+}
+.menu__header label div:after {
+  content: "";
+  width: 2px;
+  height: 10px;
+  background: var(--dark);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.menu__header p {
+  font-size: 18px;
+  font-weight: bold;
+  vertical-align: center;
+  white-space: nowrap;
+}
+.menu__header h3 {
+  font-weight: normal;
+}
+.menu__header button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  background: var(--neutral-dark);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.menu__header button div {
+  width: 15px;
+  height: 3px;
+  background: var(--light);
+  position: relative;
+  transform: rotate(5.5rad);
+}
+.menu__header button div:before {
+  content: "";
+  width: 3px;
+  height: 15px;
+  background: var(--light);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.menu__links {
+  display: flex;
+  padding: 10px 15px;
+  font-weight: bold;
+  overflow-x: auto;
+}
+.menu__links a {
+  flex: 1 1 1px;
+  padding: 10px 8px;
+  color: var(--dark);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.menu__contact {
+  display: flex;
+  padding: 8px;
+}
+.menu__contact svg {
+  width: 100%;
+  fill: var(--color);
+}
+.menu__contact a {
+  flex: 1 1 30%;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 8px;
+  background: var(--neutral);
+  color: var(--color);
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+}
