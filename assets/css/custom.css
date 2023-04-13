@@ -399,6 +399,11 @@ vertical-align: -8px;
 	height: 24px;
 	font-size: 24px;
 }
+.icon28 {
+	width: 28px;
+	height: 28px;
+	font-size: 28px;
+}
 .icon32 {
 	width: 32px;
 	height: 32px;
@@ -1701,7 +1706,76 @@ https://code-boxx.com/show-hide-elements-css-javascript/
 	background-color: #f9f9f9;
 }
 
+/*
+.clear-input-box {
+	width: 20px;
+	display: inline-block;
+	height: 1.6em;
+	margin-left:-25px;
+	vertical-align: middle;
+	overflow: hidden;
+	background: pink;
 
+}
+*/
+.clear-input {
+    width: 30px;
+    transition: max-width 0.3s;overflow: hidden;float: right;
+    max-width: 0px;
+	transition: all 0.3s;
+	overflow: hidden;
+
+    position: relative;
+	top: -28px;
+}
+
+.show-cross {
+cursor: pointer;
+width: 40px;
+max-width: 40px;
+font-size: 1.5rem;
+font-weight: 500;
+line-height: .6;
+color: #553164;
+text-shadow: 0 1px 0 #fff;
+position: relative;
+top: -28px;
+}
+.show-cross:hover {
+	color: #43264f;
+}
+
+
+.form-control-feedback {
+    position: absolute;
+    top: .5rem;
+    right: 0.8rem;
+    z-index: 2;
+    display: block;   
+    text-align: center;
+    /*pointer-events: none;*/
+    cursor: pointer;
+
+}
+
+.has-feedback {
+  position: relative;
+}
+
+
+.form-control-feedback2 {
+position: absolute;
+top: 0;
+right: 0;
+z-index: 2;
+display: block;
+width: 34px;
+height: 34px;
+line-height: 34px;
+text-align: center;
+/*pointer-events: none;*/
+cursor: pointer;
+}
 
 
 /*open wallet anime content */
@@ -2494,7 +2568,7 @@ position: relative;
 .footer-menu .footer-menu-icon-block.active {
 	position: relative;
 	top: -10px;
-	width: 60px;
+	width: 70px;
 	height: 60px;
 	transition: 0.3s;
 }
@@ -2510,6 +2584,11 @@ position: relative;
 	
 
 }
+.footer-menu .footer-menu-icon-block .footer-menu-text {
+  position: relative;
+  top: -4px;
+}
+
 .footer-menu .footer-menu-icon-block.active .footer-menu-text {
 	position: relative;
 	top: -4px;
@@ -2564,8 +2643,8 @@ align-items: center;
 .footer-menu .footer-menu-icon-block > button {
 display: inline-block;
 /*border: 1px solid #fefefe;*/
-padding: 1px 8px;
-min-width: 60px;
+padding: 1px 4px;
+min-width: 64px;
 /*border-radius: inherit;
 background-color: inherit;
 outline:  none;

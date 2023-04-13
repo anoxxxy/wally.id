@@ -4407,10 +4407,10 @@
   <!-- Footer Menu - Bottom Bar Menu -->
   <div class="footer-menu">
     <div class="footer-menu-icon-block">
-      <a href="javascript:void(0)" class="bottom__menu__wallet__button">
+      <a href="javascript:void(0)" >
         <div >
 
-          <i class="footer-menu-icon bi bi-wallet-fill"></i>
+          <img src="./assets/images/mobile-menu-wallet.svg" class="icon icon28">
           <span class="footer-menu-text">Wallet</span>
         </div>
       </a>
@@ -4431,9 +4431,9 @@
     </div>
 
     <div class="footer-menu-icon-block">
-      <a href="javascript:void(0)" class="bottom__menu__nav__button">
+      <a href="javascript:void(0)">
         <div >
-          <i class="footer-menu-icon bi bi-three-dots-vertical"></i>
+          <img src="./assets/images/mobile-menu-nav.svg" class="icon icon28">
           <span class="footer-menu-text">Menu</span>
         </div>
       </a>
@@ -4938,7 +4938,16 @@
       <div class="bootstrap-dialog-body">
 
         <div class="col-12 py-2 mb-3">
-          <input type="text" class="form-control search_asset" placeholder="Search Asset">
+
+
+          
+          <div class="has-feedback has-clear ">
+            <input type="text" class="form-control search_asset" id="search_asset__" placeholder="Search Asset">
+            <i class="form-control-clear bi bi-x-circle-fill form-control-feedback hidden"></i> 
+          </div>
+          
+
+
         </div>
 
         <div class="bootstrap-dialog-message">
@@ -5176,17 +5185,29 @@ $('body').on('click', '#modalChangeAsset .custom-table tbody tr', function(e){
 
 });
 
-$("#modalChangeAsset input.search_asset").on("keyup", function() {
+$("#modalChangeAsset input.search_asset").on("keyup input click", function() {
     
-
-    var value = $(this).val().toLowerCase();
-
-    console.log('search asset: ' + value);
+    
+    //filter table
+    var search_asset = $(this).val().toLowerCase();
 
     $("#modalChangeAsset table tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      $(this).toggle($(this).text().toLowerCase().indexOf(search_asset) > -1)
     });
   });
+
+
+//Input with clear icon
+$('.has-clear input[type="text"]').on('input propertychange', function() {
+  var $this = $(this);
+  var visible = Boolean($this.val());
+  $this.siblings('.form-control-clear').toggleClass('hidden', !visible);
+}).trigger('propertychange');
+
+$('.form-control-clear').click(function() {
+  $(this).siblings('input[type="text"]').val('').trigger('propertychange').focus();
+  $(this).prev().click(); //we need another click to clear the filter (search in table etc..)
+});
 
 
 

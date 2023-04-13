@@ -540,10 +540,10 @@
 
         //list assets in modal dialog
         assetListInModalDefault = (value.asset.slug == wally_fn.asset ? 'checked="checked"' : '')  //set as default 
-        assetListInModal += ('<tr data-asset="'+value.asset.slug+'">        <td>         <i class="icon">          <img class="icon icon32" src="./assets/images/crypto/'+(value.asset.name).toLowerCase()+'-'+(value.asset.symbol).toLowerCase()+'-logo.svg" />         </i>        </td>        <td>'+value.asset.symbol+' <small class="d-block text-muted">'+value.asset.name+'</small></td>        <td>          <input type="radio" name="set-asset-group" value="'+value.asset.slug+'" '+assetListInModalDefault+'/>        </td>       </tr>');
+        assetListInModal += ('<tr data-asset="'+value.asset.slug+'">        <td>         <i class="icon">          <img class="icon icon32" src="./assets/images/crypto/'+(value.asset.slug)+'-'+(value.asset.symbol).toLowerCase()+'-logo.svg" />         </i>        </td>        <td>'+value.asset.symbol+' <small class="d-block text-muted">'+value.asset.name+'</small></td>        <td>          <input type="radio" name="set-asset-group" value="'+value.asset.slug+'" '+assetListInModalDefault+'/>        </td>       </tr>');
 
         //footer page supported assets
-        supportedAssets += '<li class="mb-1"><a href="javascript:void(0)"><img src="./assets/images/crypto/'+(value.asset.name).toLowerCase()+'-'+(value.asset.symbol).toLowerCase()+'-logo.svg" class="icon tokens"> '+value.asset.name+'</a></li>';
+        supportedAssets += '<li class="mb-1"><a href="javascript:void(0)"><img src="./assets/images/crypto/'+(value.asset.slug)+'-'+(value.asset.symbol).toLowerCase()+'-logo.svg" class="icon tokens">'+value.asset.name+'</a></li>';
       }
 
       $('#about .donation_list').html('<div class="list-group">'+donationList+'</div>');
