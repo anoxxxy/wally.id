@@ -1598,7 +1598,13 @@ testar('3aa').then((data) => {
       },
     }
 
-  };
+  }
+
+  //assets are now sorted in the object
+  //https://stackoverflow.com/questions/5467129/sort-javascript-object-by-key
+  wally_fn.networks.mainnet = Object.fromEntries(Object.entries(wally_fn.networks.mainnet).sort());
+  wally_fn.networks.testnet = Object.fromEntries(Object.entries(wally_fn.networks.testnet).sort());
+
 /*
 https://testnet.qtum.info/
 https://testnet.qtum.org/

@@ -1755,8 +1755,15 @@ top: -28px;
     text-align: center;
     /*pointer-events: none;*/
     cursor: pointer;
-
 }
+.form-control-clear {
+	color: #9979bd;
+}
+
+.form-control-clear:hover {
+	color: #643a75;
+}
+
 
 .has-feedback {
   position: relative;
