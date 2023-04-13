@@ -2733,6 +2733,9 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 	        //this is for generating passwords on popover so we can bind the generated value to the password-input field of the page!
 	        var inputFor = $(e).attr( "data-input-for");
     			console.log('inputFor: '+ inputFor);
+    		if(inputFor !== undefined)
+    			if(inputFor.charAt(0) == '#')
+    				 inputFor = inputFor.substring(1);
 
     		$(data.target ).find('#pwdGenerate').attr('data-input-for', inputFor);
 
@@ -2783,7 +2786,11 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		    //targetEl.velocity('transition.' + open);
 		    
 	    }
-	  });
+	  }).on('show.bs.popover', function () {
+    		$("body").append("<div class='modal-backdrop fade show'></div>")
+		}).on('hide.bs.popover', function () {
+	    $(".modal-backdrop").remove();
+		});
 	  
   	/*
 	  $('button[data-toggle="popover"], a[data-toggle="popover"], div[data-toggle="popover"], span[data-toggle="popover"]').popover({

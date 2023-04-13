@@ -64,13 +64,15 @@
         //updated network and assets settings should always be shown as a message!
         options.showMessage = true;
 
-        //save copy of "asset" object, for data-binding purpose (UI) !
+        //dabi, save copy of "asset" object, for data-binding purpose (UI) !
         Object.assign(wally_fn.assetInfo, coinjs.asset);
 
         wally_fn.chainModel = coinjs.asset.chainModel;
 
-        
-        
+        console.log('#modalChangeAsset input[name="set-asset-group"][value="'+asset_var+'"]');
+
+        //update the selected asset in modal dialog for quick changing asset
+        document.querySelector('#modalChangeAsset input[name="set-asset-group"][value="'+asset_var+'"]').checked = true;
 
 
         //hide/show fields relative to updated Network
@@ -113,9 +115,9 @@
       //show message for changing network & asset
       if (options.showMessage) {
         modalMessage = '<div class="text-center text-primary mb-3"><p class="mb-2">You have updated Blockchain Network settings to:</p>' 
-          + newNetwork.asset.name + ' <strong>('+newNetwork.asset.symbol+' '+newNetwork.asset.network+')</strong> <div class="alert alert-light text-muted mb-2">If this is not correct, head over to <a href="#settings" data-pagescroll="page_tab">Settings</a> page. </div></div>';
+          + newNetwork.asset.name + ' <strong>('+newNetwork.asset.symbol+' '+newNetwork.asset.network+')</strong> </div>';
         modalMessage += '<img src="'+newNetwork.asset.icon+'" class="icon-center icon64 mb-2">'
-        modalMessage += '<div class="text-center text-muted">API Providers:<br> Unspent outputs: '+wally_fn.provider.utxo+'<br>Broadcast: '+wally_fn.provider.broadcast+'</div>';
+        modalMessage += '<div class="text-center text-muted">API Providers:<br> Unspent outputs: '+wally_fn.provider.utxo+'<br>Broadcast: '+wally_fn.provider.broadcast+'</div> <br> <div class="alert alert-light text-muted mb-2">If this is not correct, head over to <a href="#settings" data-pagescroll="page_tab">Settings</a> page. </div>';
 
         custom.showModal(modalTitle, modalMessage);
       }
@@ -207,6 +209,11 @@
         })
         .add(/(way-token)(.*)/, function(data) {
           console.log('**way-token page**');
+          //alert('converter page');
+          
+        })
+        .add(/(components)(.*)/, function(data) {
+          console.log('**components page**');
           //alert('converter page');
           
         })
@@ -321,10 +328,20 @@
       //set Host
       wally_fn.setHost();
 
+      //set binders
+      //***UI variable/object-bind (change to DOM)
+      //bind/change select coin icon
+      DaBi(".dabi-selectedAsset", wally_fn.assetInfo, "icon", "src");
+
+
+      //List supported assets, footer page, quick asset change in modal, donations list etc...
+      wally_kit.listAssets();
+
       //get pageURL Parameters
       await this.routerSettings();
-
       console.log('networkType: ', networkTypesRadio);
+
+      
 
       //set default Chain Network 
       if (coinjs.asset === undefined)
@@ -348,25 +365,27 @@
       throw('No Network Type! Set to Default!')
     }
 
-    //list donation addresses
-    var donationList = '';
-    for (var [key, value] of Object.entries(wally_fn.networks.mainnet)) {
-      console.log(key+':'+value.developer);
-      console.log(value.asset.icon)
-      donationList +=('<a class="list-group-item list-group-item-action" alt="Donate to us in '+value.asset.name+' ('+value.asset.symbol+')" href="'+key+':'+value.developer+'"><img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')</a>');
-    }
-
-    
-
-    $('#about .donation_list').html('<div class="list-group">'+donationList+'</div>');
-
-      //list donation addresses
+  
 
 
   } catch (e) {
       console.log('wally_kit.initNetwork ERROR: ', e)
   }
 }
+
+  /*
+  @ Quick Update Asset 
+  */
+
+  wally_kit.quickSetAsset = function (asset) {
+    //settings page
+    $('#settings .dropdown-select li[data-asset="'+asset+'"]').click();
+    $('#settingsBtn').click();
+
+    //bottom menu
+    document.querySelector('#modalChangeAsset input[name="set-asset-group"][value="'+asset+'"]').checked = true;
+
+  }
 
   /*
   @ show a list of Chains: Bitcoin, Litecoin, Bitbay etc..
@@ -503,6 +522,37 @@
       i++;
     }
 
+  }
+
+  wally_kit.listAssets = function() {
+        // List Assets
+      var donationList = '';
+      var assetListInModal = '';
+      var assetListInModalDefault = '';
+      var supportedAssets = '';
+
+      for (var [key, value] of Object.entries(wally_fn.networks.mainnet)) {
+        //console.log(key+':'+value.developer);
+        //console.log(value.asset.icon)
+
+        //list donation addresses
+        donationList +=('<a class="list-group-item list-group-item-action" alt="Donate to us in '+value.asset.name+' ('+value.asset.symbol+')" href="'+key+':'+value.developer+'"><img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')</a>');
+
+        //list assets in modal dialog
+        assetListInModalDefault = (value.asset.slug == wally_fn.asset ? 'checked="checked"' : '')  //set as default 
+        assetListInModal += ('<tr data-asset="'+value.asset.slug+'">        <td>         <i class="icon">          <img class="icon icon32" src="./assets/images/crypto/'+(value.asset.name).toLowerCase()+'-'+(value.asset.symbol).toLowerCase()+'-logo.svg" />         </i>        </td>        <td>'+value.asset.symbol+' <small class="d-block text-muted">'+value.asset.name+'</small></td>        <td>          <input type="radio" name="set-asset-group" value="'+value.asset.slug+'" '+assetListInModalDefault+'/>        </td>       </tr>');
+
+        //footer page supported assets
+        supportedAssets += '<li class="mb-1"><a href="javascript:void(0)"><img src="./assets/images/crypto/'+(value.asset.name).toLowerCase()+'-'+(value.asset.symbol).toLowerCase()+'-logo.svg" class="icon tokens"> '+value.asset.name+'</a></li>';
+      }
+
+      $('#about .donation_list').html('<div class="list-group">'+donationList+'</div>');
+      $('#modalChangeAsset table tbody').html(assetListInModal);
+
+      $('#footer_supported_assets').html(supportedAssets);
+      
+      
+      
   }
 
   /*
@@ -916,10 +966,8 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
   });
 
 
-//***UI variable/object-bind (change to DOM)
-  //bind/change select coin icon
-  DaBi("#selectedAsset", wally_fn.assetInfo, "icon", "src");
-  wally_fn.assetInfo.icon = './assets/images/providers_icon.svg'
+
+  //wally_fn.assetInfo.icon = './assets/images/providers_icon.svg';
   
 
 

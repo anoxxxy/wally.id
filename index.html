@@ -49,6 +49,7 @@
     <!-- DOMpurify plugin -->
     <script type="text/javascript" src="assets/js/dompurify/purify.js"></script>
     <script type="text/javascript" src="assets/js/dompurify/jpurify.js"></script>
+  
     
 
     <script type="text/javascript" src="./assets/js/velocity.min.js" ></script>
@@ -148,8 +149,8 @@
           </li>
           <li class="navSection secondary">
             <div class="btn-group dropdown">
-  <a class="rootLink item-choose-currency colorize stripe-button stripe-button-two dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-            <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32" id="selectedAsset">
+  <a class="rootLink  colorize stripe-button stripe-button-two dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+            <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32 dabi-selectedAsset">
             </a>
   <div class="dropdown-menu wallet-dropdown-menu dropdown-menu-right" onclick="event.stopPropagation()">
     
@@ -296,8 +297,8 @@
             <img src="./assets/images/purse_wallet.svg" class="icon24" alt="Open Wallet">
             </a>
         -->
-        <a class="rootLink item-choose-currency colorize stripe-button stripe-button-two" href="#github">
-            <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32">
+        <a class="rootLink  colorize stripe-button stripe-button-two" href="#github">
+            <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32 dabi-selectedAsset">
             </a>
             <a class="rootLink item-open-wallet colorize stripe-button stripe-button-two" href="#wallet" data-route="link" data-pagescroll="page_tab_iceee">
             <img src="./assets/images/purse_wallet.svg" class="icon24" alt="Open Wallet">
@@ -1900,8 +1901,8 @@
                   <div class="input-group hidden">
                     <input type="text" class="form-control mb-2" id="brainwallet">
                     <div class="input-group-append">
-                      <span class="input-group-text cursor-pointer generatePassword" data-input-for="brainwallet" data-toggle="popover" data-trigger="hover" data-placement="top"  data-content="We use Crypto Random and Fisher-Yates Shuffle Algorithm!">Generate</span>
-                      <span class="input-group-text cursor-pointer" data-input-for="brainwallet" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top" data-easein="slideUpBigIn" ><i class="bi bi-gear-fill"></i></span>
+                      <span class="input-group-text cursor-pointer generatePassword" data-input-for="#brainwallet" data-toggle="popover" data-trigger="hover" data-placement="top"  data-content="We use Crypto Random and Fisher-Yates Shuffle Algorithm!">Generate</span>
+                      <span class="input-group-text cursor-pointer" data-input-for="#brainwallet" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top" data-easein="slideUpBigIn" ><i class="bi bi-gear-fill"></i></span>
                     </div>
                   </div>
 
@@ -1981,8 +1982,8 @@
                   <div class="input-group hidden">
                     <input type="text" class="form-control mb-2" id="brainwalletSegWit">
                     <div class="input-group-append">
-                      <span class="input-group-text cursor-pointer generatePassword" data-input-for="brainwalletSegWit">Generate</span>
-                      <span class="input-group-text cursor-pointer" data-input-for="brainwalletSegWit" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top" data-easein="slideUpBigIn"><i class="bi bi-gear-fill"></i></span>
+                      <span class="input-group-text cursor-pointer generatePassword" data-input-for="#brainwalletSegWit">Generate</span>
+                      <span class="input-group-text cursor-pointer" data-input-for="#brainwalletSegWit" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top" data-easein="slideUpBigIn"><i class="bi bi-gear-fill"></i></span>
                     </div>
                   </div>
 
@@ -2208,8 +2209,8 @@
                   <div class="input-group hidden">
                     <input type="text" class="form-control mb-2" id="HDBrainwallet">
                     <div class="input-group-append">
-                      <span class="input-group-text cursor-pointer generatePassword" data-input-for="HDBrainwallet">Generate</span>
-                      <span class="input-group-text cursor-pointer" data-input-for="HDBrainwallet"  data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top" data-easein="slideUpBigIn"><i class="bi bi-gear-fill"></i></span>
+                      <span class="input-group-text cursor-pointer generatePassword" data-input-for="#HDBrainwallet">Generate</span>
+                      <span class="input-group-text cursor-pointer" data-input-for="#HDBrainwallet"  data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top" data-easein="slideUpBigIn"><i class="bi bi-gear-fill"></i></span>
                     </div>
                   </div>
 
@@ -3395,6 +3396,8 @@
                   By providing a secure and transparent way to manage crypto assets, Wally.id eliminates the need for centralized intermediaries, which can be vulnerable to hacks and data breaches. 
                   <br>With the rise of DeFi and the increasing popularity of cryptocurrencies, a powerful decentralized wallet is more important than ever, as it enables individuals to participate in the decentralized economy with confidence and control over their assets. 
                   <br>With its advanced security features, multi-currency support, and user-friendly design, Wally.id is the perfect choice for anyone looking to take control of their financial future in the decentralized world.
+                  <br><br>
+                  Individuals who travel to or reside in countries subject to sanctions may encounter restrictions accessing their funds. However, Wally.id offers a viable solution that overcomes these limitations through the utilization of diverse blockchain providers. This approach ensures users' consistent access to their funds, irrespective of their geographical location.
 
                 </p>
 
@@ -3870,7 +3873,7 @@
                                         you can also use these classes on <code>&lt;a&gt;</code> or <code>&lt;input&gt;</code> elements.
                                     </p>
                                     <div class="demo-inline-spacing">
-                                        <a class="btn btn-primary waves-effect waves-float waves-light" href="https://pixinvent.com/" role="button" target="_blank">Link</a>
+                                        <a class="btn btn-primary waves-effect waves-float waves-light" href="#" role="button" target="_blank">Link</a>
                                         <button class="btn btn-primary waves-effect waves-float waves-light" type="submit">Button</button>
                                         <i class="btn btn-primary waves-input-wrapper waves-effect waves-float waves-light" ><input class="waves-button-input" type="button" value="Input" ></i>
                                         <i class="btn btn-primary waves-input-wrapper waves-effect waves-float waves-light" ><input class="waves-button-input" type="submit" value="Submit"></i>
@@ -3984,7 +3987,7 @@
                       Asset
                     </div>
                     <div class="callout callout-no-border p-3 pb-3 pt-3 m-0 form-group  mb-3">
-                        <p class="text-muted"><small>Select Asset/Network for key pair generation.</small></p>
+                        <p class="text-muted"><small>Select Asset/Currency for key pair generation.</small></p>
                         <select class="form-control hidden" id="coinjs_network">
                         </select>
 
@@ -4244,7 +4247,7 @@
       </div>
     </div>
     <div id="footer" class="py-1 py-md-11 mb-6">
-      <div class="container">
+      <div class="container mb-6">
         <!-- client based -->
         <div class="row">
           <div class="col-12 mt-3 mb-3 py-3 ">
@@ -4346,9 +4349,9 @@
               Assets
             </h6>
             <!-- List -->
-            <ul class="list-unstyled text-muted mb-0">
+            <ul class="list-unstyled text-muted mb-0" id="footer_supported_assets">
               <li class="mb-1">
-                <a href="#!" >
+                <a href="javascript:void(0)" >
                 <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon tokens"> Bitcoin
                 </a>
               </li>
@@ -4401,10 +4404,11 @@
 
 
   <!-- Bottom Navigation Menu/Bar -->
+  <!-- Footer Menu - Bottom Bar Menu -->
   <div class="footer-menu">
     <div class="footer-menu-icon-block">
-      <a href="#wallet">
-        <div data-toggle="popover" data-trigger="hover" data-placement="top" title="Wallet" data-content="You are not logged in!">
+      <a href="javascript:void(0)" class="bottom__menu__wallet__button">
+        <div >
 
           <i class="footer-menu-icon bi bi-wallet-fill"></i>
           <span class="footer-menu-text">Wallet</span>
@@ -4412,68 +4416,154 @@
       </a>
     </div>
 
-    <div class="footer-menu-icon-block">
-      <a href="#walletSpendTab">
-        <div data-toggle="popover" data-trigger="hover" data-placement="top" title="Wallet" data-content="You are not logged in!">
-          <i class="footer-menu-icon bi bi-shuffle"></i>
-          <span class="footer-menu-text">Send</span>
+    
+
+    <div class="footer-menu-icon-block active">
+      <a href="javascript:void(0)">
+        <!-- <div data-toggle="popover" data-toggle="popover" data-html="true" data-target="#popSwitchAsset" data-placement="top" data-easein="slideUpBigIn"> -->
+          <div class="item-choose-currency" data-toggle="modal">
+          <!-- <i class="footer-menu-icon bi bi-box-arrow-in-down-left"></i>-->
+          <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon dabi-selectedAsset">
+          
+          <span class="footer-menu-text">Asset</span>
         </div>
       </a>
     </div>
 
     <div class="footer-menu-icon-block">
-      <a href="#walletKeysTab">
-        <div data-toggle="popover" data-trigger="hover" data-placement="top" title="Wallet" data-content="You are not logged in!">
-          <i class="footer-menu-icon bi bi-box-arrow-in-down-left"></i>
-          <span class="footer-menu-text">Receive</span>
+      <a href="javascript:void(0)" class="bottom__menu__nav__button">
+        <div >
+          <i class="footer-menu-icon bi bi-three-dots-vertical"></i>
+          <span class="footer-menu-text">Menu</span>
         </div>
       </a>
     </div>
 
-    <div class="footer-menu-icon-block ">
-        <a href="#" > 
-          <div>
-            <i class="footer-menu-icon bi bi-three-dots-vertical"></i>
-            <span class="footer-menu-text ">Menu</span>
-            
-<button class="menu__button">
-      Quick Menu
-    </button>
-    <section class="menu__body" hidden="hidden">
-      <div class="menu__header">
+
+    <!-- Bottom Menu - Wallet Content -->
+    <section class="bottom__menu__body bottom__menu_wallet__body" hidden="hidden">
+      <div class="bottom__menu__header">
         <label> 
           <div></div>
         </label>
-        <p>Quick Navigation</p>
-        <button title="Close">
-          <div></div>
-        </button>
+        <div class="text-center">Wallet</div>
+        <span title="Close" class="close">
+          <i class="bi bi-x-circle-fill"></i>
+        </span>
       </div>
-      <div class="menu__links"><a href="#0">About Us</a><a href="#0">Services</a><a href="#0">Pricing</a><a href="#0">Blog</a><a href="#0">Contact</a></div>
-      <div class="menu__contact"><a href="#0"> 
-          <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
-            <path d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"></path>
-          </svg><span>Call</span></a><a href="#0">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
-            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path>
-            <path d="M0 0h24v24H0z" fill="none"></path>
-          </svg><span>Email</span></a><a href="#0"> 
-          <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewbox="0 0 24 24" width="24">
-            <path d="M21.71 11.29l-9-9c-.39-.39-1.02-.39-1.41 0l-9 9c-.39.39-.39 1.02 0 1.41l9 9c.39.39 1.02.39 1.41 0l9-9c.39-.38.39-1.01 0-1.41zM14 14.5V12h-4v3H8v-4c0-.55.45-1 1-1h5V7.5l3.5 3.5-3.5 3.5z"></path>
-            <path d="M0 0h24v24H0z" fill="none"></path>
-          </svg><span>Directions</span></a></div>
+      <div class="bottom__menu__links">
+        
+
+        <div class="card-body profile-suggestion">
+                                        <h5 class="mb-2">Suggested Pages</h5>
+                                        <!-- user suggestions -->
+                                        <div class="d-flex justify-content-start align-items-center mb-1">
+                                            <div class="avatar me-1">
+                                                <img src="../../../app-assets/images/avatars/12-small.png" alt="avatar img" width="40" height="40">
+                                            </div>
+                                            <div class="profile-user-info">
+                                                <h6 class="mb-0">Peter Reed</h6>
+                                                <small class="text-muted">Company</small>
+                                            </div>
+                                            <div class="profile-star ms-auto"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star font-medium-3"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                                        </div>
+                                        <!-- user suggestions -->
+                                        <div class="d-flex justify-content-start align-items-center mb-1">
+                                            <div class="avatar me-1">
+                                                <img src="../../../app-assets/images/avatars/1-small.png" alt="avatar" width="40" height="40">
+                                            </div>
+                                            <div class="profile-user-info">
+                                                <h6 class="mb-0">Harriett Adkins</h6>
+                                                <small class="text-muted">Company</small>
+                                            </div>
+                                            <div class="profile-star ms-auto"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star font-medium-3"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                                        </div>
+                                        <!-- user suggestions -->
+                                        <div class="d-flex justify-content-start align-items-center mb-1">
+                                            <div class="avatar me-1">
+                                                <img src="../../../app-assets/images/avatars/10-small.png" alt="avatar" width="40" height="40">
+                                            </div>
+                                            <div class="profile-user-info">
+                                                <h6 class="mb-0">Juan Weaver</h6>
+                                                <small class="text-muted">Company</small>
+                                            </div>
+                                            <div class="profile-star ms-auto"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star font-medium-3"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                                        </div>
+                                        <!-- user suggestions -->
+                                        <div class="d-flex justify-content-start align-items-center mb-1">
+                                            <div class="avatar me-1">
+                                                <img src="../../../app-assets/images/avatars/3-small.png" alt="avatar img" width="40" height="40">
+                                            </div>
+                                            <div class="profile-user-info">
+                                                <h6 class="mb-0">Claudia Chandler</h6>
+                                                <small class="text-muted">Company</small>
+                                            </div>
+                                            <div class="profile-star ms-auto"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star font-medium-3"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                                        </div>
+                                        
+                                    </div>
+
+
+
+      </div>
+      
     </section>
-    <div class="menu__overlay" hidden="hidden"></div>
+
+
+    <!-- Bottom Menu - Navigation Content -->
+
+    <div class="bottom__menu__overlay" hidden="hidden"></div>
+
+    <!--
+    <div class="footer-menu-icon-block dropup dropup-modal">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          <div>
+            <i class="footer-menu-icon bi bi-three-dots-vertical"></i>
+            <span class="footer-menu-text">Menu</span>
           </div>
-
-
         </a>
-          
+          <ul class="dropdown-menu dropdown-menu-right dropdown-menu-navlist">
+            <li class="loginhide active wallet_options"><a href="#wallet" data-toggle="tab">Wallet</a></li>
+            <li class="logouthide">
+              <a href="#wallet" data-toggle="tab">Wallet
+                  <p class="text-left small walletAddress"></p>
+                  <p class="walletBalance"></p>
+                </a>
+            </li>
+            <li class="logouthide"><a href="#advanced" data-toggle="modal">Advanced</a></li>
+            <li class="divider-text"></li>
+            <li><a href="#network" data-toggle="tab">Network</a></li>
+            <li class="divider-text"></li>
+            <li class="hidden"><a href="#newAddress" data-toggle="tab">New Address</a></li>
+            <li><a href="#newTimeLocked" data-toggle="tab">Time Locked Address</a></li>
+            <li><a href="#newMultiSig" data-toggle="tab">MultiSig Address</a></li>
+            <li><a href="#newHDaddress" data-toggle="tab">HD Address</a></li>
+            <li><a href="#newMnemonicaddress" data-toggle="tab">Mnemonic Address</a></li>
+
+            <li class="divider-text"></li>
+            <li><a href="#verify" data-toggle="tab">Verify</a></li>
+            <li><a href="#newTransaction" data-toggle="tab">Transaction</a></li>
+            <li><a href="#sign" data-toggle="tab">Sign</a></li>
+            <li><a href="#broadcast" data-toggle="tab">Broadcast</a></li>
+            <li class="divider-text"></li>
+            <li><a href="#signMsg" data-toggle="tab">Sign Message</a></li>
+            <li><a href="#verifyMsg" data-toggle="tab">Verify Message</a></li> 
+            <li class="divider-text"></li>
+            <li><a href="#help" data-toggle="tab">Help - F.A.Q. </a></li>
+            <li class="divider-text logouthide"></li>
+            <li class="logouthide">
+              <a class="walletLogout" href="#wallet" role="button" data-destroy="true">Logout</a>
+            </li>
+          </ul>
+        
     </div>
+
+    !-->
 
           
   </div>
+
+
   <!-- ./ Bottom Navigation Menu/Bar -->
 
     <!-- wallet confirm send modal -->
@@ -4796,7 +4886,7 @@
       <div class="bootstrap-dialog-header">
         <div class="bootstrap-dialog-title"><i class="bi bi-exclamation-circle-fill"></i> Warning - Disclaimer</div>
         <div class="bootstrap-dialog-close-button">
-          <button class="close" aria-label="close">×</button>
+          <button class="close" aria-label="close" data-dismiss="modal">×</button>
         </div>
       </div>
     </div>
@@ -4833,77 +4923,46 @@
 
 <!-- choose currency wallet modal -->
 
-<div id="modalOpenWalletType" class="modal fade bootstrap-dialog" tabindex="-1" role="dialog">
-<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+<div id="modalChangeAsset" class="modal fade bootstrap-dialog" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-dialog-centered modal-dialog-end modal-dialog-scrollable">
   <div class="modal-content">
     <div class="modal-header">
       <div class="bootstrap-dialog-header">
-        <div class="bootstrap-dialog-title">Select Wallet Type</div>
+        <div class="bootstrap-dialog-title">Change Asset</div>
         <div class="bootstrap-dialog-close-button">
-          <button class="close" aria-label="close">×</button>
+          <button class="close" aria-label="close" data-dismiss="modal">×</button>
         </div>
       </div>
     </div>
     <div class="modal-body">
       <div class="bootstrap-dialog-body">
+
+        <div class="col-12 py-2 mb-3">
+          <input type="text" class="form-control search_asset" placeholder="Search Asset">
+        </div>
+
         <div class="bootstrap-dialog-message">
 
-        	<table class="table table-hover custom-table">
+
+
+<table class="table table-hover custom-table">
      <tbody>
-      <tr scope="row" data-wallet-type="regular_wallet" data-formwizard-step="1">
-       <td class="">
-        <i class="icon bay">
-         <img src='./assets/images/purse_wallet.svg' class="icon32">
+      <tr data-set-asset="BTC">
+       <td>
+        <i class="icon">
+         <img src="./icon.png" />
         </i>
        </td>
-       <td>Regular Wallet <small class="d-block text-muted">Login with E-mail & Password!</small></td>
+       <td>BTC <small class="d-block text-muted">Bitcoin</small></td>
        <td>
-        <label for="wallettype1">
-         <input type="radio" id="wallettype1" name="wallet_type_group" checked value="0" />
-        </label>
+         <input type="radio"  name="set-asset-group"  checked value="BTC" />
        </td>
       </tr>
-      <tr class="activea" data-wallet-type="multisig_wallet" data-formwizard-step="1">
-       <td>
-        <i class="icon bay">
-         <img src='./assets/images/keys.svg' class="icon32">
-        </i>
-       </td>
-       <td>Multisig Wallet <small class="d-block text-muted">2-of-2 Wallet Address</small></td>
-       <td>
-        <label for="wallettype2">
-         <input type="radio" id="wallettype2" name="wallet_type_group" value="1" />
-        </label>
-       </td>
-      </tr>
-      <tr data-wallet-type="private_key_wallet" data-formwizard-step="2">
-       <td>
-        <i class="icon bay">
-         <img src='./assets/images/wallet_paper.svg' class="icon32">
-        </i>
-       </td>
-       <td>Private Key <small class="d-block text-muted">Login with paper wallet!</small></td>
-       <td>
-        <label for="wallettype3">
-         <input type="radio" id="wallettype3" name="wallet_type_group" value="2" />
-        </label>
-       </td>
-      </tr>
-      <tr data-wallet-type="import_wallet" data-formwizard-step="3">
-       <td>
-        <i class="icon bay">
-         <img src='./assets/images/wallet_import2.svg' class="icon32">
-        </i>
-       </td>
-       <td>Import Wallet <small class="d-block text-muted">Login with your wallet backup!</small></td>
-       <td>
-        <label for="wallettype4">
-         <input type="radio" id="wallettype4" name="wallet_type_group" value="3" />
-        </label>
-       </td>
-      </tr>
+
      </tbody>
     </table>
+
+
 
 
         </div>
@@ -4960,7 +5019,7 @@
     </div>
 </div>
 
-<!-- -->
+<!-- Password Generator -->
 
 <div id="popPasswordSettings" class="popover hidden">
     <div class="arrow"></div>
@@ -4995,6 +5054,81 @@
     </div>
 </div>
 
+<!-- Bottom Menu - Wallet Content -->
+
+<!--
+iceee - remove me later
+<div id="popWalletOptions" class="popover hidden">
+    <div class="arrow"></div>
+    <div class="popover-header popover-title">
+      <button class="close" data-dismiss="popover">&times;</button>Wallet Options <small class="text-muted">....</small>
+    </div>
+    <div class="popover-body popover-content">
+        
+        <div class="">
+
+
+      
+      <div class="bottom__menu__links" style="padding: 10px 0 !important;">
+        <ul class="dropdown-menu-navlist">
+            
+            <li ><a href="#advanced" data-toggle="modal">Advanced</a></li>
+            <li class="divider-text"></li>
+            <li><a href="#network" data-toggle="tab">Network</a></li>
+            <li class="divider-text"></li>
+            <li class="hidden"><a href="#newAddress" data-toggle="tab">New Address</a></li>
+            <li><a href="#newTimeLocked" data-toggle="tab">Time Locked Address</a></li>
+            <li><a href="#newMultiSig" data-toggle="tab">MultiSig Address</a></li>
+            <li><a href="#newHDaddress" data-toggle="tab">HD Address</a></li>
+            <li><a href="#newMnemonicaddress" data-toggle="tab">Mnemonic Address</a></li>
+
+            <li class="divider-text"></li>
+            <li><a href="#verify" data-toggle="tab">Verify</a></li>
+            <li><a href="#newTransaction" data-toggle="tab">Transaction</a></li>
+            <li><a href="#sign" data-toggle="tab">Sign</a></li>
+            <li><a href="#broadcast" data-toggle="tab">Broadcast</a></li>
+            <li class="divider-text"></li>
+            <li><a href="#help" data-toggle="tab">Help - F.A.Q. </a></li>
+
+          </ul>
+
+
+      </div>
+      
+    
+        </div>
+
+    </div>
+    
+</div>
+
+-->
+
+<!-- Bottom Menu - Asset Content -->
+<div id="popSwitchAsset" class="popover hidden">
+    <div class="arrow"></div>
+    <div class="popover-header popover-title">
+      <button class="close" data-dismiss="popover">&times;</button>Choose Asset <small class="text-muted">....</small>
+    </div>
+    <div class="popover-body popover-content">
+        
+        <div class="">
+          popSwitchCurrency<br>
+          popSwitchCurrencypopSwitchCurrency<br>
+          popSwitchCurrencypopSwitchCurrency<br>
+          popSwitchCurrencypopSwitchCurrency<br>
+          popSwitchCurrencypopSwitchCurrency<br>
+          popSwitchCurrencypopSwitchCurrency<br>
+          popSwitchCurrencypopSwitchCurrency<br>
+          popSwitchCurrency
+          
+        </div>
+
+    </div>
+    <div class="popover-footer">
+        <input type="button" class="btn btn-block btn-sm btn-flat-primary" id="pwdGenerate" value="Generate">
+    </div>
+</div>
 
 <!-- -->
 
@@ -5005,26 +5139,80 @@
     <script>
 
 
-      const button = document.querySelector('.menu__button');
-const menu = document.querySelector('.menu__body');
-const close = document.querySelector('.menu__header button');
-const overlay = document.querySelector('.menu__overlay');
 
-function showMenu() {
-  button.setAttribute('hidden', '');
-  menu.removeAttribute('hidden');
-  overlay.removeAttribute('hidden');
-};
 
-function hideMenu() {
-  menu.setAttribute('hidden', '');
-  overlay.setAttribute('hidden', '');
-  button.removeAttribute('hidden');
-};
+$(".item-choose-currency").on( "click", function() {
+    $('#modalChangeAsset').modal('show'); 
+});
 
-button.addEventListener('click', showMenu);
-close.addEventListener('click', hideMenu);
-overlay.addEventListener('click', hideMenu);
+
+//Modal dialog handler for seting a new currency on bottom menu
+$('body').on('click', '#modalChangeAsset .custom-table tbody tr', function(e){
+
+  //update the asset-value to checked in modal dialog content
+  this.querySelector('input[name="set-asset-group"]').checked = true;
+
+  
+  //console.log('this: ', this);
+  //console.log('choosen coin:', this.dataset.setAsset);
+  //console.log('choosen coin:', this.attributes['data-set-asset'].nodeValue);
+
+  //console.log('$(e): ', $(e));
+  //console.log('e: ', e);
+  
+  var change_to_asset = $(this).attr( "data-asset");
+  console.log('**modalChangeAsset - set new asset:', change_to_asset);
+
+  
+  //var radioEl = this.querySelector('input[name="set-asset-group"]');
+
+  $('#modalChangeAsset').modal('hide'); 
+
+  //$("body").on("click", "#settings .dropdown-select li", function(e){data-asset="bitcoin"
+
+  //update settings
+  wally_kit.quickSetAsset(change_to_asset);
+    
+
+});
+
+$("#modalChangeAsset input.search_asset").on("keyup", function() {
+    
+
+    var value = $(this).val().toLowerCase();
+
+    console.log('search asset: ' + value);
+
+    $("#modalChangeAsset table tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+
+
+
+/*
+$("#modalChangeAsset .custom-table tbody tr").on('click', function(e) {
+  
+  this.querySelector('input[name="set-asset-group"]').checked = true;
+
+  
+  //console.log('this: ', this);
+  //console.log('choosen coin:', this.dataset.setAsset);
+  //console.log('choosen coin:', this.attributes['data-set-asset'].nodeValue);
+
+  //console.log('$(e): ', $(e));
+  //console.log('e: ', e);
+  
+  var set_asset = $(this).attr( "data-set-asset");
+  console.log('set new asset:', set_asset);
+
+  //update the asset-value to checked in modal dialog content
+  var radioEl = this.querySelector('input[name="set-asset-group"]');
+
+});
+*/
+
+
 
 
  /*
@@ -5082,8 +5270,8 @@ overlay.addEventListener('click', hideMenu);
 */
 /*
             document.querySelector('.item-choose-currency').addEventListener('click', function() {
-  				$('#modalOpenWalletType').modal('show')    
-  				//document.getElementById('modalOpenWalletType').modal('show')
+  				$('#modalChangeAsset').modal('show')    
+  				//document.getElementById('modalChangeAsset').modal('show')
 			});
 			*/
 

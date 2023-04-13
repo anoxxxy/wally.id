@@ -1020,7 +1020,7 @@ testar('3aa').then((data) => {
           slug: 'bitbay',
           symbol: 'BAY',
           symbols: ['bay', 'bitbay'],
-          icon: './assets/images/crypto/bitbay-bay-logo-purple.svg',
+          icon: './assets/images/crypto/bitbay-bay-logo.svg',
           network: 'mainnet',
           supports_address : ['compressed', 'uncompressed'],
           api : {

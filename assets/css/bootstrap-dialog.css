@@ -171,6 +171,15 @@ border: 0px solid #dfe3ea ;
   display: contents; }
 
 
+.modal .modal-dialog-end {
+  display: flex;
+  min-height: calc(100% - 1rem);
+
+  justify-content: flex-end;
+  bottom: 50px;
+
+}
+
 /*
 .modal-dialog-centered {
   display: flex !important;
