@@ -5358,6 +5358,16 @@ menuSubs.forEach(el => {
   el.addEventListener('mouseenter', () => stopCloseTimeout(), false);
   el.addEventListener('mouseleave', () => startCloseTimeout(), false);
 
+  el.querySelectorAll("a").forEach(link =>
+    link.addEventListener("click", () => startCloseTimeout(0))
+  );
+  /*
+  el.querySelector('a').addEventListener('click', function() {
+    console.log('===============clicked link')
+    startCloseTimeout(0);
+  });
+  */
+
 });
 
 
