@@ -1847,6 +1847,7 @@ left: 0;
 right: 0;
 margin: 0 auto;
 opacity: 0;
+padding-left: 0;
 
 }
  
@@ -2025,6 +2026,10 @@ width: 96%;
   /*left: 80px;*/
   position: absolute;
   right: 0;
+}
+
+ ul.folder-content {
+  list-style: none;
 }
 
 .folder-content > li.folder-item a{
@@ -2379,7 +2384,7 @@ border: 1px solid red;
 /*popover */
 
 .popover-header {
-	padding: 8px 14px;
+	padding: 10px 15px;
 	margin: 0;
 	font-size: 14px;
 	font-weight: 600;
@@ -2390,8 +2395,11 @@ border: 1px solid red;
 	border-top-right-radius:  10px;
   border-top-left-radius:  10px;
 }
+.popover-body {
+  padding: 10px 15px;
+}
 .popover-footer {
-  padding: 8px 14px;
+  padding: 10px 15px;
   margin: 0;
   font-size: 14px;
   font-weight: 500;
@@ -2415,6 +2423,20 @@ border: 1px solid red;
   animation-duration: 1s;
   animation-name: bounceInDown;
   */
+}
+
+.close {
+  color: #6772e5;
+}
+ 
+
+.close:hover {
+  color: #32325d;
+}
+
+.close {
+  opacity: 0.75;
+  transition: all 0.3s ease;
 }
 
 /*responsive table, tabs, laptops and up*/
@@ -2669,7 +2691,7 @@ outline:  none;
 
 
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 768px) {
   .footer-menu {
     visibility: visible;
   }

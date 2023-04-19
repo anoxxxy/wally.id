@@ -28,8 +28,13 @@
     <link rel="stylesheet" href="./assets/css/icons/bootstrap-icons_v1.83.css">
     <link rel="stylesheet" href="./assets/css/datetime-flatpickr.min.css">
     <link rel="stylesheet" href="./assets/css/waves.css" media="screen">
-    <link rel="stylesheet" href="./assets/css/menu.css" media="screen">
+    
+    <link rel="stylesheet" href="./assets/css/wmenu.css" media="screen">
     <link rel="stylesheet" href="./assets/css/animate.min.css" media="screen">
+
+    <link rel="stylesheet" href="./assets/css/panel-menu/zeynep.css" media="screen">
+
+
     <link rel="stylesheet" href="./assets/css/style.css" media="screen">
     <link rel="stylesheet" href="./assets/css/custom.css" media="screen">
     
@@ -48,6 +53,9 @@
     <!-- Boostrap / JQuery / JS -->
     <script type="text/javascript" src="./assets/js/jquery-3.6.1.min.js" ></script>
     
+    <!-- Panel-Menu -->
+    <script type="text/javascript" src="./assets/js/panel-menu/zeynep.js" ></script>
+
     <!-- DOMpurify plugin -->
     <script type="text/javascript" src="assets/js/dompurify/purify.js"></script>
     <script type="text/javascript" src="assets/js/dompurify/jpurify.js"></script>
@@ -57,7 +65,6 @@
     <script type="text/javascript" src="./assets/js/velocity.min.js" ></script>
     <script type="text/javascript" src="./assets/js/velocity.ui.min.js" ></script>
 
-    <script type="text/javascript" src="./assets/js/menu.js" ></script>
     
     <!-- 
       bootstrap 4 coinbin
@@ -124,492 +131,215 @@
         </g>
       </svg>
     </div>
-    <header class="globalNav noDropdownTransition">
-      <div class="container-lg">
-        <ul class="navRoot">
-          <li class="navSection logo ">
-            <a id="homeBtn" href="#home" class="rootLink item-home colorize" alt="Wally logotype homepage">
-            <img src="./assets/images/logo/favicon.svg" class="logotype-white icon32" alt="Wally logotype">
-            </a>
-          </li>
-          <li class="navSection primary">
-            <a class="rootLink item-products hasDropdown colorize" data-dropdown="products">
-            Wallets
-            </a>
-            <a class="rootLink item-developers hasDropdown colorize" data-dropdown="developers">
-            Features
-            </a>
-            <a class="rootLink item-company hasDropdown colorize" data-dropdown="company">
-            Advanced
-            </a>
-            <a class="rootLink item-donations hasDropdown colorize stripe-button stripe-button-two" data-dropdown="donations">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon heart-fill" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
-              </svg>
-            </a>
-          </li>
-          <li class="navSection secondary">
-            <div class="btn-group dropdown">
-  <a class="rootLink  colorize stripe-button stripe-button-two dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-            <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32 dabi-selectedAsset">
-            </a>
-  <div class="dropdown-menu wallet-dropdown-menu dropdown-menu-right" onclick="event.stopPropagation()">
+    <header class="main-header">
+  
+  <div class="container">
+  <ul class="container menu">
+    <li class="menu__item nav_logo ">
+      <a id="homeBtn" href="#home" class=" item-home colorize" alt="Wally logotype homepage">
+      <img src="./assets/images/logo/wally_logo_new.svg" class="logotype-white icon32"  alt="Wally logotype">
+      </a>
+    </li>
+
+    <li class="menu__item">
+      <a class="colorize dropdown-menu-icon " href="#wallet"  alt="Open Wallet">
+        <img src="./assets/images/purse_wallet.svg" class="icon24" alt="Open Wallet"> Wallet
+      </a>
+    </li>
     
-    	<div class="dropdown-header border-bottom mb-4">
 
-    	
-    		<div class="dropdown-card-header">
-	          <h3 class="dropdown-card-title">
-	            Wallet <small>Assets and Balances</small> <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="coin-icon icon32">
-	          </h3>
-	        </div>
-   
-    	</div>
+    
+    
 
-    	<div class="row no-gutters mb-1">
-		<div class="col-12">
-			<div class="row no-gutters">
-				<div class="col-12 d-inline-block text-truncate">
-					<div class="row no-gutters ">
-						<div class="col-12 text-muted">
-							Public Key (Hash 160)
-						</div>
-					</div>
-					<div class="row no-gutters">
-						<div class="col-12">
-							 <a href="#" alt="Public Key: 91b24bf9f5288532960ac687abb035127b1d28a5">
-							 	91b24bf9f5288532960ac687abb035127b1d28a5
-							 </a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-    <div class="">
-    	<div class="text-center text-muted">---</div>
-	    
-
-    	<div class="col-12 hidden">
-	    	<div class="row no-gutters">
-	    		<div class="col-6">
-	    			1
-	    		</div>
-	    		<div class="col-6">
-	    			2
-	    		</div>
-	    	</div>
-	    	<div class="row no-gutters">
-	    		<div class="col-6">
-	    			3
-	    		</div>
-	    		<div class="col-6">
-	    			4
-	    		</div>
-	    	</div>
-    	</div>
-
-    	<!-- -->
-    	<div>
-
-	    <div class="d-flex justify-content-between flex-wrap custom-options-checkable">
-          <div class="d-block p-relative">
-          	<span class="coin-icon"><img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32"></span>
-            <input class="custom-option-item-check" type="radio" name="customOptionsCheckableRadios" id="openWalletRadio1" checked="" value="btc" checked>
-
-            <label class="custom-option-item" for="openWalletRadio1">
-              <span class="d-block">
-                <span class="coin-title btc">Bitcoin</span>
-                
-              </span>
-              <small class="coin-balance d-block">Balance: 0.00</small>
-            </label>
-          </div>
-
-          <div class="d-block p-relative">
-            <span class="coin-icon"><img src="./assets/images/crypto/bitcoin-cash-bch-logo.svg" class="icon32"></span>
-            <input class="custom-option-item-check" type="radio" name="customOptionsCheckableRadios" id="openWalletRadio2" value="bch">
-            
-            <label class="custom-option-item" for="openWalletRadio2">
-              <span class="d-block">
-                <span class="coin-title bch">Bitcoin Cash</span>
-              </span>
-              <small class="coin-balance d-block">Balance: 0.00</small>
-            </label>
-          </div>
-          
-        </div>
-        
-        <div class="d-flex justify-content-between flex-wrap  custom-options-checkable">
-          <div class="d-block p-relative">
-            <span class="coin-icon"><img src="./assets/images/crypto/litecoin-ltc-logo.svg" class="icon32"></span>
-            <input class="custom-option-item-check" type="radio" name="customOptionsCheckableRadios" id="openWalletRadio3" value="ltc" >
-            <label class="custom-option-item" for="openWalletRadio3">
-              <span class="d-block">
-                <span class="coin-title ltc">Litecoin</span>
-                
-              </span>
-              <small class="coin-balance d-block">Balance: 0.00</small>
-            </label>
-            
-          </div>
-
-          <div class="d-block p-relative">
-            <span class="coin-icon"><img src="./assets/images/crypto/dogecoin-doge-logo.svg" class="icon32"></span>
-            <input class="custom-option-item-check" type="radio" name="customOptionsCheckableRadios" id="openWalletRadio4" value="doge">
-            <label class="custom-option-item" for="openWalletRadio4">
-              <span class="d-block">
-                <span class="coin-title doge">Dogecoin</span>
-                
-              </span>
-              <small class="coin-balance d-block">Balance: 0.00</small>
-            </label>
-          </div>
-
-      </div>
-    	</div>
-    </div>
-
-		
-    <div class="dropdown-card-footer mt-3">
-    	<div class="text-center mb-3">
-			<button type="button" disabled="" class="btn btn-sm btn-flat-secondary btn-block">Total value: $28312.4</button>
-		</div>
-
-    	<a href="#" class="btn btn-sm btn-block  btn-flat-secondary">
-    		<img src="./assets/images/key2.svg" class="icon24" alt="Wallet Keys"> Wallet Keys
-    	</a>
-    </div>
-  </div>
+    <li class="menu__item" data-dropdown-menu="developer"><a href="#" class="colorize">Advanced</a></li>
+    <li class="menu__item" data-dropdown-menu="help"><a href="#" class="colorize">Help</a></li>
+    
+    <li class="menu__item show_mobile nav_right">
+      <a class=" colorize dropdown-menu-icon choose-currency-modal dropdown-toggle" data-modal-position="top" data-toggle="modal" href="#" alt="Selected Asset">
+        <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32 dabi-selectedAsset">
+      </a>
+    </li>
+    <li class="menu__item show_mobile nav_right" >
+      <a class="colorize dropdown-menu-icon " href="#settings" alt="Settings">
+        <img src="./assets/images/settings-2.svg" class="icon24" >
+      </a>
+    </li>
+    
+  </ul>
 </div>
-            <a class="rootLink item-open-wallet colorize stripe-button stripe-button-two" href="#wallet" data-route="link" data-pagescroll="page_tab_iceee">
-            <img src="./assets/images/purse_wallet.svg" class="icon24" alt="Open Wallet"> Open Wallet
-            </a>
-          </li>
-          
 
-          <li class="navSection mobile">
-          <!--	<a class="rootLink item-choose-currency colorize stripe-button stripe-button-two" href="#github">
-            <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32">
-            </a>
-            <a class="rootLink item-dashboard colorize stripe-button stripe-button-two" href="#wallet" data-route="link" data-pagescroll="page_tab_iceee">
-            <img src="./assets/images/purse_wallet.svg" class="icon24" alt="Open Wallet">
-            </a>
-        -->
-        <a class="rootLink  colorize stripe-button stripe-button-two" href="#github">
-            <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32 dabi-selectedAsset">
-            </a>
-            <a class="rootLink item-open-wallet colorize stripe-button stripe-button-two" href="#wallet" data-route="link" data-pagescroll="page_tab_iceee">
-            <img src="./assets/images/purse_wallet.svg" class="icon24" alt="Open Wallet">
-            </a>
+  <div class="dropdown-holder">
+    <div class="dropdown__arrow"></div>
+    <div class="dropdown__bg">
+      <div class="dropdown__bg-bottom"></div>
+    </div>
+    <div class="dropdown__wrap">
+      <!--
+      <div class="wdropdown-menu" data-dropdown-menu="portfolio">
+        <div class="dropdown-menu__content">
+          <a class="dropdown-close-button">Close</a>
+          <div class="top-section">
 
-
-            <a class="rootLink item-mobileMenu colorize" id="mobile-menu-icon">
-              <h2>Menu</h2>
-            </a>
-            <div class="popup">
-              <div class="popupContainer">
-                <a class="popupCloseButton">Close</a>
-                <div class="mobileProducts">
-                  <h4>Wallets</h4>
-                  <div class="mobileProductsList">
-                    <ul>
-                      <li><a class="linkContainer item-payments" href="#btc">
-                        <img src="./assets/images/crypto/bitcoin-btc-logo.svg">
-                        Bitcoin
-                        </a>
-                      </li>
-                      <li><a class="linkContainer item-connect" href="#ltc">
-                        <img src="./assets/images/crypto/litecoin-ltc-logo.svg">
-                        Litecoin
-                        </a>
-                      </li>
-                    </ul>
-                    <ul>
-                      <li><a class="linkContainer item-subscriptions" href="bch">
-                        <img src="./assets/images/crypto/bitcoin-cash-bch-logo.svg">
-                        Bitcoin Cash
-                        </a>
-                      </li>
-                      <li><a class="linkContainer item-relay" href="#doge">
-                        <img src="./assets/images/crypto/dogecoin-doge-logo.svg">
-                        Dogecoin
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="mobileSecondaryNav">
-                  <ul>
-                    <li>
-                      <a class="item-pricing" href="#" data-analytics-action="pricing" data-action-source="mobile-nav">
-                      Pricing
-                      </a>
-                    </li>
-                    <li><a class="item-advanced" href="#advanced"><strike>Advanced</strike></a></li>
-                    <li><a class="item-gallery" href="#">Customers</a></li>
-                    <li><a class="item-documentation" href="#">Documentation</a></li>
-                  </ul>
-                  <ul>
-                    <li><a class="item-help popupCloseLink" href="#help" data-route="link" data-pagescroll="page_tab_iceee">Help</a></li>
-                    <li><a class="item-settings popupCloseLink" href="#settings" data-route="link" data-pagescroll="page_tab_iceee">Settings</a></li>
-                    <li><a class="item-about popupCloseLink" href="#about" data-route="link" data-pagescroll="page_tab_iceee">About Wally</a></li>
-                  </ul>
-                </div>
-                <a class="mobileSignIn " href="#wallet" data-route="link" data-pagescroll="page_tab_iceee">Sign in</a>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div class="dropdownRoot">
-        <div class="dropdownBackground" style="transform: translateX(452px) scaleX(0.707692) scaleY(1.1075);">
-          <div class="alternateBackground" style="transform: translateY(255.53px);"></div>
-        </div>
-        <div class="dropdownArrow" style="transform: translateX(636px) rotate(45deg);"></div>
-        <div class="dropdownContainer" style="transform: translateX(452px); width: 368px; height: 443px;">
-          <div class="dropdownSection left" data-dropdown="products">
-            <div class="dropdownContent">
+            <div class="col-2">
               <div class="linkGroup">
                 <ul class="productsGroup">
                   <li>
-                    <a class="linkContainer item-payments" href="#btc">
-                      <img src="./assets/images/crypto/bitcoin-btc-logo.svg">
+                    <a class="linkContainer item-payments" href="#wallet/login=regular_wallet">
+                      <img src="./assets/images/purse_wallet.svg" class="icon icon40">
                       <div class="productLinkContent">
-                        <h3 class="linkTitle">Bitcoin</h3>
-                        <p class="linkSub">A complete commerce toolkit, built for&nbsp;developers.</p>
+                        <h3 class="linkTitle">Regular Wallet </h3>
+                        <p class="linkSub">Login with e-mail and password.</p>
                       </div>
                     </a>
                   </li>
                   <li>
-                    <a class="linkContainer item-subscriptions" href="#">
-                      <img src="./assets/images/crypto/bitcoin-cash-bch-logo.svg">
+                    <a class="linkContainer item-subscriptions" href="#wallet/login=multisig_wallet">
+                      <img src="./assets/images/keys.svg" class="icon icon40 ">
                       <div class="productLinkContent">
-                        <h3 class="linkTitle">Bitcoin Cash</h3>
-                        <p class="linkSub">The smart engine for recurring&nbsp;payments.</p>
+                        <h3 class="linkTitle">Multisig Wallet</h3>
+                        <p class="linkSub">2-of-2 multisignature wallet address.</p>
                       </div>
                     </a>
                   </li>
                   <li>
-                    <a class="linkContainer item-connect" href="#">
-                      <img src="./assets/images/crypto/litecoin-ltc-logo.svg">
+                    <a class="linkContainer item-connect" href="#wallet/login=private_key_wallet">
+                      <img src="./assets/images/wallet_paper.svg" class="icon icon40 ">
                       <div class="productLinkContent">
-                        <h3 class="linkTitle">Litecoin</h3>
-                        <p class="linkSub">Everything platforms need to get sellers&nbsp;paid.</p>
+                        <h3 class="linkTitle">Private Key</h3>
+                        <p class="linkSub">Login with paperwallet.</p>
                       </div>
                     </a>
                   </li>
                   <li>
-                    <a class="linkContainer item-relay" href="#">
-                      <img src="./assets/images/crypto/dogecoin-doge-logo.svg">
+                    <a class="linkContainer item-relay" href="#wallet/login=import_wallet">
+                      <img src="./assets/images/wallet_import2.svg" class="icon icon40">
                       <div class="productLinkContent">
-                        <h3 class="linkTitle">Dogecoin</h3>
-                        <p class="linkSub">Sell your products in other mobile&nbsp;apps.</p>
+                        <h3 class="linkTitle">Import Wallet</h3>
+                        <p class="linkSub">Login with your wallet backup.</p>
                       </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <ul class="linkGroup linkList prodsubGroup">
-                <li>
-                  <a class="linkContainer item-pricing" href="#" data-analytics-action="pricing" data-action-source="nav">
-                    <h3 class="linkTitle linkIcon">
-                      <svg width="17" height="17">
-                        <path fill="#6772E5" class="hover-fillDark" d="M15.998 6.98c0 .24-.083.458-.217.635a1.373 1.373 0 0 1-.187.24l-7.736 7.742c-.534.534-1.4.534-1.934 0L1.41 11.08a1.37 1.37 0 0 1 0-1.935l7.736-7.743c.15-.15.33-.255.52-.32a.918.918 0 0 1 .16-.048c.136-.03.275-.034.412-.02l4.192.002c.867 0 1.57.665 1.57 1.486l-.002 4.48zm-2.366-3.62a1.254 1.254 0 0 0-1.772 1.77 1.254 1.254 0 0 0 1.772-1.77z"></path>
-                        <path fill="#87BBFD" class="hover-fillLight" d="M5.143 10.396l3.253-3.254c.2-.2.523-.2.722 0l.723.723c.2.2.2.524.003.723L6.59 11.842c-.2.2-.524.2-.724 0l-.723-.724a.51.51 0 0 1 0-.723z"></path>
-                      </svg>
-                      Pricing
-                    </h3>
-                  </a>
-                </li>
-                <li>
-                  <a class="linkContainer item-workswith" href="#">
-                    <h3 class="linkTitle linkIcon">
-                      <svg width="17" height="17">
-                        <path class="hover-fillLight" fill="#87BBFD" d="M15.998 12.495a1.03 1.03 0 0 1-.595.908L8.93 16.395a1.018 1.018 0 0 1-.86 0l-6.473-2.992a1.03 1.03 0 0 1-.594-.908V4.51c.006-.2.07-.39.18-.55L8.5 7.338l7.32-3.38c.108.16.172.35.178.55v7.984z"></path>
-                        <path class="hover-fillDark" fill="#6772E5" d="M15.998 12.495a1.03 1.03 0 0 1-.595.908L8.93 16.395a1.026 1.026 0 0 1-.43.095V7.34l7.32-3.38c.11.16.173.35.18.55v7.984z"></path>
-                        <path class="hover-fillLight" fill="#87BBFD" d="M8.5 5C6.567 5 5 4.228 5 3.275v-1.15h.098c.36.768 1.742 1.34 3.402 1.34 1.66.002 3.043-.572 3.402-1.34H12v1.15C12 4.228 10.433 5 8.5 5z"></path>
-                      </svg>
-                      Works with Wally
-                    </h3>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="dropdownSection active" data-dropdown="developers">
-            <div class="dropdownContent">
-              <div class="linkGroup documentationGroup">
-                <a class="linkContainer withIcon item-documentation" href="#">
-                  <h3 class="linkTitle linkIcon">
-                    <svg width="17" height="17">
-                      <path fill="#87BBFD" class="hover-fillLight" d="M.945 1.998h3.632C6.744 1.998 8.5 3.005 8.5 4.83v11.583c-.512 0-1.015-.337-1.33-.59-1.03-.828-3.057-.828-5.222-.828H.945A.944.944 0 0 1 0 14.052V2.944C0 2.422.423 2 .945 2z"></path>
-                      <path fill="#6772E5" class="hover-fillDark" d="M16.055 1.998h-3.632C10.257 1.998 8.5 3.005 8.5 4.83v11.583c.512 0 1.015-.337 1.33-.59 1.03-.828 3.057-.828 5.222-.828h1.003A.944.944 0 0 0 17 14.05V2.945A.944.944 0 0 0 16.055 2z"></path>
-                    </svg>
-                    Documentation
-                  </h3>
-                  <span class="linkSub">Use your own self-custodial wallet: Wally.id!</span>
-                </a>
-                <div class="documentationArticles">
-                  <ul>
-                    <li>
-                      <h4>Get started</h4>
-                    </li>
-                    <li><a href="#">Wally.id</a></li>
-                    <li><a href="#">Checkout</a></li>
-                    <li><a href="#">Mobile apps</a></li>
-                    <li><a href="#">Libraries</a></li>
-                  </ul>
-                  <ul>
-                    <li>
-                      <h4>Popular topics</h4>
-                    </li>
-                    <li><a href="#">Apple Pay</a></li>
-                    <li><a href="#">Testing</a></li>
-                    <li><a href="#">Launch checklist</a></li>
-                    <li><a href="#">Plug-ins</a></li>
-                  </ul>
-                </div>
-              </div>
-              <ul class="linkGroup linkList developersGroup">
-                <li>
-                  <a class="linkContainer item-apiReference" href="#">
-                    <h3 class="linkTitle linkIcon">
-                      <svg width="17" height="17">
-                        <path d="M2 15h13M2 11h13M2 7h13M2 3h13" fill="none" stroke="#6772e5" class="hover-strokeDark" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                      </svg>
-                      Full API Reference
-                    </h3>
-                  </a>
-                </li>
-                <li>
-                  <a class="linkContainer item-apiStatus" href="#">
-                    <h3 class="linkTitle linkIcon">
-                      <svg width="17" height="17">
-                        <path d="M1 9h2.95l3-6.5 3 12 3-5.45L16 9" fill="none" stroke="#6772e5" class="hover-strokeDark" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                      </svg>
-                      API Status
-                    </h3>
-                  </a>
-                </li>
-                <li>
-                  <a class="linkContainer item-openSource" href="#">
-                    <h3 class="linkTitle linkIcon">
-                      <svg width="17" height="17">
-                        <path fill="#6772E5" class="hover-fillDark" d="M8.5 17a8.5 8.5 0 1 1 0-17 8.5 8.5 0 0 1 0 17zM6.987 6.078a.684.684 0 0 0-.968-.968L3.116 8.012a.684.684 0 0 0 0 .967l2.9 2.9a.684.684 0 0 0 .97-.967l-2.42-2.418 2.42-2.42zm6.996 1.95L11.08 5.123a.684.684 0 0 0-.966.968l2.418 2.42-2.418 2.417a.684.684 0 0 0 .967.967l2.904-2.902a.684.684 0 0 0 0-.966z"></path>
-                      </svg>
-                      Open Source
-                    </h3>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="dropdownSection right" data-dropdown="company">
-            <div class="dropdownContent">
-              <ul class="linkGroup linkList companyGroup">
-                <li>
-                  <a class="linkContainer item-about" href="#">
-                    <h3 class="linkTitle linkIcon">
-                      <svg width="17" height="17">
-                        <path fill="#6772E5" class="hover-fillDark" d="M8.5 17a8.5 8.5 0 1 1 0-17 8.5 8.5 0 0 1 0 17zm.178-10.89c.76 0 1.726.278 2.486.69V4.443c-.828-.33-1.656-.502-2.484-.502-2.028 0-3.41 1.06-3.41 2.83 0 2.77 3.8 2.32 3.8 3.513 0 .462-.37.612-.93.612-.827 0-1.867-.366-2.706-.823v2.388c.93.4 1.843.592 2.705.592 2.077 0 3.48-1.027 3.48-2.827 0-2.98-3.82-2.447-3.82-3.572-.003-.39.352-.542.877-.542z"></path>
-                      </svg>
-                      About Wally.id
-                    </h3>
-                  </a>
-                </li>
-                <li>
-                  <a class="linkContainer item-customers" href="#">
-                    <h3 class="linkTitle linkIcon">
-                      <svg width="17" height="17">
-                        <path fill="#87BBFD" class="hover-fillLight" d="M2 16a1 1 0 0 1-1-1V9a4 4 0 0 1 8 0v7H2zm3-9a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"></path>
-                        <path fill="#6772E5" class="hover-fillDark" d="M15 16H9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h.55a2.5 2.5 0 0 1 4.9 0H15a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1z"></path>
-                        <path fill="#87BBFD" class="hover-fillLight" d="M11 12h2v4h-2v-4z"></path>
-                      </svg>
-                      Customers
-                    </h3>
-                  </a>
-                </li>
-                <li>
-                  <a class="linkContainer item-jobs" href="#">
-                    <h3 class="linkTitle linkIcon">
-                      <svg width="17" height="17">
-                        <path fill="#6772E5" class="hover-fillDark" d="M1.5 4h14c.828 0 1.5.67 1.5 1.5v8a1.5 1.5 0 0 1-1.5 1.5h-14A1.5 1.5 0 0 1 0 13.5v-8C0 4.67.67 4 1.5 4z"></path>
-                        <path fill="#87BBFD" class="hover-fillLight" d="M13 15V4h2v11h-2zM2 4h2v11H2V4z"></path>
-                        <path fill="#6772E5" class="hover-fillDark" d="M11.5 3.5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1V4H4v-.5A2.5 2.5 0 0 1 6.5 1h4A2.5 2.5 0 0 1 13 3.5V4h-1.5v-.5z"></path>
-                      </svg>
-                      Jobs
-                    </h3>
-                  </a>
-                </li>
-              </ul>
-              <div class="linkGroup blogGroup">
-                <a class="linkContainer withIcon item-blog" href="#">
-                  <h3 class="linkTitle linkIcon">
-                    <svg width="17" height="17">
-                      <path fill="#87BBFD" class="hover-fillLight" d="M1 4h4.5v11H1.75A1.75 1.75 0 0 1 0 13.25V5a1 1 0 0 1 1-1z"></path>
-                      <path fill="#6772E5" class="hover-fillDark" d="M14 15H2v-.025a2.243 2.243 0 0 0 2-2.225V3a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v9a3 3 0 0 1-3 3zm1-11H6v3h9V4z"></path>
-                    </svg>
-                    From the blog
-                  </h3>
-                </a>
-                <ul class="blogPosts">
-                  <li><a href="#">
-                    <span class="title ">123454</span>
-                    </a>
-                  </li>
-                  <li><a href="#">
-                    <span class="title ">BTC</span>
-                    </a>
-                  </li>
-                  <li><a href="#">
-                    <span class="title ">Self-custodial Multiblock-chain Wallet!</span>
                     </a>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-          <div class="dropdownSection right" data-dropdown="donations">
-            <div class="dropdownContent">
-              <ul class="linkGroup linkList companyGroup">
-                <li>
-                  <a class="linkContainer item-btc-donation" href="bitcoin:33tht1bKDgZVxb39MnZsWa8oxHXHvUYE4G">
-                    <h3 class="linkTitle linkDonation linkIcon"><img src="./assets/images/crypto/bitcoin-btc-logo.svg"> BTC: 33tht1bKDgZVxb39MnZsWa8oxHXHvUYE4G</h3>
-                  </a>
-                </li>
-                <li>
-                  <a class="linkContainer item-bch-donations" href="#bitcoincash:">
-                    <h3 class="linkTitle linkIcon"><img src="./assets/images/crypto/bitcoin-cash-bch-logo.svg"> BCH</h3>
-                  </a>
-                </li>
-                <li>
-                  <a class="linkContainer item-ltc-donations" href="#litecoin">
-                    <h3 class="linkTitle linkDonation linkIcon"><img src="./assets/images/crypto/litecoin-ltc-logo.svg"> LTC</h3>
-                  </a>
-                </li>
-                <li>
-                  <a class="linkContainer item-doge-donations" href="#dogecoin">
-                    <h3 class="linkTitle linkDonation linkIcon"><img src="./assets/images/crypto/dogecoin-doge-logo.svg"> DOGE</h3>
-                  </a>
-                </li>
-              </ul>
-              <div class="linkGroup blogGroup">
-                <a class="linkContainer withIcon item-blog" href="#">
-                  <h3 class="linkTitle linkIcon"><i class="bi bi-bag-heart-fill"></i> Donate</h3>
+          <div class="bottom-section">
+            <ul>
+              <li>
+                <a href="https://t.me/wallyid" class="text-decoration-none" target="_blank">
+                  <i class="bi bi-telegram icon24"></i> Do you need help? Join our official Telegram group
                 </a>
-                <ul class="blogPosts">
-                  <li>Please donate to 33tht1bKDgZVxb39MnZsWa8oxHXHvUYE4G if you found this project useful or want to see more features!</li>
-                </ul>
-              </div>
-            </div>
+              </li>
+
+            </ul>
           </div>
         </div>
       </div>
-    </header>
+    -->
+
+      
+
+      
+      <div class="wdropdown-menu"  data-dropdown-menu="developer">
+        <div class="dropdown-menu__content">
+          <div class="top-section">
+            <div class="col-2">
+              <div>
+                <h2 class="menu-title">New Address</h2>
+                <ul>
+                  <li>
+                    <a href="#newAddress" data-route="link" data-pagescroll="page_tab_iceee">
+                    Address <small>(standard)</small>
+                    </a>
+                  </li>
+                  <li class="mb-0">
+                <a href="#newSegWit" data-route="link" data-pagescroll="page_tab_iceee">
+                SegWit Address
+                </a>
+              </li>
+                  <li class="mb-0">
+                <a href="#newMultiSig" data-route="link" data-pagescroll="page_tab_iceee">
+                Multisig Address
+                </a>
+              </li>
+              <li class="mb-0">
+                <a href="#newHDaddress" data-route="link" data-pagescroll="page_tab_iceee">
+                HD Address
+                </a>
+              </li>
+              <li class="mb-0">
+                <a href="#newTimeLocked" data-route="link" data-pagescroll="page_tab_iceee">
+                Time Locked Address
+                </a>
+              </li>
+                </ul>
+              </div>
+              <div>
+                <h2 class="menu-title">Transaction</h2>
+                <ul>
+                  <li class="mb-1">
+                    <a href="#newTransaction" data-route="link" data-pagescroll="page_tab_iceee">
+                    <img src="./assets/images/money-send.svg" class="icon32 "> New Transaction
+                    </a>
+                  </li>
+                  <li class="mb-1">
+                    <a href="#sign" data-route="link" data-pagescroll="page_tab_iceee">
+                    <img src="./assets/images/magicpen.svg" class="icon32 "> Sign Transaction
+                    </a>
+                  </li>
+                  <li class="mb-1">
+                    <a href="#broadcast" data-route="link" data-pagescroll="page_tab_iceee">
+                    <img src="./assets/images/direct-send.svg" class="icon32 "> Send Transaction <small>Broadcast</small>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-section info">
+            <ul>
+              <li>
+                <a href="#verify"><img src="./assets/images/verify.svg" class="icon32 mx-2"> Verify/Decode</a>
+              </li>
+              <li>
+                <a href="#converter"><img src="./assets/images/convertshape-2.svg" class="icon32 mx-2"> Converter</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="wdropdown-menu"  data-dropdown-menu="help">
+        <div class="dropdown-menu__content">
+          <div class="top-section">
+            <ul>
+              <li>
+                <a href="#about"><img src="./assets/images/note.svg" class="icon32 mx-2"> About us</a>
+              </li>
+              <li>
+                <a href="#way-token"><img src="./assets/images/crypto/wally-way-logo.svg" class="icon32 mx-2"> WAY Token</a>
+              </li>
+              
+            </ul>
+          </div>
+          <div class="bottom-section">
+            <ul>
+              <li>
+                <a href="https://t.me/wallyid" alt="Wally.id - Official Telegram group"><img src="./assets/images/brands/telegram_logo.svg" class="icon32"> Telegram</a>
+              </li>
+              <li>
+                <a href="https://twitter.com/WallyIDOfficial" alt="Wally.id - Official Twitter group"><img src="./assets/images/brands/twitter_logo.svg" class="icon32"> Twitter</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    </div>
+  </div>
+</header>
+
+    
     <div id="wrap">
       <!-- Landing page top -->
       <div id="content" class="container">
@@ -4320,7 +4050,7 @@
               </li>
               <li class="mb-1">
                 <a href="#verify" data-route="link" data-pagescroll="page_tab_iceee">
-                Verify
+                Verify/Decode
                 </a>
               </li>
               <li class="mb-1">
@@ -4404,11 +4134,11 @@
       <!-- / .container -->
     </div>
 
-
+<div class="container mb-6"> </div>
   <!-- Bottom Navigation Menu/Bar -->
   <!-- Footer Menu - Bottom Bar Menu -->
   <div class="footer-menu">
-    <div class="footer-menu-icon-block">
+    <div class="footer-menu-icon-block panel_drawer left-panel" >
       <a href="javascript:void(0)" >
         <div >
 
@@ -4423,7 +4153,7 @@
     <div class="footer-menu-icon-block active">
       <a href="javascript:void(0)">
         <!-- <div data-toggle="popover" data-toggle="popover" data-html="true" data-target="#popSwitchAsset" data-placement="top" data-easein="slideUpBigIn"> -->
-          <div class="item-choose-currency" data-toggle="modal">
+          <div class="choose-currency-modal" data-toggle="modal" data-modal-position="bottom">
           <!-- <i class="footer-menu-icon bi bi-box-arrow-in-down-left"></i>-->
           <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon dabi-selectedAsset">
           
@@ -4432,7 +4162,7 @@
       </a>
     </div>
 
-    <div class="footer-menu-icon-block">
+    <div class="footer-menu-icon-block panel_drawer right-panel">
       <a href="javascript:void(0)">
         <div >
           <img src="./assets/images/mobile-menu-nav.svg" class="icon icon28">
@@ -5032,6 +4762,162 @@ iceee - remove me later
 <!-- -->
 
 
+<!-- ZeynepJS - Mobile menu - Left and Right Drawer Menu -->
+<div class="zeynep left-panel" data-menu-name="left-panel">
+      <ul >
+        <label>Portfolio Type</label>
+        <li >
+          <a href="#wallet/login=regular_wallet"><img src="./assets/images/purse_wallet.svg" class="icon32 mx-2">  Regular Wallet</a>
+        </li>
+        <li>
+          <a href="#wallet/login=multisig_wallet"><img src="./assets/images/keys.svg" class="icon32 mx-2"> Multisig Wallet</a>
+        </li>
+        <li>
+          <a href="#wallet/login=private_key_wallet"><img src="./assets/images/wallet_paper.svg" class="icon32 mx-2"> Private Key</a>
+        </li>
+        <li>
+          <a href="#wallet/login=import_wallet"><img src="./assets/images/wallet_import2.svg" class="icon32 mx-2"> Import Wallet</a>
+        </li>
+
+        <!--
+        <li class="has-submenu">
+          <a href="#" data-submenu="stores">Open Wallet</a>
+
+          <div id="stores" class="submenu">
+            <div class="submenu-header">
+              <a href="#" data-submenu-close="stores">Main Menu</a>
+            </div>
+
+            <label>Wallet Type</label>
+
+            <ul>
+              <li>
+                <a href="#">Regular Wallet</a>
+              </li>
+              <li>
+                <a href="#">Multisig Wallet</a>
+              </li>
+              <li>
+                <a href="#">Private Key</a>
+              </li>
+              <li>
+                <a href="#">Import Wallet</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      
+
+        
+
+        <li>
+          <a href="#">Backup</a>
+        </li>
+        -->
+
+        <label>Support & Help</label>
+        <li>
+          <a href="https://twitter.com/WallyIDOfficial" class="text-decoration-none" target="_blank">
+            <i class="bi bi-twitter"></i> Twitter
+          </a>
+        </li>
+        <li>
+          <a href="https://t.me/wallyid" class="text-decoration-none" target="_blank">
+            <i class="bi bi-telegram"></i> Telegram
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="zeynep right-panel" data-menu-name="right-panel">
+      
+      <ul>
+        <label>Advanced Options </label>
+
+        <li class="has-submenu">
+          <a href="#" data-submenu="nav_new_address"><img src="./assets/images/wallet-1.svg" class="icon32 mx-2">New Address</a>
+
+          <div id="nav_new_address" class="submenu">
+            <div class="submenu-header">
+              <a href="#" data-submenu-close="nav_new_address">(Back) </a>
+            </div>
+
+            <label><img src="./assets/images/wallet-1.svg" class="icon24 mx-2"> New Address</label>
+
+            <ul>
+              <li>
+                <a href="#newAddress">Address <small>(standard)</small></a>
+              </li>
+
+              <li>
+                <a href="#newSegWit">SegWit Address</a>
+              </li>
+
+              <li>
+                <a href="#newMultiSig">Multisig Address</a>
+              </li>
+              <li>
+                <a href="#newHDaddress">HD Address </a>
+              </li>
+              
+              <li>
+                <a href="#newTimeLocked">Time Locked Address</a>
+              </li>
+              
+            </ul>
+
+          </div>
+        </li>
+
+        <li>
+          <a href="#newTransaction"><img src="./assets/images/money-send.svg" class="icon32 mx-2"> New Transaction</a>
+        </li>
+        <li>
+          <a href="#sign"><img src="./assets/images/magicpen.svg" class="icon32 mx-2"> Sign Transaction</a>
+        </li>
+        <li>
+          <a href="#broadcast"><img src="./assets/images/direct-send.svg" class="icon32 mx-2"> Send Transaction <small>Broadcast</small></a>
+        </li>
+        <li class="divider-empty"></li>
+        <li>
+          <a href="#verify"><img src="./assets/images/verify.svg" class="icon32 mx-2"> Verify/Decode</a>
+        </li>
+
+        <li class="divider-empty"></li>
+
+        <li>
+          <a href="#converter"><img src="./assets/images/convertshape-2.svg" class="icon32 mx-2"> Converter</a>
+        </li>
+        <li>
+          <a href="#settings"><img src="./assets/images/settings-2.svg" class="icon32 mx-2"> Settings</a>
+        </li>
+
+
+        <label>Wally.id</label>
+
+        
+
+        
+        <li>
+          <a href="#about"><img src="./assets/images/note.svg" class="icon32 mx-2"> About us</a>
+        </li>
+        
+
+        <li>
+          <a href="#way-token"><img src="./assets/images/crypto/wally-way-logo.svg" class="icon32 mx-2"> WAY Token</a>
+        </li>
+      </ul>
+
+      <!-- -->
+
+
+
+      
+    </div>
+
+<!--// ZeynepJS - Mobile menu - Left and Right Drawer Menu -->
+
+
 
     <!-- choose currency wallet modal -->
     <div class="hidden" id="entropybucket"></div>
@@ -5040,8 +4926,18 @@ iceee - remove me later
 
 
 
-$(".item-choose-currency").on( "click", function() {
+$(".choose-currency-modal").on( "click", function() {
+    
+    var modalPosition = $(this).attr('data-modal-position');
+
+    if (modalPosition == 'top') {
+      $('#modalChangeAsset').find('.modal-dialog').removeClass('modal-dialog-end').addClass('modal-dialog-top');
+    }
+    else
+      $('#modalChangeAsset').find('.modal-dialog').removeClass('modal-dialog-top').addClass('modal-dialog-end');
+    
     $('#modalChangeAsset').modal('show'); 
+
 });
 
 
@@ -5101,6 +4997,161 @@ $('.form-control-clear').click(function() {
 
 
 
+
+//Menu-Panel
+
+
+    //Left and Right Mobile Navigation Panel
+    // loop all zeynepjs menus for initialization
+    /*
+    $('.zeynep').each(function () {
+      // init zeynepjs side menu
+      $(this).zeynep({
+        opened: function (el) {
+          // log
+          console.log(el.attr('data-menu-name') + ' side menu opened')
+        },
+        closed: function (el) {
+          // log
+          console.log(el.attr('data-menu-name') + ' side menu closed')
+        }
+      })
+    });
+    */
+
+    // handle zeynepjs overlay click
+    /*
+    $('.zeynep-overlay').on('click', function () {
+      // close all zeynepjs menus
+      $('.zeynep.opened').each(function () {
+        $(this).data('zeynep').close()
+      })
+    });
+    */
+    
+    var leftPanel = $('.zeynep.left-panel').zeynep({
+      load: function (element, options) {
+        console.log('zeynepjs left menu is successfully loaded')
+      }
+    });
+    var rightPanel = $('.zeynep.right-panel').zeynep({
+      load: function (element, options) {
+        console.log('zeynepjs right menu is successfully loaded')
+      }
+    });
+    var bodyZeynep = $('body.zeynep-initialized');
+
+  
+    $('body').on('click', '.modal-backdrop', function(e){
+
+      console.log('modal-backdrop.show');
+        if(bodyZeynep.hasClass('zeynep-opened')) {
+          $(".modal-backdrop").hide();
+          console.log('remove modal-backdrop.show');
+
+          leftPanel.close();
+          rightPanel.close();
+          //$('.zeynep.opened').each(function () { $(this).data('zeynep').close() });
+        }
+    });
+    
+    
+    
+    
+
+    // open left zeynepjs side menu
+    $('.panel_drawer.left-panel').on('click', function () {
+      //$('.zeynep.left-panel').data('zeynep').open();
+      leftPanel.open();
+
+      $("body").append("<div class='modal-backdrop fade show'></div>");
+
+    });
+
+    // open right zeynepjs side menu
+    $('.panel_drawer.right-panel').on('click', function () {
+      //$('.zeynep.right-panel').data('zeynep').open();
+      rightPanel.open();
+      $("body").append("<div class='modal-backdrop fade show'></div>");
+    });
+
+
+    /*
+    //$('body').on('click', '.zeynep.right-panel.opened  a', function(e){
+    $('.zeynep.right-panel a').on('click', function (e) {
+      if ((this.hash).charAt(0) == '#')
+        rightPanel.close();
+    });
+    */
+
+
+    $('.zeynep.left-panel a, .zeynep.right-panel a').on('click', function (e) {
+      //console.log('hassssssssssh clicked', e);
+      //console.log('hassssssssssh clicked', $(e));
+      //console.log('hassssssssssh this', this.hash);
+
+      //console.log ('href: ',  $(e).attr('href') );
+      //console.log ('href: ',  e.attr('href') );
+      
+      console.log('=====.zeynep.left-panel a, .zeynep.right-panel a')
+      console.log('this.hash: ', this.hash)
+      console.log('this.hash.length: ', this.hash.length)
+
+      if ((this.hash).length > 1) {
+
+        console.log('close......................');
+        console.log('leftPanel: ', leftPanel);
+        console.log('rightPanel: ', rightPanel);
+        leftPanel.close();
+        rightPanel.close();
+        $(".modal-backdrop").hide();
+      }
+    });
+
+
+
+    /*
+    leftPanel.on('closed', function(el, opt, det) {
+      //$(".modal-backdrop").hide();
+      console.log('el: ', el);
+      console.log('opt: ', opt);
+      console.log('det: ', det);
+      console.log('leftPanel closing');
+    });
+    rightPanel.on('closed', function(el, opt, det) {
+      //$(".modal-backdrop").hide();
+      console.log('el: ', el);
+      console.log('opt: ', opt);
+      console.log('det: ', det);
+
+      console.log('rightPanel closing');
+    });
+
+    leftPanel.on('opening', function(el, opt, det) {
+      console.log('el: ', el);
+      console.log('opt: ', opt);
+      console.log('det: ', det);
+      if (det.subMenu == false)
+        leftPanel.close();
+    });
+    rightPanel.on('opening', function(el, opt, det) {
+      console.log('el: ', el);
+      console.log('opt: ', opt);
+      console.log('det: ', det);
+      if (det.subMenu == false)
+        rightPanel.close();
+    });
+    */
+
+  
+/*
+.on('show.bs.popover', function () {
+      $("body").append("<div class='modal-backdrop fade show'></div>")
+  }).on('hide.bs.popover', function () {
+      $(".modal-backdrop").remove();
+  });
+*/
+
 /*
 $("#modalChangeAsset .custom-table tbody tr").on('click', function(e) {
   
@@ -5123,6 +5174,191 @@ $("#modalChangeAsset .custom-table tbody tr").on('click', function(e) {
 });
 */
 
+
+
+var menuItems = [].slice.call(document.querySelectorAll('.menu__item')),
+menuSubs = [].slice.call(document.querySelectorAll('.wdropdown-menu')),
+selectedMenu = undefined,
+subBg = document.querySelector('.dropdown__bg'),
+subBgBtm = document.querySelector('.dropdown__bg-bottom'),
+subArr = document.querySelector('.dropdown__arrow'),
+subCnt = document.querySelector('.dropdown__wrap'),
+header = document.querySelector('.main-header'),
+closeDropdownTimeout,
+
+
+
+startCloseTimeout = function () {
+  closeDropdownTimeout = setTimeout(() => closeDropdown(), 50);
+},
+
+stopCloseTimeout = function () {
+  clearTimeout(closeDropdownTimeout);
+},
+
+openDropdown = function (el) {
+
+  //- get menu ID
+  var menuId = el.getAttribute('data-dropdown-menu');
+  //- get related sub menu
+  var menuSub = document.querySelector('.wdropdown-menu[data-dropdown-menu="' + menuId + '"]');
+
+  //if no dropdown menu attribute is provided, exit
+  if (menuSub === null || menuSub === undefined) {
+    subArr.style.opacity = 0;
+    subBg.style.opacity = 0;
+    subCnt.style.opacity = 0;
+    return;
+  }
+  //- get menu sub content
+  var menuSubContent = menuSub.querySelector('.dropdown-menu__content');
+  //- get bottom section of current sub
+  var menuSubBtm = menuSubContent.querySelector('.bottom-section').getBoundingClientRect();
+  //- get height of top section
+  var menuSubTop = menuSubContent.querySelector('.top-section').getBoundingClientRect();
+  //- get menu position
+  var menuMeta = el.getBoundingClientRect();
+  //- get sub menu position
+  var subMeta = menuSubContent.getBoundingClientRect();
+
+
+  //- set selected menu
+  selectedMenu = menuId;
+
+
+  //- Remove active Menu
+  menuItems.forEach(el => el.classList.remove('active'));
+  //- Set current menu to active
+  el.classList.add('active');
+
+  //- Remove active sub menu
+  menuSubs.forEach(el => el.classList.remove('active'));
+  //- Set current menu to active
+  menuSub.classList.add('active');
+
+  //- Set dropdown menu background style to match current submenu style
+    //position the background within screen
+  subBg.style.opacity = 1;
+  var subBgLeft = menuMeta.left - (subMeta.width / 2 - menuMeta.width / 2);
+  if(subBgLeft > 0)
+    subBg.style.left = subBgLeft + 'px';
+  else
+    subBg.style.left = 20 +'px';
+    //position background within screen (if it is outside on right corner)
+
+    console.log ('subBg.style.left before: '+ subBg.style.left);
+
+  if (subBgLeft + menuSubContent.scrollWidth > window.innerWidth && subBgLeft > 0) {
+      subBg.style.left = window.innerWidth - menuSubContent.scrollWidth -20 + 'px';
+      console.log('out of window.innerWidth', menuSubContent.scrollWidth);
+      console.log ('subBg.style.left after: '+ subBg.style.left);
+      }
+  
+
+
+  //subBg.style.left = menuMeta.left - (subMeta.width / 2 - menuMeta.width / 2) + 'px';
+  console.log('subBg.style.left: ' + subBg.style.left);
+  subBg.style.width = subMeta.width + 'px';
+  subBg.style.width = menuSubContent.scrollWidth + 'px';
+  subBg.style.height = subMeta.height + 'px';
+  //- Set dropdown menu bottom section background position
+  subBgBtm.style.top = menuSubTop.height + 'px';
+  console.log('menuSubBtm: ', menuSubBtm);
+
+  //- Set Arrow position
+  subArr.style.opacity = 1;
+  subArr.style.left = menuMeta.left + menuMeta.width / 2 - 20 + 'px';
+
+  //- Set sub menu style
+
+  subCnt.style.opacity = 1;
+    //position the content within screen
+  var subCntLeft = menuMeta.left - (subMeta.width / 2 - menuMeta.width / 2);
+  if(subCntLeft > 0)
+    subCnt.style.left = subCntLeft + 'px';
+  else
+    subCnt.style.left = 20+'px';
+  console.log('subCnt.style.left: ' + subCnt.style.left);
+
+   if (subCntLeft + menuSubContent.scrollWidth > window.innerWidth && subCntLeft > 0) {
+      subCnt.style.left = window.innerWidth - menuSubContent.scrollWidth -20 + 'px';
+      console.log('out of window.innerWidth', menuSubContent.scrollWidth);
+      console.log ('subCntLeft.style.left after: '+ subCnt.style.left);
+    }
+
+  
+
+  subCnt.style.width = subMeta.width + 'px';
+  subCnt.style.width = menuSubContent.scrollWidth + 'px';
+  subCnt.style.height = subMeta.height + 'px';
+
+
+    //position the content within screen
+  if (menuSubContent.scrollWidth > window.innerWidth ){
+    subBg.style.left = 20 + 'px';
+    subCnt.style.left = 20 + 'px';
+    subBgBtm.style.left = 20 + 'px';
+    subArr.style.left = 20 + 'px';
+
+    subBg.style.width = window.innerWidth - 20 + 'px';
+    subCnt.style.width = window.innerWidth - 20 + 'px';
+    subBgBtm.style.width = window.innerWidth - 20 + 'px';
+    subArr.style.width = window.innerWidth - 20 + 'px';
+  }
+
+  //- Set current sub menu style
+  menuSub.style.opacity = 1;
+
+  header.classList.add('dropdown-active');
+
+},
+
+closeDropdown = function () {
+
+  //- Remove active class from all menu items
+  menuItems.forEach(el => el.classList.remove('active'));
+  //- Remove active class from all sub menus
+  menuSubs.forEach(el => {
+    el.classList.remove('active');
+    el.style.opacity = 0;
+  });
+  //- set sub menu background opacity
+  subBg.style.opacity = 0;
+  //- set arrow opacity
+  subArr.style.opacity = 0;
+
+
+  // unset selected menu
+  selectedMenu = undefined;
+
+  //
+  subCnt.style.opacity = 0;
+
+  header.classList.remove('dropdown-active');
+};
+
+
+//- Binding mouse event to each menu items
+menuItems.forEach(el => {
+
+  //- mouse enter event
+  el.addEventListener('mouseenter', function () {
+    stopCloseTimeout();
+    openDropdown(this);
+  }, false);
+
+  //- mouse leave event
+  el.addEventListener('mouseleave', () => startCloseTimeout(), false);
+
+});
+
+//- Binding mouse event to each sub menus
+menuSubs.forEach(el => {
+
+  el.addEventListener('mouseenter', () => stopCloseTimeout(), false);
+  el.addEventListener('mouseleave', () => startCloseTimeout(), false);
+
+});
 
 
 
@@ -5180,7 +5416,7 @@ $("#modalChangeAsset .custom-table tbody tr").on('click', function(e) {
   
 */
 /*
-            document.querySelector('.item-choose-currency').addEventListener('click', function() {
+            document.querySelector('.choose-currency-modal').addEventListener('click', function() {
   				$('#modalChangeAsset').modal('show')    
   				//document.getElementById('modalChangeAsset').modal('show')
 			});

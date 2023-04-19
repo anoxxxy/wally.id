@@ -1116,6 +1116,43 @@ testar('3aa').then((data) => {
         txRBFTransaction: false,
         developer: 'iceeeee',
       },
+      nexus : {
+        symbol: 'NXS',      //ticker
+        asset: {
+          chainModel: 'utxo',
+          name: 'Nexus',
+          version: 4,
+          slug: 'nexus',
+          symbol: 'NXS',
+          symbols: ['nxs', 'nexus'],
+          icon: './assets/images/crypto/nexus-nxs-logo.svg',
+          network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed'],
+          api : {
+            unspent_outputs: {
+              'Cryptoid.info': 'nxs'
+            },
+            broadcast: {
+              'Cryptoid.info': 'nxs'
+            }
+          }
+        },
+        pub : 0xfd,      //pubKeyHash     OP_PUBKEYHASH = 0xfd, https://github.com/Nexusoft/Legacy/blob/v0.2.0.0/src/wallet/script.h
+        priv : 0xfe,     //wif            OP_PUBKEY = 0xfe,
+        multisig : 0xfb, //scriptHash     OP_PUBKEYS = 0xfb, OP_PUBKEYSCRIPT
+
+
+          hdkey : {'prv':0x02cfbf60, 'pub':0x02cfbede},
+          bech32 : {},
+          
+        txExtraTimeField: true,    //Set to true for PoS coins
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:8,
+        txRBFTransaction: false,
+        developer: 'iceeeee',
+      },
       potcoin : {
         symbol: 'POT',      //ticker
         asset: {

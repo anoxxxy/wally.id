@@ -2786,11 +2786,12 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		    //targetEl.velocity('transition.' + open);
 		    
 	    }
-	  }).on('show.bs.popover', function () {
-    		$("body").append("<div class='modal-backdrop fade show'></div>")
-		}).on('hide.bs.popover', function () {
-	    $(".modal-backdrop").remove();
-		});
+	  })
+  	.on('show.bs.popover', function () {
+    	$("body").append("<div class='modal-backdrop fade show'></div>")
+	}).on('hide.bs.popover', function () {
+    	$(".modal-backdrop").remove();
+	});
 	  
   	/*
 	  $('button[data-toggle="popover"], a[data-toggle="popover"], div[data-toggle="popover"], span[data-toggle="popover"]').popover({
@@ -3351,6 +3352,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 	if (!IE) document.captureEvents(Event.MOUSEMOVE)
 	document.onmousemove = getMouseXY;
 	function getMouseXY(e) {
+		
 		var tempX = 0;
 		var tempY = 0;
 		if (IE) { // If browser is IE
@@ -3361,6 +3363,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			tempY = e.pageY;
 		};
 
+		//console.log(tempX, tempY);
 		if (tempX < 0){tempX = 0};
 		if (tempY < 0){tempY = 0};
 		var xEnt = Crypto.util.bytesToHex([tempX]).slice(-2);
@@ -3377,6 +3380,14 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 		return true;
 	};
+
+/*
+$(document).ready( function() {
+  $(this).on('mousemove touchstart touchmove touchcancel touchend scroll', getMouseXY);
+});
+*/
+
+
 
 /* Generate Password Functions*/
 //https://stackoverflow.com/questions/9719570/generate-random-password-string-with-requirements-in-javascript
@@ -3428,7 +3439,7 @@ $('.generatePassword').on("click", function () {
 
 
     var inputElPass = $el.attr( "data-input-for");
-    $("#"+inputElPass).val( generatePassword() ).fadeOut().fadeIn();
+    $(inputElPass).val( generatePassword() ).fadeOut().fadeIn();
   });
 
 
