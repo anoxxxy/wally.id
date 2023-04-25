@@ -1,5 +1,10 @@
 <?php
 //return the json response
+/*
+https://docs.komodoplatform.com/mmV1/coin-integration/electrum-servers-list.html#updated-list-from-the-coins-repository
+
+https://stats.kmd.io/atomicdex/electrum_status/
+*/
 header("Content-Type: application/json;charset=utf-8");
 //https://www.lampdocs.com/how-to-query-an-electrumx-server-with-php/
 
@@ -20,6 +25,7 @@ try {
 	$tx_hash_q = ( isset($_GET['tx_hash']) ? $_GET['tx_hash'] : '');
 	$verbose_q = ( isset($_GET['verbose']) ? $_GET['verbose'] : '');
 	$server_q = ( isset($_GET['server']) ? $_GET['server'] : '');
+	$exit_q = ( isset($_GET['exit']) ? $_GET['exit'] : '');
 
 	$params_q = '';	//electrumx parameter
 
@@ -55,6 +61,7 @@ try {
 	        "tx_hash" => 'req',
 	        "verbose",	//default false
 	    ],
+	    "mempool.get_fee_histogram" => [],
 	    "server.banner" => [],
 	    "server.features" => [],
 	    "server.version" => [],
@@ -98,13 +105,15 @@ try {
 		//extra electrumx parameter https://bitcoin.stackexchange.com/questions/75854/requesting-for-verbose-output-from-electrumx
 		//{"method":"blockchain.transaction.get","id":0,"params":["fc992bd10bbcbd54ee2279de497ad4bd49ce6a64c27f2a2d3293f761d2a5a3a3","verbose":true]}
 		if ($verbose_q == 'true')
-			$params_q = $params_q . ', "verbose": true"';
+			//$params_q = $params_q . ', "verbose": true';
+			$params_q = $params_q . ', true';
 
 
 	}
 
 	
-
+	if ($params_q != '')
+		$params_q = ', "params":['.$params_q.']';
 
 	//explode server_q to arr and get host and port for electrumx server
 	$server_arr = (explode(":",$server_q));
@@ -114,6 +123,9 @@ try {
 
 	$host = $server_arr[0];
 	$port = $server_arr[1];
+
+	//echo json_encode($server_arr, JSON_PRETTY_PRINT);
+	//exit();
 
 
 	// Defining host, port, and timeout
@@ -127,11 +139,19 @@ try {
 	stream_context_set_option($context, 'ssl', 'verify_peer_name', false);
 	 
 
-		$query='{"id": "aby", "jsonrpc":"2.0", "method": "'.$method_q.'", "params":['.$params_q.']}';
+		$query='{"id": "'.$asset_q.'", "jsonrpc":"2.0", "method": "'.$method_q.'" '.$params_q.'}';
+		//$query='{"id": "'.$asset_q.'", "jsonrpc":"2.0", "method": "'.$method_q.'", "params":['.$params_q.']}';
 
 		//exit($query);
 		//$query='{"id": "aby", "jsonrpc":"2.0", "method": "server.version"}';
 		//$query='{"id": "aby", "jsonrpc":"2.0", "method": "blockchain.scripthash.get_balance", "params":["f2c773074a10d44ee5f9d196d9f7bf5da8d173e4a608aa3e752ec35b8be286c9"]}';
+
+
+		if ( $exit_q) {
+			echo json_encode($query, JSON_PRETTY_PRINT);
+			exit();
+		}
+
 
 		//echo json_encode($query, JSON_PRETTY_PRINT);
 		//exit();

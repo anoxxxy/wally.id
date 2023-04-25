@@ -1,0 +1,166 @@
+.bling-button {
+  --generate-button-star-1-opacity: .25;
+  --generate-button-star-1-scale: 1;
+  --generate-button-star-2-opacity: 1;
+  --generate-button-star-2-scale: 1;
+  --generate-button-star-3-opacity: .5;
+  --generate-button-star-3-scale: 1;
+  --generate-button-dots-opacity: 0;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  outline: none;
+  border: none;
+  padding: 16px 24px 16px 20px;
+  border-radius: 29px;
+  margin: 0;
+  background-color: #eee;
+  color: #616161;
+  min-width: 192px;
+  display: flex;
+  position: relative;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  z-index: 1;
+  transform: scale(var(--generate-button-scale, 1)) translateZ(0);
+  box-shadow: 0px 0px 120px var(--generate-button-shadow-wide, transparent), 0px 4px 12px rgba(0, 0, 0, 0.05), 0px 1px 2px rgba(0, 0, 0, 0.1), inset 0px 1px 1px var(--generate-button-shadow-inset, rgba(255, 255, 255, 0.04)), 0 0 0 var(--generate-button-shadow-outline, 0px) rgba(109, 68, 244, 0.4);
+  transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s, color 0.3s;
+}
+.bling-button:before {
+  content: "";
+  display: block;
+  position: absolute;
+  right: 20%;
+  height: 20px;
+  left: 20%;
+  bottom: -10px;
+  background: #D3B3FF;
+  filter: blur(12.5px);
+  z-index: 2;
+  -webkit-clip-path: inset(-200% -30% 10px -30% round 29px);
+          clip-path: inset(-200% -30% 10px -30% round 29px);
+  opacity: 0;
+  transition: opacity 0.4s;
+  transform: translateZ(0);
+}
+.bling-button span {
+  position: relative;
+  z-index: 1;
+  font-family: "Poppins", Arial;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 26px;
+  letter-spacing: 0.005em;
+  display: block;
+}
+.bling-button span:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.4;
+  transition: opacity 0.4s;
+}
+.bling-button .stroke {
+  mix-blend-mode: hard-light;
+}
+.bling-button .stroke svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-width: 0.75px;
+  stroke: #E2D9FF;
+  stroke-dasharray: 1.5 14;
+  stroke-dashoffset: 22;
+  opacity: 0;
+}
+.bling-button .stroke svg:nth-child(2) {
+  stroke-width: 1px;
+  stroke-opacity: 0.5;
+  filter: blur(3px);
+}
+.bling-button svg {
+  display: block;
+  overflow: visible;
+  pointer-events: none;
+}
+.bling-button svg.dots {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  fill: #D3B2FF;
+  opacity: var(--generate-button-dots-opacity);
+}
+.bling-button svg.icon {
+  width: 24px;
+  height: 26px;
+  margin-right: 12px;
+  fill: currentColor;
+}
+.bling-button svg.icon path:nth-child(1) {
+  opacity: var(--generate-button-star-1-opacity);
+  transform: scale(var(--generate-button-star-1-scale)) translateZ(0);
+  transform-origin: 25% 14.58%;
+}
+.bling-button svg.icon path:nth-child(2) {
+  opacity: var(--generate-button-star-2-opacity);
+  transform: scale(var(--generate-button-star-2-scale)) translateZ(0);
+  transform-origin: 60.42% 50%;
+}
+.bling-button svg.icon path:nth-child(3) {
+  opacity: var(--generate-button-star-3-opacity);
+  transform: scale(var(--generate-button-star-3-scale)) translateZ(0);
+  transform-origin: 25% 85.42%;
+}
+.bling-button:hover {
+  --generate-button-scale: 1.1;
+  --generate-button-shadow-wide: rgba(208, 173, 255, 0.4);
+  --generate-button-shadow-inset: rgba(255, 255, 255, 0.35);
+  --generate-button-shadow-outline: 3px;
+  color: #fff;
+  background-color: #6D44F4;
+}
+.bling-button:hover .stroke svg {
+  -webkit-animation: stroke 2s linear infinite;
+          animation: stroke 2s linear infinite;
+}
+.bling-button:hover:before {
+  opacity: 1;
+}
+.bling-button:hover span:before {
+  opacity: 0;
+}
+.bling-button:hover:active {
+  --generate-button-scale: 1.05;
+}
+
+@-webkit-keyframes stroke {
+  0% {
+    opacity: 0;
+  }
+  25%, 75% {
+    opacity: 1;
+  }
+  95%, 100% {
+    stroke-dashoffset: 6;
+    opacity: 0;
+  }
+}
+
+@keyframes stroke {
+  0% {
+    opacity: 0;
+  }
+  25%, 75% {
+    opacity: 1;
+  }
+  95%, 100% {
+    stroke-dashoffset: 6;
+    opacity: 0;
+  }
+}

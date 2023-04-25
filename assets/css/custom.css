@@ -934,8 +934,49 @@ messing up inputs!
   padding: .5rem 1rem;
   font-size: 1.25rem;
   line-height: 1.5;
-  border-radius: .3rem;
+  border-radius: 10px;
+  border-width: 2px;
+  box-shadow: 0 6px 6px rgba(0,0,0,.125),0 0px 6px rgba(0,0,0,.2) !important;
+  transition: background 0.2s ease-in-out;
 }
+
+.box-gradient{
+   	position: relative;
+   	margin: 10px auto;
+   	
+    background: #010002;
+    border-radius: 20px;
+    
+   }
+  
+   .box-gradient:before,
+   .box-gradient:after{
+   	content: '';
+   	position: absolute;
+   	top: -2px;
+   	left: -2px;
+   	background: linear-gradient(45deg,#fb0094,#0000ff,#00ff00,#ffff00,#ff0000,#fb0094,#0000ff,#00ff00,#ffff00,#ff0000);
+   	background-size: 400% 400%;
+   	
+   	border-radius: 20px;
+   	z-index: -1;
+    animation: animate 3s ease alternate infinite;
+   }
+   .box-gradient:after{
+   	filter: blur(20px);
+   }
+   @keyframes animate{
+   	0%{
+   		background-position: 0 50%;
+   	}
+   	50%{
+   		background-position: 100% 50%;
+   	}
+   	100%{
+   		background-position: 0% 50%;
+   	}
+   }
+
 
 
 		.btni-outline-inner::before {
@@ -2707,3 +2748,13 @@ outline:  none;
 
 
 
+ul li.header_small {
+	margin: 10px 0 0 0;
+	color: #583086;
+	font-weight: 600;
+	font-size: 0.8rem;
+}
+ul li.divider-empty {
+	padding: 2px;
+	margin: 4px;
+}

@@ -82,8 +82,8 @@ try {
 
 
 	// Defining host, port, and timeout
-	$host = 'electrumx-four.artbyte.live';
-	$port = 50012;
+	$host = 'electrumx.nvc.ewmcx.org';
+	$port = 50002;
 	$timeout = 30;
 	 
 	// Setting context options
@@ -151,8 +151,11 @@ try {
 	    $electrum_api->prop = 'prop data'
 	    */
 
+/*
+https://wally.id/api/x.php?asset=nvc&method=blockchain.transaction.broadcast&rawtx=0100000033c54264019b3797aaa753f7edbe8810d49c32a07df4a6e56eaf5db4d08430ea0c6de03fae010000006b483045022100dcbf99fb9341e517f7e7a402575b5a2c3d1826fa9f82b96ef2c7663efdd11033022015612126883f700fed7d48bd6a04a1a4c8ff108bce51699c880b37c599de9fcf012103d928fc52610164842551bdd92597f7b22c9a1673f63c36741e40a42f8a24d174feffffff030050d6dc010000001976a914e40ec92c5974904ad43f03a1b156bb2b6de4c9fd88ac00ca9a3b000000001976a914e40ec92c5974904ad43f03a1b156bb2b6de4c9fd88ac00ca9a3b000000001976a914e40ec92c5974904ad43f03a1b156bb2b6de4c9fd88ac00000000&server=electrumx.nvc.ewmcx.org:50002
+*/
 		//send the query to ElectrumX 
-		$query='{"id": "aby", "method": "blockchain.transaction.broadcast", "params":["01000000d4ee236401dfa539e1a6e4068d12bd139fa8be7f3b52809cfc9f6c926ef650a7ceb0e9a0b6010000006b48304502210097e7c9df1d18241d84d860028f29bf5ed968631bdecafb5be941dfcf3d9b72e9022031d3635317923ef0e6eb56e0f4b4387573249a793906098a99fc5e787426cf10012102f84c509cb39a48c78128b43e0f9f19530ed1f570825bdf7971534339fcf98648feffffff0100080992020000001976a914f13a01323358363dc9963567fe63bc4f9bb3d0d688ac00000000"]}';
+		$query='{"id": "nvc", "method": "blockchain.transaction.broadcast", "params":["0100000033c54264019b3797aaa753f7edbe8810d49c32a07df4a6e56eaf5db4d08430ea0c6de03fae010000006b483045022100dcbf99fb9341e517f7e7a402575b5a2c3d1826fa9f82b96ef2c7663efdd11033022015612126883f700fed7d48bd6a04a1a4c8ff108bce51699c880b37c599de9fcf012103d928fc52610164842551bdd92597f7b22c9a1673f63c36741e40a42f8a24d174feffffff030050d6dc010000001976a914e40ec92c5974904ad43f03a1b156bb2b6de4c9fd88ac00ca9a3b000000001976a914e40ec92c5974904ad43f03a1b156bb2b6de4c9fd88ac00ca9a3b000000001976a914e40ec92c5974904ad43f03a1b156bb2b6de4c9fd88ac00000000"]}';
 	 
 
 
@@ -180,7 +183,7 @@ try {
 	   echo json_encode("ERROR: $errno - $errstr", JSON_PRETTY_PRINT);
 	}
  //catch exception
-catch(Exception $e) {
+} catch(Exception $e) {
   echo json_encode('Message: ' .$e->getMessage());
 }
 

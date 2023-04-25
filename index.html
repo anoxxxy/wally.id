@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#a465ea" />
     <meta name="msapplication-TileColor" content="#a465ea" />
-    <meta name="application-name" content="Wally.id - free self-custodial multi-blockchain cold wallet" />
+    <meta name="application-name" content="Wally.id - free non-custodial multi-blockchain cold wallet" />
 
     <!-- Boostrap 4 CSS -->
     <link rel="stylesheet" href="./assets/css/bootstrap.min.css" >
@@ -35,6 +35,7 @@
     <link rel="stylesheet" href="./assets/css/panel-menu/zeynep.css" media="screen">
 
 
+    <!-- <link rel="stylesheet" href="./assets/css/buttons.css" media="screen"> -->
     <link rel="stylesheet" href="./assets/css/style.css" media="screen">
     <link rel="stylesheet" href="./assets/css/custom.css" media="screen">
     
@@ -73,7 +74,9 @@
     <script type="text/javascript" src="./assets/js/bootstrap.min.js"></script>
 
     
-    <script type="text/javascript" src="./assets/js/wally_fn.js"></script><!-- Internal Wally functions -->
+    <!-- <script type="text/javascript" src="./assets/js/buttons.js"></script> -->
+
+    <script type="text/javascript" src="./assets/js/wally_fn.js?version=xyz&subv=2"></script><!-- Internal Wally functions -->
 
     
 
@@ -131,44 +134,41 @@
         </g>
       </svg>
     </div>
+    
+
     <header class="main-header">
-  
-  <div class="container">
-  <ul class="container menu">
-    <li class="menu__item nav_logo ">
-      <a id="homeBtn" href="#home" class=" item-home colorize" alt="Wally logotype homepage">
-      <img src="./assets/images/logo/wally_logo_new.svg" class="logotype-white icon32"  alt="Wally logotype">
-      </a>
-    </li>
+      <div class=" container">
+        <div class="left">
+          <div class="menu__item nav_logo ">
+            <a id="homeBtn" href="#home" class=" item-home colorize" alt="Wally logotype homepage">
+            <img src="./assets/images/logo/wally_logo_new.svg" class="logotype-white icon32"  alt="Wally logotype">
+            </a>
+          </div>
+        </div>
+        <div class="middle menu">
+          <div class="menu__item">
+            <a class="colorize dropdown-menu-icon " href="#wallet"  alt="Open Wallet">
+              <img src="./assets/images/purse_wallet.svg" class="icon24" alt="Open Wallet"> Wallet
+            </a>
+          </div>
+          <div class="menu__item" data-dropdown-menu="developer"><a href="#" class="colorize">Advanced</a></div>
+          <div class="menu__item" data-dropdown-menu="help"><a href="#" class="colorize">Help</a></div>
+        </div>
+        <div class="right menu">
+          <div class="menu__item show_mobile nav_right">
+            <a class=" colorize dropdown-menu-icon choose-currency-modal dropdown-toggle" data-modal-position="top" data-toggle="modal" href="#" alt="Selected Asset">
+              <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32 dabi-selectedAsset">
+            </a>
+          </div>
+          <div class="menu__item show_mobile nav_right" >
+            <a class="colorize dropdown-menu-icon " href="#settings" alt="Settings">
+              <img src="./assets/images/settings-2.svg" class="icon24" >
+            </a>
+          </div>
+        </div>
+      </div>
 
-    <li class="menu__item">
-      <a class="colorize dropdown-menu-icon " href="#wallet"  alt="Open Wallet">
-        <img src="./assets/images/purse_wallet.svg" class="icon24" alt="Open Wallet"> Wallet
-      </a>
-    </li>
-    
-
-    
-    
-
-    <li class="menu__item" data-dropdown-menu="developer"><a href="#" class="colorize">Advanced</a></li>
-    <li class="menu__item" data-dropdown-menu="help"><a href="#" class="colorize">Help</a></li>
-    
-    <li class="menu__item show_mobile nav_right">
-      <a class=" colorize dropdown-menu-icon choose-currency-modal dropdown-toggle" data-modal-position="top" data-toggle="modal" href="#" alt="Selected Asset">
-        <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32 dabi-selectedAsset">
-      </a>
-    </li>
-    <li class="menu__item show_mobile nav_right" >
-      <a class="colorize dropdown-menu-icon " href="#settings" alt="Settings">
-        <img src="./assets/images/settings-2.svg" class="icon24" >
-      </a>
-    </li>
-    
-  </ul>
-</div>
-
-  <div class="dropdown-holder">
+        <div class="dropdown-holder">
     <div class="dropdown__arrow"></div>
     <div class="dropdown__bg">
       <div class="dropdown__bg-bottom"></div>
@@ -202,7 +202,7 @@
                     </a>
                   </li>
                   <li>
-                    <a class="linkContainer item-connect" href="#wallet/login=private_key_wallet">
+                    <a class="linkContainer item-connect" href="#wallet/login=privatekey_wallet">
                       <img src="./assets/images/wallet_paper.svg" class="icon icon40 ">
                       <div class="productLinkContent">
                         <h3 class="linkTitle">Private Key</h3>
@@ -337,7 +337,11 @@
     
     </div>
   </div>
-</header>
+
+  
+    </header>
+
+  
 
     
     <div id="wrap">
@@ -360,10 +364,27 @@
             </h1>
             <!-- Buttons -->
             <div class="text-center">
-              <a href="#wallet" class="btn btni btni-primary btni-lg shadow" alt="Open Wallet" data-route="link" data-pagescroll="page_tab_iceee">
+              <!-- <button class="bling-button">
+                <svg class="icon" viewBox="0 0 24 26">
+                  <path
+                    d="M5.16515 2.62145L5.8075 0.999247C5.83876 0.919722 5.9154 0.866699 6.00112 0.866699C6.08683 0.866699 6.16347 0.919722 6.19473 0.999247L6.83708 2.62145L8.44145 3.27094C8.5201 3.30254 8.57254 3.38003 8.57254 3.4667C8.57254 3.55337 8.5201 3.63085 8.44145 3.66246L6.83708 4.31195L6.19473 5.93415C6.16347 6.0147 6.08683 6.0667 6.00112 6.0667C5.9154 6.0667 5.83876 6.0147 5.8075 5.93415L5.16515 4.31195L3.56078 3.66246C3.48112 3.63085 3.42969 3.55337 3.42969 3.4667C3.42969 3.38003 3.48112 3.30254 3.56078 3.27094L5.16515 2.62145Z"
+                  />
+                  <path
+                    d="M11.2362 9.43967C11.5502 9.30067 11.8015 9.05025 11.9405 8.73617L13.5494 5.11725C13.7169 4.74204 14.0887 4.5 14.5 4.5C14.9112 4.5 15.2839 4.74204 15.4506 5.11725L17.0603 8.73617C17.1985 9.05025 17.4497 9.3015 17.7638 9.43967L21.3827 11.0494C21.7579 11.2161 22 11.5887 22 12C22 12.4112 21.7579 12.7831 21.3827 12.9506L17.7638 14.5595C17.4497 14.6985 17.1993 14.9497 17.0603 15.2638L15.4506 18.8827C15.2839 19.2579 14.9112 19.5 14.5 19.5C14.0887 19.5 13.7169 19.2579 13.5494 18.8827L11.9405 15.2638C11.8015 14.9497 11.5502 14.6985 11.2362 14.5595L7.61725 12.9506C7.24204 12.7831 7 12.4112 7 12C7 11.5887 7.24204 11.2161 7.61725 11.0494L11.2362 9.43967Z"
+                  />
+                  <path
+                    d="M4.60728 19.392L5.67703 16.6875C5.72997 16.5541 5.85854 16.4666 6.00056 16.4666C6.14258 16.4666 6.27031 16.5541 6.32325 16.6875L7.39299 19.392L10.0678 20.4736C10.1997 20.5271 10.2863 20.6563 10.2863 20.7999C10.2863 20.9435 10.1997 21.0735 10.0678 21.1271L7.39299 22.2087L6.32325 24.9123C6.27031 25.0457 6.14258 25.1332 6.00056 25.1332C5.85854 25.1332 5.72997 25.0457 5.67703 24.9123L4.60728 22.2087L1.93333 21.1271C1.8014 21.0735 1.71484 20.9435 1.71484 20.7999C1.71484 20.6563 1.8014 20.5271 1.93333 20.4736L4.60728 19.392Z"
+                  />
+                </svg>
+                <span>Open Wallet</span>
+              </button>
+            -->
+
+              <a href="#wallet" class="btn btni btni-primary btni-lg shadow box-gradient" alt="Open Wallet" data-route="link" data-pagescroll="page_tab_iceee">
               Open Wallet!
               </a>
             </div>
+
           </div>
           <div class="col-12 col-md-5 order-md-2 text-center mb-6 landing_box">
             <!-- Image -->
@@ -437,7 +458,7 @@
                           You might store your funds on a software- or hardware-wallet, <br>but with our <a href="#wallet">wallet</a> you can always access them wherever you are and whenever you need!
                         </div>
                         <div class="text-muted py-2">
-                          You can do that by using the <a href="#wallet/login=private_key_wallet" data-set-wallet-type="private_key_wallet">private key</a> login option.<br><br>
+                          You can do that by using the <a href="#wallet/login=privatekey_wallet" data-set-wallet-type="privatekey_wallet">private key</a> login option.<br><br>
 
                           Wally.id have also a <a href="#fees">transaction fee calculator</a>, adapt the fees for your needs!
 
@@ -873,7 +894,7 @@
       </div>
     </li>
 
-    <li class="folder-item js_folder-item" data-wallet-type="private_key_wallet" data-formwizard-step="2">
+    <li class="folder-item js_folder-item" data-wallet-type="privatekey_wallet" data-formwizard-step="2">
       <div class="folder-item__icon">
         <img src="./assets/images/wallet_paper.svg" class="icon32">
       </div>
@@ -1084,7 +1105,7 @@
 
 
               <!-- Private Key Wallet -->
-              <div class="multisteps-form__panel hidden animate__animated " data-wallet-type="private_key_wallet">
+              <div class="multisteps-form__panel hidden animate__animated " data-wallet-type="privatekey_wallet">
                 
                 <div class="alert alert-warning animate__animated animate__shakeX">
                   <img src="./assets/images/auctions_and_sales.svg" class="icon32" alt="Under Construction"> <b>Sorry dude, this is not finished yet!</b>
@@ -1173,7 +1194,7 @@
 
     					<div class="callout callout-no-border m-0" >  
                 <div class="form-group form-accept checkbox" >
-                  <p class="alert alert-danger" > Wally.id is a self-custodial multi-blockchain cold wallet.<br>
+                  <p class="alert alert-danger" > Wally.id is a non-custodial multi-blockchain cold wallet.<br>
                   	If you forget your email or password it CANNOT be recovered!<br><br>
                   You need to have your wallet-backup before proceeding!</p>
                   
@@ -2251,7 +2272,16 @@
                 	<div class="col-8 col-sm-4 col-3">
                   
                     <label><abbr title="What is not spent will be used as a transaction fee, so remember to add a &quot;change address&quot;">Transaction Fee</abbr>&nbsp;&nbsp;<a href="javascript:;" id="feesestnewtx"><i class="bi bi-question-lg"></i></a></label>
-                    <input type="text" id="transactionFee" class="form-control" value="0.0000" readonly>
+                    
+
+                    <div class="input-group">
+                      <input id="transactionFee" type="text" class="form-control" value="0.0000" readonly>
+                      <div class="input-group-append">
+                      <span class="input-group-text coin_symbol">BTC</span>
+                      </div>
+                    </div>
+
+
                   </div>
                 </div>
                 
@@ -3085,9 +3115,9 @@
             <div class="row no-gutters tab-body">
               <div class="col-12">
                 <h2 class="card-title">Broadcast Transaction</h2>
-                <h4 class="card-subtitle mb-3 text-muted">into the bitcoin network</h4>
+                <h4 class="card-subtitle mb-3 text-muted">into the <span class="coin_name">Bitcoin</span> blockchain network</h4>
                 <a href="#settings" style="float:right;"><span class="glyphicon glyphicon-cog"></span></a>
-                <p>Enter your hex encoded bitcoin transaction</p>
+                <p>Enter your hex encoded <span class="coin_name">Bitcoin</span> transaction</p>
                 <textarea class="form-control" style="height:125px" id="rawTransaction"></textarea>
                 <br>
                 <div id="rawTransactionStatus" class="alert hidden">
@@ -3989,22 +4019,23 @@
         <div class="row">
           <div class="col-6 col-md-3 col-sm-6 ">
             <!-- Brand -->
-            <div class="footer-brand img-fluid mb-2 "><a href="index.html"><img src="./assets/images/logo/favicon.svg" class="icon48 "> Wally.id</a></div>
+            <div class="footer-brand img-fluid mb-2 "><a href="index.html"><img src="./assets/images/logo/wally_logo_purple_new.svg" class="logotype-purple icon32"  alt="Wally logotype"> </a></div>
             <!-- Text -->
             <p class="mb-2 text-muted">
-              your Keys, your Crypto! 
-              <p>The most powerful, non-custodial decentralized cold wallet!</p>
+              your Keys, your Crypto!
             </p>
+            <p class="mb-3 ">The most powerful, non-custodial decentralized cold wallet!</p>
+            
             <!-- Social -->
             <ul class="list-unstyled list-inline list-social mb-6 mb-md-0">
               <li class="list-inline-item list-social-item">
-                <a href="https://twitter.com/WallyIDOfficial" class="text-decoration-none" target="_blank">
-                <i class="bi bi-twitter"></i>
+                <a href="https://twitter.com/WallyIDOfficial" class="text-decoration-none" target="_blank" alt="Wally.id - Twitter link">
+                  <img src="./assets/images/brands/twitter_logo.svg" class="icon32">
                 </a>
               </li>
               <li class="list-inline-item list-social-item">
-                <a href="https://t.me/wallyid" class="text-decoration-none" target="_blank">
-                <i class="bi bi-telegram"></i>
+                <a href="https://t.me/wallyid" class="text-decoration-none" target="_blank" alt="Wally.id - Telegram link">
+                  <img src="./assets/images/brands/telegram_logo.svg" class="icon32">
                 </a>
               </li>
             </ul>
@@ -4016,58 +4047,69 @@
             </h6>
             <!-- List -->
             <ul class="list-unstyled text-muted mb-6 mb-md-8 mb-lg-0">
+              <li class="mb-0 header_small">
+                New Address
+              </li>
               <li class="mb-0">
                 <a href="#newAddress" data-route="link" data-pagescroll="page_tab_iceee">
-                New Address
+                Address <small>(standard)</small>
                 </a>
               </li>
               <li class="mb-0">
                 <a href="#newSegWit" data-route="link" data-pagescroll="page_tab_iceee">
-                New SegWit Address
+                SegWit Address
                 </a>
               </li>
               <li class="mb-0">
                 <a href="#newMultiSig" data-route="link" data-pagescroll="page_tab_iceee">
-                New Multisig Address
+                Multisig Address
                 </a>
               </li>
               <li class="mb-0">
                 <a href="#newHDaddress" data-route="link" data-pagescroll="page_tab_iceee">
-                New HD Address
+                HD Address
                 </a>
               </li>
               <li class="mb-0">
                 <a href="#newTimeLocked" data-route="link" data-pagescroll="page_tab_iceee">
-                New Time Locked Address
+                Time Locked Address
                 </a>
               </li>
               
               
+              <li class="mb-0 header_small">
+                Transaction
+              </li>
               <li class="mb-1">
                 <a href="#newTransaction" data-route="link" data-pagescroll="page_tab_iceee">
                 New Transaction
                 </a>
               </li>
               <li class="mb-1">
-                <a href="#verify" data-route="link" data-pagescroll="page_tab_iceee">
-                Verify/Decode
-                </a>
-              </li>
-              <li class="mb-1">
                 <a href="#sign" data-route="link" data-pagescroll="page_tab_iceee">
-                Sign
+                Sign Transaction
                 </a>
               </li>
               <li class="mb-1">
                 <a href="#broadcast" data-route="link" data-pagescroll="page_tab_iceee">
-                Broadcast
+                Send Transaction
                 </a>
               </li>
+              
+              <li class="divider-empty"> </li>
+              <li class="mb-1">
+                <a href="#verify" data-route="link" data-pagescroll="page_tab_iceee">
+                Verify/Decode
+                </a>
+              </li>
+
               <li class="mb-1">
                 <a href="#converter" data-route="link" data-pagescroll="page_tab_iceee">
                 Converter
                 </a>
               </li>
+
+              <li class="divider-empty"> </li>
               <li class="mb-1">
                 <a href="#settings" data-route="link" data-pagescroll="page_tab_iceee">
                 Settings
@@ -4111,11 +4153,6 @@
             </h6>
             <!-- List -->
             <ul class="list-unstyled text-muted mb-0">
-              <li class="mb-0">
-                <a href="#!" class="text-reset">
-                Docs [under construction]
-                </a>
-              </li>
               <li class="mb-0">
                 <a href="#about" data-route="link" data-pagescroll="page_tab_iceee">
                 About us
@@ -4451,7 +4488,7 @@
 
     <!-- warning (fee) modal -->
 <div id="modalWarningFee" class="modal fade bootstrap-dialog" tabindex="-1" role="dialog">
-<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
   <div class="modal-content">
     <div class="modal-header">
       <div class="bootstrap-dialog-header">
@@ -4465,7 +4502,7 @@
       <div class="bootstrap-dialog-body">
         <div class="bootstrap-dialog-message">
 
-          Please be aware that you have created a transaction with what seems to be a very high fee of <span id="modalWarningFeeAmount"></span> BTC!
+          Please be aware that you have created a transaction with what seems to be a very high fee of <span id="modalWarningFeeAmount"></span> <span class="coin_symbol">BTC</span>!
 
         </div>
       </div>
@@ -4773,7 +4810,7 @@ iceee - remove me later
           <a href="#wallet/login=multisig_wallet"><img src="./assets/images/keys.svg" class="icon32 mx-2"> Multisig Wallet</a>
         </li>
         <li>
-          <a href="#wallet/login=private_key_wallet"><img src="./assets/images/wallet_paper.svg" class="icon32 mx-2"> Private Key</a>
+          <a href="#wallet/login=privatekey_wallet"><img src="./assets/images/wallet_paper.svg" class="icon32 mx-2"> Private Key</a>
         </li>
         <li>
           <a href="#wallet/login=import_wallet"><img src="./assets/images/wallet_import2.svg" class="icon32 mx-2"> Import Wallet</a>

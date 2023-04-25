@@ -1114,7 +1114,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		/* add an output to a transaction */
 		r.addoutput = function(address, value){
 			var o = {};
-			o.value = new BigInteger('' + Math.round((value*1) * 1e8), 10);
+			o.value = new BigInteger('' + Math.round((value*1) * ("1e"+coinjs.decimalPlaces)), 10);
 			var s = coinjs.script();
 			o.script = s.spendToScript(address);
 
@@ -1154,7 +1154,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 			this.outs.push(v);
 			
 			var o = {};
-			o.value = new BigInteger('' + Math.round((value*1) * 1e8), 10);
+			o.value = new BigInteger('' + Math.round((value*1) * ("1e"+coinjs.decimalPlaces)), 10);
 			var s = coinjs.script();
 			o.script = s.spendToScript(sendaddress);
 			
@@ -1558,6 +1558,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 					}
 				} 
 
+			//console.log('hash: ', hash);
 			hash = Crypto.util.hexToBytes(hash);
 
 			// Generate a low-S ECDSA signature
@@ -1592,6 +1593,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				sig.push(parseInt(shType, 10));
 
 				//console.log('**sig.push: ', Crypto.util.bytesToHex(sig));
+
 
 				return Crypto.util.bytesToHex(sig);
 				
@@ -2545,6 +2547,10 @@ var hash = Crypto.SHA256(message);
 			r += chars.charAt(Math.floor(Math.random() * 62));
 		}
 		return coinjs.generatePass();
+	}
+
+	coinjs.formatAmount = function(amount) {
+		return (amount/("1e"+coinjs.decimalPlaces)).toString() + " " + coinjs.symbol;
 	}
 
 	coinjs.generatePass = function(length) {

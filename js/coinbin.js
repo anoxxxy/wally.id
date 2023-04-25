@@ -256,8 +256,9 @@ profile_data = {
 
 		tx.addUnspent($("#walletAddress").html(), function(data){
 
-			var dvalue = (data.value/100000000).toFixed(8) * 1;
-			total = (total*1).toFixed(8) * 1;
+			//var dvalue = (data.value/100000000).toFixed(8) * 1;	//iceee remove
+			var dvalue = data.value/("1e"+coinjs.decimalPlaces);
+			total = (total*1).toFixed(coinjs.decimalPlaces) * 1;
 
 			if(dvalue>=total){
 				var change = dvalue-total;
@@ -340,7 +341,7 @@ profile_data = {
 			}
 		});
 
-		total = total.toFixed(8);
+		total = total.toFixed(coinjs.decimalPlaces);
 
 		if($("#walletSpend .has-error").length==0){
 			var balance = ($("#walletBalance").html()).replace(/[^0-9\.]+/g,'')*1;
@@ -380,7 +381,8 @@ profile_data = {
 			$("#walletLoader").removeClass("hidden");
 			coinjs.addressBalance($("#walletAddress").html(),function(data){
 				if($(data).find("result").text()==1){
-					var v = $(data).find("balance").text()/100000000;
+					//var v = $(data).find("balance").text()/100000000;	//iceee remove
+					var v = $(data).find("balance").text()/("1e"+coinjs.decimalPlaces);
 					$("#walletBalance").html(v+" BTC").attr('rel',v).fadeOut().fadeIn();
 				} else {
 				$("#walletBalance").html("0.00 BTC").attr('rel',v).fadeOut().fadeIn();
@@ -1381,7 +1383,7 @@ profile_data = {
 						$("#recipients .mediator_"+pubkey+" .bi-plus:first").removeClass('bi-plus');
 						$("#recipients .mediator_"+pubkey+" .address:first").val(payto).attr('disabled', true).attr('readonly',true).attr('title','Medation fee for '+$(mo).html());
 
-						var amount = ((fee*$("#totalInput").html())/100).toFixed(8);
+						var amount = ((fee*$("#totalInput").html())/100).toFixed(coinjs.decimalPlaces);
 						$("#recipients .mediator_"+pubkey+" .amount:first").attr('disabled',(((amount*1)==0)?false:true)).val(amount).attr('title','Medation fee for '+$(mo).html());
 					}
 				});
@@ -1410,7 +1412,9 @@ profile_data = {
 				s = coinjs.script();
 				s.writeBytes(Crypto.util.hexToBytes(script));
 				s.writeOp(0);
-				s.writeBytes(coinjs.numToBytes((amount*100000000).toFixed(0), 8));
+				//s.writeBytes(coinjs.numToBytes((amount*100000000).toFixed(0), 8));	//icee remove
+				s.writeBytes(coinjs.numToBytes((amount*("1e"+coinjs.decimalPlaces)).toFixed(0), 8));
+				
 				script = Crypto.util.bytesToHex(s.buffer);
 			}
 
@@ -1444,7 +1448,7 @@ profile_data = {
 				$.each($(data).find("inputs").children(), function(i,o){
 					var tx = $(o).find("txid").text();
 					var n = $(o).find("output_no").text();
-					var amount = (($(o).find("value").text()*1)).toFixed(8);
+					var amount = (($(o).find("value").text()*1)).toFixed(coinjs.decimalPlaces);
 
 					var scr = $(o).find("script").text();
 
@@ -1479,7 +1483,9 @@ profile_data = {
 					var tx = $(o).find("tx_hash").text();
 					var n = $(o).find("tx_output_n").text();
 					var script = (redeem.redeemscript==true) ? redeem.decodedRs : $(o).find("script").text();
-					var amount = (($(o).find("value").text()*1)/100000000).toFixed(8);
+					//var amount = (($(o).find("value").text()*1)/100000000).toFixed(coinjs.decimalPlaces);	//iceee remove
+					var amount = (($(o).find("value").text()*1)/("1e"+coinjs.decimalPlaces)).toFixed(coinjs.decimalPlaces);
+					
 
 					addOutput(tx, n, script, amount);
 				});
@@ -1519,7 +1525,9 @@ profile_data = {
 						if(tx.match(/^[a-f0-9]+$/)){
 							var n = o.tx_output_n;
 							var script = (redeem.redeemscript==true) ? redeem.decodedRs : o.script;
-							var amount = ((o.value.toString()*1)/100000000).toFixed(8);
+							//var amount = ((o.value.toString()*1)/100000000).toFixed();	//icee remove
+							var amount = ((o.value.toString()*1)/("1e"+coinjs.decimalPlaces)).toFixed(coinjs.decimalPlaces);
+							
 							addOutput(tx, n, script, amount);
 						}
 					}
@@ -1577,7 +1585,9 @@ profile_data = {
 						if(tx.match(/^[a-f0-9]+$/)){
 							var n = o.index;
 							var script = (redeem.redeemscript==true) ? redeem.decodedRs : all_info.address.script_hex;
-							var amount = ((o.value.toString()*1)/100000000).toFixed(8);
+							//var amount = ((o.value.toString()*1)/100000000).toFixed(8);	//icee remove
+							var amount = ((o.value.toString()*1)/("1e"+coinjs.decimalPlaces)).toFixed(("1e"+coinjs.decimalPlaces));
+
 							addOutput(tx, n, script, amount);
 						}
 					}
@@ -1790,7 +1800,9 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 							var n = o.tx_output_n;
 							var script = (redeem.redeemscript==true) ? redeem.decodedRs : o.script;
 							console.log('script: '+ script);
-							var amount = (o.value /100000000).toFixed(8);;
+							//var amount = (o.value /100000000).toFixed(8);;		//icee remove
+							var amount = (o.value /("1e"+coinjs.decimalPlaces)).toFixed(coinjs.decimalPlaces);
+							
 							console.log(tx, n, script, amount)
 							addOutput(tx, n, script, amount);
 						}
@@ -1812,7 +1824,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 		  url: "https://chainz.cryptoid.info/"+network+"/api.dws?key=1205735eba8c&q=unspent&active="+ redeem.addr,
 		  dataType: "json",
 		  error: function() {
-			$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs! blk test function error');
+			$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs!');
 		  },
 		  success: function(data) {
 			//if($(data).find("unspent_outputs").text()==1){
@@ -1824,7 +1836,9 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 						if(tx.match(/^[a-f0-9]+$/)){
 							var n = o.tx_ouput_n;
 							var script = (redeem.isMultisig==true) ? $("#redeemFrom").val() : o.script;
-							var amount = (o.value /100000000).toFixed(8);;
+							var amount = (o.value /100000000).toFixed(8);	//Cryptoid returns 8 decimals independently from the assets decimals number
+							//var amount = (o.value /("1e"+coinjs.decimalPlaces)).toFixed(coinjs.decimalPlaces);
+							
 							console.log(tx, n, script, amount)
 							addOutput(tx, n, script, amount);
 						}
@@ -1859,7 +1873,8 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 				if(!isNaN(ia)){
 					f += ia*1;
 				}
-				$("#totalInput").text((($("#totalInput").text()*1) + (f)).toFixed(8));
+				//$("#totalInput").text((($("#totalInput").text()*1) + (f)).toFixed(8));	//icee removee
+				$("#totalInput").text((($("#totalInput").text()*1) + (f*1)).toFixed(coinjs.decimalPlaces));
 			}
 		});
 		totalFee();
@@ -1868,7 +1883,8 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 	function validateOutputAmount(){
 		console.log('===validateOutputAmount===');
 		
-		$("#recipients .amount").keyup(function(){
+		$("body").on("keyup", "#recipients .amount", function(e){
+		//$("#recipients .amount").keyup(function(){
 			if(isNaN($(this).val())){
 				$(this).parent().addClass('has-error');
 				$(this).addClass('is-invalid');
@@ -1881,7 +1897,8 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 						f += $(o).val()*1;
 					}
 				});
-				$("#totalOutput").text((f).toFixed(8));
+				//$("#totalOutput").text((f).toFixed(8));	//ICEEE REmoveeeeeee
+				$("#totalOutput").text((f).toFixed(coinjs.decimalPlaces));
 			}
 			totalFee();
 		}).keyup();
@@ -1898,7 +1915,8 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 
 	function totalFee(){
 		console.log('===totalFee===');
-		var fee = (($("#totalInput").text()*1) - ($("#totalOutput").text()*1)).toFixed(8);
+		//var fee = (($("#totalInput").text()*1) - ($("#totalOutput").text()*1)).toFixed(8);	//iceee removeee
+		var fee = (($("#totalInput").text()*1) - ($("#totalOutput").text()*1)).toFixed(coinjs.decimalPlaces);
 		console.log('insAmount:'+$("#totalInput").text()*1);
 		console.log('outsAmount:'+$("#totalOutput").text()*1);
 		$("#transactionFee").val((fee>0)?fee:'0.00');
@@ -1924,12 +1942,17 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 			//fix coinbin broadcast here
 		} else if (wally_fn.provider.broadcast == 'Cryptoid.info') {
 			rawSubmitCryptoid(this, coinjs.asset.api.broadcast['Cryptoid.info']);
+		//} else if (wally_fn.provider.broadcast == 'ElectrumX') {
+		} else if ( (wally_fn.provider.broadcast).includes('ElectrumX') ){
+			rawSubmitElectrum(this, coinjs.asset.api.broadcast['ElectrumX']);
 		} else if (wally_fn.provider.broadcast == 'Blockchain.info') {
 			rawSubmitBlockhaininfo(this, coinjs.asset.api.broadcast['Blockchain.info']);
-		}else {
+		} else {
 			rawSubmitDefault(this);
 		}
 	});
+
+	
 
 	// broadcast transaction via coinbin (default)
 	function rawSubmitDefault(btn){ 
@@ -1971,7 +1994,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 				var r = ' ';
 				r += (obj.data.tx_hex) ? obj.data.tx_hex : '';
 				r = (r!='') ? r : ' Failed to broadcast'; // build response 
-				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
+				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i> ');
 			},
                         success: function(data) {
 				if(data.status && data.data.txid){
@@ -2064,6 +2087,8 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 
 	}
 
+
+
 	
 	
 
@@ -2111,6 +2136,44 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 		});
 	}
 
+	// broadcast transaction via electrumx node
+	function rawSubmitElectrum(thisbtn, ticker){ 
+		//https://wally.id/api/x.php?asset=nvc&method=blockchain.transaction.broadcast&server=failover.nvc.ewmcx.biz:50002&rawtx=01000000c6c84364019b3797aaa753f7edbe8810d49c32a07df4a6e56eaf5db4d08430ea0c6de03fae010000006a473044022041280eca4f49bb346c9a20a273de67f7da92e913e92f6655fe8cef09ac91f0fd02202ebbb0255a724e11a437b628c175a662dcfdef3d4201a6b54dea2d4d1294ad7c012103d928fc52610164842551bdd92597f7b22c9a1673f63c36741e40a42f8a24d174feffffff010003164e020000001976a914e40ec92c5974904ad43f03a1b156bb2b6de4c9fd88ac00000000
+
+		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
+		var electrum_node = 'failover.nvc.ewmcx.biz:50002';
+		var ticker = (coinjs.asset.symbol).toLowerCase();
+		var rawtx = $("#rawTransaction").val();
+		$.ajax ({
+			type: "POST",
+			url: "https://wally.id/api/x.php?asset="+ticker+"&method=blockchain.transaction.broadcast&server="+electrum_node+"&rawtx="+rawtx,
+			data: rawtx,
+			error: function(data) {
+				var r = 'Failed to broadcast';
+				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
+			},
+            success: function(data) {
+					
+            	var r;
+
+            	if (data.result) {
+					var txid = data.result;
+					$("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden").html(' TXID: ' + txid + '<br> <a href="https://chainz.cryptoid.info/'+ticker+'/tx.dws?'+txid+'.htm" target="_blank">View on Blockchain Explorer</a>');
+				} else if (data.hasOwnProperty('error') ) {
+					r = 'Failed to Broadcast. ElectrumX response: <br>'
+					r += '<div class="alert alert-light">'+data.error.message+'</div>';
+					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i> ');
+				} else {
+					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again later...').prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
+				}
+
+			},
+			complete: function(data, status) {
+				$("#rawTransactionStatus").fadeOut().fadeIn();
+				$(thisbtn).val('Submit').attr('disabled',false);
+			}
+		});
+	}
 
 	// broadcast transaction via blockcypher.com (mainnet)
 	function rawSubmitBlockcypher(thisbtn, network){ 
@@ -2121,7 +2184,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 			data: JSON.stringify({"tx":$("#rawTransaction").val()}),
 			error: function(data) {
 				var r = 'Failed to broadcast: error code=' + data.status.toString() + ' ' + data.statusText;
-				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
+				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i> ');
 			},
                         success: function(data) {
 				if((data.tx) && data.tx.hash){
@@ -2348,7 +2411,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 					h += '<tr>';
 					h += '<td><input type="text" class="form-control" value="(OP_RETURN) '+data+'" readonly></td>';
 					h += '<td class="col-5"><input class="form-control" type="text" value="'+Crypto.util.bytesToHex(o.script.buffer)+'" readonly></td>';
-					h += '<td class="col-1">'+(o.value/100000000).toFixed(8)+'</td>';
+					h += '<td class="col-1">'+(o.value/("1e"+coinjs.decimalPlaces)).toFixed(coinjs.decimalPlaces)+'</td>';
 					h += '</tr>';
 				} else {
 
@@ -2367,7 +2430,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 					h += '<tr>';
 					h += '<td><input class="form-control" type="text" value="'+addr+'" readonly></td>';
 					h += '<td class="col-5"><input class="form-control" type="text" value="'+Crypto.util.bytesToHex(o.script.buffer)+'" readonly></td>';
-					h += '<td class="col-1">'+(o.value/100000000).toFixed(8)+'</td>';
+					h += '<td class="col-1">'+(o.value/("1e"+coinjs.decimalPlaces)).toFixed(coinjs.decimalPlaces)+'</td>';
 					h += '</tr>';
 				}
 			});
@@ -3312,11 +3375,13 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 		var totalBytes = 10 + outputsBytes + inputsBytes;
 		if((!isNaN($("#fees .feeSatByte:first").html())) && totalBytes > 10){
-			var recommendedFee = ((totalBytes * $(".feeSatByte").html())/100000000).toFixed(8);
+			//var recommendedFee = ((totalBytes * $(".feeSatByte").text())/100000000).toFixed(8);	//icee remove
+			var recommendedFee = ((totalBytes * $(".feeSatByte").text())/("1e"+coinjs.decimalPlaces)).toFixed(coinjs.decimalPlaces);
+			
 			$(".recommendedFee").html(recommendedFee);
 			$(".feeTxSize").html(totalBytes);
 		} else {
-			$(".recommendedFee").html((0).toFixed(8));
+			$(".recommendedFee").html((0).toFixed(coinjs.decimalPlaces));
 			$(".feeTxSize").html(0);
 		}
 	};

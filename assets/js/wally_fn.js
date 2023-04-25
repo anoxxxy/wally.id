@@ -1116,43 +1116,7 @@ testar('3aa').then((data) => {
         txRBFTransaction: false,
         developer: 'iceeeee',
       },
-      nexus : {
-        symbol: 'NXS',      //ticker
-        asset: {
-          chainModel: 'utxo',
-          name: 'Nexus',
-          version: 4,
-          slug: 'nexus',
-          symbol: 'NXS',
-          symbols: ['nxs', 'nexus'],
-          icon: './assets/images/crypto/nexus-nxs-logo.svg',
-          network: 'mainnet',
-          supports_address : ['compressed', 'uncompressed'],
-          api : {
-            unspent_outputs: {
-              'Cryptoid.info': 'nxs'
-            },
-            broadcast: {
-              'Cryptoid.info': 'nxs'
-            }
-          }
-        },
-        pub : 0xfd,      //pubKeyHash     OP_PUBKEYHASH = 0xfd, https://github.com/Nexusoft/Legacy/blob/v0.2.0.0/src/wallet/script.h
-        priv : 0xfe,     //wif            OP_PUBKEY = 0xfe,
-        multisig : 0xfb, //scriptHash     OP_PUBKEYS = 0xfb, OP_PUBKEYSCRIPT
-
-
-          hdkey : {'prv':0x02cfbf60, 'pub':0x02cfbede},
-          bech32 : {},
-          
-        txExtraTimeField: true,    //Set to true for PoS coins
-        txExtraTimeFieldValue: false,
-        txExtraUnitField: false,
-        txExtraUnitFieldValue: false,
-        decimalPlaces:8,
-        txRBFTransaction: false,
-        developer: 'iceeeee',
-      },
+      
       potcoin : {
         symbol: 'POT',      //ticker
         asset: {
@@ -1173,19 +1137,7 @@ testar('3aa').then((data) => {
               'Cryptoid.info': 'pot'
             }
           },
-          network_: {
-            protocol : {
-              chain: {
-                model: 'utxo',
-                family: '', //has to do with TX serialization and de-serialization
-              },
-              version: 4,
-              network: 'main',  //main,test
-
-
-            }
-
-          },
+          
         },
         /*oinjs_multisig").value = "0x5";
         
@@ -1209,7 +1161,7 @@ testar('3aa').then((data) => {
           bech32 : {},
           //magic: hex('fbc0b6db'),
           
-        txExtraTimeField: true,    //Set to true for PoS coins
+        txExtraTimeField: true,    //Set to true for PoSV coins
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
@@ -1235,19 +1187,6 @@ testar('3aa').then((data) => {
             broadcast: {
               'Cryptoid.info': 'il8p'
             }
-          },
-          network_: {
-            protocol : {
-              chain: {
-                model: 'utxo',
-                family: '', //has to do with TX serialization and de-serialization
-              },
-              //version: 4,
-              network: 'main',  //main,test
-
-
-            }
-
           },
         },
         pub : 0x21,      //pubKeyHash
@@ -1283,19 +1222,7 @@ testar('3aa').then((data) => {
               'Cryptoid.info': 'aby'
             }
           },
-          network_: {
-            protocol : {
-              chain: {
-                model: 'utxo',
-                family: '', //has to do with TX serialization and de-serialization
-              },
-              //version: 4,
-              network: 'main',  //main,test
 
-
-            }
-
-          },
         },
         pub : 28,      //pubKeyHash
         priv : 153,     //wif
@@ -1329,19 +1256,6 @@ testar('3aa').then((data) => {
             broadcast: {
               'Cryptoid.info': 'zet'
             }
-          },
-          network_: {
-            protocol : {
-              chain: {
-                model: 'utxo',
-                family: '', //has to do with TX serialization and de-serialization
-              },
-              //version: 4,
-              network: 'main',  //main,test
-
-
-            }
-
           },
         },
         pub : 20,      //pubKeyHash
@@ -1377,19 +1291,7 @@ testar('3aa').then((data) => {
               'Cryptoid.info': 'xvc'
             }
           },
-          network_: {
-            protocol : {
-              chain: {
-                model: 'utxo',
-                family: '', //has to do with TX serialization and de-serialization
-              },
-              //version: 4,
-              network: 'main',  //main,test
 
-
-            }
-
-          },
         },
         pub : 18,      //pubKeyHash, PUBKEY_ADDRESS
         priv : 181,     //wif, SECRET_KEY
@@ -1404,6 +1306,54 @@ testar('3aa').then((data) => {
         decimalPlaces:8,
         txRBFTransaction: false,
         developer: '8RTwrgaA9sSTokWJsJN5tc9f3QKWJuAdzD',
+      },
+      novacoin: {
+        symbol: 'NVC',      //ticker
+        asset: {
+          chainModel: 'utxo',
+          name: 'Novacoin',
+          slug: 'novacoin',
+          symbol: 'NVC',
+          symbols: ['nvc', 'novacoin'],
+          icon: './assets/images/crypto/novacoin-nvc-logo.svg',
+          network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed'],
+          api : {
+            unspent_outputs: {
+              'Cryptoid.info': 'nvc'
+            },
+            broadcast: {
+              'Cryptoid.info': 'nvc',
+              'ElectrumX-1': 'electrumx.nvc.ewmcx.org:50002',
+              'ElectrumX-2': 'failover.nvc.ewmcx.biz:50002',
+            }
+          },
+          social: {
+            discord : {
+              official: 'https://discord.gg/6juXnsSkGa',
+            },
+            telegram : {
+              english: 'https://t.me/NovaCoin_EN',
+              russian: 'https://t.me/NovaCoin_RU',
+            },
+            twitter : {
+              official: '',
+            },
+          },
+        },
+        pub : 0x08,      //pubKeyHash, "pubtype": 8,
+        priv : 0x88,     //wif, "wiftype": 136,
+        multisig : 0x14, //scriptHash, "p2shtype": 20,
+          hdkey : {'prv':0x0488ade4 /*EXT_SECRET_KEY*/, 'pub':0x0488b21e /*EXT_PUBLIC_KEY*/}, //bip32
+          bech32 : {},
+          
+        txExtraTimeField: true,    //Set to true for PoS coins
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:6,
+        txRBFTransaction: false,
+        developer: '4aVgewjg8oD3Taur5Stx694GbVNCjz9o8q',
       },
     },
 
@@ -1565,6 +1515,7 @@ testar('3aa').then((data) => {
         txRBFTransaction: false,
         developer: 'iceeeee',
       },
+
       dogecoin : {
         symbol: 'tDOGE',      //ticker
         asset: {
@@ -1632,6 +1583,49 @@ testar('3aa').then((data) => {
         decimalPlaces:16,
         txRBFTransaction: false,
         developer: '0x000',
+      },
+      nexus : {
+        symbol: 'NXS',      //ticker
+        asset: {
+          chainModel: 'utxo',
+          name: 'Nexus',
+          version: 4,
+          slug: 'nexus',
+          symbol: 'NXS',
+          symbols: ['nxs', 'nexus'],
+          icon: './assets/images/crypto/nexus-nxs-logo.svg',
+          network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed'],
+          api : {
+            unspent_outputs: {
+              'Cryptoid.info': 'nxs'
+            },
+            broadcast: {
+              'Cryptoid.info': 'nxs'
+            }
+          }
+        },
+        pub : 0xfe,      //pubKeyHash     OP_PUBKEYHASH = 0xfd, https://github.com/Nexusoft/Legacy/blob/v0.2.0.0/src/wallet/script.h
+        priv : 0xfd,     //wif            OP_PUBKEY = 0xfe,
+        multisig : 0xfb, //scriptHash     OP_PUBKEYS = 0xfb, OP_PUBKEYSCRIPT
+
+/*
+    pub : 0xfd,      //pubKeyHash     OP_PUBKEYHASH = 0xfd, https://github.com/Nexusoft/Legacy/blob/v0.2.0.0/src/wallet/script.h
+        priv : 0xfe,     //wif            OP_PUBKEY = 0xfe,
+        multisig : 0xfb, //scriptHash     OP_PUBKEYS = 0xfb, OP_PUBKEYSCRIPT
+
+
+*/
+          hdkey : {'prv':0x02cfbf60, 'pub':0x02cfbede},
+          bech32 : {},
+          
+        txExtraTimeField: true,    //Set to true for PoS coins
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:8,
+        txRBFTransaction: false,
+        developer: 'iceeeee',
       },
     }
 

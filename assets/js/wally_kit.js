@@ -61,11 +61,11 @@
         $.extend(coinjs, wally_fn.networks[network_var][asset_var]);
         //Object.assign(coinjs, (wally_fn.networks[network_var][asset_var]))
         
-        //updated network and assets settings should always be shown as a message!
-        options.showMessage = true;
 
         //dabi, save copy of "asset" object, for data-binding purpose (UI) !
         Object.assign(wally_fn.assetInfo, coinjs.asset);
+        $('.coin_symbol').text(coinjs.asset.symbol);
+        $('.coin_name').text(coinjs.asset.name);
 
         wally_fn.chainModel = coinjs.asset.chainModel;
 
@@ -75,7 +75,7 @@
         document.querySelector('#modalChangeAsset input[name="set-asset-group"][value="'+asset_var+'"]').checked = true;
 
 
-        //hide/show fields relative to updated Network
+        //hide/show fields for updated Network protocol
         if (coinjs.txRBFTransaction) {
           $("#txRbfTransactionOptional").show();
           $('#txRBF').prop('checked', false);
@@ -171,12 +171,58 @@
           console.log('wallet page');
           //alert('sign page');
           
+          console.log('data: ', data);
+          console.log('Router.urlParams: ', Router.urlParams);
+          
+          //no portfolio panel is not active, route back to open portfolio
+          if(login_wizard.openWalletType == '')
+            Router.navigate('wallet');  
 
-          //
           //set view to (history-hash) wallet type
-          if (Router.urlParams.login) {
+          if (Router.urlParams.login && Router.urlParams.login == login_wizard.openWalletType) { //we navigate only to the selected portfolio, even after a refresh
             $('#js_folder-content li.folder-item[data-wallet-type="'+Router.urlParams.login+'"]').click();
+            console.log('wallet portfolio in target: ' + login_wizard.openWalletType);
+          } 
+            
+
+          //if(data[1] == '/login=multisig_wallet')
+          if (Router.urlParams.login == 'regular_wallet'){
+            //hide next button
+            $('#openBtnNext').removeClass('hidden');
+            //show open wallet button
+            $('#openBtn').addClass('hidden');
           }
+          if (Router.urlParams.login == 'multisig_wallet'){
+            $('#openBtnNext').removeClass('hidden');
+            $('#openBtn').addClass('hidden'); 
+          }
+          if (Router.urlParams.login == 'privatekey_wallet'){
+            $('#openBtnNext').removeClass('hidden');
+            $('#openBtn').addClass('hidden'); 
+            
+          }
+          if (Router.urlParams.login == 'import_wallet'){
+            $('#openBtnNext').removeClass('hidden');
+            $('#openBtn').addClass('hidden'); 
+            
+          }
+          if (Router.urlParams.login == 'mnemonic_wallet'){
+            $('#openBtnNext').removeClass('hidden');
+            $('#openBtn').addClass('hidden'); 
+            
+          }
+          if (Router.urlParams.login == 'hdmaster_wallet'){
+            $('#openBtnNext').removeClass('hidden');
+            $('#openBtn').addClass('hidden'); 
+          }
+          if (Router.urlParams.login == 'terms'){
+            /*$('#openBtnNext').addClass('hidden');
+            $('#openBtn').addClass('hidden'); 
+            console.log('hideeeeeeeeeeeeeen');
+            */
+          }
+
+
         })
         .add(/about(.*)/, function(data){
           console.log('**about page**');
@@ -896,6 +942,10 @@ const shootPeasPromise = (...args) => {
     //wally_fn.provider.broadcast = optionsText;
     
     console.log('changed Broadcast Provider to: '+ optionsText);
+    console.log('changed Broadcast Provider to: ', e);
+    console.log('this.selectedIndex: '+ this.selectedIndex);
+    console.log('this.options: ', this.options);
+
   });
 
 /*Settings dropdown-select listener*/

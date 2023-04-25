@@ -8,7 +8,7 @@
   /*  vars */
   login_wizard.openWalletType ='';  //variable to define what type of wallet to open
   login_wizard.openBtnNextStepPanel = ''; //keep track of open wallet "internal next form panels"
-  login_wizard.panelStepNames = ["regular_wallet", "multisig_wallet", "private_key_wallet", "import_wallet", "mnemonic_wallet", "hdmaster_wallet", "terms"];
+  login_wizard.panelStepNames = ["regular_wallet", "multisig_wallet", "privatekey_wallet", "import_wallet", "mnemonic_wallet", "hdmaster_wallet", "terms"];
   login_wizard.wallet_credentials = "";
 
   //***Error message handling!
@@ -183,6 +183,7 @@
 
 
       //***No Errors! Proceed Login - with private key generation!
+      console.log('**No Errors! Proceed Login - with private key generation!');
       //prepare values for profile data
       login_wizard.profile_data.choosen = {"coin": "coin_name", "address" : "coin_address"};  //choosen coin to handle
       login_wizard.profile_data.signatures = signatures;
@@ -262,8 +263,9 @@ hex key should not be higher then that!
       return ;
 
     } catch (err) {
+      console.log('LOGIN.ERROR Catch: ', err);
       //show Next button
-      $('#openBtnNext').addClass('hidden');
+      //$('#openBtnNext').addClass('hidden');
 
       login_wizard.openBtnNextStepPanel = ''; //reset the next internal step so validation must be valid!
       login_wizard.errorMessage = err;
@@ -713,7 +715,7 @@ const getStepNumberFromName = stepName => {
   if(stepName == 'multisig_wallet'){  //redirect to regular_wallet and show the multisig fields (multisig-group)
     stepFound=1;
   }
-  if(stepName == 'private_key_wallet'){
+  if(stepName == 'privatekey_wallet'){
     stepFound=2;
   }
   if(stepName == 'import_wallet'){
@@ -1021,7 +1023,7 @@ $('#openBtnSetActivePanel').on("click",function() {
     var termsIsChecked = document.getElementById('openCheckAcceptTerms').checked;
     var backupDownloadIsChecked = document.getElementById('openCheckBackupDownloaded').checked;
     var backupIsAlreadySavedChecked = document.getElementById('openCheckBackupAlreadySaved').checked;
-
+a
     
 
     if (termsIsChecked && (backupDownloadIsChecked || backupIsAlreadySavedChecked)) {
@@ -1061,6 +1063,8 @@ $('#openBtnSetActivePanel').on("click",function() {
       // Start file download.
       login_wizard.downloadFile("wally.wallet_credentials.txt", login_wizard.wallet_credentials);
       document.getElementById('openCheckBackupDownloaded').checked = true;
+      document.getElementById('openCheckBackupAlreadySaved').checked = true;
+
       loginBtnProceed();
 
       BootstrapDialog.show({
@@ -1518,7 +1522,7 @@ loginBtnNext.on("click",function() {
       walletType = "multisig";
       login_wizard.validateLogin('password', walletType, 2);
     }
-    if(login_wizard.openWalletType == "private_key_wallet"){
+    if(login_wizard.openWalletType == "privatekey_wallet"){
       walletType = "multisig/regular";
       //login_wizard.validateLogin('private_key', walletType, 'm-of-n');
     }
