@@ -34,6 +34,8 @@
 
     <link rel="stylesheet" href="./assets/css/panel-menu/zeynep.css" media="screen">
 
+    <!-- jBox modal/tooltip/popover/notice -->
+    <link rel="stylesheet" href="./assets/css/jbox/jBox.css" media="screen">
 
     <!-- <link rel="stylesheet" href="./assets/css/buttons.css" media="screen"> -->
     <link rel="stylesheet" href="./assets/css/style.css" media="screen">
@@ -48,12 +50,16 @@
     <!-- router library-->
     <script type="text/javascript" src="./assets/js/router.js" ></script>
 
+    
     <!-- animation library-->
     <script type="text/javascript" src="./assets/js/anime-v.3.2.1..min.js" ></script>
 
     <!-- Boostrap / JQuery / JS -->
     <script type="text/javascript" src="./assets/js/jquery-3.6.1.min.js" ></script>
     
+    <!-- jBox modal/tooltip/popover/notice -->
+    <script type="text/javascript" src="./assets/js/jbox/jBox.min.js" ></script>
+
     <!-- Panel-Menu -->
     <script type="text/javascript" src="./assets/js/panel-menu/zeynep.js" ></script>
 
@@ -76,7 +82,7 @@
     
     <!-- <script type="text/javascript" src="./assets/js/buttons.js"></script> -->
 
-    <script type="text/javascript" src="./assets/js/wally_fn.js?version=xyz&subv=2"></script><!-- Internal Wally functions -->
+    <script type="text/javascript" src="./assets/js/wally_fn.js?version=xyz3"></script><!-- Internal Wally functions -->
 
     
 
@@ -324,11 +330,15 @@
           <div class="bottom-section">
             <ul>
               <li>
+                <a href="https://github.com/anoxxxy" alt="Wally.id - Official Github repo"><img src="./assets/images/brands/github_logo.svg" class="icon32"> Github</a>
+              </li>
+              <li>
                 <a href="https://t.me/wallyid" alt="Wally.id - Official Telegram group"><img src="./assets/images/brands/telegram_logo.svg" class="icon32"> Telegram</a>
               </li>
               <li>
                 <a href="https://twitter.com/WallyIDOfficial" alt="Wally.id - Official Twitter group"><img src="./assets/images/brands/twitter_logo.svg" class="icon32"> Twitter</a>
               </li>
+              
             </ul>
           </div>
         </div>
@@ -429,7 +439,7 @@
                       </h3>
                       <!-- Text -->
                       <p class="text-muted mb-0">
-                        We support <a href="#newAddress">regular addresses</a>, <a href="#newMultiSig">multisig</a>, <a href="#newSegWit">segwit / bech32</a> and <a href="#newTimeLocked">time locked</a> addresses.
+                        We support <a href="#newAddress">standard addresses</a>, <a href="#newMultiSig">multisig</a>, <a href="#newSegWit">segwit / bech32</a>, <a href="#newTimeLocked">time locked</a> and custom seed addresses.
 
                         <br>Wally.id has zero access to your credentials. Your privacy is our top priority!
 
@@ -531,7 +541,7 @@
                       </h3>
                       <!-- Text -->
                       <p class="text-muted mb-0">
-                         We are constantly developing and adding new features to improve our product. You can find us at <a href="https://github.com/OutCast3k/coinbin/">github</a>.
+                         We are constantly developing and adding new features to improve our product. You can find us at <a href="https://github.com/anoxxxy">github</a>.
                       </p>
                     </div>
                   </div>
@@ -843,10 +853,10 @@
     </div>
     <div class="folder-summary__details">
       <div class="folder-summary__details__name">
-        Portfolio
+        Wallet Portfolio
       </div>
       <div class="folder-summary__details__subname">
-        Choose your wallet type
+        Select Wallet Type
       </div>
     </div>
     <div class="folder-summary__end">
@@ -971,7 +981,7 @@
               </div>
 
               <div class="alert alert-light text-center">
-                Choose your wallet to connect!
+                Choose a wallet type to connect!
               </div>
 
             </div>
@@ -1654,8 +1664,8 @@
                   <div class="input-group hidden">
                     <input type="text" class="form-control mb-2" id="brainwallet">
                     <div class="input-group-append">
-                      <span class="input-group-text cursor-pointer generatePassword" data-input-for="#brainwallet" data-toggle="popover" data-trigger="hover" data-placement="top"  data-content="We use Crypto Random and Fisher-Yates Shuffle Algorithm!">Generate</span>
-                      <span class="input-group-text cursor-pointer" data-input-for="#brainwallet" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top" data-easein="slideUpBigIn" ><i class="bi bi-gear-fill"></i></span>
+                      <span class="input-group-text cursor-pointer generatePassword" data-input-for="#brainwallet">Generate</span>
+                      <span class="input-group-text cursor-pointer brainWalletPwdGenerator" data-input-for="#brainwallet" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top"  ><i class="bi bi-gear-fill"></i></span>
                     </div>
                   </div>
 
@@ -1736,7 +1746,7 @@
                     <input type="text" class="form-control mb-2" id="brainwalletSegWit">
                     <div class="input-group-append">
                       <span class="input-group-text cursor-pointer generatePassword" data-input-for="#brainwalletSegWit">Generate</span>
-                      <span class="input-group-text cursor-pointer" data-input-for="#brainwalletSegWit" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top" data-easein="slideUpBigIn"><i class="bi bi-gear-fill"></i></span>
+                      <span class="input-group-text cursor-pointer" data-input-for="#brainwalletSegWit" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top"><i class="bi bi-gear-fill"></i></span>
                     </div>
                   </div>
 
@@ -1944,14 +1954,14 @@
                 <div class="input-group">
                   <input id="newHDxpub" type="text" class="form-control" value="" readonly>
                   <div class="input-group-append">
-                  <div class="deriveHDbtn input-group-text cursor-pointer" title="Derive from Public Key"><i class="bi bi-caret-right-fill"></i> </div>
+                  <button class="deriveHDbtn form-control btn btn-flat-primary" disabled title="Derive from Public Key"><i class="bi bi-caret-right-fill"></i> </button>
                   </div>
                 </div>
                 <label>xPrv Address</label>
                 <div class="input-group">
                   <input id="newHDxprv" type="text" class="form-control" value="" readonly>
                   <div class="input-group-append">
-                  <div class="deriveHDbtn input-group-text cursor-pointer" title="Derive from Private Key"><i class="bi bi-caret-right-fill"></i> </div>
+                  <button class="deriveHDbtn form-control btn btn-flat-primary" disabled title="Derive from Private Key"><i class="bi bi-caret-right-fill"></i> </button>
                   </div>
                 </div>
                 <h5 class="py-2 mt-4">Address Options</h5>
@@ -1963,7 +1973,7 @@
                     <input type="text" class="form-control mb-2" id="HDBrainwallet">
                     <div class="input-group-append">
                       <span class="input-group-text cursor-pointer generatePassword" data-input-for="#HDBrainwallet">Generate</span>
-                      <span class="input-group-text cursor-pointer" data-input-for="#HDBrainwallet"  data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top" data-easein="slideUpBigIn"><i class="bi bi-gear-fill"></i></span>
+                      <span class="input-group-text cursor-pointer" data-input-for="#HDBrainwallet"  data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top"><i class="bi bi-gear-fill"></i></span>
                     </div>
                   </div>
 
@@ -2277,7 +2287,7 @@
                     <div class="input-group">
                       <input id="transactionFee" type="text" class="form-control" value="0.0000" readonly>
                       <div class="input-group-append">
-                      <span class="input-group-text coin_symbol">BTC</span>
+                      <span class="form-control input-group-text coin_symbol">BTC</span>
                       </div>
                     </div>
 
@@ -2752,8 +2762,10 @@
                     <div>Format: <span class="privkey_format"></span></div>
                     <div class="text-muted py-1"><small><b>Is compressed</b>: <span class="iscompressed"></span></small></div>
 
-                    <div class="callout-title text-muted text-primary">Address</div>
-                    <input type="text" class="form-control address" readonly></p>
+                    <div class="input-group-callout">
+                      <div class="callout-title text-muted text-primary">Address</div>
+                      <input type="text" class="form-control address" readonly></p>
+                    </div>
 
                     <div class="callout-title text-muted text-primary">Public key</div>
                     <input type="text" class="form-control pubkey" readonly></p>
@@ -2792,8 +2804,10 @@
                     <div class="text-muted"><small><b>Is compressed</b>: <span class="iscompressed">false</span></small></div>
                     <br>
                     
-                    <div class="callout-title text-muted text-primary">Address</div>
-                    <input type="text" class="form-control address" readonly></p>
+                    <div class="input-group-callout">
+                      <div class="callout-title text-muted text-primary">Address</div>
+                      <input type="text" class="form-control address" readonly></p>
+                    </div>
                     
                     <div class="callout-title text-muted text-primary">Public key</div>
                     <input type="text" class="form-control pubkey" readonly></p>
@@ -2815,17 +2829,25 @@
                     <div class="callout-title text-muted text-primary">Address</div>
                     <input type="text" class="form-control address" readonly>
 
-                    <div class="callout-title text-muted text-primary">Address (P2SH Segwit)</div>
-                    <input type="text" class="form-control addressCSegwit" readonly>
+                    <div class="input-group-callout">
+                      <div class="callout-title text-muted text-primary">Address (P2SH Segwit)</div>
+                      <input type="text" class="form-control addressCSegwit" readonly>
+                    </div>
                     
-                    <div class="callout-title text-muted text-primary">P2SH Segwit Redeem Script</div>
-                    <input type="text" class="form-control CSegwitRedeemscript" readonly>
+                    <div class="input-group-callout">
+                      <div class="callout-title text-muted text-primary">P2SH Segwit Redeem Script</div>
+                      <input type="text" class="form-control CSegwitRedeemscript" readonly>
+                    </div>
                     
-                    <div class="callout-title text-muted text-primary">Address (Bech32)</div>
-                    <input type="text" class="form-control addressCBech32" readonly></p>
+                    <div class="input-group-callout">
+                      <div class="callout-title text-muted text-primary">Address (Bech32)</div>
+                      <input type="text" class="form-control addressCBech32" readonly></p>
+                    </div>
 
-                    <div class="callout-title text-muted text-primary">Bech32 Redeem Script</div>
-                    <input type="text" class="form-control CBech32Redeemscript" readonly></p>
+                    <div class="input-group-callout">
+                      <div class="callout-title text-muted text-primary">Bech32 Redeem Script</div>
+                      <input type="text" class="form-control CBech32Redeemscript" readonly></p>
+                    </div>
                     
                     <div class="callout-title text-muted text-primary">Public Key</div>
                     <input type="text" class="form-control pubkey" readonly>
@@ -3118,11 +3140,11 @@
                 <h4 class="card-subtitle mb-3 text-muted">into the <span class="coin_name">Bitcoin</span> blockchain network</h4>
                 <a href="#settings" style="float:right;"><span class="glyphicon glyphicon-cog"></span></a>
                 <p>Enter your hex encoded <span class="coin_name">Bitcoin</span> transaction</p>
-                <textarea class="form-control" style="height:125px" id="rawTransaction"></textarea>
-                <br>
+                <textarea class="form-control mb-4" style="height:125px" id="rawTransaction"></textarea>
+                
                 <div id="rawTransactionStatus" class="alert hidden">
                 </div>
-                <input type="button" value="Submit" id="rawSubmitBtn" class="btn btn-primary">
+                <input type="button" value="Send Transaction" id="rawSubmitBtn" class="btn btn-primary">
                 <br>
               </div>
             </div>
@@ -3760,12 +3782,6 @@
   </button>
   <ul class="dropdown-menu" >
     <li><img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon tokens icon24">Bitcoin (BTC)</li>
-    <li><img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon tokens icon24">Litecoin (LTC)</li>
-    <li><img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon tokens icon24">Dogecoin (DOGE)</li>
-    <li><img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon tokens icon24">BitBay (BAY)</li>
-    <li><img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon tokens icon24">Blackcoin (BLK)</li>
-    <li><img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon tokens icon24">Lynx (LYNX)</li>
-
   </ul>
 </div>
 
@@ -3817,7 +3833,7 @@
               </div>
             </div>
 
-            <br><br><br><br><br><br><br><br><br><br>
+            
             <!--
             <div class="row no-gutters tab-body">
 
@@ -4013,7 +4029,7 @@
         <!-- client based -->
         <div class="row">
           <div class="col-12 mt-3 mb-3 py-3 ">
-            <p class="text-muted hidden">This page uses javascript to generate your addresses and sign your transactions within your browser, this means we <i>never</i> receive your private keys, this can be independently verified by reviewing the source code on <a href="https://github.com/OutCast3k/coinbin/" target="_blank">github</a>. You can even <a href="https://github.com/OutCast3k/coinbin/archive/master.zip">download</a> this page and host it yourself or run it offline!</p>
+            <p class="text-muted hidden">This page uses javascript to generate your addresses and sign your transactions within your browser, this means we <i>never</i> receive your private keys, this can be independently verified by reviewing the source code on <a href="https://github.com/anoxxxy" target="_blank">Github</a>. You can even <a href="https://github.com/OutCast3k/coinbin/archive/master.zip">download</a> this page and host it yourself or run it offline!</p>
           </div>
         </div>
         <div class="row">
@@ -4029,15 +4045,21 @@
             <!-- Social -->
             <ul class="list-unstyled list-inline list-social mb-6 mb-md-0">
               <li class="list-inline-item list-social-item">
-                <a href="https://twitter.com/WallyIDOfficial" class="text-decoration-none" target="_blank" alt="Wally.id - Twitter link">
+                <a href="https://github.com/anoxxxy" class="text-decoration-none" target="_blank" alt="Wally.id - Official Github repo">
+                  <img src="./assets/images/brands/github_logo.svg" class="icon32">
+                </a>
+              </li>
+              <li class="list-inline-item list-social-item">
+                <a href="https://twitter.com/WallyIDOfficial" class="text-decoration-none" target="_blank" alt="Wally.id - Official Twitter account">
                   <img src="./assets/images/brands/twitter_logo.svg" class="icon32">
                 </a>
               </li>
               <li class="list-inline-item list-social-item">
-                <a href="https://t.me/wallyid" class="text-decoration-none" target="_blank" alt="Wally.id - Telegram link">
+                <a href="https://t.me/wallyid" class="text-decoration-none" target="_blank" alt="Wally.id - Official Telegram group">
                   <img src="./assets/images/brands/telegram_logo.svg" class="icon32">
                 </a>
               </li>
+              
             </ul>
           </div>
           <div class="col-6 col-md-3 col-sm-6 ">
@@ -4580,8 +4602,8 @@
 
 <!-- choose currency wallet modal -->
 
-<div id="modalChangeAsset" class="modal fade bootstrap-dialog" tabindex="-1" role="dialog">
-<div class="modal-dialog modal-dialog-centered modal-dialog-end modal-dialog-scrollable">
+<div id="modalChangeAsset" class="modal bootstrap-dialog animate__animated"  tabindex="-1" role="dialog">
+<div class="modal-dialog modal-dialog-centered modal-dialog-end modal-dialog-scrollable ">
   <div class="modal-content">
     <div class="modal-header">
       <div class="bootstrap-dialog-header">
@@ -4599,7 +4621,7 @@
 
           
           <div class="has-feedback has-clear ">
-            <input type="text" class="form-control search_asset" id="search_asset__" placeholder="Search Asset">
+            <input type="text" class="form-control search_asset" placeholder="Search Asset" autofocus>
             <i class="form-control-clear bi bi-x-circle-fill form-control-feedback hidden"></i> 
           </div>
           
@@ -4687,7 +4709,8 @@
 
 <!-- Password Generator -->
 
-<div id="popPasswordSettings" class="popover hidden">
+<div id="popPasswordSettingsContainer">
+<div id="popPasswordSettings" class="popover hidden" >
     <div class="arrow"></div>
     <div class="popover-header popover-title">
       <button class="close" data-dismiss="popover">&times;</button>Password Generator <small class="text-muted">(Crypto Random)</small>
@@ -4709,7 +4732,7 @@
           </div>
           <div>
             <label>Password length
-              <input type="number" id="pwdLength" value="24" min='24' max='255' value='24' class="form-control"/>
+              <input type="number" id="pwdLength" value="48" min='24' value='48' class="form-control"/>
             </label>
           </div>
         </div>
@@ -4719,6 +4742,8 @@
         <input type="button" class="btn btn-block btn-sm btn-flat-primary" id="pwdGenerate" value="Generate">
     </div>
 </div>
+</div>
+
 
 <!-- Bottom Menu - Wallet Content -->
 
@@ -4854,15 +4879,21 @@ iceee - remove me later
 
         <label>Support & Help</label>
         <li>
+          <a href="https://github.com/anoxxxy" class="text-decoration-none" target="_blank">
+            <img src="./assets/images/brands/github_logo.svg" class="icon32 mx-2"> Github
+          </a>
+        </li>
+        <li>
           <a href="https://twitter.com/WallyIDOfficial" class="text-decoration-none" target="_blank">
-            <i class="bi bi-twitter"></i> Twitter
+            <img src="./assets/images/brands/twitter_logo.svg" class="icon32 mx-2"> Twitter
           </a>
         </li>
         <li>
           <a href="https://t.me/wallyid" class="text-decoration-none" target="_blank">
-            <i class="bi bi-telegram"></i> Telegram
+            <img src="./assets/images/brands/telegram_logo.svg" class="icon32 mx-2"> Telegram
           </a>
         </li>
+        
       </ul>
     </div>
 
@@ -4961,76 +4992,82 @@ iceee - remove me later
     <script>
 
 
-
-
 $(".choose-currency-modal").on( "click", function() {
     
     var modalPosition = $(this).attr('data-modal-position');
 
     if (modalPosition == 'top') {
-      $('#modalChangeAsset').find('.modal-dialog').removeClass('modal-dialog-end').addClass('modal-dialog-top');
+      //slideDownBigIn
+      $('#modalChangeAsset').removeClass('animate__fadeInUp').addClass('animate__fadeInDown').find('.modal-dialog').removeClass('modal-dialog-end').addClass('modal-dialog-top');
+
     }
-    else
-      $('#modalChangeAsset').find('.modal-dialog').removeClass('modal-dialog-top').addClass('modal-dialog-end');
+    else{
+      //slideUpBigIn
+      $('#modalChangeAsset').addClass('animate__fadeInUp').removeClass('animate__fadeInDown').find('.modal-dialog').removeClass('modal-dialog-top').addClass('modal-dialog-end');
+    }
     
     $('#modalChangeAsset').modal('show'); 
+    //$('#modalChangeAsset input.search_asset').trigger('focus');
 
 });
 
 
 //Modal dialog handler for seting a new currency on bottom menu
 $('body').on('click', '#modalChangeAsset .custom-table tbody tr', function(e){
+//$("#modalChangeAsset .custom-table tbody tr").on("click", function(e) {
 
   //update the asset-value to checked in modal dialog content
   this.querySelector('input[name="set-asset-group"]').checked = true;
 
   
-  //console.log('this: ', this);
-  //console.log('choosen coin:', this.dataset.setAsset);
-  //console.log('choosen coin:', this.attributes['data-set-asset'].nodeValue);
-
-  //console.log('$(e): ', $(e));
-  //console.log('e: ', e);
-  
   var change_to_asset = $(this).attr( "data-asset");
   console.log('**modalChangeAsset - set new asset:', change_to_asset);
 
-  
-  //var radioEl = this.querySelector('input[name="set-asset-group"]');
-
   $('#modalChangeAsset').modal('hide'); 
-
-  //$("body").on("click", "#settings .dropdown-select li", function(e){data-asset="bitcoin"
-
+  
   //update settings
   wally_kit.quickSetAsset(change_to_asset);
     
 
 });
 
-$("#modalChangeAsset input.search_asset").on("keyup input click", function() {
-    
-    
+$("#modalChangeAsset input.search_asset").on("keyup input click", function(e) {
+    e.preventDefault();
+
+    console.log('**input.search_asset: keyup input click  : 1');
     //filter table
     var search_asset = $(this).val().toLowerCase();
 
     $("#modalChangeAsset table tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(search_asset) > -1)
+      var _trThis_ = $(this);
+      _trThis_.toggle(_trThis_.text().toLowerCase().indexOf(search_asset) > -1)
     });
   });
 
 
+
+/*
+ @ Clear input functionality
+*/
 //Input with clear icon
-$('.has-clear input[type="text"]').on('input propertychange', function() {
+$('.has-clear input[type="text"]').on('input propertychange', function(e) {
+  e.preventDefault();
+
   var $this = $(this);
   var visible = Boolean($this.val());
   $this.siblings('.form-control-clear').toggleClass('hidden', !visible);
+
+  console.log('**input.has-clear');
 }).trigger('propertychange');
 
-$('.form-control-clear').click(function() {
-  $(this).siblings('input[type="text"]').val('').trigger('propertychange').focus();
-  $(this).prev().click(); //we need another click to clear the filter (search in table etc..)
+$('.form-control-clear').click(function(e) {
+  $(this).siblings('input[type="text"]').val('').trigger('propertychange').click();
+  //$(this).prev().click(); //we need another click to clear the filter (search in table etc..)
 });
+
+
+
+
 
 
 
@@ -5210,6 +5247,22 @@ $("#modalChangeAsset .custom-table tbody tr").on('click', function(e) {
 
 });
 */
+/*
+$(document).on('hide.bs.modal', '.modal.show', function (e) {
+// code to run on closing
+$(this).addClass('animate__backOutDown');
+  console.log('animate__backOutDown: ', e.target.modalChangeAsset);
+  console.log('animate__backOutDown $(this): ', e.target.id);
+
+  $('#'+e.target.id).addClass('jajajaja');
+  $(e).addClass('jajajaj2a');
+});
+*/
+$(document.body).on('hide.bs.modal', '.modal.show', function (e) {
+    //$('#myModal').removeData('bs.modal')
+    $('#'+e.target.id).addClass('jajajaja');
+});
+
 
 
 
@@ -5283,24 +5336,24 @@ openDropdown = function (el) {
     subBg.style.left = 20 +'px';
     //position background within screen (if it is outside on right corner)
 
-    console.log ('subBg.style.left before: '+ subBg.style.left);
+    //console.log ('subBg.style.left before: '+ subBg.style.left);
 
   if (subBgLeft + menuSubContent.scrollWidth > window.innerWidth && subBgLeft > 0) {
       subBg.style.left = window.innerWidth - menuSubContent.scrollWidth -20 + 'px';
-      console.log('out of window.innerWidth', menuSubContent.scrollWidth);
-      console.log ('subBg.style.left after: '+ subBg.style.left);
+      //console.log('out of window.innerWidth', menuSubContent.scrollWidth);
+      //console.log ('subBg.style.left after: '+ subBg.style.left);
       }
   
 
 
   //subBg.style.left = menuMeta.left - (subMeta.width / 2 - menuMeta.width / 2) + 'px';
-  console.log('subBg.style.left: ' + subBg.style.left);
+  //console.log('subBg.style.left: ' + subBg.style.left);
   subBg.style.width = subMeta.width + 'px';
   subBg.style.width = menuSubContent.scrollWidth + 'px';
   subBg.style.height = subMeta.height + 'px';
   //- Set dropdown menu bottom section background position
   subBgBtm.style.top = menuSubTop.height + 'px';
-  console.log('menuSubBtm: ', menuSubBtm);
+  //console.log('menuSubBtm: ', menuSubBtm);
 
   //- Set Arrow position
   subArr.style.opacity = 1;
@@ -5315,12 +5368,12 @@ openDropdown = function (el) {
     subCnt.style.left = subCntLeft + 'px';
   else
     subCnt.style.left = 20+'px';
-  console.log('subCnt.style.left: ' + subCnt.style.left);
+  //console.log('subCnt.style.left: ' + subCnt.style.left);
 
    if (subCntLeft + menuSubContent.scrollWidth > window.innerWidth && subCntLeft > 0) {
       subCnt.style.left = window.innerWidth - menuSubContent.scrollWidth -20 + 'px';
-      console.log('out of window.innerWidth', menuSubContent.scrollWidth);
-      console.log ('subCntLeft.style.left after: '+ subCnt.style.left);
+      //console.log('out of window.innerWidth', menuSubContent.scrollWidth);
+      //console.log ('subCntLeft.style.left after: '+ subCnt.style.left);
     }
 
   

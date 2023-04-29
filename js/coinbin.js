@@ -812,6 +812,8 @@ profile_data = {
 		$("#newHDxpub").val(pair.pubkey);
 		$("#newHDxprv").val(pair.privkey);
 
+		$('#newHDaddress .deriveHDbtn').attr('disabled',false);
+
 	});
 
 	$("#newHDBrainwallet").click(function(){
@@ -2523,11 +2525,29 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			$("#verifyPrivHexKey .uncompressed .pubkeyHash").val(hexDecoded.wif.uncompressed.public_key_hash);
 			$("#verifyPrivHexKey .uncompressed .privkey").val(hexDecoded.wif.uncompressed.key);
 
+			
+
+			//if(hexDecoded.wif.compressed.segwit)
+			if ( (coinjs.asset.supports_address).includes('segwit')) {
+				$("#verifyPrivHexKey .compressed .addressCSegwit").val(hexDecoded.wif.compressed.segwit.address).parent().removeClass('hidden');
+				$("#verifyPrivHexKey .compressed .CSegwitRedeemscript").val(hexDecoded.wif.compressed.segwit.redeemscript).parent().removeClass('hidden');
+			} else {
+				$("#verifyPrivHexKey .compressed .addressCSegwit").val('').parent().addClass('hidden');
+				$("#verifyPrivHexKey .compressed .CSegwitRedeemscript").val('').parent().addClass('hidden');
+			}
+
+
+			if ( (coinjs.asset.supports_address).includes('bech32')) {
+				$("#verifyPrivHexKey .compressed .addressCBech32").val(hexDecoded.wif.compressed.bech32.address).parent().removeClass('hidden');
+				$("#verifyPrivHexKey .compressed .CBech32Redeemscript").val(hexDecoded.wif.compressed.bech32.redeemscript).parent().removeClass('hidden');
+			} else {
+				$("#verifyPrivHexKey .compressed .addressCBech32").val('').parent().addClass('hidden');
+				$("#verifyPrivHexKey .compressed .CBech32Redeemscript").val('').parent().addClass('hidden');
+			}
+
+			
+			
 			$("#verifyPrivHexKey .compressed .address").val(hexDecoded.wif.compressed.address);
-			$("#verifyPrivHexKey .compressed .addressCSegwit").val(hexDecoded.wif.compressed.segwit.address);
-			$("#verifyPrivHexKey .compressed .CSegwitRedeemscript").val(hexDecoded.wif.compressed.segwit.redeemscript);
-			$("#verifyPrivHexKey .compressed .addressCBech32").val(hexDecoded.wif.compressed.bech32.address);
-			$("#verifyPrivHexKey .compressed .CBech32Redeemscript").val(hexDecoded.wif.compressed.bech32.redeemscript);
 			$("#verifyPrivHexKey .compressed .pubkey").val(hexDecoded.wif.compressed.public_key);
 			$("#verifyPrivHexKey .compressed .pubkeyHash").val(hexDecoded.wif.compressed.public_key_hash);
 			$("#verifyPrivHexKey .compressed .privkey").val(hexDecoded.wif.compressed.key);
@@ -2778,12 +2798,16 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
   	@ set Popover to DOM-target function
   	*/
   	
-  	$('a[data-toggle="popover"][data-target], button[data-toggle="popover"][data-target], div[data-toggle="popover"][data-target], span[data-toggle="popover"][data-target]').each(function (i, e) {
+  	
+  	//$('a[data-toggle="popover"][data-target], button[data-toggle="popover"][data-target], div[data-toggle="popover"][data-target], span[data-toggle="popover"][data-target]').each(function (i, e) {
+  	$('a[data-toggle="popover"], button[data-toggle="popover"], div[data-toggle="popover"], span[data-toggle="popover"]').each(function (i, e) {
     	
 
 	  	//console.log('index: ', i);
 	  	//console.log('el: ', e);
-	    var data = $(e).data();
+	    var data = $(e).data(), pooppis;
+
+	    //if target is set, clone the original element to popover
 	    if (data.target) {
     		//console.log('target found!'+ data.target);
     		var targetEl = $(data.target);
@@ -2805,7 +2829,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 	        //console.log('contentBody: ', $(data.target ).find('#pwdGenerate').attr('data-input-for', inputFor));
 	        //console.log('contentBody data-input-for: ', $(data.target + ' #pwdGenerate').attr('data-input-for'));
 
-	        var contentBody = $(data.target + ' .popover-body').html();
+	        var contentBody = $(data.target + ' .popover-body').clone();	//https://stackoverflow.com/questions/23391444/how-to-keep-content-of-bootstrap-popover-after-hiding-it-or-how-to-really-hide
 
 
 	        /*
@@ -2818,6 +2842,27 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 	        console.log('contentBody: ', contentBody);
 	        console.log('contentBody data-input-for: ', $(data.target + ' .popover-body #pwdGenerate').attr('data-input-for'));
 
+/*
+ jBox
+
+
+new jBox('Tooltip', {
+    attach: '.brainWalletPwdGenerator',
+    width: 280,
+    trigger: 'click',
+    class: 'popover',
+    closeOnClick: 'body',
+    //closeOnMouseleave: true,
+    animation: 'zoomIn',
+    content: $('#popPasswordSettings').html(),
+    onOpen: function () {
+      //this.source.addClass('active').html('Now scroll');
+    },
+    onClose: function () {
+      //this.source.removeClass('active').html('Click me');
+    }
+  });
+  
 	        */
 	        
 
@@ -2830,15 +2875,21 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 	        
 	        //console.log('data.footer: ', contentFooter);
 
-	  	    var pooppis = $(e).popover( {
+	  	    pooppis = $(e).popover( {
 		    	title: contentTitle,
-		    	content: contentBody,
+		    	//content: contentBody,
+		    	content: function () {
+			        return contentBody;
+			        //var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
+			        //return clone;
+			        //popPasswordSettingsContainer
+			    },
 		    	footer: contentFooter,
 		    	html: true,
-	  			delay: { "show": 100, "hide": 50000 },
+	  			delay: { "show": 100, "hide": 200 },
 	  			//customClass: 'animate__animated animate__slideInDown',
 		    });
-	  	    console.log('popover poppis: ', pooppis);
+	  	    console.log('popover poppis1: ', pooppis);
 
 	  	    //var open = $(e).attr('data-easein');
 	  	    //pooppis.velocity('transition.' + open);
@@ -2847,15 +2898,29 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		    //var open = $(e).attr('data-easein');
 		    //console.log('open: ' + open);
 		    //targetEl.velocity('transition.' + open);
+
+
 		    
+	    } else {	//else show a regular popover
+
+	    	pooppis = $(e).popover( {
+		    	html: true,
+	  			delay: { "show": 100, "hide": 200 },
+	  			customClass: '',
+	  			//customClass: 'animate__animated animate__slideInDown',
+		    });
+	  	    //console.log('popover poppis2: ', pooppis);
 	    }
 	  })
-  	.on('show.bs.popover', function () {
-    	$("body").append("<div class='modal-backdrop fade show'></div>")
-	}).on('hide.bs.popover', function () {
-    	$(".modal-backdrop").remove();
+  	.on('show.bs.popover', function (e) {
+    	//	$("body").append("<div class='modal-backdrop fade show'></div>")
+
+	//}).on('hide.bs.popover', function (e) {
+	}).on('hidden.bs.popover', function (e) {
+
+		//$("#popPasswordSettingsContainer").append($("#popPasswordSettings"));
+    	//$(".modal-backdrop").remove();
 	});
-	  
   	/*
 	  $('button[data-toggle="popover"], a[data-toggle="popover"], div[data-toggle="popover"], span[data-toggle="popover"]').popover({
   		html: true,
@@ -2865,26 +2930,32 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
   	*/
 
 	  
-  	$('button[data-toggle="popover"], a[data-toggle="popover"], div[data-toggle="popover"], span[data-toggle="popover"]').popover({
-  		html: true,
-  		delay: { "show": 100, "hide": 500 },
-  		customClass: '',
-  	}).on('click', function(e) {
-  		//e.preventDefault();
-  		$(this).next().velocity('transition.slideUpBigIn');
-  	});
-  	
 
 	  //dismiss popover, close button
 	  $('body').on('click', '.popover > .popover-header [data-dismiss="popover"], .popover > .popover-header .close', function(e){
-  		console.log('popover toggle');
+  		console.log('popover toggle');	
   		$(this).parent().parent().popover('hide');
   	});
 
+	 /*
+// close previously opened popovers by clicking outside them
+  $(document).on('click', function(e) {
+    $('input').each(function() {
+      if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+        $(this).popover('hide');
+      }
+    });
+  });
+	 */
 
-
-
+	//tooltip & jBox tooltip
 	$('input[title!=""], abbr[title!=""]').tooltip({'placement':'bottom', delay: { "show": 100, "hide": 300 }});
+
+	  new jBox('Tooltip', {
+	    attach: '.generatePassword',
+	    content: 'We use Crypto Random and Fisher-Yates Shuffle Algorithm!'
+	  });
+
 
 	//init load #hashpage
 	//load browser #hashpage on load
@@ -3518,8 +3589,8 @@ const randomFunc = {
 }
 
 $("body").on("click", "#pwdGenerate", function(e){
-	
-	console.log('this data-input-for: ', $(this).attr( "data-input-for"));
+	console.log('===pwdGenerate===');
+	//console.log('this data-input-for: ', $(this).attr( "data-input-for"));
 	var generatePwdField = $('#'+ $(this).attr( "data-input-for"));
 
 	//get open popover
@@ -3530,9 +3601,7 @@ $("body").on("click", "#pwdGenerate", function(e){
 	var hasNumber = 	((poppis.find('#pwdNumbers').is(":checked")) ? 1 : 0);
 	var hasSymbol = 	((poppis.find('#pwdSymbols').is(":checked")) ? 1 : 0);
 
-	
-	console.log('hasLower: ', poppis.find('#hasLower'));
-	console.log('hasUpper: ', poppis.find('#hasUpper'));
+
 /*
 	const hasLength = +$('#pwdLength').val();
 	console.log('length: '+ hasLength);
@@ -3549,7 +3618,6 @@ $("body").on("click", "#pwdGenerate", function(e){
 	console.log('hasNumber: '+ hasNumber);
 	console.log('hasSymbol: '+ hasSymbol);
 
-	console.log('.popover.show', $('.popover.show'));
 	
 	generatePwdField.val( GeneratePasswordInPop(hasLower, hasUpper, hasNumber, hasSymbol, lengthIs) );
 });
@@ -3571,8 +3639,8 @@ function GeneratePasswordInPop(lower, upper, number, symbol, length) {
 	//**set min/max password, if out of range!
 	if (length < 23)
 		length = 24;
-	if (length > 255)
-		length = 255;
+	if (length > 3000)
+		length = 3000;
 
 	// create a loop
 	for(var i=0; i<length; i+=typesCount) {

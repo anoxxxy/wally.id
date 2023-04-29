@@ -175,9 +175,22 @@ a:hover {
 	margin: 30px 0;
 }
 /*tab pane content*/
-/*.tab-content .tab-pane.active*/
-.tab-content .tab-pane  {
+.tab-content > .tab-pane  {
+	/*display: inherit;
+	transition: height 0.3s ease-out;
+  opacity: 0;
+  height: 0;*/
+  
 }
+
+.tab-content > .active {
+  /*
+  transition: height 0.3s ease-in;
+  opacity: 1;
+  height: max-content;
+  */
+}
+
 
 .alert-info {
   color: #c259ec;
@@ -201,7 +214,7 @@ a:hover {
   border-radius: 10px;
   margin: auto;
   padding: 1.5rem 1.2rem;
-  background-color: #fff;
+  background-color: #fdfdfd;
 }
 
 .tab-content .tab-pane .tab-body-open-wallet{
@@ -210,7 +223,7 @@ a:hover {
   box-shadow: 0 4px 11px rgba(0,0,0,.125),0 2px 6px rgba(0,0,0,.2);
   border-radius: 10px;
   padding: 1.5rem 1.2rem;
-  background-color: #fff;
+  background-color: #fdfdfd;
 	width: auto;
 	max-width: 450px;
 	margin: 0 auto;
@@ -232,7 +245,7 @@ a:hover {
   border-radius: 10px;
  
   padding: 0;
-  background-color: #fff;
+  background-color: #fdfdfd;
 	width: auto;
 	max-width: 450px;
 	margin: 0 auto;
@@ -831,11 +844,11 @@ font-size: 1rem;
 }
 
 .input-group button, .input-group input, .input-group span, .input-group div{
-	height:  40px ;
+	height: 40px;
 	line-height: 1.5;
 }
 
-input.form-control, .input-group input, .input-group .input-group-append > span, .input-group .input-group-append > div, .input-group .input-group-prepend > span, .input-group .input-group-prepend > div {
+textarea.form-control, input.form-control, .input-group input, .input-group .input-group-append > span, .input-group .input-group-append > div, .input-group .input-group-prepend > span, .input-group .input-group-prepend > div {
 --bs-btn-padding-x:0.75rem;
  --bs-btn-padding-y:0.375rem;
  --bs-btn-font-size:1rem;
@@ -873,6 +886,48 @@ box-shadow: -1px -1px 1px 0px rgba(43,45,80,.1),0 2px 5px 0 rgba(43,45,80,.1),0 
 
 
 }
+.input-group > .input-group-append > .form-control {
+/*
+box-shadow: 0 0 0 1px rgba(43,45,80,.1),0 2px 5px 0 rgba(43,45,80,.1),0 3px 9px 0 rgba(43,45,80,.08),0 1px 1.5px 0 rgba(0,0,0,.08),0 1px 2px 0 rgba(0,0,0,.08);
+*/
+/*
+--bs-btn-border-width: 1px;
+--bs-btn-border-color: transparent;
+	border: var(--bs-btn-border-width) solid var(--bs-btn-border-color);
+
+box-shadow: 0 0 0 1px rgba(43,45,80,.1), 1px 2px 6px rgba(0,0,0,.125), 1px 1px 2px rgba(0,0,0,.2);
+*/
+
+}
+
+.form-control:disabled, .form-control[readonly],
+.form-control.input-disabled {
+  background-color: #e9ecef;
+  opacity: 1;
+
+  box-shadow: 0 0 0 1px rgba(43,45,80,.1),0 2px 5px 0 rgba(43,45,80,.1),0 3px 9px 0 rgba(43,45,80,.08),0 1px 1.5px 0 rgba(0,0,0,.08),0 1px 2px 0 rgba(0,0,0,.08);
+border-width: 1px;
+border-color: transparent;
+}
+.input-group .input-group-prepend > input,
+.input-group .input-group-prepend > button,
+.input-group .input-group-prepend > span,
+.input-group .input-group-prepend > div {
+	margin-right: 2px;
+
+}
+.input-group input, .input-group .input-group-append > span, .input-group .input-group-append > div, .input-group .input-group-prepend > span, .input-group .input-group-prepend > div {
+
+border-right-color: white !important;
+border-right-width: 1px;
+border-right-width: 0;
+
+padding-right: 0.75rem;
+margin-right: 2px;
+
+}
+
+
 /*
 icee
 messing up inputs!
@@ -1745,7 +1800,9 @@ https://code-boxx.com/show-hide-elements-css-javascript/
 #modalChangeAsset .table-hover tbody tr:hover {
 	color: #6c48af;
 	background-color: #f9f9f9;
+	transition: all 0.2s ease-in;
 }
+
 
 /*
 .clear-input-box {
@@ -2271,6 +2328,7 @@ border: 1px solid red;
   margin-top: 10px;
   font-weight: 600;
   border: 1px solid transparent;
+  transition: all 0.2s ease-in;
 }
 
 .caret {
@@ -2347,9 +2405,7 @@ border: 1px solid red;
 	margin-bottom: 1px;
 	z-index: 1;
 }
-#verify .form-control:disabled, .form-control[readonly] {
 
-}
 #verify input.form-control {
 	box-shadow: 0 0 0 0px rgba(43,45,80,.1),0 1px 0px 0 rgba(43,45,80,.1),0 3px 9px 0 rgba(43,45,80,.08),0 0px 0px 0 rgba(0,0,0,.08),0 0px 1px 0 rgba(0,0,0,.08);
 }
@@ -2492,7 +2548,7 @@ border: 1px solid red;
 
 
 /*mobile devices*/
-@media (max-width: 575px) {
+@media (max-width: 768px) {
 
     table.table_flex thead {
         display: none;
@@ -2757,4 +2813,14 @@ ul li.header_small {
 ul li.divider-empty {
 	padding: 2px;
 	margin: 4px;
+}
+
+#settings #coinjs_utxo_api_select ul li small,
+#settings #coinjs_broadcast_api_select ul li small{
+	position: relative;
+padding-left: 44px;
+display: inherit;
+margin-top: -6px;
+text-overflow: ellipsis;
+overflow: hidden;
 }

@@ -75,6 +75,10 @@
         document.querySelector('#modalChangeAsset input[name="set-asset-group"][value="'+asset_var+'"]').checked = true;
 
 
+        //make this own function
+
+        $('#verifyScript').val('').trigger('change');
+
         //hide/show fields for updated Network protocol
         if (coinjs.txRBFTransaction) {
           $("#txRbfTransactionOptional").show();
@@ -117,7 +121,7 @@
         modalMessage = '<div class="text-center text-primary mb-3"><p class="mb-2">You have updated Blockchain Network settings to:</p>' 
           + newNetwork.asset.name + ' <strong>('+newNetwork.asset.symbol+' '+newNetwork.asset.network+')</strong> </div>';
         modalMessage += '<img src="'+newNetwork.asset.icon+'" class="icon-center icon64 mb-2">'
-        modalMessage += '<div class="text-center text-muted">API Providers:<br> Unspent outputs: '+wally_fn.provider.utxo+'<br>Broadcast: '+wally_fn.provider.broadcast+'</div> <br> <div class="alert alert-light text-muted mb-2">If this is not correct, head over to <a href="#settings" data-pagescroll="page_tab">Settings</a> page. </div>';
+        modalMessage += '<div class="text-center text-muted">API Providers:<br> Unspent outputs: '+wally_fn.provider.utxo+'<br>Broadcast: '+wally_fn.provider.broadcast+'</div> <br> <div class="alert alert-light text-muted mb-2">If this is not correct, head over to <a href="#settings" data-pagescroll="page_tab" data-dismiss="modal">Settings</a> page. </div>';
 
         custom.showModal(modalTitle, modalMessage);
       }
@@ -294,39 +298,49 @@
 
 
 
-    var network_var = 'mainnet', asset_var = 'bitcoin';
-
-    //get all url params
-    //var urlParams = wally_fn.getAllUrlParams();
-
-    //get & set Network type, default(mainnet)
-    if (Router.urlParams.network !== undefined) {
-      if(Router.urlParams.network == 'testnet')
-        network_var = Router.urlParams.network;
-    }
-
-    console.log('network: ' + network_var);
+    
+/*
+    console.log('network: ' + default_network);
     console.log('coinjs.asset: ' + coinjs.asset);
     console.log('Router.urlParams.asset: ' + Router.urlParams.asset);
+    */
 
     //get & set asset type, default is bitcoin
     if (Router.urlParams.asset !== undefined) {
+
+      console.log('==Router.urlParams.asset==', Router.urlParams);
+      var default_network = 'mainnet', default_asset = 'bitcoin';
+
+      //check if network type is set, or else set to default!
+      //if (Router.urlParams.network !== undefined) {
+      if ( (Router.urlParams).hasOwnProperty('network') ) {
+         if (Router.urlParams.network == 'mainnet' || Router.urlParams.network == 'testnet') {
+            default_network = Router.urlParams.network;
+            console.log('default_network is correct!');
+         } else {
+            Router.urlParams.network = default_network;
+            console.log('default_network was reset to default!');
+        }
+      }
+
+
       console.log('check for Router.urlParams.asset: ' + Router.urlParams.asset);
+      console.log('check for Router.urlParams.network: ' + Router.urlParams.network);
       /*
       if (wally_fn.networks[ network ][ urlParams.asset] ) {
         console.log ('network: ' + network + '|  asset: ' + urlParams.asset );
       }
       */
       //search for asset name and symbol for i.e (bitcoin/btc)
-      for (var [key, value] of Object.entries(wally_fn.networks[ network_var ])) {
+      for (var [key, value] of Object.entries(wally_fn.networks[ default_network ])) {
         console.log('loop for key, value: '+ key);
 
         if ( (value.asset.symbols).includes(Router.urlParams.asset) ) {
-          asset_var = key;
+          default_asset = key;
           console.log('asset was found: ', value.asset.symbol);
           console.log('asset key was found: ', key);
 
-          await this.setNetwork(network_var, asset_var, {saveSettings: true, showMessage: true, renderFields: true});
+          await this.setNetwork(default_network, default_asset, {saveSettings: true, showMessage: true, renderFields: true});
         }
       }
 
@@ -491,6 +505,7 @@
         
         i++;
       }
+      assetSelectwIconsEl.append('<li>&nbsp;</li>');
 
       this.settingsListNetworkProviders();
     } catch (e) {
@@ -541,23 +556,35 @@
 
     console.log('wally_fn.asset after: ', wally_fn.asset);
 
-    var i=0;
+    var i=0, electrumXContent ='';
     for (var [key, value] of Object.entries(wally_fn.networks[wally_fn.network][wally_fn.asset].asset.api.broadcast)) {
+      
+      //show ElectrumX server in list
+      if (key.includes('ElectrumX'))
+        electrumXContent = ' <small>'+value+'</small>';
+
       selectNetworkBroadcastAPI.append('<option value="'+value+'" data-icon="" >'+key+'</option>');
-      selectNetworkBroadcastAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-broadcast-provider="'+value+'" data-broadcast-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+'</li>');
+      selectNetworkBroadcastAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-broadcast-provider="'+value+'" data-broadcast-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+electrumXContent+'</li>');
 
       if(i==0) {//set broadcast asset
           $('#coinjs_broadcast_api_select button').html('<img src="./assets/images/providers_icon.svg" class="icon32"> '+key);
           wally_fn.provider.broadcast = key;
           console.log('Broadcast provider: ' + key);
         }
+      electrumXContent='';
       i++;
     }
 
     i=0;
+
     for (var [key, value] of Object.entries(wally_fn.networks[wally_fn.network][wally_fn.asset].asset.api.unspent_outputs)) {
+      
+        //show ElectrumX server in list
+      if (key.includes('ElectrumX'))
+        electrumXContent = ' <small>'+value+'</small>';
+
       selectNetworkUtxoAPI.append('<option value="'+value+'" data-icon="" >'+key+'</option>');
-      selectNetworkUtxoAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-utxo-provider="'+value+'" data-utxo-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+'</li>');
+      selectNetworkUtxoAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-utxo-provider="'+value+'" data-utxo-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+electrumXContent+'</li>');
 
 
       if (i==0) {//set utxo provider asset
@@ -565,6 +592,7 @@
         wally_fn.provider.utxo = key;
         console.log('UTXO provider: ' + key);
       }
+      electrumXContent='';
       i++;
     }
 
@@ -645,42 +673,57 @@
   */
 
 
+
+        /*
+         https://easings.net/
+         @ Scroll to Element or Top
+        */
+
+         wally_kit.scrollToElement = function (elId, offset) {
+            var scrollContainer = window.document.scrollingElement || window.document.documentElement || window.document.body;
+            var el = document.getElementById(elId);
+            
+            if(el === null)
+              return;
+
+            var sEl             = scrollContainer,
+                box             = el.getBoundingClientRect(),
+                sElPos, distance, duration,
+                compStyles      = window.getComputedStyle(sEl),
+                topBorderOffset = parseInt(compStyles.getPropertyValue('border-top-width'));
+
+            //offset = topBorderOffset + (offset || 0);
+
+            if(elId == "home" || elId == "about")
+              offset = 0;
+            else
+              offset   = box.top + pageYOffset - offset;
+
+            distance = Math.abs(pageYOffset - offset);            
+
+            distance = Math.min(distance, 500);
+            duration = Math.max(distance / 200 * 1000, 800)/3;
+
+            anime({
+                targets: sEl,
+                scrollTop: offset,
+                duration: duration,
+                easing: 'easeInOutCirc' //easeOutQuart
+            });
+
+        }
+
+
 /*
  @ Handles the navigation to the selected page
  use transition, animation, scroll etc...
 */
 wally_fn.pageNavigator = function (_elId_ = Router.urlParams.page) {
 
-/*
-var pageElement = document.getElementById(_elId_);
-//sections.hide(250);
-//$(_elId_).show(250);
 
-
-const pageAnimation = anime.timeline({
-  easing: "easeOutCubic",
-  autoplay: true });
-
-const scrollElement = window.document.scrollingElement || window.document.body || window.document.documentElement;
-
-pageAnimation.
-add({
-  targets: scrollElement,
-  //scrollTop: 0,
-  scrollTop: pageElement.offsetTop,
-  
-  duration: 500,
-  easing: 'easeInOutQuad',
-  changeBegin: function() {
-    //document.querySelector('#js_folder-content').style.position = "absolute";
-  }
-});
-
-
+wally_kit.scrollToElement(_elId_, 10);
 return;
-*/
-
-
+/*
 var target = document.getElementById(_elId_);
 if(target === null)
           return;
@@ -693,35 +736,8 @@ if(_elId_ == "home" || _elId_ == "about"){
 }else{
   //console.log('scroll specific')
   target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    
-    /*
-    var onePromise = new Promise((resolve, reject) => {
-      try {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        resolve();
-      } catch (e) {
-            reject('boo');
-      }
-    });
-      
-    onePromise.then((successMessage) => {
-      // successMessage is whatever we passed in the resolve(...) function above.
-      // It doesn't have to be a string, but if it is only a succeed message, it probably will be.
-      console.log(successMessage);
-      window.scrollBy({ top: -24, left: 0, behavior: 'smooth' });
-      console.log('promise done!');
-      //window.scrollBy(0, -30);
-    }).catch((reason) => {
-        console.log(reason);
-    });
-    */
-
-
-
-  }
-  
-  
-
+}
+*/
 
 }
 

@@ -1467,11 +1467,27 @@ const folderContentItems = document.querySelectorAll(".folder-content li.js_fold
 
 
 
-    /***** Dismiss all popovers by clicking outside, don't dismiss if clicking inside the popover content  **************/
+    /*document click*/
     $('body').on('click', function(e) {
       console.log('nothing to dismiss');
 
-      //hide popovers if visible
+      //**Only for modal links
+      //this goes for modal hashtag navigation when a data-dismiss="modal" is clicked
+      //close modal and navigate to HashLink
+      if(e.target.dataset.dismiss == 'modal' && (e.target.attributes).hasOwnProperty('href')) {
+        console.log('e.target: ', e.target);
+        var targetHash = e.target.hash;
+
+        if(targetHash.charAt(0) == '#') {
+          targetHash = targetHash.substring(1);
+          Router.navigate(targetHash);
+        }
+      }
+
+      //if(inputFor.charAt(0) == '#')
+             //inputFor = inputFor.substring(1);
+
+      /***** Dismiss all popovers by clicking outside, don't dismiss if clicking inside the popover content  **************/
       if ($('.popover').hasClass('show')) {
         //console.log('popover is open! e:', e);
         //console.log('popover is open!', $('.popover'));
@@ -1480,9 +1496,15 @@ const folderContentItems = document.querySelectorAll(".folder-content li.js_fold
           $('[data-original-title]').popover('hide');
           console.log('dismiss-popover')
         }
+        /*
+        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+          $(this).popover('hide');
+        }
+        */
+
       }
 
-      //hide portfolio dropdown if visible
+      //**hide wallet portfolio dropdown if visible
       if ($('#js_folder-backdrop').hasClass('show')) {        
         console.log('portfolio is open');
         if ($(e.target).attr('id') == 'js_folder-backdrop') {
@@ -1490,6 +1512,12 @@ const folderContentItems = document.querySelectorAll(".folder-content li.js_fold
           toggleFolder.click();
         }
 
+      }
+
+      //check hashtag, if no "asset" or "network-type" is preset but is exisiting in Router.urlParams, then add it to the hash
+      if (e.target.href) {
+      //if (Router.urlParams.asset !== undefined 
+        console.log('a hash-link was clicked');
       }
     });
 
@@ -1513,6 +1541,9 @@ loginBtnNext.on("click",function() {
   //first step  when selecting a portfolio
   var walletType='';
   try {
+    login_wizard.openWalletType = "";
+      login_wizard.openWalletType == "regular_wallet"
+
       //***Get login type
     if(login_wizard.openWalletType == "regular_wallet"){
       walletType = "regular";
@@ -1547,8 +1578,9 @@ loginBtnNext.on("click",function() {
 
 
     //***Errror occured!
-    if(walletType=='')
-      throw ('Wrong Wallet type! <br>Please choose correct Wallet type!');
+    //No Wallet type choosen
+    //if(walletType == '')
+      //throw ('Wrong Wallet type! <br>Please choose correct Wallet type!');
 
   } catch (err) {
     login_wizard.errorMessage = err;
