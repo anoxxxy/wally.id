@@ -1551,13 +1551,13 @@ testar('3aa').then((data) => {
         developer: 'iceeeee',
       },
       ethereum : {
-        symbol: 'tETH',      //ticker
+        symbol: 'tETH-Goerli',      //ticker
         asset: {
           chainModel: 'account',
-          name: 'Ethereum',
-          slug: 'ethereum',
+          name: 'Ethereum-Goerli',
+          slug: 'ethereum-goerli',
           symbol: 'tETH',
-          symbols: ['eth', 'ethereum'],
+          symbols: ['eth-goerli', 'ethereum-goerli'],
           icon: './assets/images/crypto/ethereum-eth-logo.svg',
           network: 'testnet',
           supports_address : ['single'],

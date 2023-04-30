@@ -2520,37 +2520,59 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			if (!hexDecoded)
 				return ;
 
-			$("#verifyPrivHexKey .uncompressed .address").val(hexDecoded.wif.uncompressed.address);
-			$("#verifyPrivHexKey .uncompressed .pubkey").val(hexDecoded.wif.uncompressed.public_key);
-			$("#verifyPrivHexKey .uncompressed .pubkeyHash").val(hexDecoded.wif.uncompressed.public_key_hash);
-			$("#verifyPrivHexKey .uncompressed .privkey").val(hexDecoded.wif.uncompressed.key);
-
-			
-
-			//if(hexDecoded.wif.compressed.segwit)
-			if ( (coinjs.asset.supports_address).includes('segwit')) {
-				$("#verifyPrivHexKey .compressed .addressCSegwit").val(hexDecoded.wif.compressed.segwit.address).parent().removeClass('hidden');
-				$("#verifyPrivHexKey .compressed .CSegwitRedeemscript").val(hexDecoded.wif.compressed.segwit.redeemscript).parent().removeClass('hidden');
+			//for ETH and EVM based coins/assets
+			if ( (coinjs.asset.supports_address).includes('single')) {
+				$("#verifyPrivHexKey .singleAddress").removeClass('hidden');
+				
 			} else {
-				$("#verifyPrivHexKey .compressed .addressCSegwit").val('').parent().addClass('hidden');
-				$("#verifyPrivHexKey .compressed .CSegwitRedeemscript").val('').parent().addClass('hidden');
+				$("#verifyPrivHexKey .singleAddress").addClass('hidden');
+				$("#verifyPrivHexKey .singleAddress input").val('');
+			}
+
+			//for BTC and UTXO based coins/assets
+			if ( (coinjs.asset.supports_address).includes('uncompressed')) {
+				$("#verifyPrivHexKey .uncompressed").removeClass('hidden');
+				$("#verifyPrivHexKey .uncompressed .address").val(hexDecoded.wif.uncompressed.address);
+				$("#verifyPrivHexKey .uncompressed .pubkey").val(hexDecoded.wif.uncompressed.public_key);
+				$("#verifyPrivHexKey .uncompressed .pubkeyHash").val(hexDecoded.wif.uncompressed.public_key_hash);
+				$("#verifyPrivHexKey .uncompressed .privkey").val(hexDecoded.wif.uncompressed.key);
+			} else {
+				$("#verifyPrivHexKey .uncompressed").addClass('hidden');
+				$("#verifyPrivHexKey .uncompressed input").val('');
 			}
 
 
-			if ( (coinjs.asset.supports_address).includes('bech32')) {
-				$("#verifyPrivHexKey .compressed .addressCBech32").val(hexDecoded.wif.compressed.bech32.address).parent().removeClass('hidden');
-				$("#verifyPrivHexKey .compressed .CBech32Redeemscript").val(hexDecoded.wif.compressed.bech32.redeemscript).parent().removeClass('hidden');
-			} else {
-				$("#verifyPrivHexKey .compressed .addressCBech32").val('').parent().addClass('hidden');
-				$("#verifyPrivHexKey .compressed .CBech32Redeemscript").val('').parent().addClass('hidden');
-			}
+			//for BTC and UTXO based coins/assets
+			if ( (coinjs.asset.supports_address).includes('compressed')) {
+				$("#verifyPrivHexKey .compressed").removeClass('hidden');
+				//if(hexDecoded.wif.compressed.segwit)
+				if ( (coinjs.asset.supports_address).includes('segwit')) {
+					$("#verifyPrivHexKey .compressed .addressCSegwit").val(hexDecoded.wif.compressed.segwit.address).parent().removeClass('hidden');
+					$("#verifyPrivHexKey .compressed .CSegwitRedeemscript").val(hexDecoded.wif.compressed.segwit.redeemscript).parent().removeClass('hidden');
+				} else {
+					$("#verifyPrivHexKey .compressed .addressCSegwit").val('').parent().addClass('hidden');
+					$("#verifyPrivHexKey .compressed .CSegwitRedeemscript").val('').parent().addClass('hidden');
+				}
 
-			
-			
-			$("#verifyPrivHexKey .compressed .address").val(hexDecoded.wif.compressed.address);
-			$("#verifyPrivHexKey .compressed .pubkey").val(hexDecoded.wif.compressed.public_key);
-			$("#verifyPrivHexKey .compressed .pubkeyHash").val(hexDecoded.wif.compressed.public_key_hash);
-			$("#verifyPrivHexKey .compressed .privkey").val(hexDecoded.wif.compressed.key);
+
+				if ( (coinjs.asset.supports_address).includes('bech32')) {
+					$("#verifyPrivHexKey .compressed .addressCBech32").val(hexDecoded.wif.compressed.bech32.address).parent().removeClass('hidden');
+					$("#verifyPrivHexKey .compressed .CBech32Redeemscript").val(hexDecoded.wif.compressed.bech32.redeemscript).parent().removeClass('hidden');
+				} else {
+					$("#verifyPrivHexKey .compressed .addressCBech32").val('').parent().addClass('hidden');
+					$("#verifyPrivHexKey .compressed .CBech32Redeemscript").val('').parent().addClass('hidden');
+				}
+
+				
+				
+				$("#verifyPrivHexKey .compressed .address").val(hexDecoded.wif.compressed.address);
+				$("#verifyPrivHexKey .compressed .pubkey").val(hexDecoded.wif.compressed.public_key);
+				$("#verifyPrivHexKey .compressed .pubkeyHash").val(hexDecoded.wif.compressed.public_key_hash);
+				$("#verifyPrivHexKey .compressed .privkey").val(hexDecoded.wif.compressed.key);
+			} else {
+				$("#verifyPrivHexKey .compressed").addClass('hidden');
+				$("#verifyPrivHexKey .compressed input").val('');
+			}
 
 			
 			$("#verifyPrivHexKey .misc .privkeyHex").val(hexDecoded.hex_key);
