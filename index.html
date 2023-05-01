@@ -157,8 +157,8 @@
               <img src="./assets/images/purse_wallet.svg" class="icon24" alt="Open Wallet"> Wallet
             </a>
           </div>
-          <div class="menu__item" data-dropdown-menu="developer"><a href="#" class="colorize">Advanced</a></div>
-          <div class="menu__item" data-dropdown-menu="help"><a href="#" class="colorize">Help</a></div>
+          <div class="menu__item" data-dropdown-menu="advanced"><a href="javascript:void(0);" class="colorize">Advanced</a></div>
+          <div class="menu__item" data-dropdown-menu="help"><a href="javascript:void(0)" class="colorize">Help</a></div>
         </div>
         <div class="right menu">
           <div class="menu__item show_mobile nav_right">
@@ -190,7 +190,7 @@
               <div class="linkGroup">
                 <ul class="productsGroup">
                   <li>
-                    <a class="linkContainer item-payments" href="#wallet/login=regular_wallet">
+                    <a class="linkContainer item-payments" href="#wallet?login=regular_wallet">
                       <img src="./assets/images/purse_wallet.svg" class="icon icon40">
                       <div class="productLinkContent">
                         <h3 class="linkTitle">Regular Wallet </h3>
@@ -199,7 +199,7 @@
                     </a>
                   </li>
                   <li>
-                    <a class="linkContainer item-subscriptions" href="#wallet/login=multisig_wallet">
+                    <a class="linkContainer item-subscriptions" href="#wallet?login=multisig_wallet">
                       <img src="./assets/images/keys.svg" class="icon icon40 ">
                       <div class="productLinkContent">
                         <h3 class="linkTitle">Multisig Wallet</h3>
@@ -208,7 +208,7 @@
                     </a>
                   </li>
                   <li>
-                    <a class="linkContainer item-connect" href="#wallet/login=privatekey_wallet">
+                    <a class="linkContainer item-connect" href="#wallet?login=privatekey_wallet">
                       <img src="./assets/images/wallet_paper.svg" class="icon icon40 ">
                       <div class="productLinkContent">
                         <h3 class="linkTitle">Private Key</h3>
@@ -217,7 +217,7 @@
                     </a>
                   </li>
                   <li>
-                    <a class="linkContainer item-relay" href="#wallet/login=import_wallet">
+                    <a class="linkContainer item-relay" href="#wallet?login=import_wallet">
                       <img src="./assets/images/wallet_import2.svg" class="icon icon40">
                       <div class="productLinkContent">
                         <h3 class="linkTitle">Import Wallet</h3>
@@ -246,7 +246,7 @@
       
 
       
-      <div class="wdropdown-menu"  data-dropdown-menu="developer">
+      <div class="wdropdown-menu"  data-dropdown-menu="advanced">
         <div class="dropdown-menu__content">
           <div class="top-section">
             <div class="col-2">
@@ -471,7 +471,7 @@
                           You might store your funds on a software- or hardware-wallet, <br>but with our <a href="#wallet">wallet</a> you can always access them wherever you are and whenever you need!
                         </div>
                         <div class="text-muted py-2">
-                          You can do that by using the <a href="#wallet/login=privatekey_wallet" data-set-wallet-type="privatekey_wallet">private key</a> login option.<br><br>
+                          You can do that by using the <a href="#wallet?login=privatekey_wallet" data-set-wallet-type="privatekey_wallet">private key</a> login option.<br><br>
 
                           Wally.id have also a <a href="#fees">transaction fee calculator</a>, adapt the fees for your needs!
 
@@ -1297,7 +1297,7 @@
 
                     <button id="openBtnNext" class="btn btn-block btn btn-flat-primary waves-effect" disabled>Next</button>
 
-                    <button id="openBtn" class="btn btn-block btn btn-flat-primary waves-effect hidden" disabled>Open Wallet</button>
+                    <button id="openBtn" class="btn btn-block btn btn-flat-primary waves-effect hidden" disabled><span class="icon"></span> Open Wallet</button>
                   </div>
                   </div>
                   </form>
@@ -4878,16 +4878,16 @@ iceee - remove me later
       <ul >
         <label>Portfolio Type</label>
         <li >
-          <a href="#wallet/login=regular_wallet"><img src="./assets/images/purse_wallet.svg" class="icon32 mx-2">  Regular Wallet</a>
+          <a href="#wallet?login=regular_wallet"><img src="./assets/images/purse_wallet.svg" class="icon32 mx-2">  Regular Wallet</a>
         </li>
         <li>
-          <a href="#wallet/login=multisig_wallet"><img src="./assets/images/keys.svg" class="icon32 mx-2"> Multisig Wallet</a>
+          <a href="#wallet?login=multisig_wallet"><img src="./assets/images/keys.svg" class="icon32 mx-2"> Multisig Wallet</a>
         </li>
         <li>
-          <a href="#wallet/login=privatekey_wallet"><img src="./assets/images/wallet_paper.svg" class="icon32 mx-2"> Private Key</a>
+          <a href="#wallet?login=privatekey_wallet"><img src="./assets/images/wallet_paper.svg" class="icon32 mx-2"> Private Key</a>
         </li>
         <li>
-          <a href="#wallet/login=import_wallet"><img src="./assets/images/wallet_import2.svg" class="icon32 mx-2"> Import Wallet</a>
+          <a href="#wallet?login=import_wallet"><img src="./assets/images/wallet_import2.svg" class="icon32 mx-2"> Import Wallet</a>
         </li>
 
         <!--

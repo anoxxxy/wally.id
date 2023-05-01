@@ -89,7 +89,7 @@
                         internal.history.push(fragment);
                     run_before();
                     //internal.routes[i].handler.apply({}, matches);
-                    console.log('internal.routes[i].handler: ', internal.routes[i].handler);
+                    //console.log('internal.routes[i].handler: ', internal.routes[i].handler);
                     
                     internal.routes[i].handler.apply({}, [matches]);  //pass parameter as array, //this.routes[i].handler.apply({}, [matches]); 
                     run_after();

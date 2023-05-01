@@ -834,10 +834,11 @@ const setActivePanel = (activePanelNum, setClassName='animate__fadeInUp') => {
       //setFormHeight(elem);
     }
 
-    activePanelNum
+    
     
     //http://site.com#products/param1=val1&param2&val2.....
-    window.location.hash = '#wallet/login='+activePanelName;
+    //Router.navigate('wallet?login='+activePanelName);
+    window.location.hash = '#wallet?login='+activePanelName;
 
   });
 
@@ -1052,7 +1053,8 @@ a
 
     if (termsIsChecked && (backupDownloadIsChecked || backupIsAlreadySavedChecked)) {
       loginBtn.disabled = false;
-      loginBtn.insertAdjacentHTML('afterbegin', '<i class="bi bi-person-check-fill"></i> ');
+      //loginBtn.insertAdjacentHTML('afterbegin', '<i class="bi bi-person-check-fill"></i> ');
+      loginBtn.querySelector('span').innerHTML = '<i class="bi bi-person-check-fill"></i>';
     }else {
       loginBtn.disabled = true;
       //remove the icon on the button if terms and backup isnt checked
@@ -1060,7 +1062,7 @@ a
         loginBtn.querySelector('i').remove();
     }
 
-    
+    //var loginBtn = document.getElementById('openBtn').querySelector('span').innerHTML = '<i class="bi bi-person-check-fill"></i>';
   }
 
 
@@ -1560,9 +1562,9 @@ const folderContentItems = document.querySelectorAll(".folder-content li.js_fold
 
       //**hide wallet portfolio dropdown if visible
       if ($('#js_folder-backdrop').hasClass('show')) {        
-        console.log('portfolio is open');
+        //console.log('portfolio is open');
         if ($(e.target).attr('id') == 'js_folder-backdrop') {
-          console.log('dismiss-portfolio');
+          //console.log('dismiss-portfolio');
           toggleFolder.click();
         }
 
@@ -1573,7 +1575,10 @@ const folderContentItems = document.querySelectorAll(".folder-content li.js_fold
 
 ///*** Open Wallet - Next button
 loginBtnNext.on("click",function() {
-  
+  console.log('====loginBtnNext click===');
+  console.log('login_wizard.openBtnNextStepPanel:  '+login_wizard.openBtnNextStepPanel);
+  console.log('login_wizard.openWalletType:  '+login_wizard.openWalletType);
+
   //if any internal step is added navigate to that step
   if(login_wizard.openBtnNextStepPanel != ''){
     
@@ -1590,7 +1595,7 @@ loginBtnNext.on("click",function() {
   //first step  when selecting a portfolio
   var walletType='';
   try {
-    login_wizard.openWalletType = "";
+    //login_wizard.openWalletType = "";
       login_wizard.openWalletType == "regular_wallet"
 
       //***Get login type

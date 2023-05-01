@@ -232,23 +232,32 @@
         
         //.add(/kalle(.*)/, function(data){})
         .add(/wallet(.*)/, function(data) {
-          console.log('wallet page');
+          console.log('**wallet page**');
           //alert('sign page');
           
           console.log('data: ', data);
           console.log('Router.urlParams: ', Router.urlParams);
           
-          //no portfolio panel is not active, route back to open portfolio
+          //portfolio panel is not active/Set, route back to open portfolio
           if(login_wizard.openWalletType == '')
             Router.navigate('wallet');  
 
+          console.log('wallet portfolio in target: ' + login_wizard.openWalletType);
+          console.log('Router.urlParams.login: '+ Router.urlParams.login);
+
           //set view to (history-hash) wallet type
-          if (Router.urlParams.login && Router.urlParams.login == login_wizard.openWalletType) { //we navigate only to the selected portfolio, even after a refresh
+          if (Router.urlParams.login ) { //we navigate only to the selected portfolio, even after a refresh
+          //if (Router.urlParams.login && Router.urlParams.login == login_wizard.openWalletType) { //we navigate only to the selected portfolio, even after a refresh
             $('#js_folder-content li.folder-item[data-wallet-type="'+Router.urlParams.login+'"]').click();
-            console.log('wallet portfolio in target: ' + login_wizard.openWalletType);
-          } 
+            
             
 
+          } else {
+            console.log('not listed');
+          }
+            
+
+          
           //if(data[1] == '/login=multisig_wallet')
           if (Router.urlParams.login == 'regular_wallet'){
             //hide next button
@@ -280,11 +289,12 @@
             $('#openBtn').addClass('hidden'); 
           }
           if (Router.urlParams.login == 'terms'){
-            /*$('#openBtnNext').addClass('hidden');
-            $('#openBtn').addClass('hidden'); 
-            console.log('hideeeeeeeeeeeeeen');
-            */
+            //$('#openBtnNext').addClass('hidden');
+            //$('#openBtn').addClass('hidden'); 
+            //console.log('hideeeeeeeeeeeeeen');
+            
           }
+          
 
 
         })

@@ -2607,6 +2607,11 @@ border: 1px solid red;
 		  padding-right: 5px;
 		  padding-left: 0;
 		}
+		#inputs .row input, 
+		#recipients .row input{
+			padding-left: 0.2rem;
+			padding-right: 0.2rem;
+		}
 
 		
 		#recipients .addressRemoveTo,
