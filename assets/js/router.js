@@ -64,12 +64,12 @@
             return router;
         },
         beforeAll: (handler) => {
-            console.log('**beforeAll**');
+            //console.log('**beforeAll**');
             internal.run_before = handler;
             return router;
         },
         afterAll: (handler) => {
-            console.log('**afterAll**');
+            //console.log('**afterAll**');
             internal.run_after = handler;
             return router;
         },
@@ -148,58 +148,102 @@
         },
         parseUrl: function (url_) {
             console.log('===parseUrl===');
-            var url = url_ ? url_ : window.location.hash.slice(1);
+            console.log(' ');
+            //var url = url_ ? url_ : window.location.hash.slice(1);
+            var url = window.location.hash.slice(1);
+
+            url +=  (window.location.search != '' ? window.location.search : '').trim();
             
-            var tmp;
-            //turn array into string with first hashtag (before slash) as "page"-key
-            if (Array.isArray(url)) {
-                if (url[0].includes('/') || url[0].includes('?')) {
-                    
-                    if (url[0].includes('/')) {
-                        tmp = url[0].split('/');
-                        url = 'page='+tmp[0];
 
-                        url+= '&'+tmp[1];
-                    }
+            console.log('url1 window.location.hash.slice(1): ', window.location.hash.slice(1));
+            console.log('url1: ', url);
 
-                    if (url[0].includes('?')) {
-                        tmp = url[0].split('?');
-                        url = 'page='+tmp[0];
 
-                        url+= '&'+tmp[1];
-                    }
-
-                } else {
-                    //we have only a string without parameters, return it with the page name
-                    return router.urlParams =  {'page': url[0]};
-                }
-
+            //handle path and params
+            var qs = '', tmpPath = '', qsPath ='', pathString = '', paramString = '', page = url, paramsList = {}, pathList = {};
+            if (url.includes('?')) {
+                qsPath = url.split('?');
+                tmpPath = qsPath[0];
+                qs = qsPath[1];
+                paramString = qs;
 
             }
+            //console.log('page1 is:' + page);
 
-            url = url.trim();
+            //**Parse Path
+            tmpPath = (tmpPath.substr(-1) === '/') ? tmpPath.slice(0, -1) : tmpPath;
 
-            //remove leading & trailing slash, avoid regex for speed
-            var uc = (url.length - 1), i = 0, qs;
-            while (url.charCodeAt(i) === 47 && ++i);
-            while (url.charCodeAt(uc) === 47 && --uc);
-            url = url.slice(i, uc + 1)
+            //console.log('tmpPath: '+ tmpPath);
 
-            qs = url;
 
-            //split params & values and create object with parameters
-            if (url.includes('&'))
-                qs = url.substring(url.indexOf('#') + 1).split('&');
+            if (tmpPath != '') {
+                //console.log('tmpPath not empty: ', tmpPath);
+                
+                if (tmpPath.includes('#'))
+                    tmpPath = tmpPath.split('#')[1];
 
-            console.log('qs: ', qs);
-            //search params
-            for(var i = 0, result = {}; i < qs.length; i++){
+                //console.log('tmpPathSplit[1]: '+ tmpPath);
+
+                  //remove trailing slash
+                pathString = tmpPath;
+                pathList = pathString.split('/');
+                //console.log('tmpPath2: ', tmpPath);
+
+                var tmp = tmpPath.split('/');
+                //console.log('tmp: ', tmp);
+                page = (tmp[0] !== undefined ? tmp[0] : 'home');
+            } else {
+                //no page is set so far, get it through the url string
+                pathString = url;
+                pathList = url.split('/');
+                page = pathList[0];
+            }
+
+            var urlParsed = {};
+            //console.log('page2 is:' + page);
+
+            //**Parse Parameters
+
+            if (qs != '') {
+              //console.log('qs not empty')
+              
+              //var qs = url.substring(url.indexOf('?') + 1).split('&');
+              var qs = qs.split('&');
+              for(var i = 0; i < qs.length; i++){
                 qs[i] = qs[i].split('=');
-
-                if (qs[i][0] != '' && qs[i][0] !== undefined)
-                    result[qs[i][0]] = (typeof(qs[i][1]) === 'undefined' ? undefined : decodeURIComponent(qs[i][1]) );
+                paramsList[qs[i][0]] = decodeURIComponent(qs[i][1]);
+                urlParsed[qs[i][0]] = decodeURIComponent(qs[i][1]);
+              }
             }
-            return this.urlParams = result;
+            //console.log('paramsList: ', paramsList);
+
+            
+
+            
+
+            //console.log('page3 is:' + page);
+
+            urlParsed["_urlString_"] = url;
+            urlParsed["_pathString_"] = pathString;
+            urlParsed["_path_"] = pathList;
+            urlParsed["_paramString_"] = paramString;
+            urlParsed["_params_"] = paramsList;
+            urlParsed["page"] = page;
+            //prepare return variable
+            /*
+            var urlParsed = {
+              "_urlString_": url,  
+              "_pathString_": pathString,
+              "_paramString_": paramString,
+              "_params_": paramsList,
+              "_path_": pathList,
+              "page": page
+            }
+            */
+            //console.log('urlParsed: ', urlParsed);
+
+
+            return this.urlParams = urlParsed;
         }
     };
 

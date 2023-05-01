@@ -15,6 +15,30 @@
   login_wizard.error = true;
   login_wizard.errorMessage = '';
 
+/*
+var navigationPages = { //unused for now
+    "home" : {},
+    "newAddress" : {},
+    "newSegWit" : {},
+    "newMultiSig" : {},
+    "newTimeLocked" : {},
+    "newHDaddress" : {},
+    "newTransaction" : [
+      "txinputs",
+      "txoutputs"
+    ],
+    "verify" : {},
+    "sign" : {},
+    "broadcast" : {},
+    "wallet" : {},
+    "settings" : {},
+    "about" : {},
+    "fees" : {},
+    "converter" : {}
+  };
+
+
+*/
 
   //***Validate Wallet login fields
   login_wizard.validateLogin = function (loginType, walletType, signatures) {
@@ -1465,7 +1489,37 @@ const folderContentItems = document.querySelectorAll(".folder-content li.js_fold
       });
   });
 
+  
+  /*
+  @ nested/child tab show (routing related)
+  */
+  $('[data-target="#txoutputs"], [data-target="#txinputs"]').on('click', function(e) {
+    
+    var data_target = $(this).attr('data-target').slice(1); //slice hashtag (#)
+    console.log('-->tab.show [data-target='+data_target+']');
+    console.log( 'attr: ' + $(this).attr('data-target'));
+    
+    //check if a nested/child tab is clicked
+    if (Router.urlParams.page  != data_target) {
+      Router.navigate(Router.urlParams.page + '/' + data_target);
+    } else {
+      console.log('no tab is set!');
+    }
+  });
 
+  /*
+  $('[data-target="#txoutputs1"], [data-target="#txinputs1"]').on('click', function(e) {
+    
+    var data_target = $(this).attr('data-target')
+    //data_target = data_target.slice(1); //slice hashtag (#)
+    console.log( 'attr: ' + data_target);
+    
+    if(data_target == '#txinputs')
+      Router.navigate('newTransaction/txinputs');
+    else
+      Router.navigate('newTransaction/txoutputs');
+  });
+  */
 
     /*document click*/
     $('body').on('click', function(e) {
@@ -1514,11 +1568,6 @@ const folderContentItems = document.querySelectorAll(".folder-content li.js_fold
 
       }
 
-      //check hashtag, if no "asset" or "network-type" is preset but is exisiting in Router.urlParams, then add it to the hash
-      if (e.target.href) {
-      //if (Router.urlParams.asset !== undefined 
-        console.log('a hash-link was clicked');
-      }
     });
 
 

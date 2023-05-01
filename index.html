@@ -2079,28 +2079,28 @@
                       <div class="card-header tab-card-header">
                         <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                           <li class="nav-item">
-                            <a class="nav-link" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="One" aria-selected="true">One</a>
+                            <a class="nav-link active" id="one-tab" data-toggle="tab" href="#one" role="tab"  >One</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Two" aria-selected="false">Two</a>
+                            <a class="nav-link" id="two-tab" data-toggle="tab" href="#two" role="tab" >Two</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" id="three-tab" data-toggle="tab" href="#three" role="tab" aria-controls="Three" aria-selected="false">Three</a>
+                            <a class="nav-link" id="three-tab" data-toggle="tab" href="#three" role="tab" >Three</a>
                           </li>
                         </ul>
                       </div>
                       <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
+                        <div class="tab-pane fade show active p-3" id="one" role="tabpanel" >
                           <h5 class="card-title">Tab Card One</h5>
                           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                           <a href="#" class="btn btn-primary">Go somewhere</a>              
                         </div>
-                        <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
+                        <div class="tab-pane fade p-3" id="two" role="tabpanel" >
                           <h5 class="card-title">Tab Card Two</h5>
                           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                           <a href="#" class="btn btn-primary">Go somewhere</a>              
                         </div>
-                        <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
+                        <div class="tab-pane fade p-3" id="three" role="tabpanel" >
                           <h5 class="card-title">Tab Card Three</h5>
                           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                           <a href="#" class="btn btn-primary">Go somewhere</a>              
@@ -2167,12 +2167,40 @@
             </table>
 </div></div>
 
+      
+<div class="container hidden">
+  <hr>
+  <div class="row">
+                    <div class="py-3">
+                <ul class="nav nav-tabs project-tab d-flex flex-row justify-content-between" role="tablist">
+    <li class="ml-2">&nbsp;</li>
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#newTransaction/txoutputs" data-target="#txoutputs2" role="tab" >Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#newTransaction/txinputs" data-target="#txinputs2" role="tab" >Profile</a>
+    </li>
+
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane p-2 active" id="txoutputs2" role="tabpanel">outputs  tab.</div>
+    <div class="tab-pane p-2" id="txinputs2" role="tabpanel">inputs tab.</div>
+
+  </div>
+</div>
+  </div>
+  <hr>
+</div>
+
+                
                 <br>
                 <ul class="nav nav-tabs project-tab d-flex flex-row justify-content-between" id="putTabs" role="tablist">
                   <li class="nav-item">
                     
                     
-                      <a class="nav-link active" data-toggle="tab" href="#txoutputs" role="tab" aria-controls="txoutputs" aria-selected="true">
+                      <a class="nav-link active" data-toggle="tab" href="#newTransaction/txoutputs" data-target="#txoutputs" role="tab">
                         <div>Outputs</div>
                           <div class="text-muted text-primary"> <small>(<span id="totalOutput">0.00000000</span>)</small></div>
                       </a>
@@ -2180,7 +2208,7 @@
                   <li class="nav-item">
                     
                     
-                      <a class="nav-link" data-toggle="tab" href="#txinputs" role="tab" aria-controls="txinputs" aria-selected="false">
+                      <a class="nav-link" data-toggle="tab" href="#newTransaction/txinputs" data-target="#txinputs" role="tab" >
                         
                           <div>Inputs </div>
                           <div class="text-muted text-primary"><small>(<span id="totalInput">0.00000000</span>)</small></div>
@@ -2235,7 +2263,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="txinputs" role="tabpanel" aria-labelledby="profile-tab">
+                  <div class="tab-pane fade" id="txinputs" role="tabpanel" >
                     <div class="alert alert-light d-flex justify-content-between">
                       <span class="text-muted text-secondary">Enter the details of inputs you wish to spend.</span>
                     </div>

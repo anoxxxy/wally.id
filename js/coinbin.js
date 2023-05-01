@@ -9,34 +9,7 @@ $(document).ready(function() {
 	var explorer_addr = "https://coinb.in/addr/"
 	var explorer_block = "https://coinb.in/block/"
 
-/*
 
-
-	var navigationPages = {	//unused for now
-		"home" : {},
-		"newAddress" : {},
-		"newSegWit" : {},
-		"newMultiSig" : {},
-		"newTimeLocked" : {},
-		"newHDaddress" : {},
-		"newTransaction" : [
-			"txinputs",
-			"txoutputs"
-		],
-		"verify" : {},
-		"sign" : {},
-		"broadcast" : {},
-		"wallet" : {},
-		"settings" : {},
-		"about" : {},
-		"fees" : {},
-		"converter" : {}
-	};
-
-
-
-
-*/
 
 /*
 profile_data = { 
@@ -2256,9 +2229,22 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 
 			//add link for sharing to verify page
 			if ($("#verifyStatus").hasClass('hidden')) {
-				$("#verify input.verifyLink").val(wally_fn.host+'?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val()+'#verify').trigger('change');
+				var network_slug = '';
+				if(coinjs.asset.network != 'mainnet')
+					network_slug = '&network='+coinjs.asset.network;
+
+				//$("#verify a.verifyLink").attr('href','verify='+$("#verifyScript").val()+'/asset='+coinjs.asset.slug+network_slug);
+				//$("#verify a.verifyLink").attr('href','#verify/asset='+coinjs.asset.slug+network_slug+'&decode='+$("#verifyScript").val());
+				var verifyScript = $("#verifyScript").val();
+				$("#verify input.verifyLink").val(wally_fn.host+'#verify?asset='+coinjs.asset.slug+network_slug+'&decode='+verifyScript).trigger('change');
+				console.log(wally_fn.host+'#verify?asset='+coinjs.asset.slug+network_slug+'&decode='+verifyScript);
+				
+				//Router.navigate('verify?asset='+coinjs.asset.slug+network_slug+'&decode='+verifyScript);
+				
+				/*
 				window.location.hash = "#verify";
 				history.pushState({}, null, $("#verify input.verifyLink").val());
+				*/
 				console.log('add share link');
 			}else
 				console.log('dont add share link');
@@ -2520,7 +2506,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			if (!hexDecoded)
 				return ;
 
-			//for ETH and EVM based coins/assets
+			//for single based coins/assets, like ETH etc..
 			if ( (coinjs.asset.supports_address).includes('single')) {
 				$("#verifyPrivHexKey .singleAddress").removeClass('hidden');
 				
@@ -3260,7 +3246,13 @@ new jBox('Tooltip', {
 	$("#verify input.verifyLink").on('change', function(e) {
 		
 		console.log('input.verifyLink changed!', e.target);
-		$("#verify a.verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+		//$("#verify a.verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+		
+		var network_slug = '';
+		if(coinjs.asset.network != 'mainnet')
+			network_slug = '&network='+coinjs.asset.network;
+
+		$("#verify a.verifyLink").attr('href','#verify?asset='+coinjs.asset.slug+network_slug+'&decode='+$("#verifyScript").val());
 	});
 
 	// clear results when data changed

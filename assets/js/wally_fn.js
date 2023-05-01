@@ -112,7 +112,7 @@ wally_fn.getUrlParams = function (url) {
         if (qsHash[i][0].includes('?')) {
           tmp = qsHash[i][0].split('?');
           qsHash[i][0] = tmp[1];
-          result.hash_params['_hashtag_'] = tmp[0];
+          result.hash_params['_hashtag_'] = tmp[0].trim('/');
         }
         if (qsHash[i][0] != '') 
           result.hash_params[qsHash[i][0]] = (typeof(qsHash[i][1]) === 'undefined' ? undefined : decodeURIComponent(qsHash[i][1]) );

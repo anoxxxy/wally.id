@@ -17,6 +17,7 @@
     options (saveSettings, showMessage (about updated settings) )
   */
   wally_kit.setNetwork = async function (network_var = 'mainnet', asset_var = 'bitcoin', options = {saveSettings: false, showMessage: false, renderFields: true}) {
+    console.log(' ');
     console.log('===wally_kit.setNetwork===');
 
 
@@ -163,13 +164,72 @@
     
 
     Router
+        /*.add(/^(\?)/, function(data) {
+
+          //index.html?asset=bay&decode=1232123
+          //-->index.html#home?asset=bay&decode=1232123
+          console.log('**re-route page start******************');
+
+          console.log('**re-route page**', data);
+          console.log('**re-route page end******************', data[2]);
+          //alert('converter page');
+          //Router.navigate( Router.urlParams.page );
+          console.log('data: ', data);
+          //window.location.search = '';
+          
+          data = data[0].split('?');
+          window.location.hash = 'home?'+data[data.length-1];
+          window.location.search = '';
+
+          
+        })
+        */
         .add(/home(.*)/, function(data){})
         .add(/newAddress(.*)/, function(data){})
         .add(/newSegWit(.*)/, function(data){})
         .add(/newMultiSig(.*)/, function(data){})
         .add(/newHDaddress(.*)/, function(data){})
         .add(/newTimeLocked(.*)/, function(data){})
-        .add(/newTransaction(.*)/, function(data){})
+        //.add(/(newTransaction)(.*)/, function(data){  //catch #newTransaction/txinputs
+        //.add(/(newTransaction|(?<=newTransaction.*)[^\/?\r\n]+)/g, function(data){  //catch #newTransaction/txinputs
+        .add(/(\bnewTransaction\b|(?<=\bnewTransaction\/.*)[^\/?]+)/g, function(data){  //https://regex101.com/r/2RtRfv/6/codegen?language=javascript
+
+
+          /*
+          index.html#newTransaction/txinputs/attans?key=value&param=paramValue
+          gives:
+          [
+            "newTransaction",
+            "txinputs",
+            "attans",
+            "key=value&param=paramValue"
+          ]
+          */
+        
+
+        //.add(/(newTransaction)(.*)\?(\w.*)/, function(data){  //catch #newTransaction/txinputs
+        
+        
+          
+          console.log('**newTransaction page**')
+
+          console.log('data: ', data[1]);
+          //show nested/child route
+          if(data[1])
+            $('#newTransaction [data-target="#' + data[1] + '"]').tab('show');
+
+        })/*
+        .add(/txoutputs/, function(data){
+          console.log('**newTransaction/txoutputs**')
+          //Router.navigate('newTransaction/txoutputs');
+        })
+        .add(/txinputs/, function(data){
+          console.log('**newTransaction/txinputs**')
+          //Router.navigate('newTransaction/txinputs');
+        })
+        */
+
+        
         //.add(/kalle(.*)/, function(data){})
         .add(/wallet(.*)/, function(data) {
           console.log('wallet page');
@@ -252,11 +312,17 @@
         })
         .add(/(fee)(.*)/, function(data){})
         //.add(/(settings\/)(.*)/, function(data) {
-        .add(/(settings)(.*)/, function(data) {
-            console.log('**settings page**', data);
+        .add(/(settings)\?(.*)/, function(data) {
+            console.log('**settings subpage**', data);
             console.log('parsedUrl: ', Router.urlParams);
             
         })
+        .add(/(settings)(.*)/, function(data) {
+            console.log('**settings first page**', data);
+            console.log('parsedUrl: ', Router.urlParams);
+            
+        })
+        
         .add(/(way-token)(.*)/, function(data) {
           console.log('**way-token page**');
           //alert('converter page');
@@ -267,6 +333,8 @@
           //alert('converter page');
           
         })
+
+        
         /*.add(/(number)=([0-9]+)&(n)=([0-9]+)/i, function(params) {
             console.log('number=page, data:', params);
             
@@ -283,10 +351,12 @@
           //Router.navigate('home', 'Start');
         })
         .beforeAll( function(data) {
+            console.log(' ');
             console.log('==Run Before All Routes!')
             wally_kit.pageHandler(data);
         })
         .afterAll( function(data) {
+            console.log(' ');
             console.log('==Run After All Routes!')
         })
         .apply()
@@ -382,8 +452,8 @@
   @ Initialize Network Settings!
   */
   wally_kit.initNetwork = async function (networkTypesRadio) {
-
-    console.log('===initNetwork===');
+    console.log(' ');
+    console.log('===wallt_kit.initNetwork===');
     try {
       //set Host
       wally_fn.setHost();
