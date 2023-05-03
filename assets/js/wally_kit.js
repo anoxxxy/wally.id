@@ -78,8 +78,6 @@
 
         //make this own function
 
-        $('#verifyScript').val('').trigger('change');
-
         //hide/show fields for updated Network protocol
         if (coinjs.txRBFTransaction) {
           $("#txRbfTransactionOptional").show();
@@ -144,8 +142,8 @@
   @ Wallet Router settings
   */
 
-  wally_kit.routerSettings = async function () {
-    console.log('===routerSettings===');
+  wally_kit.initRouter = async function () {
+    console.log('===initRouter===');
 
 
 
@@ -159,6 +157,74 @@
         alert('Number: ' + num);
         console.log('num: ', num)
     }
+
+    var setVerifyScript = function () {
+        document.getElementById('verifyScript').value = Router.urlParams.decode;
+    }
+    var loginWalletInteraction = function () {
+          
+          console.log('Router.urlParams: ', Router.urlParams);
+          
+          //portfolio panel is not active/Set, route back to open portfolio
+          if(login_wizard.openWalletType == '')
+            Router.navigate('login');  
+
+          console.log('login wallet portfolio in target: ' + login_wizard.openWalletType);
+          console.log('Router.urlParams.wallet_type: '+ Router.urlParams.wallet_type);
+
+          //set view to (history-hash) wallet type
+          if (Router.urlParams.wallet_type ) { //we navigate only to the selected portfolio, even after a refresh
+          //if (Router.urlParams.wallet_type && Router.urlParams.wallet_type == login_wizard.openWalletType) { //we navigate only to the selected portfolio, even after a refresh
+            $('#js_folder-content li.folder-item[data-wallet-type="'+Router.urlParams.wallet_type+'"]').click();
+            
+
+            console.log('wallet portfolio: ' + Router.urlParams.wallet_type);
+            console.log('openWalletType: ' + login_wizard.openWalletType);
+
+          } else {
+            console.log('not listed');
+          }
+            
+
+          
+          //if(data[1] == '/login=multisig_wallet')
+          if (Router.urlParams.wallet_type == 'regular_wallet'){
+            //hide next button
+            $('#openBtnNext').removeClass('hidden');
+            //show open wallet button
+            $('#openBtn').addClass('hidden');
+          }
+          if (Router.urlParams.wallet_type == 'multisig_wallet'){
+            $('#openBtnNext').removeClass('hidden');
+            $('#openBtn').addClass('hidden'); 
+          }
+          if (Router.urlParams.wallet_type == 'privatekey_wallet'){
+            $('#openBtnNext').removeClass('hidden');
+            $('#openBtn').addClass('hidden'); 
+            
+          }
+          if (Router.urlParams.wallet_type == 'import_wallet'){
+            $('#openBtnNext').removeClass('hidden');
+            $('#openBtn').addClass('hidden'); 
+            
+          }
+          if (Router.urlParams.wallet_type == 'mnemonic_wallet'){
+            $('#openBtnNext').removeClass('hidden');
+            $('#openBtn').addClass('hidden'); 
+            
+          }
+          if (Router.urlParams.wallet_type == 'hdmaster_wallet'){
+            $('#openBtnNext').removeClass('hidden');
+            $('#openBtn').addClass('hidden'); 
+          }
+          if (Router.urlParams.wallet_type == 'terms'){
+            //$('#openBtnNext').addClass('hidden');
+            //$('#openBtn').addClass('hidden'); 
+            //console.log('hideeeeeeeeeeeeeen');
+            
+          }
+    }
+
 
     
     
@@ -231,70 +297,12 @@
 
         
         //.add(/kalle(.*)/, function(data){})
-        .add(/wallet(.*)/, function(data) {
-          console.log('**wallet page**');
+        .add(/login(.*)/, function(data) {
+          console.log('**login page**');
           //alert('sign page');
           
-          console.log('data: ', data);
-          console.log('Router.urlParams: ', Router.urlParams);
           
-          //portfolio panel is not active/Set, route back to open portfolio
-          if(login_wizard.openWalletType == '')
-            Router.navigate('wallet');  
-
-          console.log('wallet portfolio in target: ' + login_wizard.openWalletType);
-          console.log('Router.urlParams.login: '+ Router.urlParams.login);
-
-          //set view to (history-hash) wallet type
-          if (Router.urlParams.login ) { //we navigate only to the selected portfolio, even after a refresh
-          //if (Router.urlParams.login && Router.urlParams.login == login_wizard.openWalletType) { //we navigate only to the selected portfolio, even after a refresh
-            $('#js_folder-content li.folder-item[data-wallet-type="'+Router.urlParams.login+'"]').click();
-            
-            
-
-          } else {
-            console.log('not listed');
-          }
-            
-
-          
-          //if(data[1] == '/login=multisig_wallet')
-          if (Router.urlParams.login == 'regular_wallet'){
-            //hide next button
-            $('#openBtnNext').removeClass('hidden');
-            //show open wallet button
-            $('#openBtn').addClass('hidden');
-          }
-          if (Router.urlParams.login == 'multisig_wallet'){
-            $('#openBtnNext').removeClass('hidden');
-            $('#openBtn').addClass('hidden'); 
-          }
-          if (Router.urlParams.login == 'privatekey_wallet'){
-            $('#openBtnNext').removeClass('hidden');
-            $('#openBtn').addClass('hidden'); 
-            
-          }
-          if (Router.urlParams.login == 'import_wallet'){
-            $('#openBtnNext').removeClass('hidden');
-            $('#openBtn').addClass('hidden'); 
-            
-          }
-          if (Router.urlParams.login == 'mnemonic_wallet'){
-            $('#openBtnNext').removeClass('hidden');
-            $('#openBtn').addClass('hidden'); 
-            
-          }
-          if (Router.urlParams.login == 'hdmaster_wallet'){
-            $('#openBtnNext').removeClass('hidden');
-            $('#openBtn').addClass('hidden'); 
-          }
-          if (Router.urlParams.login == 'terms'){
-            //$('#openBtnNext').addClass('hidden');
-            //$('#openBtn').addClass('hidden'); 
-            //console.log('hideeeeeeeeeeeeeen');
-            
-          }
-          
+          loginWalletInteraction();
 
 
         })
@@ -305,7 +313,13 @@
         
         .add(/(verify)(.*)/, function(data) {
           console.log('**verify page**');
-          //alert('verify page');
+          //console.log('data: ', data);
+
+          if(Router.urlParams._params_.decode) {
+            setVerifyScript();
+          }
+
+
         })
         .add(/(sign)(.*)/, function(data) {
           console.log('**sign page**');
@@ -385,49 +399,7 @@
     console.log('Router.urlParams.asset: ' + Router.urlParams.asset);
     */
 
-    //get & set asset type, default is bitcoin
-    if (Router.urlParams.asset !== undefined) {
-
-      console.log('==Router.urlParams.asset==', Router.urlParams);
-      var default_network = 'mainnet', default_asset = 'bitcoin';
-
-      //check if network type is set, or else set to default!
-      //if (Router.urlParams.network !== undefined) {
-      if ( (Router.urlParams).hasOwnProperty('network') ) {
-         if (Router.urlParams.network == 'mainnet' || Router.urlParams.network == 'testnet') {
-            default_network = Router.urlParams.network;
-            console.log('default_network is correct!');
-         } else {
-            Router.urlParams.network = default_network;
-            console.log('default_network was reset to default!');
-        }
-      }
-
-
-      console.log('check for Router.urlParams.asset: ' + Router.urlParams.asset);
-      console.log('check for Router.urlParams.network: ' + Router.urlParams.network);
-      /*
-      if (wally_fn.networks[ network ][ urlParams.asset] ) {
-        console.log ('network: ' + network + '|  asset: ' + urlParams.asset );
-      }
-      */
-      //search for asset name and symbol for i.e (bitcoin/btc)
-      for (var [key, value] of Object.entries(wally_fn.networks[ default_network ])) {
-        console.log('loop for key, value: '+ key);
-
-        if ( (value.asset.symbols).includes(Router.urlParams.asset) ) {
-          default_asset = key;
-          console.log('asset was found: ', value.asset.symbol);
-          console.log('asset key was found: ', key);
-
-          await this.setNetwork(default_network, default_asset, {saveSettings: true, showMessage: true, renderFields: true});
-        }
-      }
-
-      //if(!listChainTypes.includes(chainType))
-
-    }
-
+    
 
 
     //set Network depending on URL parameters
@@ -457,6 +429,56 @@
   }
 
 
+  /*
+  @ Check if asset and network type is set by URL
+  */
+
+  wally_kit.checkUrlParams = async function () {
+
+    //get & set asset type, default is bitcoin
+    if (Router.urlParams.asset !== undefined) {
+
+      console.log('==Router.urlParams.asset==', Router.urlParams);
+      var default_network = 'mainnet', default_asset = 'bitcoin';
+
+      //check if network type is set, or else set to default!
+      //if (Router.urlParams.network !== undefined) {
+      if ( (Router.urlParams).hasOwnProperty('network') ) {
+         if (Router.urlParams.network == 'mainnet' || Router.urlParams.network == 'testnet') {
+            default_network = Router.urlParams.network;
+            console.log('default_network is correct!');
+         } else {
+            Router.urlParams.network = default_network;
+            console.log('default_network was reset to default!');
+        }
+      }
+
+
+      console.log('check for Router.urlParams.asset: ' + Router.urlParams.asset);
+      console.log('check for Router.urlParams.network: ' + Router.urlParams.network);
+      
+      //if (wally_fn.networks[ network ][ urlParams.asset] ) {
+        //console.log ('network: ' + network + '|  asset: ' + urlParams.asset );
+      //}
+      
+      //search for asset name and symbol for i.e (bitcoin/btc)
+      for (var [key, value] of Object.entries(wally_fn.networks[ default_network ])) {
+        console.log('loop for key, value: '+ key);
+
+        if ( (value.asset.symbols).includes(Router.urlParams.asset) ) {
+          default_asset = key;
+          console.log('asset was found: ', value.asset.symbol);
+          console.log('asset key was found: ', key);
+
+          await this.setNetwork(default_network, default_asset, {saveSettings: true, showMessage: true, renderFields: true});
+          break;
+        }
+      }
+
+
+    }
+
+  }
 
   /*
   @ Initialize Network Settings!
@@ -478,7 +500,8 @@
       wally_kit.listAssets();
 
       //get pageURL Parameters
-      await this.routerSettings();
+      await this.initRouter();
+      await this.checkUrlParams();
       console.log('networkType: ', networkTypesRadio);
 
       
@@ -1011,6 +1034,7 @@ const shootPeasPromise = (...args) => {
     //wally_kit.settingsListAssets($(this).attr('data-network-type'));
 
     
+    $('#verifyScript').val('').trigger('change');   //clear verifyscript
 
     console.log('portfolioAsset this.value: ' + this.value);
     //$('#coinjs_network_select li[data-asset="'+this.value+'"]').click();
@@ -1058,7 +1082,7 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
   //console.log('children: ', $(this).parent().parent().children());
 
 
-  //remove "_select" from id to get it equivalent select element
+  //remove "_select" from id to get its equivalent select element
   var eqSelectId = parentId.replace('_select', ''), setSelectValue;
   ;
   if (eqSelectId == 'coinjs_network'){
@@ -1100,17 +1124,6 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
   */
 
   
-
-  //change portfolio type
-  $('a[data-set-wallet-type]').on('click', function() {
-    console.log('===setWalletPortfolio===');
-    var setWalletPortfolio = $(this).attr('data-set-wallet-type');
-    console.log('wallet_type_clicked: ', setWalletPortfolio);
-
-    //$('#js_folder-content li.folder-item[data-wallet-type="'+setWalletPortfolio+'"]').click();
-
-  });
-
 
 
   //wally_fn.assetInfo.icon = './assets/images/providers_icon.svg';

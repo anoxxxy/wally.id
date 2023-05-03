@@ -51,8 +51,8 @@
 
         },
         add: (route, handler) => {
-            console.log('===add===');
-            console.log('route: : ', route);
+            //console.log('===add===');
+            //console.log('route: : ', route);
             if (typeof route == 'function') {
                 handler = route;
                 route = '';

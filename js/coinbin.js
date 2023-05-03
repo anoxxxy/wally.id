@@ -3,6 +3,8 @@ $(document).ready(function() {
 	//***Initialize/Set default Network
   	wally_kit.initNetwork($('input[type=radio][name=radio_selectNetworkType]'));
 
+
+
 	/* open wallet code */
 
 	var explorer_tx = "https://coinb.in/tx/"
@@ -16,7 +18,7 @@ profile_data = {
 			"address" : "",
 			"email" : loginEmail,
 			"login_type" : "", //"password" (email & password login), "private_key" login, "import_wallet", mnemonic" login, "hdmaster" login
-			"wallet_type" : walletType,	//regular (login normal address), multisig
+			"wallet_type" : walletType,	//regular (login normal address), multisig //same as total signatures
 			"redeem_script" : "",
 			"remember_me" : loginRemember,
 			"pubkey_sorted": false,	// check this when generating the private keys! - (it must be sorted if user wants to import to BitBay Client Wallet)
@@ -30,6 +32,10 @@ profile_data = {
 				loginPass
 				//{loginPass[0]["password"]},
 				//{loginPass[1]["password"]}
+			],
+			"hex_keys" : [
+				{""},
+				{""}
 			],
 			"private_keys" : [
 				{""},
@@ -2237,7 +2243,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 				//$("#verify a.verifyLink").attr('href','#verify/asset='+coinjs.asset.slug+network_slug+'&decode='+$("#verifyScript").val());
 				var verifyScript = $("#verifyScript").val();
 				$("#verify input.verifyLink").val(wally_fn.host+'#verify?asset='+coinjs.asset.slug+network_slug+'&decode='+verifyScript).trigger('change');
-				console.log(wally_fn.host+'#verify?asset='+coinjs.asset.slug+network_slug+'&decode='+verifyScript);
+				//console.log(wally_fn.host+'#verify?asset='+coinjs.asset.slug+network_slug+'&decode='+verifyScript);
 				
 				//Router.navigate('verify?asset='+coinjs.asset.slug+network_slug+'&decode='+verifyScript);
 				
@@ -2246,7 +2252,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 				history.pushState({}, null, $("#verify input.verifyLink").val());
 				*/
 				console.log('add share link');
-			}else
+			} else
 				console.log('dont add share link');
 
 		} catch (e) {
@@ -2827,10 +2833,9 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 	        //this is for generating passwords on popover so we can bind the generated value to the password-input field of the page!
 	        var inputFor = $(e).attr( "data-input-for");
-    			console.log('inputFor: '+ inputFor);
-    		if(inputFor !== undefined)
-    			if(inputFor.charAt(0) == '#')
-    				 inputFor = inputFor.substring(1);
+    			//console.log('inputFor: '+ inputFor);
+    		if(inputFor !== undefined && (inputFor.charAt(0) == '#'))
+    			inputFor = inputFor.substring(1);
 
     		$(data.target ).find('#pwdGenerate').attr('data-input-for', inputFor);
 
@@ -2897,7 +2902,7 @@ new jBox('Tooltip', {
 	  			delay: { "show": 100, "hide": 200 },
 	  			//customClass: 'animate__animated animate__slideInDown',
 		    });
-	  	    console.log('popover poppis1: ', pooppis);
+	  	    //console.log('popover poppis1: ', pooppis);
 
 	  	    //var open = $(e).attr('data-easein');
 	  	    //pooppis.velocity('transition.' + open);

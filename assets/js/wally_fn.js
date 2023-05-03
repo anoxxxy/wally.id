@@ -12,8 +12,10 @@
 
   //active/current coin/asset variables
   wally_fn.host = '';
-  wally_fn.network = 'mainnet';
-  wally_fn.asset = 'bitcoin';
+  
+  wally_fn.network = 'mainnet'; //this is the temporary network choosen in settings page but not saved
+  wally_fn.asset = 'bitcoin'; //this is the temporary asset choosen in settings page but not saved
+
   wally_fn.chainModel = 'utxo';
   wally_fn.provider = {utxo:'', broadcast:''};
   wally_fn.assetInfo = {}; //has a copy of "coinjs.asset" object
@@ -31,6 +33,7 @@
     "verify" : ['utxo', 'account'],
     "sign" : ['utxo', 'account'],
     "broadcast" : ['utxo', 'account'],
+    "login" : ['utxo', 'account'],
     "wallet" : ['utxo', 'account'],
     "settings" : ['utxo', 'account'],
     "about" : ['all'],
@@ -486,7 +489,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
       //generate additional addresses like bech32 and segwit ?
       var address_formats = {};
       console.log('options.length: '+options.length);
-      console.log('options: '+options);
+      console.log('options: ',options);
       
       if (options.supports_address.length){
         if (options.supports_address.includes('bech32')){
@@ -579,8 +582,65 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
   }
 
 /*
+@ Generate Wallet addresses upon Login, compressed or single keys for assets/coins
+*/
+wally_fn.generateAllWalletAddresses = function(hexkey){
+  console.log('=================wally_fn.generateAllWalletAddresses=================')
+
+  var assetAddress;
+  var walletAddresses = {};
+  for (var [key, value] of Object.entries(wally_fn.networks[ coinjs.asset.network ])) {
+    console.log('loop for key: '+ key);
+    console.log('loop for value: ', value);
+
+    
+    
+
+    //UTXO coins
+    if (value.asset.chainModel == 'utxo') {
+
+      //asset supports compressed keys?
+      if ( (value.asset.supports_address).includes('compressed') ) {
+
+        $.extend(coinjs, value);
+        assetAddresses = this.hexPrivKeyDecode(hexkey, {'supports_address': coinjs.asset.supports_address});
+        //console.log('assetAddresses.wif', assetAddresses);
+
+
+        walletAddresses[ key ] = {};
+        walletAddresses[ key ]['name']  = value.asset.name;
+        walletAddresses[ key ]['symbol']  = value.asset.symbol;
+        walletAddresses[ key ]['address']  = assetAddresses.wif.compressed.address;
+        walletAddresses[ key ]['addresses_supported']  = assetAddresses.wif;
+      
+
+      }
+
+    }
+
+    //Account based coins
+    if (value.asset.chainModel == 'account') {
+
+      //asset supports compressed keys?
+      if ( (value.asset.supports_address).includes('single') ) {
+      }
+    
+  }
+}
+
+$.extend(coinjs, wally_fn.networks.mainnet.bitcoin);
+console.log('walletAddresses: ', walletAddresses);
+return walletAddresses;
+
+
+  
+
+}
+
+/*
  Validate/Decode/Convert key to address
  @key in:decimal/hex
+ Not used - iceee
 */
 wally_fn.decodeHexPrivKey = function(key){
     

@@ -6,9 +6,11 @@
   login_wizard.profile_data = {};
 
   /*  vars */
-  login_wizard.openWalletType ='';  //variable to define what type of wallet to open
-  login_wizard.openBtnNextStepPanel = ''; //keep track of open wallet "internal next form panels"
+  login_wizard.openWalletType ='';  //variable to define what type of login wallet type is choosen
+  
+  login_wizard.openBtnNextStepPanel = ''; //keep track of login wallet "internal wizard steps for panel"
   login_wizard.panelStepNames = ["regular_wallet", "multisig_wallet", "privatekey_wallet", "import_wallet", "mnemonic_wallet", "hdmaster_wallet", "terms"];
+
   login_wizard.wallet_credentials = "";
 
   //***Error message handling!
@@ -243,7 +245,7 @@ var navigationPages = { //unused for now
         //**Check if HEX-privkey is within range?
         //if(!wally_fn.isHexKeyInRange('fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141')) //<<-- throws error since it is out of range!
         if(!wally_fn.isHexKeyInRange(wally_fn.passwordHasher(loginEmail, login_wizard.profile_data.passwords[i])))
-          throw ('Error in generating Bitcoin address!');
+          throw ('Error in generating ' + coinjs.asset.name+ ' address!');
           
         (login_wizard.profile_data.hex_key).push(wally_fn.passwordHasher(loginEmail, login_wizard.profile_data.passwords[i]));
 
@@ -291,7 +293,7 @@ hex key should not be higher then that!
       //show Next button
       //$('#openBtnNext').addClass('hidden');
 
-      login_wizard.openBtnNextStepPanel = ''; //reset the next internal step so validation must be valid!
+      login_wizard.openBtnNextStepPanel = ''; //error, validate fields again on login next button click
       login_wizard.errorMessage = err;
       //$('#walletLoginValidationInfo').removeClass('animate__fadeInDown').addClass('animate__fadeOutUp').fadeOut();
       login_wizard.animateElementVelocity('#walletLoginValidationInfo', false);
@@ -684,6 +686,7 @@ login_wizard.downloadFileBlob = function (filename, text) {
   $(document).ready(function() {
 
   var loginBtn = document.getElementById('openBtn');
+  
   //var loginBtnNext = document.getElementById('openBtnNext');
 
   //var loginBtn = document.getElementById('openBtn');
@@ -790,7 +793,7 @@ const getActivePanel = () => {
 
 const setActivePanel = (activePanelNum, setClassName='animate__fadeInUp') => {
 
-  console.log('===============activePanel:'+activePanelNum+'===============');
+  console.log('===============setActivePanel:'+activePanelNum+'===============');
   removeClasses(wizardEl.stepFormPanels, 'js-active');
   removeClasses(wizardEl.stepFormPanels, stepNextAnimation);
   removeClasses(wizardEl.stepFormPanels, stepPrevAnimation);
@@ -837,8 +840,8 @@ const setActivePanel = (activePanelNum, setClassName='animate__fadeInUp') => {
     
     
     //http://site.com#products/param1=val1&param2&val2.....
-    //Router.navigate('wallet?login='+activePanelName);
-    window.location.hash = '#wallet?login='+activePanelName;
+    //Router.navigate('login?wallet_type='+activePanelName);
+    window.location.hash = '#login?wallet_type='+activePanelName;
 
   });
 
@@ -1021,13 +1024,14 @@ var manualStepLoginLinks = document.querySelectorAll('a[data-formwizard-step]');
 
 
 /*Form Wizard - jump from steps*/
-
+/*
 $('#openBtnSetActivePanel').on("click",function() {
   console.log('===============openBtnSetActivePanel===============');
 
   console.log('nextStep: ' + login_wizard.openBtnNextStepPanel);
   setActivePanel(login_wizard.openBtnNextStepPanel);
 });
+*/
 
 
 //<< FORM WIZARD END
@@ -1048,14 +1052,17 @@ $('#openBtnSetActivePanel').on("click",function() {
     var termsIsChecked = document.getElementById('openCheckAcceptTerms').checked;
     var backupDownloadIsChecked = document.getElementById('openCheckBackupDownloaded').checked;
     var backupIsAlreadySavedChecked = document.getElementById('openCheckBackupAlreadySaved').checked;
-a
+    var loginFormAccept = $('#walletLoginFormAccept');
     
 
     if (termsIsChecked && (backupDownloadIsChecked || backupIsAlreadySavedChecked)) {
       loginBtn.disabled = false;
       //loginBtn.insertAdjacentHTML('afterbegin', '<i class="bi bi-person-check-fill"></i> ');
       loginBtn.querySelector('span').innerHTML = '<i class="bi bi-person-check-fill"></i>';
+      
+      loginFormAccept.children('.alert').removeClass('alert-danger').addClass('alert-success');
     }else {
+      loginFormAccept.children('.alert').removeClass('alert-success').addClass('alert-danger');
       loginBtn.disabled = true;
       //remove the icon on the button if terms and backup isnt checked
       if(loginBtn.querySelector('i'))
@@ -1075,10 +1082,13 @@ a
   document.getElementById('openCheckBackupDownloaded').addEventListener('change', e => {
     loginBtnProceed();
   });
-
+  document.getElementById('openCheckBackupAlreadySaved').addEventListener('change', e => {
+    loginBtnProceed();
+  });
   document.getElementById('openCheckAcceptTerms').addEventListener('change', e => {
     loginBtnProceed();
   });
+  
 
 
   /*
@@ -1579,24 +1589,29 @@ loginBtnNext.on("click",function() {
   console.log('login_wizard.openBtnNextStepPanel:  '+login_wizard.openBtnNextStepPanel);
   console.log('login_wizard.openWalletType:  '+login_wizard.openWalletType);
 
+
   //if any internal step is added navigate to that step
   if(login_wizard.openBtnNextStepPanel != ''){
     
     //validate form wizard panel name!
     if(login_wizard.panelStepNames.includes(login_wizard.openBtnNextStepPanel)) {
+      
       setActivePanel(login_wizard.openBtnNextStepPanel);
-      login_wizard.openBtnNextStepPanel = ''; //reset ( to first step) the next internal step so validation must be fulfilled if user chooses another portfolio!
+      
+      //reset login wizard panel, validate fields again on login next button click (validation must be fulfilled if user chooses another portfolio!)
+      login_wizard.openBtnNextStepPanel = '';   
       loginBtnNext.prop('disabled', true);
     }
 
     return;
   }
+  
 
   //first step  when selecting a portfolio
   var walletType='';
   try {
     //login_wizard.openWalletType = "";
-      login_wizard.openWalletType == "regular_wallet"
+      login_wizard.openWalletType == "regular_wallet"; //icee default login for now, remove once other login options is possible
 
       //***Get login type
     if(login_wizard.openWalletType == "regular_wallet"){
