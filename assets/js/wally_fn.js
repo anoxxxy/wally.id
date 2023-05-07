@@ -214,7 +214,7 @@ wally_fn.getUrlParams = function (url) {
   /*
   @ sleep promise
   */
-  function sleep(ms) {
+  wally_fn.sleep = function (ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
@@ -357,9 +357,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
         if (!this.isHex(key))
           throw ('Key is not in HEX format!');
 
-        console.log('Key is in HEX format');
-
-
+        //console.log('Key is in HEX format');
 
         //remove 0x HEX identifier
         if(key.slice(0, 2) == '0x')
@@ -417,6 +415,71 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
   }
   */
 
+/* Generate Password Functions*/
+//https://stackoverflow.com/questions/9719570/generate-random-password-string-with-requirements-in-javascript
+wally_fn.generatePassword = function(length = 64) {
+  var generatePass = (
+  //length = 20,
+  wishlist = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!"#$%&\'()*+,-.¨/¤:;<€½¶§=>?@[\]^_`´{|}~'
+) =>
+  Array.from(crypto.getRandomValues(new Uint32Array(length)))
+    .map((x) => wishlist[x % wishlist.length])
+    .join('');
+
+
+  return wally_fn.shuffleWord(generatePass());  
+}
+
+
+  /*
+  @ Vanity Address Generator
+  */
+  wally_fn.vanityAddress = function (searchAddress, times=50) {
+
+    var coin, genPassword, passLength;
+    
+    var minLength = 48, maxLength=1000;
+
+
+    for(i=0; i <= times; i++) {
+      passLength = Math.floor(Math.random() * (maxLength - minLength + 1) + minLength);
+      genPassword = this.generatePassword(passLength);
+
+      coinjs.compressed = true;
+      coin = coinjs.newKeys(genPassword);
+
+      if ( (coin.address).includes(searchAddress)) {
+        console.log('Vanity Address Found (C): ', coin);
+        break;
+        return true;
+      }
+      
+      coinjs.compressed = false;
+      coin = coinjs.newKeys(genPassword);
+
+      if ( (coin.address).includes(searchAddress)) {
+        console.log('Vanity Address Found (U): ', coin);
+        break;
+        return true;
+      }
+      
+
+       /*
+       genAddress = this.hexPrivKeyDecode(coin.privkey);
+       console.log('genAddress: ', genAddress);
+
+      if ( (genAddress.wif.compressed.address).includes(genAddress) || (genAddress.wif.uncompressed.address).includes(genAddress)) {
+        console.log('Vanity Address Found (C): ', genAddress.wif.compressed.address, genAddress.wif.compressed.key);
+        console.log('Vanity Address Found (U): ', genAddress.wif.uncompressed.address, genAddress.wif.uncompressed.key);
+      }
+
+      */
+      console.log('Vanity test:'+ i);
+    }
+    return false;
+
+    
+  }
   /*
    @Generate all addresses for supported assets
   */
@@ -463,8 +526,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
         throw ('HexKey is not in Range!');
         
       var keyInDecimal = new BigInteger(h, 16).toString(10);
-      console.log('keyInDecimal: '+keyInDecimal);
-    
+      //console.log('keyInDecimal: '+keyInDecimal);
       
 
       //***Begin address creation
@@ -505,15 +567,26 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
 
       //uncompressed addresses is not supported for bech32 and segwit!
       //var r = r2;
-      var r = Crypto.util.hexToBytes(h);
 
-      r.unshift(coinjs.priv);
-      var hash = Crypto.SHA256(Crypto.SHA256(r, {asBytes: true}), {asBytes: true});
-      var checksum = hash.slice(0, 4);
+      var unCompressedData = {};
+      if (options.supports_address.includes('uncompressed')){
+        var r = Crypto.util.hexToBytes(h);
 
-      var privKeyWifU = coinjs.base58encode(r.concat(checksum));
-      var addressU = coinjs.wif2address(privKeyWifU);
-      var pubKeyU = coinjs.wif2pubkey(privKeyWifU);
+        r.unshift(coinjs.priv);
+        var hash = Crypto.SHA256(Crypto.SHA256(r, {asBytes: true}), {asBytes: true});
+        var checksum = hash.slice(0, 4);
+
+        var privKeyWifU = coinjs.base58encode(r.concat(checksum));
+        var addressU = coinjs.wif2address(privKeyWifU);
+        var pubKeyU = coinjs.wif2pubkey(privKeyWifU);
+
+        unCompressedData = {
+            'key': privKeyWifU,
+            'public_key': pubKeyU.pubkey,
+            'public_key_hash': coinjs.address2ripemd160(addressU.address),
+            'address': addressU.address,
+          };
+      }
 
       //var swbech32U = coinjs.bech32Address(pubKeyU.pubkey);    //<--not supported for bech32
       //var swU = coinjs.segwitAddress(pubKeyU.pubkey);  //<-- not supported for segwit
@@ -545,12 +618,13 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
 
 
           },
-          'uncompressed': {
+          /*'uncompressed':{
             'key': privKeyWifU,
             'public_key': pubKeyU.pubkey,
             'public_key_hash': coinjs.address2ripemd160(addressU.address),
             'address': addressU.address,
           }
+          */
         }
       };
 
@@ -561,6 +635,8 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
       if (Object.keys(address_formats).indexOf('segwit') !== -1)
         hexGenerated.wif.compressed.segwit = address_formats.segwit;
         
+      if (options.supports_address.includes('uncompressed'))
+        hexGenerated.wif.uncompressed = unCompressedData;
       
       //console.log('hexGenerated: ', hexGenerated);
       return hexGenerated;
@@ -580,33 +656,61 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
 
 /*
 @ Generate Wallet addresses upon Login, compressed or single keys for assets/coins
+param string/array: h
+param string: address_type
 */
-wally_fn.generateAllWalletAddresses = function(hexkey){
+wally_fn.generateAllWalletAddresses = function(h){
   console.log('=================wally_fn.generateAllWalletAddresses=================')
 
-  var assetAddress;
-  var walletAddresses = {};
-  for (var [key, value] of Object.entries(wally_fn.networks[ coinjs.asset.network ])) {
-    console.log('loop for key, value: '+ key, value);
-    //console.log('loop for value: ', value);
+  var genAddress;
+  var walletAddress = {};  //used for regular address generation
+  var keys_combined = []; //used for multisig address generation
+  var keys_length = h.length;
 
-    
-    
+  for (var [key, value] of Object.entries(wally_fn.networks[ coinjs.asset.network ])) {
+    //console.log('loop for key, value: '+ key, value);
 
     //UTXO coins
     if (value.asset.chainModel == 'utxo') {
       //asset supports compressed keys?
-      if ( (value.asset.supports_address).includes('compressed') ) {
-        $.extend(coinjs, value);
-        assetAddresses = this.hexPrivKeyDecode(hexkey, {'supports_address': coinjs.asset.supports_address});
-        //console.log('assetAddresses.wif', assetAddresses);
+      if ( (value.asset.supports_address).includes( 'compressed') ) {
+        $.extend(coinjs, value);  //change asset and generate address
 
+          if (walletAddress[key] === undefined)
+            walletAddress[key] = {};
 
-        walletAddresses[ key ] = {};
-        walletAddresses[ key ]['name']  = value.asset.name;
-        walletAddresses[ key ]['symbol']  = value.asset.symbol;
-        walletAddresses[ key ]['address']  = assetAddresses.wif.compressed.address;
-        walletAddresses[ key ]['addresses_supported']  = assetAddresses.wif;
+          for (i = 0; i< keys_length; i++) {
+            genAddress = this.hexPrivKeyDecode(h[i], {'supports_address': value.asset.supports_address});
+            //console.log('genAddress.wif', genAddress);
+
+            walletAddress[ key ][i] = {}
+            walletAddress[ key ][i]['name']  = value.asset.name;
+            walletAddress[ key ][i]['symbol']  = value.asset.symbol;
+            walletAddress[ key ][i]['address']  = genAddress.wif.compressed.address;
+            walletAddress[ key ][i]['addresses_supported']  = genAddress.wif;
+
+            //console.log('walletAddress[ key ][i]: ', walletAddress[ key ][i]);
+
+            //prepare multisig address
+            if (keys_length > 1)
+              keys_combined.push(genAddress.wif.compressed.public_key);
+
+          }
+
+          //generate multisig address
+          if (keys_length > 1) {
+            
+            multisig_adr = coinjs.pubkeys2MultisigAddress(keys_combined, keys_length); //create 2-of-2 multisig wallet
+            //multisig["address"]; //address, scriptHash, redeemScript
+
+            walletAddress[ key ].multisig = {};
+            walletAddress[ key ].multisig.address = multisig_adr["address"];
+            walletAddress[ key ].multisig.scriptHash = multisig_adr["scriptHash"];
+            walletAddress[ key ].multisig.redeemScript = multisig_adr["redeemScript"];
+
+            //done! reset for next asset 
+            keys_combined = [];
+          }
       }
     }
 
@@ -616,18 +720,17 @@ wally_fn.generateAllWalletAddresses = function(hexkey){
       //asset supports compressed keys?
       if ( (value.asset.supports_address).includes('single') ) {
       }
-    
+
+    }
   }
-}
 
+//set asset default to Bitcoin
 $.extend(coinjs, wally_fn.networks.mainnet.bitcoin);
-console.log('walletAddresses: ', walletAddresses);
-return walletAddresses;
 
-
-  
-
+console.log('walletAddress: ', walletAddress);
+return walletAddress;
 }
+
 
 /*
  Validate/Decode/Convert key to address
@@ -875,9 +978,84 @@ testar('3aa').then((data) => {
   }).catch((error) => {
     console.log('then catch', error);
   });
+
+
+testar3 = wally_fn.promisify( wally_fn.vanityAddress );
+console.log(testar('bay', 50));
+**or
+var testar3 = wally_fn.promisify( wally_fn.vanityAddress );
+wally_fn.sleep(5000);
+testar3('3aa', 50).then((data) => {
+    console.log('then yeah', data);
+  }).catch((error) => {
+    console.log('then catch', error);
+  });
+$('#newKeysBtn').click();
+$('#newKeysBtn').click();
+$('#newKeysBtn').click();
+$('#newKeysBtn').click();
+$('#newKeysBtn').click();
+$('#newKeysBtn').click();
+
+
+setTimeout(function (theseArgs) { 
+  var testar3 = wally_fn.promisify( wally_fn.vanityAddress );
+  testar3('3aa', 20).then((data) => {
+    console.log('then yeah', data);
+  }).catch((error) => {
+    console.log('then catch', error);
+  });
+
+
+
+}, 100);
+  $('#newKeysBtn').click();
+$('#newKeysBtn').click();
+$('#newKeysBtn').click();
+$('#newKeysBtn').click();
+$('#newKeysBtn').click();
+$('#newKeysBtn').click();
+
+
+
+https://stackoverflow.com/questions/26615966/how-to-make-non-blocking-javascript-code
+//begin the program
+console.log('begin');
+nonBlockingIncrement(100, function (currentI, done) {
+  
+  var testar3 = wally_fn.promisify( wally_fn.vanityAddress );
+  testar3('bay', 20).then((data) => {
+    console.log('then yeah', data);
+  }).catch((error) => {
+    console.log('then catch', error);
+  });
+
+  if (done) {
+    console.log('0 incremented to ' + currentI);
+  }
+});
+console.log('do more stuff'); 
+
+//define the slow function; this would normally be a server call
+function nonBlockingIncrement(n=1000000, callback){
+  var i = 0;
+  
+  function loop () {
+    if (i < n) {
+      i++;
+      callback(i, false);
+      (window.requestAnimationFrame || window.setTimeout)(loop);
+    }
+    else {
+      callback(i, true);
+    }
+  }
+  
+  loop();
+}
+
+  
 */
-
-
 
 
   wally_fn.networks = {
@@ -1044,7 +1222,7 @@ testar('3aa').then((data) => {
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
         txRBFTransaction: false,
-        developer: 'BTEkGhZekUT6xaGqzwJcpUcmXrVxBeYRrN',
+        developer: 'BAyEYiJVNyHjoHio5xr8gzHfxMoD8ucMSt',
       },
       blackcoin : {
         symbol: 'BLK',      //ticker
@@ -1078,7 +1256,7 @@ testar('3aa').then((data) => {
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
         txRBFTransaction: false,
-        developer: 'BGexLJiFBatp92XiZi2RXDLyjidZnDrDmw',
+        developer: 'BLKMFdeP2wfonsnV2RZkyUzHUmxRPRGKV4',
       },
       lynx : {
         symbol: 'LYNX',      //ticker
@@ -1373,6 +1551,7 @@ testar('3aa').then((data) => {
               //key is provider, value is the parameter to the provider (if needed)
               //https://github.com/spesmilo/electrum/blob/afa1a4d22a31d23d088c6670e1588eed32f7114d/lib/network.py#L57
               //https://1209k.com/bitcoin-eye/ele.php?chain=tbtc
+              //https://github.com/spesmilo/electrum/blob/master/electrum/servers_testnet.json
             unspent_outputs: {
               'Blockchair.com': 'bitcoin',
               'Blockcypher.com': 'btc',

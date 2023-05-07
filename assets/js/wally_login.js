@@ -17,30 +17,7 @@
   login_wizard.error = true;
   login_wizard.errorMessage = '';
 
-/*
-var navigationPages = { //unused for now
-    "home" : {},
-    "newAddress" : {},
-    "newSegWit" : {},
-    "newMultiSig" : {},
-    "newTimeLocked" : {},
-    "newHDaddress" : {},
-    "newTransaction" : [
-      "txinputs",
-      "txoutputs"
-    ],
-    "verify" : {},
-    "sign" : {},
-    "broadcast" : {},
-    "wallet" : {},
-    "settings" : {},
-    "about" : {},
-    "fees" : {},
-    "converter" : {}
-  };
 
-
-*/
 
   //***Validate Wallet login fields
   login_wizard.validateLogin = function (loginType, walletType, signatures) {
@@ -221,9 +198,7 @@ var navigationPages = { //unused for now
       login_wizard.profile_data.public_keys = [];
       login_wizard.profile_data.address = [];
       login_wizard.profile_data.hex_key = [];
-
-      login_wizard.profile_data.generated = [];
-      login_wizard.profile_data.generated.btc = [];
+      
       
       login_wizard.profile_data.email = loginEmail;
 
@@ -249,11 +224,22 @@ var navigationPages = { //unused for now
           
         (login_wizard.profile_data.hex_key).push(wally_fn.passwordHasher(loginEmail, login_wizard.profile_data.passwords[i]));
 
-        
-
         hexKey += 'hex '+(i+1)+': '+login_wizard.profile_data.hex_key[i]+'\n'
+        
+        
       }
-      login_wizard.wallet_credentials += hexKey.trim();
+      //login_wizard.wallet_credentials += hexKey.trim();
+
+      //generate all wallet addresses, pass over the HEX key!
+      login_wizard.profile_data.generated = {}; //holds all addresses, inclusive mulitisig addresses
+      login_wizard.profile_data.generated = wally_fn.generateAllWalletAddresses(login_wizard.profile_data.hex_key);
+
+      //it should generate a wallet backup for downloading
+      login_wizard.generateWalletBackup();
+
+
+
+
       //login_wizard.wallet_credentials = (login_wizard.wallet_credentials).slice(0, -2); //remove last newline
 
 
@@ -355,6 +341,68 @@ hex key should not be higher then that!
     */
 
 }
+
+/*
+ @ Generate an object for Wallet Backup
+*/
+login_wizard.generateWalletBackup = function() {
+
+  var tmp = login_wizard.profile_data;
+  var walletBackup = {};
+  walletBackup.assets = {};
+  walletBackup.hex_key = tmp.hex_key;
+
+  if (tmp.login_type == 'password') {
+    walletBackup.email = tmp.email;
+    walletBackup.passwords = tmp.passwords;  
+  }
+
+  if (tmp.login_type == 'mnemonic') {
+    walletBackup.email = tmp.email;
+    walletBackup.mnemonic = tmp.mnemonics;
+  }
+
+  if (tmp.login_type == 'hdmaster') {
+    walletBackup.hdmaster = tmp.hdmaster;
+  }
+
+  tmp = login_wizard.profile_data.generated;
+
+  var keys_length = (login_wizard.profile_data.hex_key).length;
+  var i = 1;
+
+  //remove regular addresses for multisig wallet
+  if (keys_length == 1)
+    walletBackup.assets = tmp;
+
+  else if (keys_length > 1) {
+    //loop through the assets
+
+    for (var asset in tmp) {
+      //console.log('asset: ' + asset);
+      //console.log('tmp[asset]: ' , tmp[asset]);
+        walletBackup.assets[asset] = {};
+        for (var [key, value] of Object.entries(tmp[asset])) {
+
+          if (key != 'multisig') {
+            //console.log('key: '+key);
+            //console.log('value: ', value);
+            walletBackup.assets[asset]['private_key_'+i] = value.addresses_supported.compressed.key;
+          } else
+            walletBackup.assets[asset][key] = value;
+          i++;
+        }
+        i=1;
+    }
+    console.log('walletBackup: ', walletBackup);
+  }
+  return walletBackup;
+
+}
+
+      
+      
+
 
 //***START Login/OpenWallet
   /*
@@ -1097,7 +1145,9 @@ $('#openBtnSetActivePanel').on("click",function() {
   document.getElementById('openBtnDownloadBackup').addEventListener('click', e => {
 
       // Start file download.
-      login_wizard.downloadFile("wally.wallet_credentials.txt", login_wizard.wallet_credentials);
+      //login_wizard.downloadFile("wally.wallet_credentials.txt", login_wizard.wallet_credentials);
+      login_wizard.downloadFile("wally.wallet_credentials.txt", JSON.stringify(login_wizard.generateWalletBackup(), null, 2));
+
       document.getElementById('openCheckBackupDownloaded').checked = true;
       document.getElementById('openCheckBackupAlreadySaved').checked = true;
 

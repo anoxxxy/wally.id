@@ -3544,21 +3544,6 @@ $(document).ready( function() {
 
 
 
-/* Generate Password Functions*/
-//https://stackoverflow.com/questions/9719570/generate-random-password-string-with-requirements-in-javascript
-function generatePassword(length = 64) {
-  var generatePass = (
-  //length = 20,
-  wishlist = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!"#$%&\'()*+,-.¨/¤:;<€½¶§=>?@[\]^_`{|}~'
-) =>
-  Array.from(crypto.getRandomValues(new Uint32Array(length)))
-    .map((x) => wishlist[x % wishlist.length])
-    .join('');
-
-
-  return wally_fn.shuffleWord(generatePass());  
-}
-
 	//Crypto Random Password generator! 
 $('.generatePassword').on("click", function () {
     var $el = $(this);
@@ -3594,7 +3579,7 @@ $('.generatePassword').on("click", function () {
 
 
     var inputElPass = $el.attr( "data-input-for");
-    $(inputElPass).val( generatePassword() ).fadeOut().fadeIn();
+    $(inputElPass).val( wally_fn.generatePassword() ).fadeOut().fadeIn();
   });
 
 
@@ -3638,10 +3623,10 @@ $("body").on("click", "#pwdGenerate", function(e){
 	console.log('hasSymbol: '+ hasSymbol);
 
 	
-	generatePwdField.val( GeneratePasswordInPop(hasLower, hasUpper, hasNumber, hasSymbol, lengthIs) );
+	generatePwdField.val( GeneratePasswordInPop(lengthIs, hasLower, hasUpper, hasNumber, hasSymbol) );
 });
 
-function GeneratePasswordInPop(lower, upper, number, symbol, length) {
+function GeneratePasswordInPop(length=48, lower=1, upper=1, number=1, symbol=1) {
 	var generatedPassword = '';
 	var typesCount = parseInt(lower + upper + number + symbol);
 	//if there is no selected type, act as all checks are set to true	
