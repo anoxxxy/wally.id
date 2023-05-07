@@ -1016,7 +1016,7 @@ profile_data = {
 		else
 			$("#verifyScript").val( $('#transactionCreate textarea').val() ).fadeOut().fadeIn();
 		
-		//window.location.hash = "#verify";
+		window.location.hash = "#verify";
 		$("#verifyBtn").click();
 	});
 

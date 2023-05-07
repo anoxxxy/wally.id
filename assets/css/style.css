@@ -25,6 +25,7 @@
   font-weight: 500;
   padding: 0.5rem 0.875rem;
   word-break: break-word;
+  transition: all 0.2s ease-in;
 }
 
 #fees .txi_regular {

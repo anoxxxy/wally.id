@@ -75,7 +75,7 @@
         },
         apply: (frg) => {
             console.log('===apply===');
-            //console.log('frg: : ', frg);
+            console.log('frg: : ', frg);
 
             let fragment = frg || router.getFragment();
             //console.log('fragment: ', fragment);

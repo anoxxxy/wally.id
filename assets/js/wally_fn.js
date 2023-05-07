@@ -24,6 +24,7 @@
   
   wally_fn.navigationPages = { 
     "home" : ['all'],
+    "error_404" : ['all'],
     "newAddress" : ['utxo', 'account'],
     "newSegWit" : ['utxo'],
     "newMultiSig" : ['utxo'],
@@ -322,7 +323,8 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
   wally_fn.isHexKeyInRange = function (key, options = {'show_error': true}) {
 
     try {
-      console.log('key before: '+ key);
+      console.log('===wally_fn.isHexKeyInRange===');
+      //console.log('key before: '+ key);
 
       if(key.length > 78) //highest possible decimal length for last crypto address
         return false;
@@ -341,7 +343,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
       if (this.isDecimal(key)) { 
         console.log('is DIGIT');
 
-        //just to reduce time for this function!
+        //just to reduce time-elapse for this function!
         if(keyLength < 78)
           return true;
         //if key DEC length has more then 79 chars -> out of range!
@@ -436,28 +438,25 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
 
     */
     console.log('=wally_fn.hexPrivKeyDecode=');
-    console.log('h: ', h);
+    //console.log('h: ', h);
 
     try {
-      
-      if(h.length > 78) //highest possible decimal length for last crypto address
-        return false;
 
       //convert decimal to hex if needed
-      console.log('h before: '+h)
+      //console.log('h before: '+h)
       if(this.isDecimal(h)){
         //h = this.Decimal2Hex(h);
         //h = h.padStart(64, '0');
         h = new BigInteger(h).toString(16);
-        console.log('we got a digit in hexdecode');
+        //console.log('we got a digit, encode to hex');
       }
 
-      if (!this.isHex(h))
-        throw ('Parameter is not in HEX format!');
+      //if (!this.isHex(h)) //not needed, we are already checking this in the request to isHexKeyInRange!
+        //throw ('Parameter is not in HEX format!');
 
       h = (h.toString()).padStart(64, '0');  //wif should always be in 32bit/64 chars!
 
-      console.log('h after: '+h)
+      //console.log('h after: '+h)
 
       //check if HEXkey is in range!
       if (!this.isHexKeyInRange(h, {'show_error': options.show_error}))
@@ -465,13 +464,11 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
         
       var keyInDecimal = new BigInteger(h, 16).toString(10);
       console.log('keyInDecimal: '+keyInDecimal);
-
     
       
 
       //***Begin address creation
-      var r = Crypto.util.hexToBytes(h);
-      
+      var r = Crypto.util.hexToBytes(h);      
 
 
       //***Compressed, is used for bech32 and segwit addresses
@@ -488,8 +485,8 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
       
       //generate additional addresses like bech32 and segwit ?
       var address_formats = {};
-      console.log('options.length: '+options.length);
-      console.log('options: ',options);
+      //console.log('options.length: '+options.length);
+      //console.log('options: ',options);
       
       if (options.supports_address.length){
         if (options.supports_address.includes('bech32')){
@@ -502,7 +499,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
         }
         
       }
-      console.log('address_formats: ', address_formats);
+      //console.log('address_formats: ', address_formats);
 
       //***Uncompressed
 
@@ -565,7 +562,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
         hexGenerated.wif.compressed.segwit = address_formats.segwit;
         
       
-      console.log('hexGenerated: ', hexGenerated);
+      //console.log('hexGenerated: ', hexGenerated);
       return hexGenerated;
 
       //var privKeyWifC= coinjs.privkey2wif(hex);
@@ -590,18 +587,16 @@ wally_fn.generateAllWalletAddresses = function(hexkey){
   var assetAddress;
   var walletAddresses = {};
   for (var [key, value] of Object.entries(wally_fn.networks[ coinjs.asset.network ])) {
-    console.log('loop for key: '+ key);
-    console.log('loop for value: ', value);
+    console.log('loop for key, value: '+ key, value);
+    //console.log('loop for value: ', value);
 
     
     
 
     //UTXO coins
     if (value.asset.chainModel == 'utxo') {
-
       //asset supports compressed keys?
       if ( (value.asset.supports_address).includes('compressed') ) {
-
         $.extend(coinjs, value);
         assetAddresses = this.hexPrivKeyDecode(hexkey, {'supports_address': coinjs.asset.supports_address});
         //console.log('assetAddresses.wif', assetAddresses);
@@ -612,10 +607,7 @@ wally_fn.generateAllWalletAddresses = function(hexkey){
         walletAddresses[ key ]['symbol']  = value.asset.symbol;
         walletAddresses[ key ]['address']  = assetAddresses.wif.compressed.address;
         walletAddresses[ key ]['addresses_supported']  = assetAddresses.wif;
-      
-
       }
-
     }
 
     //Account based coins
@@ -760,85 +752,18 @@ wally_fn.shuffleWord = function (word){
 }
 
 
-  /*
-  https://blog.logrocket.com/write-declarative-javascript-promise-wrapper/#declarative-programming
-  @ Promiser Wrapper
-  
-  wally_fn.promiser = function (_promise_) {
-    
-    new Promise(function (resolve, reject) {
-      var t = _promise_;
-
-      console.log('ttt:', t);
-
-      if (t){
-        resolve("I am surely going to get resolved!");
-      }else {
-        reject(new Error('Will this be ignored?')); // ignored
-      }
-    }).then((data) => {
-      console.log('then yeah', data);
-    }).catch((error) => {
-      console.log('then catch', error);
-    });
-    
-
-  }
-
-  
-  //promiseAllWrapper
-  
-  wally_fn.promiserAll = function (_promise_) {
-    if (Array.isArray(_promise_)) _promise_ = Promise.all(_promise_);
-    return _promise_.then((data) => [data, null]).catch((error) => [null, error]);
-  };
-
-  
-  //run promise
-  
-
-  wally_fn.runPromise = async function (requests) {
-    console.log('===wally_fn.runPromise===');
-    var [data, error] = await this.promiser(requests);
-    if (error) {
-      console.error(error?.response?.data);
-      return;
-    }
-    console.log('wally_fn.runPromise ERROR: ', data);
-  }
-
-  wally_fn.demoPromise = function() {
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // resolve("Yaa!!");
-        reject("Naahh!!");
-      }, 5000);
-    });
-  }
-*/
-  /*
-
-
+/*
 https://blog.logrocket.com/write-declarative-javascript-promise-wrapper/#declarative-programming
 
 
-  const promisify = (fn, context) => (...args) => 
-         Promise.resolve(context ? fn.call(context, ...args) : fn(...args))
-          .then((err, result) => err ? Promise.reject(err) : result),
-
-       promisifyMethods = (obj, ...methods) => methods.map(m => promisify(m, obj))
-
-       */
-
-//const wait = async (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-
 /*
+@ Promiser Wrapper
 //https://medium.com/bithubph/creating-a-promise-wrapper-for-old-callback-api-methods-fa1b03b82a90
 //https://javascript.info/promisify
 
 
 //https://www.freecodecamp.org/news/write-your-own-promisify-function-from-scratch/
+
 */
 
 wally_fn.myPromisify = function (fn) {
@@ -886,10 +811,23 @@ wally_fn.myPromisify( (wally_fn.decodeHexPrivKey()) );
 
 var getSumPromise = wally_fn.myPromisify(wally_fn.decodeHexPrivKey);
 getSumPromise('3ö').then((data) => {
-      console.log('then yeah', data);
-    }).catch((error) => {
-      console.log('then catch', error);
-    })
+  console.log('====***wally_fn.myPromisify SUCCESS: ', data);
+}).catch((error) => {
+  console.log('====***wally_fn.myPromisify ERROR: ', error);
+})
+
+
+var genAllAddresses = wally_fn.myPromisify(wally_fn.generateAllWalletAddresses)
+
+genAllAddresses('3').then((data) => {
+  console.log('====***wally_fn.myPromisify SUCCESS: ', data);
+}).catch((error) => {
+  console.log('====***wally_fn.myPromisify ERROR: ', error);
+})
+
+
+
+
 
 */
 
@@ -990,7 +928,7 @@ testar('3aa').then((data) => {
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
         txRBFTransaction: true,
-        developer: 'iceeeee',
+        developer: '1o18b93etEEbg2sB4tQYk8LBW45N9K8RJ',
       },
       litecoin : {
         symbol: 'LTC',      //ticker
@@ -1031,7 +969,7 @@ testar('3aa').then((data) => {
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
         txRBFTransaction: false,
-        developer: 'iceeeee',
+        developer: 'LWvggiTjyaosoydaxTKKrnVAgPocu7PVcP',
       },
       dogecoin : {
         symbol: 'DOGE',      //ticker
@@ -1070,7 +1008,7 @@ testar('3aa').then((data) => {
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
         txRBFTransaction: true,
-        developer: 'iceeeee',
+        developer: 'DEhoLGBcCLArvcaC1UmCzZ4zFy2ZViytu8',
       },
       bitbay : {
         symbol: 'BAY',      //ticker
@@ -1106,7 +1044,7 @@ testar('3aa').then((data) => {
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
         txRBFTransaction: false,
-        developer: 'iceeeee',
+        developer: 'BTEkGhZekUT6xaGqzwJcpUcmXrVxBeYRrN',
       },
       blackcoin : {
         symbol: 'BLK',      //ticker
@@ -1140,7 +1078,7 @@ testar('3aa').then((data) => {
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
         txRBFTransaction: false,
-        developer: 'iceeeee',
+        developer: 'BGexLJiFBatp92XiZi2RXDLyjidZnDrDmw',
       },
       lynx : {
         symbol: 'LYNX',      //ticker
@@ -1174,7 +1112,7 @@ testar('3aa').then((data) => {
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
         txRBFTransaction: false,
-        developer: 'iceeeee',
+        developer: 'K9w3PqeX9yr9AcYuyafcoa2wDk1VAfEzoH',
       },
       
       potcoin : {
@@ -1384,8 +1322,8 @@ testar('3aa').then((data) => {
             },
             broadcast: {
               'Cryptoid.info': 'nvc',
-              'ElectrumX-1': 'electrumx.nvc.ewmcx.org:50002',
-              'ElectrumX-2': 'failover.nvc.ewmcx.biz:50002',
+              'ElectrumX-1 (SSL)': 'electrumx.nvc.ewmcx.org:50002',
+              'ElectrumX-2 (SSL)': 'failover.nvc.ewmcx.biz:50002',
             }
           },
           social: {
@@ -1413,7 +1351,7 @@ testar('3aa').then((data) => {
         txExtraUnitFieldValue: false,
         decimalPlaces:6,
         txRBFTransaction: false,
-        developer: '4aVgewjg8oD3Taur5Stx694GbVNCjz9o8q',
+        developer: '4bATCSp4uUrRZzwwUuQJKAJG4vyXhK85fZ',
       },
     },
 
@@ -1432,13 +1370,26 @@ testar('3aa').then((data) => {
           network: 'testnet',
           supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
           api : {
-              //only key is used for the moment, not the value!
+              //key is provider, value is the parameter to the provider (if needed)
+              //https://github.com/spesmilo/electrum/blob/afa1a4d22a31d23d088c6670e1588eed32f7114d/lib/network.py#L57
+              //https://1209k.com/bitcoin-eye/ele.php?chain=tbtc
             unspent_outputs: {
               'Blockchair.com': 'bitcoin',
               'Blockcypher.com': 'btc',
               //'Blockstream.info': 'Blockstream.info',
               'Chain.so': 'BTCTEST',
               //'Mempool.space': 'testnet',
+              'ElectrumX-1 (TCP)': 'testnet.aranguren.org:51001',
+              'ElectrumX-1 (SSL)': 'testnet.aranguren.org:51002',
+              'ElectrumX-2 (TCP)': 'testnetnode.arihanc.com:51001',
+              'ElectrumX-3 (SSL)': 'testnetnode.arihanc.com:51002',
+              'ElectrumX-4 (TCP)': 'testnet.hsmiths.com:53011',
+              'ElectrumX-5 (SSL)': 'testnet.hsmiths.com:53012',
+              'ElectrumX-6 (SSL)': 'bitcoin-testnet.stackwallet.com:51002',
+              'ElectrumX-5 (SSL)': 'ax102.blockeng.ch:60002',
+              'ElectrumX-5 (TCP)': 'testnet.qtornado.com:51001',
+              'ElectrumX-5 (SSL)': 'testnet.qtornado.com:51002',
+
             },
             broadcast: {
               'Blockchair.com': 'bitcoin',
@@ -1446,6 +1397,19 @@ testar('3aa').then((data) => {
               'Blockstream.info': 'Blockstream.info',
               'Chain.so': 'BTCTEST',
               //'Mempool.space': 'testnet',
+              'ElectrumX-1 (TCP)': 'testnet.aranguren.org:51001',
+              'ElectrumX-1 (SSL)': 'testnet.aranguren.org:51002',
+              'ElectrumX-2 (TCP)': 'testnetnode.arihanc.com:51001',
+              'ElectrumX-3 (SSL)': 'testnetnode.arihanc.com:51002',
+              'ElectrumX-4 (TCP)': 'testnet.hsmiths.com:53011',
+              'ElectrumX-5 (SSL)': 'testnet.hsmiths.com:53012',
+              'ElectrumX-6 (SSL)': 'bitcoin-testnet.stackwallet.com:51002',
+              'ElectrumX-5 (SSL)': 'ax102.blockeng.ch:60002',
+              'ElectrumX-5 (TCP)': 'testnet.qtornado.com:51001',
+              'ElectrumX-5 (SSL)': 'testnet.qtornado.com:51002',
+              
+
+
             }
           }
         },
@@ -1497,7 +1461,7 @@ testar('3aa').then((data) => {
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
         txRBFTransaction: false,
-        developer: 'iceeeee',
+        developer: 'mkBRJRKFA7YL7ezXW6tyXUsEzK9Jnpv842',
       },
       dogecoin : {
         symbol: 'tDOGE',      //ticker
@@ -1576,40 +1540,7 @@ testar('3aa').then((data) => {
         developer: 'iceeeee',
       },
 
-      dogecoin : {
-        symbol: 'tDOGE',      //ticker
-        asset: {
-          chainModel: 'utxo',
-          name: 'Dogecoin',
-          slug: 'dogecoin',
-          symbol: 'tDOGE',
-          symbols: ['doge', 'dogecoin'],
-          icon: './assets/images/crypto/dogecoin-doge-logo.svg',
-          network: 'testnet',
-          supports_address : ['compressed', 'uncompressed', 'segwit'],
-          api : {
-            unspent_outputs: {
-              'Chain.so': 'DOGETEST',
-            },
-            broadcast: {
-              'Chain.so': 'DOGETEST',
-            }
-          }
-        },
-        pub : 0x71,      //pubKeyHash
-        priv : 0xf1,     //wif
-        multisig : 0xc4, //scriptHash
-          hdkey : {'prv':0x04358394, 'pub':0x043587cf},
-          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'litecointestnet'},
-          
-        txExtraTimeField: false,    //Set to true for PoS coins
-        txExtraTimeFieldValue: false,
-        txExtraUnitField: false,
-        txExtraUnitFieldValue: false,
-        decimalPlaces:8,
-        txRBFTransaction: true,
-        developer: 'iceeeee',
-      },
+      
       ethereum : {
         symbol: 'tETH-Goerli',      //ticker
         asset: {
@@ -1685,7 +1616,7 @@ testar('3aa').then((data) => {
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
         txRBFTransaction: false,
-        developer: 'iceeeee',
+        developer: '2kp58H1Ezgsv2jaHpLPL1RXw4T5jVygTVqp',
       },
     }
 

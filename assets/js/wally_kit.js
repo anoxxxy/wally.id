@@ -250,7 +250,19 @@
           
         })
         */
+        .add(/^$/, function(data){
+          console.log('**empty string page**');
+          Router.urlParams.page = 'home';
+        })
         .add(/home(.*)/, function(data){})
+        .add(/error_404/, function(data){
+          console.log('**error_404 page**');
+          
+          //wally_kit.removeActivePages();
+          $('.landing_box').addClass('hidden');
+          document.getElementById('error_404').classList.add("active");
+
+        })
         .add(/newAddress(.*)/, function(data){})
         .add(/newSegWit(.*)/, function(data){})
         .add(/newMultiSig(.*)/, function(data){})
@@ -371,12 +383,24 @@
           console.log('**empty page**');
           console.log('===EMPTY_PAGE_HASH===');
           console.log('__REDIRECT_TO_STARTPAGE_PERHAPS__');
+
+          //$('#tab-content .tab-pane.tab-content').removeClass('active');
+          //$('#error_404').addClass('active');
           
           //Router.navigate('home', 'Start');
+          //window.location.hash = "#error_404";
+          //Router.navigate('error_404');
+          
         })
         .beforeAll( function(data) {
+            //try {
             console.log(' ');
             console.log('==Run Before All Routes!')
+
+            //if not page is set, default to home
+            if (Router.urlParams.page == '')
+              Router.urlParams.page = 'home';
+
             wally_kit.pageHandler(data);
         })
         .afterAll( function(data) {
@@ -817,11 +841,28 @@
         }
 
 
+
+
+  wally_kit.removeActivePages = function () {
+    $('.landing_box').addClass("hidden");
+    //document.querySelector('.landing_box').classList.add("hidden");
+    var tabPages = document.querySelectorAll('#tab-content .tab-pane.tab-content.active');
+      tabPages.forEach(allTabs => {
+          if (allTabs.classList.contains('active')) {
+            allTabs.classList.remove("active");
+            console.log("navigationPageHideAll --> active pages removed!");
+          }
+      });
+  }
+
+
 /*
  @ Handles the navigation to the selected page
  use transition, animation, scroll etc...
 */
-wally_fn.pageNavigator = function (_elId_ = Router.urlParams.page) {
+
+wally_kit.pageNavigator = function (_elId_ = Router.urlParams.page) {
+
 
 
 wally_kit.scrollToElement(_elId_, 10);
@@ -846,68 +887,98 @@ if(_elId_ == "home" || _elId_ == "about"){
 
   wally_kit.pageHandler = function (pageHash, show=false) {
     
-    console.log('=wally_kit.pageHandler=');
+    try {
+      console.log('=wally_kit.pageHandler=');
 
-    //console.log('===wally_kit.landingPage===');
-    //show landing page for specific active page/tab
-    if (Router.urlParams.page == "home" || Router.urlParams.page == "about" || Router.urlParams.page == "way-token") {
-      $('.landing_box').removeClass("hidden");
-    }else {
-      $('.landing_box').addClass("hidden");
-    }
-
-    //remove active-class from pages
-    var tabPages = document.querySelectorAll('.tab-pane.tab-content.active');
-    tabPages.forEach(allTabs => {
-          if (allTabs.classList.contains('active')) {
-            allTabs.classList.remove("active");
-            console.log("navigationPageHideAll --> active pages removed!");
-          }
-      });
-
-    /*
-    //Check if url hash exists
-    if(location.hash.length > 0) {
-      console.log('yep')
-    }else {
-       console.log('nop')
-    }
-    */
+      console.log('Router.urlParams.page: '+ Router.urlParams.page);
 
 
-    //if no page-hash or non-valid page-hash is set, default to "home"
-    //if (Router.urlParams.page == '' || !wally_fn.navigationPages.hasOwnProperty(Router.urlParams.page) )
-    if (!wally_fn.navigationPages.hasOwnProperty(Router.urlParams.page) )
-      Router.urlParams.page = 'home';
+      //if any other page param is set other then supported pages, throw error
+      /*
+      if (!wally_fn.navigationPages.hasOwnProperty(Router.urlParams.page) )
+        if (Router.urlParams.page != '')
+          throw ('...')
+      
 
-    //check if page is available for the current chainModel
-    //check if asset is supported on the navigated page
-    if (wally_fn.navigationPages[Router.urlParams.page].includes(wally_fn.chainModel) || wally_fn.navigationPages[Router.urlParams.page].includes('all')) {
-      console.log('=page "'+Router.urlParams.page + '" is availabe for the chainModel: '+ wally_fn.navigationPages[Router.urlParams.page].toString());
+      */
+
+      //remove active-class from pages
+      this.removeActivePages();
 
 
-      //add active to navigated page element
-      if (Router.urlParams.page != 'home') {
-        document.getElementById(Router.urlParams.page).classList.add("active");
-        //smooth scroll to active page
-        wally_fn.pageNavigator();
-      } else {
-        document.getElementById('home').classList.add("active");
+      if (!wally_fn.navigationPages.hasOwnProperty(Router.urlParams.page) ) {
+        throw ('...');
+      }
+        
+
+      console.log('Router.urlParams.page: '+ Router.urlParams.page);
+
+      //show landing page for specific active page/tab
+      if (Router.urlParams.page == "home" || Router.urlParams.page == "about" || Router.urlParams.page == "way-token") {
         $('.landing_box').removeClass("hidden");
-        //no active pag is set, show start page/landing page
+      }else {
+        $('.landing_box').addClass("hidden");
       }
 
-    } else {
-      console.log(Router.urlParams.page + ' is ONLY availabe for: '+ wally_fn.navigationPages[Router.urlParams.page].toString());
+      
+      
 
-      console.log('chainModel is : ', wally_fn.chainModel);
+      /*
+      //Check if url hash exists
+      if(location.hash.length > 0) {
+        console.log('yep')
+      }else {
+         console.log('nop')
+      }
+      */
 
-      var modalTitle = 'Whooops...';
-      var modalMessage = '<div class="alert alert-danger text-center"><p>We do not have fully support for this asset yet.</p> <p><img src="'+coinjs.asset.icon+'" class="icon-center icon64 mt-3 mb-2"></p> <strong>'+coinjs.asset.name + ' ('+coinjs.asset.symbol+') <br>'+coinjs.asset.network+'</strong> </div>';
+
+      
+        
+
+      
+      //check if page is available for the current chainModel
+      //check if asset is supported on the navigated page
+      if (wally_fn.navigationPages[Router.urlParams.page].includes(wally_fn.chainModel) || wally_fn.navigationPages[Router.urlParams.page].includes('all')) {
+        console.log('=page "'+Router.urlParams.page + '" is availabe for the chainModel: '+ wally_fn.navigationPages[Router.urlParams.page].toString());
+
+
+
+
+        //add active to navigated page element
+        if (Router.urlParams.page != 'home') {
+          document.getElementById(Router.urlParams.page).classList.add("active");
+          //smooth scroll to active page
+          this.pageNavigator();
+        } else {
+          document.getElementById('home').classList.add("active");
+          $('.landing_box').removeClass("hidden");
+          //no active pag is set, show start page/landing page
+        }
+
+      } else {
+        console.log(Router.urlParams.page + ' is ONLY availabe for: '+ wally_fn.navigationPages[Router.urlParams.page].toString());
+
+        console.log('chainModel is : ', wally_fn.chainModel);
+
+        var modalTitle = 'Whooops...';
+        var modalMessage = '<div class="alert alert-danger text-center"><p>This page is not available for this asset yet.</p> <p><img src="'+coinjs.asset.icon+'" class="icon-center icon64 mt-3 mb-2"></p> <strong>'+coinjs.asset.name + ' ('+coinjs.asset.symbol+') <br>'+coinjs.asset.network+'</strong> </div>';
+        custom.showModal(modalTitle, modalMessage);
+
+        //no active page is set, show start-page
+        Router.navigate('home');
+      }
+    } catch (e) {
+      document.getElementById('error_404').classList.add("active");
+      console.log('wally_kit.pageHandler ERROR: ', e);
+      /*
+      var modalTitle = '404 Error';
+      var modalMessage = '<div class="alert alert-danger text-center"><p>Whooops 404!</p> <p><img src="./assets/images/logo/wally_logo_new.svg" class="icon-center icon128 mt-3 mb-2" style="width: 240px;"></p> </div>';
       custom.showModal(modalTitle, modalMessage);
+      */
 
-      //no active page is set, show start-page
-      Router.navigate('home');
+      Router.navigate('error_404');
+
     }
 
 

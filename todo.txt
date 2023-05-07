@@ -12,7 +12,7 @@ also people will be able to change blockchain api
 Anoxy, [12/27/22 10:56 PM]
 in case some of them are blocked in some countries etc
 
-Omid Beige, [12/27/22 10:59 PM]
+Omid, [12/27/22 10:59 PM]
 yeah totally fair
 it could also have a description field for more info or the countries that this api can support (for future references haha)
 
@@ -25,3 +25,14 @@ coinbin line:
 $("#verifyRsDataHodl .date").val(decode['checklocktimeverify'] >= 500000000? moment.unix(decode['checklocktimeverify']).format("MM/DD/YYYY HH:mm") : decode['checklocktimeverify']);
 
 **test transactions on all coins!
+
+----------------
+
+*add BIP44 derivation path, with custom options as well
+*Mnemonic seeds login
+*Wallet Login
+*add Electrumx nodes for all coins (if there any)
+*add json object for all coins social network links, website, contact person, team leader accounts, Github repo etc..
+*Wally logo
+
+
