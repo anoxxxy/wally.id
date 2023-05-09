@@ -85,6 +85,10 @@ a:hover {
   font-weight: 400;
 }
 
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
 .row.no-gutter {
   margin-left: 0;
   margin-right: 0;
@@ -96,6 +100,12 @@ a:hover {
 .row.no-gutter [class*='col-']:last-child {
 	margin-right: 0;
 	padding-right: 0;
+}
+
+.col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto {
+
+	padding-right: 5px;
+padding-left: 5px;
 }
 /*
 .row.no-gutter [class*='col-']:not(:first-child),
@@ -116,8 +126,8 @@ a:hover {
 }
 
 [class^="container"] {
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 0px;
+  padding-right: 0px;
   position: relative;
   /*z-index: 1;*/
 }
@@ -245,20 +255,25 @@ a:hover {
 	margin: 0 auto;
 }
 
-.tab-content .tab-pane .card-openwallet {
+.tab-content .tab-pane .card-openwallet,
+.tab-content .tab-pane .card-openwallet-small {
   /*
   box-shadow: 0 8px 17px 2px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 1px rgba(0,0,0,.125),0 1px 3px rgba(0,0,0,.2);
   box-shadow: 0 4px 11px rgba(0,0,0,.125),0 2px 6px rgba(0,0,0,.2);
   */
   box-shadow:  0 14px 11px rgba(0,0,0,.125),0 2px 26px rgba(0,0,0,.2);
+  box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.5rem rgba(0, 0, 0, 0.3), 0 0.2rem 1.5rem rgba(0, 0, 0, 0.4);
   border-radius: 10px;
  
   padding: 0;
   background-color: #fdfdfd;
 	width: auto;
-	max-width: 450px;
+	
 	margin: 0 auto;
+}
+.tab-content .tab-pane .card-openwallet-small {
+	max-width: 450px;
 }
 .tab-content .tab-pane .card-openwallet-header {
  position:relative;
@@ -274,6 +289,11 @@ a:hover {
  border-top-left-radius: 10px;
 border-top-right-radius: 10px;
 }
+
+.tab-content .tab-pane .card-openwallet-header {
+
+}
+
 .card .card-header .card-title {
 	color: #626262;
 }
@@ -303,6 +323,21 @@ border-bottom:1px solid #F0F2F4;
 	color: #444;
 	overflow: hidden;
 	}
+
+
+.tab-content .tab-pane .card-wallet{
+  
+  box-shadow:  0 14px 11px rgba(0,0,0,.125),0 2px 26px rgba(0,0,0,.2);
+  box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.5rem rgba(0, 0, 0, 0.3), 0 0.2rem 1.5rem rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+ 
+  padding: 0;
+  background-color: #fdfdfd;
+	width: auto;
+	
+	margin: 0 auto;
+}
+
 
 #settings.tab-content.tab-pane .card-openwallet-body {
 	overflow: unset;
@@ -2840,3 +2875,171 @@ margin-top: -6px;
 text-overflow: ellipsis;
 overflow: hidden;
 }
+
+
+/*#wallet layout/design*/
+
+
+
+.list-border {
+  box-sizing: border-box;
+  padding: 2px;
+  background: linear-gradient(
+    -90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 25%,
+    rgba(217, 225, 244, 1) 85%,
+    rgba(169, 193, 250, 1) 90%,
+    rgba(107, 148, 255, 1) 100%
+  );
+  /*box-shadow: 0px 8px 36px rgba(81, 81, 81, 0.1);*/
+  box-shadow: 0 1px 0px rgba(0,0,0,.125),0 2px 6px rgba(0,0,0,.2);
+
+  border-radius: 10px;
+  margin-bottom: 8px;
+  background-size: 300% 100%;
+  background-position: 100% 0%;
+  transition: all 0.24s ease;
+  line-height: 40px;
+}
+
+.list-border:hover {
+  cursor: pointer;
+  background-position: 0%, 0%;
+  box-shadow: 0px 4px 18px rgba(0, 112, 240, 0.12);
+  transition: all 0.24s ease;
+}
+
+.list-border:hover .list-name {
+  transform: translate(2px);
+  transition: all 0.6s ease;
+}
+
+.list-border:hover .icon img {
+  transform: scale(0.9);
+}
+
+.list-border:hover .list-wrapper {
+  background: linear-gradient(
+    -90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 25%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 1) 90%,
+    rgba(237, 247, 255, 1) 100%
+  );
+}
+
+.list-wrapper {
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 8px 16px 8px 8px;
+}
+
+.list-name {
+  margin-left: 4px;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(0);
+  transition: all 0.3s ease;
+}
+
+.list-border .icon {
+  height: 32px;
+  width: 32px;
+  /*background-color: rgba(42, 78, 219, 0.3);*/
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.list-border .icon img {
+  width: 32px;
+  height: 32px;
+  transition: transform 0.5s ease;
+}
+
+.list-border .subhead {
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 20px;
+  color: #6c6c6c;
+}
+
+.list-border .head {
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 20px;
+}
+
+.list-details {
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.list-details .balance {
+	font-size: 0.9rem;
+	color: #6c6c6c;
+}
+
+
+.list-border .visibility {
+  width: 32px;
+  height: 32px;
+  background-image: url("https://dsh.re/c29bd");
+  background-size: 24px;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-left: 16px;
+}
+.list-border .calendar {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.1px;
+  margin-left: 16px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+/*------------------------*/
+
+.list-border.udf {
+  background: linear-gradient(
+    -90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 25%,
+    rgba(255, 255, 255, 1) 85%,
+    rgba(195, 254, 184, 1) 90%,
+    rgba(52, 229, 118, 1) 100%
+  );
+  background-size: 300% 100%;
+  background-position: 100% 0%;
+}
+
+.list-border.udf:hover {
+  cursor: pointer;
+  background-position: 0%, 0%;
+  box-shadow: 0px 4px 18px rgba(195, 254, 184, 0.4);
+}
+
+.list-border.udf .icon {
+  /*background-color: rgba(42, 219, 108, 0.3);*/
+}
+
+.list-border.udf:hover .list-wrapper {
+  background: linear-gradient(
+    -90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 25%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 1) 90%,
+    rgba(238,255,225,1) 100%
+  );
+}
+

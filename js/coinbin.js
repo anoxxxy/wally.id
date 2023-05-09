@@ -54,81 +54,66 @@ profile_data = {
 		*/
 	
 
-	var landingPageShowOnPages = [""];
 
-	var wallet_timer = false;
 
 	$("#openBtn").click(function(){
-		var email = $("#openEmail").val().toLowerCase();
-		if(email.match(/[\s\w\d]+@[\s\w\d]+/g)){
-			if($("#openPass").val().length>=10){
-
-				console.log('openPass: ' + $("#openPass").val());
-				console.log('openPass-confirm: ' + $("#openPass-confirm").val());
-				if($("#openPass").val()==$("#openPass-confirm").val()){
-					var email = $("#openEmail").val().toLowerCase();
-					var pass = $("#openPass").val();
-					var s = email;
-					s += '|'+pass+'|';
-					s += s.length+'|!@'+((pass.length*7)+email.length)*7;
-					var regchars = (pass.match(/[a-z]+/g)) ? pass.match(/[a-z]+/g).length : 1;
-					var regupchars = (pass.match(/[A-Z]+/g)) ? pass.match(/[A-Z]+/g).length : 1;
-					var regnums = (pass.match(/[0-9]+/g)) ? pass.match(/[0-9]+/g).length : 1;
-					s += ((regnums+regchars)+regupchars)*pass.length+'3571';
-					s += (s+''+s);
-
-					for(i=0;i<=50;i++){
-						s = Crypto.SHA256(s);
-					}
-
-					coinjs.compressed = true;
-					var keys = coinjs.newKeys(s);
-					var address = keys.address;
-					var wif = keys.wif;
-					var pubkey = keys.pubkey;
-					var privkeyaes = CryptoJS.AES.encrypt(keys.wif, pass);
-
-					$("#walletKeys .walletSegWitRS").addClass("hidden");
-					if($("#walletSegwit").is(":checked")){
-						if($("#walletSegwitBech32").is(":checked")){
-							var sw = coinjs.bech32Address(pubkey);
-							address = sw.address;
-						} else {
-
-							var sw = coinjs.segwitAddress(pubkey);
-							address = sw.address;
-						}
-
-						$("#walletKeys .walletSegWitRS").removeClass("hidden");
-						$("#walletKeys .walletSegWitRS input:text").val(sw.redeemscript);
-					}
-
-					$("#walletAddress").html(address);
-					$("#walletHistory").attr('href',explorer_addr+address);
-
-					$("#walletQrCode").html("");
-					var qrcode = new QRCode("walletQrCode");
-					qrcode.makeCode("bitcoin:"+address);
-
-					$("#walletKeys .privkey").val(wif);
-					$("#walletKeys .pubkey").val(pubkey);
-					$("#walletKeys .privkeyaes").val(privkeyaes);
-
-					$("#openLogin").hide();
-					$("#openWallet").removeClass("hidden").show();
-
-					walletBalance();
-				} else {
-					$("#openLoginStatus").html("Your passwords do not match!").removeClass("hidden").fadeOut().fadeIn();
-				}
-			} else {
-				$("#openLoginStatus").html("Your password must be at least 10 chars long").removeClass("hidden").fadeOut().fadeIn();
-			}
+		
+		var tmp = login_wizard.profile_data;
+		if (login_wizard.profile_data === undefined) {
+			modalTitle = 'Wallet Login!'
+			modalMessage = 'ERROR (#openBtn): Unable to login, bad credentials! ';
+      		custom.showModal(modalTitle, modalMessage, 'danger');
 		} else {
-			$("#openLoginStatus").html("Your email address doesn't appear to be valid").removeClass("hidden").fadeOut().fadeIn();
+			modalTitle = 'Wallet Login - Success'
+			modalMessage = 'Welcome to the decentralized non-custodial wallet';
+      		custom.showModal(modalTitle, modalMessage, 'danger');
+		}
+      
+
+		var adr_legacy = login_wizard.profile_data.generated.bitcoin[0].address;	//legacy (compressed)
+		var wif = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.key;	
+		var pubkey = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.public_key;	
+		
+		var adr_bech32 = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.bech32.address;	//bech32
+		var adr_bech32_redeem = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.bech32.redeemscript;	//segwit
+
+		var adr_segwit = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.segwit.address;	//segwit
+		var adr_segwit_redeem = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.segwit.redeemscript;	//segwit
+		
+		var address = adr_legacy;
+
+
+		$("#walletKeys .walletSegWitRS").addClass("hidden");
+		if($("#walletSegwit").is(":checked")){
+			if($("#walletSegwitBech32").is(":checked")){
+				address = adr_bech32;
+				address_redeem = adr_bech32_redeem
+			} else {
+				address = adr_segwit;
+				address_redeem = adr_segwit_redeem;
+			}
+
+			$("#walletKeys .walletSegWitRS").removeClass("hidden");
+			$("#walletKeys .walletSegWitRS input:text").val(address_redeem);
 		}
 
-		$("#openLoginStatus").prepend('<i class="bi bi-exclamation-triangle-fill"></i> ');
+		$("#walletAddress").html(address);
+		$("#walletHistory").attr('href',explorer_addr+address);
+
+		$("#walletQrCode").html("");
+		var qrcode = new QRCode("walletQrCode");
+		qrcode.makeCode("bitcoin:"+address);
+
+		$("#walletKeys .privkey").val(wif);
+		$("#walletKeys .pubkey").val(pubkey);
+		//$("#walletKeys .privkeyaes").val(privkeyaes);
+
+		$("#openLogin").hide();
+		$("#openWallet").removeClass("hidden").show();
+
+		walletBalance();
+
+		
 	});
 
 	$("#walletLogout").click(function(){

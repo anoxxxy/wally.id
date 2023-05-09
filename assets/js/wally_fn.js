@@ -1074,20 +1074,22 @@ function nonBlockingIncrement(n=1000000, callback){
           api : {
               //only key is used for the moment, not the value!
             unspent_outputs: {
+              'Blockcypher.com': 'btc',
               'Blockchain.info': 'btc', //no arguments needs to be passed
               'Blockchair.com': 'bitcoin',
-              'Blockcypher.com': 'btc',
+              
               //'Blockstream.info': 'Blockstream.info',
-              'Chain.so': 'BTC',
+              //'Chain.so': 'BTC',
               'Coinb.in': 'Coinb.in',
               'Cryptoid.info': 'btc',
               //'Mempool.space': 'btc',
             },
             broadcast: {
-              'Blockchair.com': 'bitcoin',
               'Blockcypher.com': 'btc',
+              'Blockchair.com': 'bitcoin',
+              
               'Blockstream.info': 'Blockstream.info', //no arguments needs to be passed
-              'Chain.so': 'BTC',
+              //'Chain.so': 'BTC',
               'Coinb.in': 'Coinb.in',                 //no arguments needs to be passed
               'Cryptoid.info': 'btc',
               //'Mempool.space': 'btc',
@@ -1124,13 +1126,13 @@ function nonBlockingIncrement(n=1000000, callback){
             unspent_outputs: {
               'Blockcypher.com': 'ltc',
               'Blockchair.com': 'litecoin',
-              'Chain.so': 'LTC',
+              //'Chain.so': 'LTC',
               'Cryptoid.info': 'ltc',
             },
             broadcast: {
               'Blockcypher.com': 'ltc',
               'Blockchair.com': 'litecoin',
-              'Chain.so': 'LTC',
+              //'Chain.so': 'LTC',
               'Cryptoid.info': 'ltc',
             }
           }
@@ -1164,12 +1166,12 @@ function nonBlockingIncrement(n=1000000, callback){
             unspent_outputs: {
               'Blockcypher.com': 'doge',
               'Blockchair.com': 'dogecoin',
-              'Chain.so': 'DOGE',
+              //'Chain.so': 'DOGE',
             },
             broadcast: {
               'Blockcypher.com': 'doge',
               'Blockchair.com': 'dogecoin',
-              'Chain.so': 'DOGE',
+              //'Chain.so': 'DOGE',
             }
           }
         },
@@ -1556,7 +1558,7 @@ function nonBlockingIncrement(n=1000000, callback){
               'Blockchair.com': 'bitcoin',
               'Blockcypher.com': 'btc',
               //'Blockstream.info': 'Blockstream.info',
-              'Chain.so': 'BTCTEST',
+              //'Chain.so': 'BTCTEST',
               //'Mempool.space': 'testnet',
               'ElectrumX-1 (TCP)': 'testnet.aranguren.org:51001',
               'ElectrumX-1 (SSL)': 'testnet.aranguren.org:51002',
@@ -1574,7 +1576,7 @@ function nonBlockingIncrement(n=1000000, callback){
               'Blockchair.com': 'bitcoin',
               'Blockcypher.com': 'btc',
               'Blockstream.info': 'Blockstream.info',
-              'Chain.so': 'BTCTEST',
+              //'Chain.so': 'BTCTEST',
               //'Mempool.space': 'testnet',
               'ElectrumX-1 (TCP)': 'testnet.aranguren.org:51001',
               'ElectrumX-1 (SSL)': 'testnet.aranguren.org:51002',
@@ -1620,10 +1622,10 @@ function nonBlockingIncrement(n=1000000, callback){
           supports_address : ['compressed', 'uncompressed'],
           api : {
             unspent_outputs: {
-              'Chain.so': 'LTCTEST',
+              //'Chain.so': 'LTCTEST',
             },
             broadcast: {
-              'Chain.so': 'LTCTEST',
+              //'Chain.so': 'LTCTEST',
             }
 
           }
@@ -1655,10 +1657,10 @@ function nonBlockingIncrement(n=1000000, callback){
           supports_address : ['compressed', 'uncompressed', 'segwit'],
           api : {
             unspent_outputs: {
-              'Chain.so': 'DOGETEST',
+              //'Chain.so': 'DOGETEST',
             },
             broadcast: {
-              'Chain.so': 'DOGETEST',
+              //'Chain.so': 'DOGETEST',
             }
           }
         },
