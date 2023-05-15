@@ -43,7 +43,7 @@
     
     
     <!-- storage function lib-->
-    <script type="text/javascript" src="./assets/js/storage/sstorage.js" ></script>
+    <script type="text/javascript" src="./assets/js/storage/storage.js" ></script>
 
     <!-- data-binder library-->
     <script type="text/javascript" src="./assets/js/dabi.js" ></script>
@@ -173,7 +173,7 @@
           </div>
           <div class="menu__item show_mobile nav_right" >
             <a class="colorize dropdown-menu-icon " href="#settings" alt="Settings">
-              <img src="./assets/images/settings-2.svg" class="icon24" >
+              <img src="./assets/images/settings.svg" class="icon28" >
             </a>
           </div>
         </div>
@@ -290,17 +290,17 @@
                 <ul>
                   <li class="mb-1">
                     <a href="#newTransaction" data-route="link" data-pagescroll="page_tab_iceee">
-                    <img src="./assets/images/money-send.svg" class="icon32 "> New Transaction
+                    <img src="./assets/images/transaction2.svg" class="icon32 "> New Transaction
                     </a>
                   </li>
                   <li class="mb-1">
                     <a href="#sign" data-route="link" data-pagescroll="page_tab_iceee">
-                    <img src="./assets/images/magicpen.svg" class="icon32 "> Sign Transaction
+                    <img src="./assets/images/pencil.svg" class="icon32 "> Sign Transaction
                     </a>
                   </li>
                   <li class="mb-1">
                     <a href="#broadcast" data-route="link" data-pagescroll="page_tab_iceee">
-                    <img src="./assets/images/direct-send.svg" class="icon32 "> Send Transaction <small>Broadcast</small>
+                    <img src="./assets/images/send.svg" class="icon32 "> Send Transaction <small>Broadcast</small>
                     </a>
                   </li>
                 </ul>
@@ -316,7 +316,7 @@
                 <a href="#converter"><img src="./assets/images/convertshape-2.svg" class="icon32 mx-2"> Converter</a>
               </li>
               <li>
-                <a href="#settings"><img src="./assets/images/settings-2.svg" class="icon32 mx-2"> Settings</a>
+                <a href="#settings"><img src="./assets/images/settings.svg" class="icon32 mx-2"> Settings</a>
               </li>
             </ul>
           </div>
@@ -670,7 +670,7 @@
                 </h3>
               </div>
 
-              <div class="card-openwallet-body m-1">
+              <div class="card-openwallet-body  m-1">
                 <div class="p-1 py-1">
                 </div>
               </div>
@@ -692,6 +692,8 @@
 
               <div class="card-openwallet-body m-1">
                 <div class="p-1 py-1">
+
+                  <button class="btn btn-flat-primary">Add or Hide Assets</button>
                 </div>
               </div>
               
@@ -714,7 +716,7 @@
                 </h3>
               </div>
 
-              <div class="card-openwallet-body m-1">
+              <div class="card-openwallet-body overflow-visible m-1">
                 <div class="p-1 py-1">
 
                   <!-- Filter Asset Options -->
@@ -724,27 +726,38 @@
                     <div class="list-border">
   <div class="list-wrapper">
 
-  <div class="icon icon32">
-    <img src="./assets/images/crypto/bitcoin-btc-logo.svg">
-  </div>
+  
 
   <div class="list-name">
-    <span class="head">
-      Bitcoin
-    </span>
-    <span class="subhead">
-      BTC
-    </span>
+    <div class="coin-icon">
+      <div class="icon icon32">
+        <img src="./assets/images/crypto/bitcoin-btc-logo.svg">
+      </div>
+    </div>
+    <div class="coin-info">
+      <span class="title">
+        Bitcoin
+      </span>
+      <span class="subtitle">
+        <span class="balance">9999999.00000000</span> BTC
+      </span>
+    </div>
   </div>
 
   <div class="list-details">
-    <span class="balance">
-      0.00000000
-    </span>
-    <div class="visibility">
-    </div>
     <div class="calendar">
-      <a href="#">Send</a>
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-flat-primary" ><img src="./assets/images/send.svg" class="icon24"> Send</button>
+        <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="bi bi-caret-down"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="#" ><img src="./assets/images/send.svg" class="icon28"> Send</a>
+          <a class="dropdown-item" href="#" ><img src="./assets/images/receive.svg" class="icon28"> Receive</a>
+          <a class="dropdown-item" href="#" ><img src="./assets/images/settings.svg" class="icon28"> Settings</a>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -752,27 +765,36 @@
 <div class="list-border udf">
   <div class="list-wrapper">
 
-  <div class="icon icon32">
-    <img src="./assets/images/crypto/ethereum-eth-logo.svg">
-  </div>
-
   <div class="list-name">
-    <span class="head">
-      Ethereum
-    </span>
-    <span class="subhead">
-      ETH
-    </span>
+    <div class="coin-icon">
+      <div class="icon icon32">
+        <img src="./assets/images/crypto/ethereum-eth-logo.svg">
+      </div>
+    </div>
+    <div class="coin-info">
+      <span class="title">
+        Ethereum
+      </span>
+      <span class="subtitle">
+        <span class="balance">9999999.00000000</span> ETH
+      </span>
+    </div>
   </div>
 
   <div class="list-details">
-    <span class="balance">
-      0.00000000
-    </span>
-    <div class="visibility">
-    </div>
     <div class="calendar">
-      <a href="#">Send</a>
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-flat-primary" ><img src="./assets/images/send.svg" class="icon24"> Send</button>
+        <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="bi bi-caret-down"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="#" ><img src="./assets/images/send.svg" class="icon28"> Send</a>
+          <a class="dropdown-item" href="#" ><img src="./assets/images/receive.svg" class="icon28"> Receive</a>
+          <a class="dropdown-item" href="#" ><img src="./assets/images/settings.svg" class="icon28"> Settings</a>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -781,27 +803,36 @@
 <div class="list-border">
   <div class="list-wrapper">
 
-  <div class="icon icon32">
-    <img src="./assets/images/crypto/bitbay-bay-logo.svg">
-  </div>
-
   <div class="list-name">
-    <span class="head">
-      BitBay
-    </span>
-    <span class="subhead">
-      BAY
-    </span>
+    <div class="coin-icon">
+      <div class="icon icon32">
+        <img src="./assets/images/crypto/bitbay-bay-logo.svg">
+      </div>
+    </div>
+    <div class="coin-info">
+      <span class="title">
+        BitBay
+      </span>
+      <span class="subtitle">
+        <span class="balance">9999999.00000000</span> BAY
+      </span>
+    </div>
   </div>
 
   <div class="list-details">
-    <span class="balance">
-      0.00000000
-    </span>
-    <div class="visibility">
-    </div>
     <div class="calendar">
-      <a href="#">Send</a>
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-flat-primary" ><img src="./assets/images/send.svg" class="icon24"> Send</button>
+        <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="bi bi-caret-down"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="#" ><img src="./assets/images/send.svg" class="icon28"> Send</a>
+          <a class="dropdown-item" href="#" ><img src="./assets/images/receive.svg" class="icon28"> Receive</a>
+          <a class="dropdown-item" href="#" ><img src="./assets/images/settings.svg" class="icon28"> Settings</a>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -809,27 +840,36 @@
 <div class="list-border">
   <div class="list-wrapper">
 
-  <div class="icon icon32">
-    <img src="./assets/images/crypto/litecoin-ltc-logo.svg">
-  </div>
-
   <div class="list-name">
-    <span class="head">
-      Litecoin
-    </span>
-    <span class="subhead">
-      LTC
-    </span>
+    <div class="coin-icon">
+      <div class="icon icon32">
+        <img src="./assets/images/crypto/litecoin-ltc-logo.svg">
+      </div>
+    </div>
+    <div class="coin-info">
+      <span class="title">
+        Litecoin
+      </span>
+      <span class="subtitle">
+        <span class="balance">9999999.00000000</span> LTC
+      </span>
+    </div>
   </div>
 
   <div class="list-details">
-    <span class="balance">
-      0.00000000
-    </span>
-    <div class="visibility">
-    </div>
     <div class="calendar">
-      <a href="#">Send</a>
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-flat-primary" ><img src="./assets/images/send.svg" class="icon24"> Send</button>
+        <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="bi bi-caret-down"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="#" ><img src="./assets/images/send.svg" class="icon28"> Send</a>
+          <a class="dropdown-item" href="#" ><img src="./assets/images/receive.svg" class="icon28"> Receive</a>
+          <a class="dropdown-item" href="#" ><img src="./assets/images/settings.svg" class="icon28"> Settings</a>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -837,27 +877,36 @@
 <div class="list-border udf">
   <div class="list-wrapper">
 
-  <div class="icon icon32">
-    <img src="./assets/images/crypto/dogecoin-doge-logo.svg">
-  </div>
-
   <div class="list-name">
-    <span class="head">
-      Dogecoin
-    </span>
-    <span class="subhead">
-      DOGE
-    </span>
+    <div class="coin-icon">
+      <div class="icon icon32">
+        <img src="./assets/images/crypto/dogecoin-doge-logo.svg">
+      </div>
+    </div>
+    <div class="coin-info">
+      <span class="title">
+        Dogecoin
+      </span>
+      <span class="subtitle">
+        <span class="balance">9999999.00000000</span> DOGE
+      </span>
+    </div>
   </div>
 
   <div class="list-details">
-    <span class="balance">
-      0.00000000
-    </span>
-    <div class="visibility">
-    </div>
     <div class="calendar">
-      <a href="#">Send</a>
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-flat-primary" ><img src="./assets/images/send.svg" class="icon24"> Send</button>
+        <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="bi bi-caret-down"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="#" ><img src="./assets/images/send.svg" class="icon28"> Send</a>
+          <a class="dropdown-item" href="#" ><img src="./assets/images/receive.svg" class="icon28"> Receive</a>
+          <a class="dropdown-item" href="#" ><img src="./assets/images/settings.svg" class="icon28"> Settings</a>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -868,28 +917,36 @@
 <div class="list-border">
   <div class="list-wrapper">
 
-  <div class="icon icon32">
-    <img src="./assets/images/crypto/blackcoin-blk-logo.svg">
-  </div>
-
   <div class="list-name">
-    <span class="head">
-      Blackcoin
-    </span>
-    <span class="subhead">
-      BLK
-    </span>
+    <div class="coin-icon">
+      <div class="icon icon32">
+        <img src="./assets/images/crypto/blackcoin-blk-logo.svg">
+      </div>
+    </div>
+    <div class="coin-info">
+      <span class="title">
+        Blackcoin
+      </span>
+      <span class="subtitle">
+        <span class="balance">9999999.00000000</span> BLK
+      </span>
+    </div>
   </div>
 
   <div class="list-details">
-    <span class="balance">
-      0.00000000
-    </span>
-
-    <div class="visibility">
-    </div>
     <div class="calendar">
-      <a href="#">Send</a>
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-flat-primary" ><img src="./assets/images/send.svg" class="icon24"> Send</button>
+        <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="bi bi-caret-down"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="#" ><img src="./assets/images/send.svg" class="icon28"> Send</a>
+          <a class="dropdown-item" href="#" ><img src="./assets/images/receive.svg" class="icon28"> Receive</a>
+          <a class="dropdown-item" href="#" ><img src="./assets/images/settings.svg" class="icon28"> Settings</a>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -1936,7 +1993,7 @@
                   <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
-                  <div class="dropdown-menu">
+                  <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="#" id="newPaperwalletBtn">Print</a>
                   </div>
                 </div>
@@ -1994,14 +2051,13 @@
 
                 </div>
                 <div class="btn-group mt-3">
-                  <input type="button" class="btn btn-primary" value="Generate" id="newSegWitKeysBtn">
-                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="caret"></span>
-                  <span class="sr-only">Toggle Dropdown</span>
+                  <button type="button" class="btn btn-primary" id="newSegWitKeysBtn">Generate</button>
+                  <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
                   </button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#" id="newSegwitPaperwalletBtn">Print</a></li>
-                  </ul>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#" id="newPaperwalletBtn">Print</a>
+                  </div>
                 </div>
                 <br>
               </div>
@@ -4067,7 +4123,7 @@
           <div class="tab-pane tab-content" id="settings" data-route="settings">
             <div class="pageScrollSpace">&nbsp;</div>
             
-            <div class="card-openwallet">
+            <div class="card-openwallet-small">
               <div class="card-openwallet-header ">
                 <h3 class="card-openwallet-title">
                   Wally.id <small>Settings</small>
@@ -4350,7 +4406,7 @@
         </div>
       </div>
     </div>
-    <div id="footer" class="py-1 py-md-11 mb-6">
+    <div id="footer" class="py-1 py-md-11 m-2 mb-6">
       <div class="container mb-6">
         <!-- client based -->
         <div class="row">
@@ -4942,7 +4998,7 @@
     <div class="modal-body">
       <div class="bootstrap-dialog-body">
 
-        <div class="col-12 py-2 mb-3">
+        <div class="col-12 py-2 mb-3 p-3">
 
 
           
@@ -5264,13 +5320,13 @@ iceee - remove me later
         </li>
 
         <li>
-          <a href="#newTransaction"><img src="./assets/images/money-send.svg" class="icon32 mx-2"> New Transaction</a>
+          <a href="#newTransaction"><img src="./assets/images/transaction2.svg" class="icon32 mx-2"> New Transaction</a>
         </li>
         <li>
-          <a href="#sign"><img src="./assets/images/magicpen.svg" class="icon32 mx-2"> Sign Transaction</a>
+          <a href="#sign"><img src="./assets/images/pencil.svg" class="icon32 mx-2"> Sign Transaction</a>
         </li>
         <li>
-          <a href="#broadcast"><img src="./assets/images/direct-send.svg" class="icon32 mx-2"> Send Transaction <small>Broadcast</small></a>
+          <a href="#broadcast"><img src="./assets/images/send.svg" class="icon32 mx-2"> Send Transaction <small>Broadcast</small></a>
         </li>
         <li class="divider-empty"></li>
         <li>
@@ -5283,7 +5339,7 @@ iceee - remove me later
           <a href="#converter"><img src="./assets/images/convertshape-2.svg" class="icon32 mx-2"> Converter</a>
         </li>
         <li>
-          <a href="#settings"><img src="./assets/images/settings-2.svg" class="icon32 mx-2"> Settings</a>
+          <a href="#settings"><img src="./assets/images/settings.svg" class="icon32 mx-2"> Settings</a>
         </li>
 
 
@@ -5333,7 +5389,7 @@ $(".choose-currency-modal").on( "click", function() {
     }
     
     $('#modalChangeAsset').modal('show'); 
-    //$('#modalChangeAsset input.search_asset').trigger('focus');
+    $('#modalChangeAsset input.search_asset').trigger('focus');
 
 });
 

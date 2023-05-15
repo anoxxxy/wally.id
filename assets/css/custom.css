@@ -392,7 +392,7 @@ border-bottom:1px solid #F0F2F4;
 .dropdown-menu {
   font-size: .83333rem;
   overflow: hidden;
-  border-radius: .375rem;
+  border-radius: 10px;
   -webkit-box-shadow: 0 7px 14px 0 rgba(65,69,88,.1),0 3px 6px 0 rgba(0,0,0,.07);
   box-shadow: 0 7px 14px 0 rgba(65,69,88,.1),0 3px 6px 0 rgba(0,0,0,.07);
 }
@@ -2353,6 +2353,10 @@ border: 1px solid red;
 
 /*dropdown select*/
 
+.dropdown-without-arrow::after {
+    content: none;
+}
+
 .dropdown-select {
 	position: relative;
 	width: 99%;
@@ -2364,7 +2368,7 @@ border: 1px solid red;
 .dropdown-select button{
     width: inherit;
   height: 48px;
-  border-radius: 4px;
+  border-radius: 10px;
   background-color: #fff;
   border: 0;
   text-align: left;
@@ -2425,6 +2429,14 @@ border: 1px solid red;
   cursor: pointer;
   padding: 7.5px 15px;
   border-top: solid 1px #f3f3f3;
+  border-radius: 10px;
+  
+}
+
+#coinjs_network_select.dropdown-select .dropdown-menu li {
+display: flex;
+line-height: 1;
+height: 50px;
 }
 .dropdown-select .dropdown-menu li > img,
 .dropdown-select button > img{
@@ -2435,6 +2447,69 @@ border: 1px solid red;
 .dropdown-select .dropdown-menu li:hover {
   background-color: #f4f3fd;
 }
+
+.dropdown-select .dropdown-menu {
+	padding: 1rem 0.5rem;
+}
+.dropdown-select .dropdown-menu li:first-child {
+	border-top: none;
+}
+.dropdown-select .dropdown-menu li i.icon {
+	display: block;
+	position: absolute;
+	right: 12px;
+	margin-top: -40px;
+	font-size: 24px;
+}
+
+.dropdown-select .dropdown-menu li div.chain_model {
+	position: absolute;
+	margin-top: 15px;
+	margin-left: 40px;
+}
+
+.icon16.icon-badge {
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  border: 1px solid #666;
+  margin-top: 16px;
+  margin-left: 16px;
+  background-color: #fefefe;
+}
+
+
+.testar {
+	display: initial;
+	margin-right: 0.5rem;
+}
+.testar .icon16.icon-badge {
+	display: unset;
+	margin-left: -16px;
+}
+#modalChangeAsset .testar {
+	display: flex;
+}
+
+#modalChangeAsset .testar .icon16.icon-badge {	/*quick choose asset*/
+display: inline-flex;
+position: unset;
+}
+
+
+.settings_saved.testar {	/*settings saved (in modal) */
+	display: flex;
+	justify-content: center;
+}
+.settings_saved.testar .icon16.icon-badge{
+	margin-left: 40px;
+	width: 32px;
+	height: 32px;
+	margin-top: 30px;
+}
+
 
 #donateTxBtn .icon {
 	vertical-align: middle;
@@ -2671,6 +2746,24 @@ border: 1px solid red;
 			max-width: 280x;
 		}
 
+
+		
+
+}
+
+/*mobile devices*/
+@media (max-width: 375px) {
+
+/*#wallet loggedin*/
+		#wallet .list-wrapper {
+			flex-direction: inherit;
+			justify-content: flex-start;
+			align-items: start;
+		}
+		
+		#wallet .card-openwallet-body {
+			padding: 1rem 0.2rem;
+		}
 }
 
 .table-hover tbody tr:hover{
@@ -2844,6 +2937,11 @@ outline:  none;
     visibility: visible;
   }
 
+  #wallet.tab-content.tab-pane [class*="col-"] {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
 }
 
 
@@ -2877,7 +2975,56 @@ overflow: hidden;
 }
 
 
+.tab-content.tab-pane .card-openwallet-body.overflow-visible {
+	overflow: visible;
+}
+
+
+.badge-primary {
+	background-color: #cc99f1;
+}
+.chain_model {
+	text-transform: uppercase;
+}
 /*#wallet layout/design*/
+
+
+
+#wallet {
+	margin-top: -100px;
+}
+#wallet .list-border .coin-icon {
+	padding: 0 6px 0 0;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+
+#wallet .list-border .coin-info {
+	display: flex;
+	flex-direction: column;
+}
+#wallet .list-border .btn-group {
+	box-shadow: 1px 1px 11px 0px rgba(43,45,80,.1),0 1px 1px 0 rgba(43,45,80,.1),0 0px 11px 0 rgba(43,45,80,.08),0 0px 1.5px 0 rgba(0,0,0,.08),0 1px 0px 0 rgba(0,0,0,.08) !important;
+	border-radius: 10px;
+}
+#wallet .list-border .btn {
+	box-shadow: unset;
+}
+#wallet .list-border .btn-group button:first-child  {
+	border-top-right-radius: 0 !important;
+	border-bottom-right-radius: 0 !important;
+	border-radius: 10px;
+
+	border-right-width: 1px;
+  border-right-color: #dedede;
+}
+#wallet .list-border .btn-group button:last-child  {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-radius: 10px;
+}
+
 
 
 
@@ -2892,8 +3039,8 @@ overflow: hidden;
     rgba(169, 193, 250, 1) 90%,
     rgba(107, 148, 255, 1) 100%
   );
-  /*box-shadow: 0px 8px 36px rgba(81, 81, 81, 0.1);*/
-  box-shadow: 0 1px 0px rgba(0,0,0,.125),0 2px 6px rgba(0,0,0,.2);
+  box-shadow: 0px 8px 36px rgba(81, 81, 81, 0.1);
+  /*box-shadow: 0 1px 0px rgba(0,0,0,.125),0 2px 6px rgba(0,0,0,.2);*/
 
   border-radius: 10px;
   margin-bottom: 8px;
@@ -2937,23 +3084,21 @@ overflow: hidden;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  padding: 8px 16px 8px 8px;
+  padding: 8px;
 }
 
 .list-name {
-  margin-left: 4px;
+  margin-left: 0px;
   max-width: 800px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   transform: translateX(0);
   transition: all 0.3s ease;
+  flex: 1;
 }
 
 .list-border .icon {
-  height: 32px;
-  width: 32px;
   /*background-color: rgba(42, 78, 219, 0.3);*/
-  border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -2965,17 +3110,18 @@ overflow: hidden;
   transition: transform 0.5s ease;
 }
 
-.list-border .subhead {
+.list-border .subtitle {
   font-size: 0.88rem;
   font-weight: 500;
-  line-height: 20px;
-  color: #6c6c6c;
+  line-height: 24px;
+  color: #898989;
 }
 
-.list-border .head {
+.list-border .title {
   font-weight: 700;
   font-size: 1.1rem;
   line-height: 20px;
+  color: #626262;
 }
 
 .list-details {
@@ -2990,20 +3136,11 @@ overflow: hidden;
 }
 
 
-.list-border .visibility {
-  width: 32px;
-  height: 32px;
-  background-image: url("https://dsh.re/c29bd");
-  background-size: 24px;
-  background-position: center;
-  background-repeat: no-repeat;
-  margin-left: 16px;
-}
 .list-border .calendar {
   font-size: 14px;
   font-weight: 500;
   letter-spacing: -0.1px;
-  margin-left: 16px;
+  /*margin-left: 16px;*/
   color: rgba(0, 0, 0, 0.7);
 }
 

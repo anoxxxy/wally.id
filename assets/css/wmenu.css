@@ -190,7 +190,8 @@ header .dropdown-menu__content .col-2 {
   margin: 0;
 }
 header .dropdown-menu__content .col-2 > ul, .col-2 > div {
-  flex: 1 0 200px;
+  flex: 1 0 220px;
+  padding-right: 20px;
 }
 /*
 [data-dropdown-menu="product"] .col-2 li {

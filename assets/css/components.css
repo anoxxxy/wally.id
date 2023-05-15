@@ -176,14 +176,15 @@
 .dropdown-item {
  display:block;
  width:100%;
- padding:.5rem .75rem;
+ padding:.1rem .75rem;
  clear:both;
  font-weight:400;
  color:#343a40;
  text-align:inherit;
  white-space:nowrap;
  background-color:transparent;
- border:0
+ border:0;
+ font-size: 1rem;
 }
 .dropdown-item:focus,
 .dropdown-item:hover {

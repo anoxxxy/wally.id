@@ -3423,7 +3423,7 @@ input[type=submit].btn-block {
 .input-group-append .btn,
 .input-group-prepend .btn {
  position:relative;
- z-index:2
+
 }
 .input-group-append .btn:focus,
 .input-group-prepend .btn:focus {

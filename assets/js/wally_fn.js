@@ -1054,7 +1054,21 @@ function nonBlockingIncrement(n=1000000, callback){
   loop();
 }
 
-  
+
+BIP 44 derivation paths:
+
+Bitcoin 0
+BitBay      2125
+LYNX      191
+Zetacoin    719
+Artbyte     720
+InfiniLooP    722
+Vanillacash   724
+PotCoin   81
+Novacoin 50
+Litecoin 2
+Dogecoin 3
+Blackcoin 10
 */
 
 
@@ -1533,6 +1547,49 @@ function nonBlockingIncrement(n=1000000, callback){
         txRBFTransaction: false,
         developer: '4bATCSp4uUrRZzwwUuQJKAJG4vyXhK85fZ',
       },
+      ["wally-goerli-erc20"] : {
+        symbol: 'tWally-Goerli',      //ticker
+        asset: {
+          chainModel: 'ERC-20',
+          name: 'Happy Walrus Coin',
+          slug: 'wally-goerli-erc20',
+          symbol: 'Wally',
+          symbols: ['walrus', 'wally'],
+          icon: './assets/images/crypto/walrus-wally-logo.svg',
+          network: 'testnet',
+          supports_address : ['single'],
+          api : {
+            unspent_outputs: {
+              '': '',
+            },
+            broadcast: {
+              '': '',
+            }
+          },
+          protocol: {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",  //-> parent_coin: "ETH",
+                "contract_address": "0x1CE0c2827e2eF14D5C4f29a091d735A204794041"
+            }
+          },
+          
+
+        },
+        pub : 0,      //not used for account based chains
+        priv : 0,     //not used for ....
+        multisig : 0, //....
+          hdkey : {'prv':0x04358394, 'pub':0x043587cf},
+          bech32 : {},
+          
+        txExtraTimeField: false,    //not used for ....
+        txExtraTimeFieldValue: false, //....
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:16,
+        txRBFTransaction: false,
+        developer: '0x000',
+      },
     },
 
 
@@ -1678,6 +1735,7 @@ function nonBlockingIncrement(n=1000000, callback){
         txRBFTransaction: true,
         developer: 'ncFA1iJD9RtPeAsQrwrHesN4tMtPwuYTTo',
       },
+      /*
       wally : {
         symbol: 'tWAY',      //ticker
         asset: {
@@ -1720,15 +1778,16 @@ function nonBlockingIncrement(n=1000000, callback){
         txRBFTransaction: false,
         developer: 'iceeeee',
       },
+      */
 
       
-      ethereum : {
+      ["ethereum-goerli-erc20"] : {
         symbol: 'tETH-Goerli',      //ticker
         asset: {
-          chainModel: 'account',
+          chainModel: 'Account',
           name: 'Ethereum-Goerli',
-          slug: 'ethereum-goerli',
-          symbol: 'tETH',
+          slug: 'ethereum-goerli-erc20',
+          symbol: 'tETH-Goerli',
           symbols: ['eth-goerli', 'ethereum-goerli'],
           icon: './assets/images/crypto/ethereum-eth-logo.svg',
           network: 'testnet',
@@ -1740,7 +1799,12 @@ function nonBlockingIncrement(n=1000000, callback){
             broadcast: {
               '': '',
             }
-          }
+          },
+          protocol: {
+            "type": "Account",  //has no parent
+          },
+          
+
         },
         pub : 0,      //not used for account based chains
         priv : 0,     //not used for ....
@@ -1756,6 +1820,50 @@ function nonBlockingIncrement(n=1000000, callback){
         txRBFTransaction: false,
         developer: '0x000',
       },
+      ["wally-goerli-erc20"] : {
+        symbol: 'tWally-Goerli',      //ticker
+        asset: {
+          chainModel: 'ERC-20',
+          name: 'Happy Walrus Coin',
+          slug: 'wally-goerli-erc20',
+          symbol: 'Wally',
+          symbols: ['walrus', 'wally'],
+          icon: './assets/images/crypto/walrus-wally-logo.svg',
+          network: 'testnet',
+          supports_address : ['single'],
+          api : {
+            unspent_outputs: {
+              '': '',
+            },
+            broadcast: {
+              '': '',
+            }
+          },
+          protocol: {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "ETH",  //-> parent_coin: "ETH",
+                "contract_address": "0x1CE0c2827e2eF14D5C4f29a091d735A204794041"
+            }
+          },
+          
+
+        },
+        pub : 0,      //not used for account based chains
+        priv : 0,     //not used for ....
+        multisig : 0, //....
+          hdkey : {'prv':0x04358394, 'pub':0x043587cf},
+          bech32 : {},
+          
+        txExtraTimeField: false,    //not used for ....
+        txExtraTimeFieldValue: false, //....
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:16,
+        txRBFTransaction: false,
+        developer: '0x000',
+      },
+      /*
       nexus : {
         symbol: 'NXS',      //ticker
         asset: {
@@ -1781,13 +1889,13 @@ function nonBlockingIncrement(n=1000000, callback){
         priv : 0xfd,     //wif            OP_PUBKEY = 0xfe,
         multisig : 0xfb, //scriptHash     OP_PUBKEYS = 0xfb, OP_PUBKEYSCRIPT
 
-/*
-    pub : 0xfd,      //pubKeyHash     OP_PUBKEYHASH = 0xfd, https://github.com/Nexusoft/Legacy/blob/v0.2.0.0/src/wallet/script.h
-        priv : 0xfe,     //wif            OP_PUBKEY = 0xfe,
-        multisig : 0xfb, //scriptHash     OP_PUBKEYS = 0xfb, OP_PUBKEYSCRIPT
+
+    //pub : 0xfd,      //pubKeyHash     OP_PUBKEYHASH = 0xfd, https://github.com/Nexusoft/Legacy/blob/v0.2.0.0/src/wallet/script.h
+        //priv : 0xfe,     //wif            OP_PUBKEY = 0xfe,
+        //multisig : 0xfb, //scriptHash     OP_PUBKEYS = 0xfb, OP_PUBKEYSCRIPT
 
 
-*/
+
           hdkey : {'prv':0x02cfbf60, 'pub':0x02cfbede},
           bech32 : {},
           
@@ -1799,6 +1907,7 @@ function nonBlockingIncrement(n=1000000, callback){
         txRBFTransaction: false,
         developer: '2kp58H1Ezgsv2jaHpLPL1RXw4T5jVygTVqp',
       },
+      */
     }
 
   }

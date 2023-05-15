@@ -117,9 +117,12 @@
 
       //show message for changing network & asset
       if (options.showMessage) {
+
+        var parentTokenBadge = wally_kit.getParentTokenBadge(newNetwork.asset.chainModel, newNetwork.asset.protocol);
+
         modalMessage = '<div class="text-center text-primary mb-3"><p class="mb-2">You have updated Blockchain Network settings to:</p>' 
           + newNetwork.asset.name + ' <strong>('+newNetwork.asset.symbol+' '+newNetwork.asset.network+')</strong> </div>';
-        modalMessage += '<img src="'+newNetwork.asset.icon+'" class="icon-center icon64 mb-2">'
+        modalMessage += '<div class="settings_saved testar"><img src="'+newNetwork.asset.icon+'" class="icon-center icon64 mb-2">'+parentTokenBadge+'</div>'
         modalMessage += '<div class="text-center text-muted">API Providers:<br> Unspent outputs: '+wally_fn.provider.utxo+'<br>Broadcast: '+wally_fn.provider.broadcast+'</div> <br> <div class="alert alert-light text-muted mb-2">If this is not correct, head over to <a href="#settings" data-pagescroll="page_tab" data-dismiss="modal">Settings</a> page. </div>';
 
         custom.showModal(modalTitle, modalMessage);
@@ -575,6 +578,31 @@
   }
 
   /*
+  @ get token badge (depending of chainModel and if it has any parent, like ERC-20 tokens)
+  */
+
+  wally_kit.getParentTokenBadge = function(chain, protocol) {
+    var parentTokenBadge = '';
+    if (chain.includes('ERC-20') || chain.includes('BEP-20') || chain.includes('PLG-20') ) {
+        
+        if (chain.includes('ERC-20'))
+          parentTokenBadge = '<img src="./assets/images/crypto/ethereum-eth-logo.svg" class="icon16 icon-badge">';
+        if (chain.includes('BEP-20'))
+          parentTokenBadge = '<img src="./assets/images/crypto/binance-bep-logo.svg" class="icon16 icon-badge">';
+        if (chain.includes('PLG-20'))
+          parentTokenBadge = '<img src="./assets/images/crypto/polygon-plg-logo.svg" class="icon16 icon-badge">';
+
+        /*
+        if (protocol.protocol_data === undefined){
+          //if (protocol.protocol_data.platform === undefined)  //this has no parent, clear the badge
+            parentTokenBadge = '';
+        }
+        */
+      }
+      return parentTokenBadge;
+  }
+
+  /*
   @ show a list of Chains: Bitcoin, Litecoin, Bitbay etc..
   */
   wally_kit.settingsListAssets = function (network_var = 'mainnet') {
@@ -609,13 +637,17 @@
             //$('#coinjs_network option[value="'+coinjs.asset.slug+'"]').attr('selected','selected');
             //console.log('trigger select change');
           //}else
-            $('#coinjs_network_select button').html('<img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')'); 
+            $('#coinjs_network_select button').html('<img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+') '); 
         }
+
+        //check ERC/BEP/PLG-20 Compability
+        var parentTokenBadge = wally_kit.getParentTokenBadge(value.asset.chainModel, value.asset.protocol);
+        
 
         //selected asset
         if (coinjs.asset.slug == key){
           assetSelectEl.append('<option value="'+key+'" data-icon="'+value.asset.icon+'" selected="selected">'+value.asset.name+' ('+value.asset.symbol+')</option>');
-          $('#coinjs_network_select button').html('<img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')'); 
+          $('#coinjs_network_select button').html('<div class="testar"><img src="'+value.asset.icon+'" class="icon32">'+parentTokenBadge+'</div> '+value.asset.name+' ('+value.asset.symbol+') <span class="badge badge-primary chain_model">'+value.asset.chainModel+'</span>'); 
           console.log('trigger selected icon');
         } else {
           assetSelectEl.append('<option value="'+key+'" data-icon="'+value.asset.icon+'" >'+value.asset.name+' ('+value.asset.symbol+')</option>');
@@ -625,14 +657,13 @@
         }
 
         //list rest of assets
-        assetSelectwIconsEl.append('<li data-icon="'+value.asset.icon+'" data-asset="'+key+'"><img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')</li>');
+        assetSelectwIconsEl.append('<li data-icon="'+value.asset.icon+'" data-asset="'+key+'"><img src="'+value.asset.icon+'" class="icon32">'+parentTokenBadge+' '+value.asset.name+' ('+value.asset.symbol+') <div class="chain_model"><small><span class="badge badge-primary ">'+value.asset.chainModel+'</span></small></div></li>');
 
         
         
         
         i++;
       }
-      assetSelectwIconsEl.append('<li>&nbsp;</li>');
 
       this.settingsListNetworkProviders();
     } catch (e) {
@@ -666,7 +697,10 @@
         console.log('update asset to: '+asset_var);
         console.log('updated asset to: '+wally_fn.asset);
 
-        $('#coinjs_network_select button').html('<img src="'+wally_fn.networks[wally_fn.network][asset_var].asset.icon+'" class="icon32"> '+wally_fn.networks[wally_fn.network][asset_var].asset.name+' ('+wally_fn.networks[wally_fn.network][asset_var].asset.symbol+')'); 
+        //check ERC/BEP/PLG-20 Compability
+        var parentTokenBadge = wally_kit.getParentTokenBadge(wally_fn.networks[wally_fn.network][asset_var].asset.chainModel, wally_fn.networks[wally_fn.network][asset_var].asset.protocol);
+
+        $('#coinjs_network_select button').html('<div class="testar"><img src="'+wally_fn.networks[wally_fn.network][asset_var].asset.icon+'" class="icon32"> '+parentTokenBadge+ '</div> ' +wally_fn.networks[wally_fn.network][asset_var].asset.name+' ('+wally_fn.networks[wally_fn.network][asset_var].asset.symbol+') <span class="badge badge-primary chain_model">'+wally_fn.networks[wally_fn.network][asset_var].asset.chainModel+'</span></small>'); 
       }
     }
 
@@ -691,7 +725,7 @@
         electrumXContent = ' <small>'+value+'</small>';
 
       selectNetworkBroadcastAPI.append('<option value="'+value+'" data-icon="" >'+key+'</option>');
-      selectNetworkBroadcastAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-broadcast-provider="'+value+'" data-broadcast-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+electrumXContent+'</li>');
+      selectNetworkBroadcastAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-broadcast-provider="'+value+'" data-broadcast-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+electrumXContent+' <i class="icon bi"></i></li>');
 
       if(i==0) {//set broadcast asset
           $('#coinjs_broadcast_api_select button').html('<img src="./assets/images/providers_icon.svg" class="icon32"> '+key);
@@ -711,7 +745,7 @@
         electrumXContent = ' <small>'+value+'</small>';
 
       selectNetworkUtxoAPI.append('<option value="'+value+'" data-icon="" >'+key+'</option>');
-      selectNetworkUtxoAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-utxo-provider="'+value+'" data-utxo-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+electrumXContent+'</li>');
+      selectNetworkUtxoAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-utxo-provider="'+value+'" data-utxo-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+electrumXContent+' <i class="icon bi"></i></li>');
 
 
       if (i==0) {//set utxo provider asset
@@ -739,12 +773,14 @@
         //list donation addresses
         donationList +=('<a class="list-group-item list-group-item-action" alt="Donate to us in '+value.asset.name+' ('+value.asset.symbol+')" href="'+key+':'+value.developer+'"><img src="'+value.asset.icon+'" class="icon32"> '+value.asset.name+' ('+value.asset.symbol+')</a>');
 
+
         //list assets in modal dialog
+        var parentTokenBadge = wally_kit.getParentTokenBadge(value.asset.chainModel, value.asset.protocol);
         assetListInModalDefault = (value.asset.slug == wally_fn.asset ? 'checked="checked"' : '')  //set as default 
-        assetListInModal += ('<tr data-asset="'+value.asset.slug+'">        <td>         <i class="icon">          <img class="icon icon32" src="./assets/images/crypto/'+(value.asset.slug)+'-'+(value.asset.symbol).toLowerCase()+'-logo.svg" />         </i>        </td>        <td>'+value.asset.symbol+' <small class="d-block text-muted">'+value.asset.name+'</small></td>        <td>          <input type="radio" name="set-asset-group" value="'+value.asset.slug+'" '+assetListInModalDefault+'/>        </td>       </tr>');
+        assetListInModal += ('<tr data-asset="'+value.asset.slug+'">        <td>         <div class="testar"><img class="icon icon32" src="'+value.asset.icon+'" /> '+parentTokenBadge+'        </div>        </td>        <td>'+value.asset.symbol+' <small class="d-block text-muted">'+value.asset.name+' <span class="badge badge-primary chain_model">'+value.asset.chainModel+'</span></small></td>        <td>          <input type="radio" name="set-asset-group" value="'+value.asset.slug+'" '+assetListInModalDefault+'/>        </td>       </tr>');
 
         //footer page supported assets
-        supportedAssets += '<li class="mb-1"><a href="javascript:void(0)"><img src="./assets/images/crypto/'+(value.asset.slug)+'-'+(value.asset.symbol).toLowerCase()+'-logo.svg" class="icon tokens">'+value.asset.name+'</a></li>';
+        supportedAssets += '<li class="mb-1"><a href="javascript:void(0)"><img src="'+value.asset.icon+'" class="icon tokens">'+value.asset.name+'</a></li>';
       }
 
       $('#about .donation_list').html('<div class="list-group">'+donationList+'</div>');
@@ -1147,7 +1183,8 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
   var parentId = _this_.parent().parent().attr('id');
   var parentBtn = _this_.parent().parent().children('button');
 
-  parentBtn.html(getValue);
+  parentBtn.html(getValue); //this sets the UTXO outputs and Broadcast button content
+
 
   //console.log('parent: ', $(this).parent().parent());
   //console.log('children: ', $(this).parent().parent().children());
@@ -1155,14 +1192,14 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
 
   //remove "_select" from id to get its equivalent select element
   var eqSelectId = parentId.replace('_select', ''), setSelectValue;
-  ;
+  
   if (eqSelectId == 'coinjs_network'){
     //console.log('change asset!', e);
     setSelectValue = $(this).attr('data-asset');
     console.log('set Asset to:' + setSelectValue);
 
-    
-    
+
+
   }else if (eqSelectId == 'coinjs_utxo_api'){
     setSelectValue = $(this).attr('data-utxo-provider');
     //wally_fn.provider.utxo = $(this).attr('data-utxo-provider-name');
@@ -1172,6 +1209,10 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
   }
 
   $('#'+eqSelectId).val(setSelectValue).change();
+
+  //add a check-mark/icon to the selected item
+  _this_.parent().find('i.icon').removeClass('bi-check'); //remove all checkmarks
+  _this_.find('i.icon').addClass('bi-check'); //remove all checkmarks
 
   //#settings .dropdown-select li
 });
