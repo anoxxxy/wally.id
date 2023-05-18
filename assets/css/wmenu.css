@@ -10,14 +10,16 @@ header {
   padding:  0;
 }
 
+/*
 header .menu {
   list-style: none;
   margin: 0;
   padding-left: 0;
   display: flex;
   justify-content: flex-end;
-  padding:  10px 20;
+  padding:  10px 20px;
 }
+*/
 header .menu a {
   padding: 20px 20px;
   display: block;
@@ -38,7 +40,7 @@ header .menu a {
   margin: 0;
   padding: 0 20px;
 
-  padding: 0 calc(10px + (100vw - 670px) * .040541);
+  
   
 
 }
@@ -264,49 +266,7 @@ header .dropdown-menu__content ul > li a:hover {
  border-radius: 10px; 
  background-color: #efefef;
 }
-/*
- .dropdown-menu__content .productsGroup a img.icon {
-  width: 40px;
-  height: 40px;
-  position: absolute;
-}
- .dropdown-menu__content .productsGroup a.linkContainer:hover {
- border-radius: 10px; 
- background-color: #efefef;
-}
- .dropdown-menu__content .productLinkContent {
-  display: flex;
-  flex: 1;
-  margin-left: 60px;
-  flex-direction: column;
-  height: 70px;
-}
 
- .dropdown-menu__content .linkTitle {
-transition: color 0.2s;
-margin: 0;
-color: #6772e5;
-font-size: 1rem;
-line-height: 22px;
-text-transform: uppercase;
-font-weight: 600;
-
-}
-
-.dropdown-menu__content .linkContainer:hover .linkTitle, .dropdown-menu__content .linkTitle:hover {
-  color: #32325d;
-}
-
-
-.dropdown-menu__content .linkSub {
-  transition: color 0.1s;
-  font-size: 15px;
-  line-height: 14px;
-  color: #6b7c93;
-  margin: 5px 0 0;
-  display: block;
-}
-*/
 header .dropdown__bg,
 header .dropdown__wrap {
   pointer-events: none;
@@ -346,6 +306,92 @@ header .menu__item.show_only_mobile {
     opacity:  0 !important;
     display: none ;
   }
+
+
+
+header img.dabi-selectedAsset,
+header a.dropdown-menu-icon img{
+
+
+}
+header img.dabi-selectedAsset {
+
+width: 25px;
+height: 25px;
+border-radius: 100%;
+box-shadow: 0 8px 8px -4px rgba(0, 0, 0, 0.3);
+top: -2px;
+position: relative;
+  background-color: #fefefe;
+  border: 2px solid #fefefe;
+  border-radius: 100%;
+  width: 30px;
+height: 30px;
+}
+
+/*
+If the color is known in advance, you can use https://codepen.io/sosuke/pen/Pjoqqp to find the filter needed to change your SVG to the desired color. For example, to convert the svg to #00f:
+*/
+header  li.menu__item a[href="#settings"]:hover img{
+filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(38deg) brightness(103%) contrast(102%);
+}
+
+
+header .container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 56px;
+}
+
+header .container .left,
+header .container .middle,
+header .container .right {
+  flex: 1;
+  flex-direction: row;
+}
+
+header .container .left {
+  
+  /*background: #ccc;*/
+  display: flex;
+  flex: 0;
+}
+
+header .container .middle {
+  text-align: center;
+  /*justify-content: space-between;*/
+  /*background: #bbdefb;*/
+}
+
+header .container .right {
+  
+  text-align: right;
+  /*justify-content: end;*/
+  /*background: #fff9c4;*/
+  display: flex;
+  flex: 0;
+  
+}
+
+header .logo {
+  width: 40px;
+  height: 40px;
+}
+
+header .menu__item {
+  font-size: 20px;
+  padding: 0;
+  display: inline-block;
+}
+
+
+
+
+
+
 
 @media screen and (max-width: 768px) {
   header .dropdown-close-button {
@@ -387,68 +433,4 @@ header .menu__item.show_only_mobile {
   }
 
   
-}
-
-
-header img.dabi-selectedAsset,
-header a.dropdown-menu-icon img{
-
-
-}
-header img.dabi-selectedAsset {
-
-width: 25px;
-height: 25px;
-border-radius: 100%;
-box-shadow: 0 8px 8px -4px rgba(0, 0, 0, 0.3);
-top: -2px;
-position: relative;
-  background-color: #fefefe;
-  border: 2px solid #fefefe;
-  border-radius: 100%;
-  width: 30px;
-height: 30px;
-}
-
-/*
-If the color is known in advance, you can use https://codepen.io/sosuke/pen/Pjoqqp to find the filter needed to change your SVG to the desired color. For example, to convert the svg to #00f:
-*/
-header  li.menu__item a[href="#settings"]:hover img{
-filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(38deg) brightness(103%) contrast(102%);
-}
-
-
-
-
-header .container {
-  display: flex;
-  min-height: 56px;
-  align-items: center;
-}
-
-header .left, header .middle, header .right {
-  flex: 1;
-  flex-direction: row;
-  display: flex;
-}
-
-header .right {
-  text-align: right;
-  justify-content: end;
-}
-
-header .logo {
-  width: 40px;
-  height: 40px;
-}
-
-header .item {
-  font-size: 20px;
-  padding: 16px;
-  display: inline-block;
-}
-
-header .middle {
-  text-align: center;
-  justify-content: space-between;
 }

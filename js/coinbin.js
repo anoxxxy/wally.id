@@ -1215,7 +1215,9 @@ profile_data = {
 			listUnspentCryptoid(redeem, coinjs.asset.api.unspent_outputs['Cryptoid.info']);
 		} else if (wally_fn.provider.utxo == 'Blockchain.info') {
 			listUnspentBlockhaininfo(redeem, coinjs.asset.api.unspent_outputs['Blockchain.info']);
-		}
+		} else if ( (wally_fn.provider.utxo).includes('ElectrumX') ) {
+			listUnspentElectrumX(redeem, coinjs.asset.api.unspent_outputs['ElectrumX']);
+		} 
 
 
         
@@ -1784,7 +1786,7 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 
 	// retrieve unspent data from chainz.cryptoid.info (mainnet and testnet)
 	function listUnspentCryptoid(redeem, network){ 
-		console.log("listUnspentCryptoid");
+		console.log("listUnspentCryptoid: ", redeem);
 		$.ajax ({
 		  type: "GET",
 		  url: "https://chainz.cryptoid.info/"+network+"/api.dws?key=1205735eba8c&q=unspent&active="+ redeem.addr,
@@ -1817,6 +1819,82 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 		  }
 		});
 	}
+
+	// retrieve unspent data from ElectrumX
+	//https://wally.id/api/x.php?asset=aby&method=blockchain.scripthash.listunspent&scripthash=f2c773074a10d44ee5f9d196d9f7bf5da8d173e4a608aa3e752ec35b8be286c9&server=electrumx-four.artbyte.live:50012
+	/*
+	{
+    "jsonrpc": "2.0",
+    "result": [
+        {
+            "tx_hash": "f99a629faf971ec9e45819585dbac14f2653a6c7dea5bb52aa9960c1fb03718f",
+            "tx_pos": 0,
+            "height": 1088828,
+            "value": 11040000000
+        }
+    ],
+    "id": "aby"
+}
+
+only send scriptHash of multisig address to ElectrumX, not the redeemscripts
+*/
+
+	function listUnspentElectrumX(redeem, network){ 
+		console.log("listUnspentElectrumX: ", redeem);
+
+		var electrum_node = 'electrumx-four.artbyte.live:50012';	//network
+		var ticker = (coinjs.asset.symbol).toLowerCase();
+		$.ajax ({
+		  type: "GET",
+		  //https://wally.id/api/x.php?asset=aby&method=blockchain.scripthash.listunspent&scripthash=3f677078a1a9ad42d277fd91e38c102ff89d5cb5160f1a9595dca6552e84561c&server=electrumx-four.artbyte.live:50012
+		  url: "https://wally.id/api/x.php?asset="+ticker+"&method=blockchain.scripthash.listunspent&scripthash="+ coinjs.addressToScriptHash(redeem.addr) + '&server='+electrum_node,
+		  dataType: "json",
+		  error: function() {
+			$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs!');
+		  },
+		  success: function(data) {
+
+
+
+			var r;
+
+        	if (data.result) {
+				
+				
+
+				for(i = 0; i < data.result.length; ++i){
+					var o = data.result[i];
+					var tx = ((""+o.tx_hash).match(/.{1,2}/g).reverse()).join("")+'';
+					if(tx.match(/^[a-f0-9]+$/)){
+						var n = o.tx_pos;
+						var script = (redeem.isMultisig==true) ? $("#redeemFrom").val() : coinjs.addressToOutputScript(redeem.addr);
+						var amount = (o.value /100000000).toFixed(8);	//Cryptoid returns 8 decimals independently from the assets decimals number
+						//var amount = (o.value /("1e"+coinjs.decimalPlaces)).toFixed(coinjs.decimalPlaces);
+						
+						console.log(tx, n, script, amount)
+						addOutput(tx, n, script, amount);
+					}
+				}
+
+				$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="https://chainz.cryptoid.info/'+network+'/address.dws?'+redeem.addr+'.htm" target="_blank">'+redeem.addr+'</a>');
+
+
+			} else if (data.hasOwnProperty('error') ) {
+				r = 'Unexpected error. ElectrumX response: <br>'
+				r += '<div class="alert alert-light">'+data.error.message+'</div>';
+				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i> ');
+			} else {
+				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again later...').prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
+			}
+
+		   },
+		  complete: function(data, status) {
+			$("#redeemFromBtn").html("Load").attr('disabled',false);
+			totalInputAmount();
+		  }
+		});
+	}
+
 
 
 
@@ -1909,10 +1987,10 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 		} else if (wally_fn.provider.broadcast == 'Cryptoid.info') {
 			rawSubmitCryptoid(this, coinjs.asset.api.broadcast['Cryptoid.info']);
 		//} else if (wally_fn.provider.broadcast == 'ElectrumX') {
-		} else if ( (wally_fn.provider.broadcast).includes('ElectrumX') ){
-			rawSubmitElectrum(this, coinjs.asset.api.broadcast['ElectrumX']);
 		} else if (wally_fn.provider.broadcast == 'Blockchain.info') {
 			rawSubmitBlockhaininfo(this, coinjs.asset.api.broadcast['Blockchain.info']);
+		} else if ( (wally_fn.provider.broadcast).includes('ElectrumX') ) {
+			rawSubmitElectrum(this, coinjs.asset.api.broadcast['ElectrumX']);
 		} else {
 			rawSubmitDefault(this);
 		}
@@ -2198,6 +2276,20 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 
 
 
+	function getBalanceElectrumX() {
+		//https://wally.id/api/x.php?asset=aby&method=blockchain.scripthash.get_balance&scripthash=f2c773074a10d44ee5f9d196d9f7bf5da8d173e4a608aa3e752ec35b8be286c9&server=electrumx-four.artbyte.live:50012
+
+		/*response:
+		{
+			"jsonrpc": "2.0",
+			"result": {
+			    "confirmed": 11040000000,
+			    "unconfirmed": 0
+		},
+			"id": "aby"
+		}
+		*/
+	}
 
 	/* verify script code */
 

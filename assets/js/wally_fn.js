@@ -29,14 +29,14 @@
     "newSegWit" : ['utxo'],
     "newMultiSig" : ['utxo'],
     "newTimeLocked" : ['utxo'],
-    "newHDaddress" : ['utxo', 'account'],
-    "newTransaction" : ['utxo', 'account'],
-    "verify" : ['utxo', 'account'],
-    "sign" : ['utxo', 'account'],
-    "broadcast" : ['utxo', 'account'],
-    "login" : ['utxo', 'account'],
-    "wallet" : ['utxo', 'account'],
-    "settings" : ['utxo', 'account'],
+    "newHDaddress" : ['utxo'],
+    "newTransaction" : ['utxo'],
+    "verify" : ['utxo'],
+    "sign" : ['utxo'],
+    "broadcast" : ['utxo'],
+    "login" : ['all'],
+    "wallet" : ['all'],
+    "settings" : ['all'],
     "about" : ['all'],
     "fees" : ['utxo'],
     "converter" : ['all'],
@@ -714,11 +714,28 @@ wally_fn.generateAllWalletAddresses = function(h){
       }
     }
 
-    //Account based coins
+    //Account based coins, like ETH
     if (value.asset.chainModel == 'account') {
 
-      //asset supports compressed keys?
+      
       if ( (value.asset.supports_address).includes('single') ) {
+        $.extend(coinjs, value);  //change asset and generate address
+
+        console.log('h: ' + h);
+        console.log('value.asset: ', value.asset);
+        var wweb3 = new Web3(new Web3.providers.HttpProvider(''));
+        //var evm_account = wweb3.eth.accounts.privateKeyToAccount('0d11db7762acfdf1fec7518cd5ad5517ccfed719ed4bf228f1d0c5138273a915');
+        var evm_account = wweb3.eth.accounts.privateKeyToAccount(h.toString());
+
+        //since all account based uses same key-pair generation, we limit it to 1 to speed up the process
+        if (walletAddress['web3_account'] === undefined) {
+            walletAddress['web3_account'] = {};
+
+            walletAddress['web3_account'].address = evm_account.address;
+            walletAddress['web3_account'].privateKey = evm_account.privateKey;
+          }
+        
+
       }
 
     }
@@ -1408,10 +1425,18 @@ Blackcoin 10
           supports_address : ['compressed', 'uncompressed'],
           api : {
             unspent_outputs: {
-              'Cryptoid.info': 'aby'
+              'Cryptoid.info': 'aby',
+              'ElectrumX-1': 'elec-seeder-one.artbytecoin.org:50012',
+              'ElectrumX-2': 'elec-seeder-two.artbytecoin.org:50012',
+              'ElectrumX-3': 'electrumx-three.artbyte.live:50012',
+              'ElectrumX-4': 'electrumx-four.artbyte.live:50012',
             },
             broadcast: {
-              'Cryptoid.info': 'aby'
+              'Cryptoid.info': 'aby',
+              'ElectrumX-1': 'elec-seeder-one.artbytecoin.org:50012',
+              'ElectrumX-2': 'elec-seeder-two.artbytecoin.org:50012',
+              'ElectrumX-3': 'electrumx-three.artbyte.live:50012',
+              'ElectrumX-4': 'electrumx-four.artbyte.live:50012',
             }
           },
 
@@ -1547,8 +1572,47 @@ Blackcoin 10
         txRBFTransaction: false,
         developer: '4bATCSp4uUrRZzwwUuQJKAJG4vyXhK85fZ',
       },
+      ["ethereum-goerli-erc20"] : {
+        symbol: 'ETH-Goerli',      //ticker
+        asset: {
+          chainModel: 'account',
+          name: 'Ethereum-Goerli',
+          slug: 'ethereum-goerli-erc20',
+          symbol: 'ETH-Goerli',
+          symbols: ['eth-goerli', 'ethereum-goerli', 'goerli'],
+          icon: './assets/images/crypto/ethereum-eth-logo.svg',
+          network: 'testnet',
+          supports_address : ['single'],
+          api : {
+            unspent_outputs: {
+              '': '',
+            },
+            broadcast: {
+              '': '',
+            }
+          },
+          protocol: {
+            "type": "account",  //has no parent
+          },
+          
+
+        },
+        pub : 0,      //not used for account based chains
+        priv : 0,     //not used for ....
+        multisig : 0, //....
+          hdkey : {'prv':0x04358394, 'pub':0x043587cf},
+          bech32 : {},
+          
+        txExtraTimeField: false,    //not used for ....
+        txExtraTimeFieldValue: false, //....
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:16,
+        txRBFTransaction: false,
+        developer: '0x000',
+      },
       ["wally-goerli-erc20"] : {
-        symbol: 'tWally-Goerli',      //ticker
+        symbol: 'Wally-Goerli',      //ticker
         asset: {
           chainModel: 'ERC-20',
           name: 'Happy Walrus Coin',
@@ -1579,7 +1643,7 @@ Blackcoin 10
         pub : 0,      //not used for account based chains
         priv : 0,     //not used for ....
         multisig : 0, //....
-          hdkey : {'prv':0x04358394, 'pub':0x043587cf},
+          hdkey : {},
           bech32 : {},
           
         txExtraTimeField: false,    //not used for ....
@@ -1782,13 +1846,13 @@ Blackcoin 10
 
       
       ["ethereum-goerli-erc20"] : {
-        symbol: 'tETH-Goerli',      //ticker
+        symbol: 'ETH-Goerli',      //ticker
         asset: {
-          chainModel: 'Account',
+          chainModel: 'account',
           name: 'Ethereum-Goerli',
           slug: 'ethereum-goerli-erc20',
-          symbol: 'tETH-Goerli',
-          symbols: ['eth-goerli', 'ethereum-goerli'],
+          symbol: 'ETH-Goerli',
+          symbols: ['eth-goerli', 'ethereum-goerli', 'goerli'],
           icon: './assets/images/crypto/ethereum-eth-logo.svg',
           network: 'testnet',
           supports_address : ['single'],
@@ -1801,7 +1865,7 @@ Blackcoin 10
             }
           },
           protocol: {
-            "type": "Account",  //has no parent
+            "type": "account",  //has no parent
           },
           
 
@@ -1821,7 +1885,7 @@ Blackcoin 10
         developer: '0x000',
       },
       ["wally-goerli-erc20"] : {
-        symbol: 'tWally-Goerli',      //ticker
+        symbol: 'Wally-Goerli',      //ticker
         asset: {
           chainModel: 'ERC-20',
           name: 'Happy Walrus Coin',
@@ -1852,7 +1916,7 @@ Blackcoin 10
         pub : 0,      //not used for account based chains
         priv : 0,     //not used for ....
         multisig : 0, //....
-          hdkey : {'prv':0x04358394, 'pub':0x043587cf},
+          hdkey : {},
           bech32 : {},
           
         txExtraTimeField: false,    //not used for ....

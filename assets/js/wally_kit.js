@@ -122,7 +122,7 @@
 
         modalMessage = '<div class="text-center text-primary mb-3"><p class="mb-2">You have updated Blockchain Network settings to:</p>' 
           + newNetwork.asset.name + ' <strong>('+newNetwork.asset.symbol+' '+newNetwork.asset.network+')</strong> </div>';
-        modalMessage += '<div class="settings_saved testar"><img src="'+newNetwork.asset.icon+'" class="icon-center icon64 mb-2">'+parentTokenBadge+'</div>'
+        modalMessage += '<div class="settings_saved icon_with_badge"><img src="'+newNetwork.asset.icon+'" class="icon-center icon64 mb-2">'+parentTokenBadge+'</div>'
         modalMessage += '<div class="text-center text-muted">API Providers:<br> Unspent outputs: '+wally_fn.provider.utxo+'<br>Broadcast: '+wally_fn.provider.broadcast+'</div> <br> <div class="alert alert-light text-muted mb-2">If this is not correct, head over to <a href="#settings" data-pagescroll="page_tab" data-dismiss="modal">Settings</a> page. </div>';
 
         custom.showModal(modalTitle, modalMessage);
@@ -647,7 +647,7 @@
         //selected asset
         if (coinjs.asset.slug == key){
           assetSelectEl.append('<option value="'+key+'" data-icon="'+value.asset.icon+'" selected="selected">'+value.asset.name+' ('+value.asset.symbol+')</option>');
-          $('#coinjs_network_select button').html('<div class="testar"><img src="'+value.asset.icon+'" class="icon32">'+parentTokenBadge+'</div> '+value.asset.name+' ('+value.asset.symbol+') <span class="badge badge-primary chain_model">'+value.asset.chainModel+'</span>'); 
+          $('#coinjs_network_select button').html('<div class="icon_with_badge"><img src="'+value.asset.icon+'" class="icon32">'+parentTokenBadge+'</div> '+value.asset.name+' ('+value.asset.symbol+') <span class="badge badge-primary chain_model">'+value.asset.chainModel+'</span>'); 
           console.log('trigger selected icon');
         } else {
           assetSelectEl.append('<option value="'+key+'" data-icon="'+value.asset.icon+'" >'+value.asset.name+' ('+value.asset.symbol+')</option>');
@@ -700,7 +700,7 @@
         //check ERC/BEP/PLG-20 Compability
         var parentTokenBadge = wally_kit.getParentTokenBadge(wally_fn.networks[wally_fn.network][asset_var].asset.chainModel, wally_fn.networks[wally_fn.network][asset_var].asset.protocol);
 
-        $('#coinjs_network_select button').html('<div class="testar"><img src="'+wally_fn.networks[wally_fn.network][asset_var].asset.icon+'" class="icon32"> '+parentTokenBadge+ '</div> ' +wally_fn.networks[wally_fn.network][asset_var].asset.name+' ('+wally_fn.networks[wally_fn.network][asset_var].asset.symbol+') <span class="badge badge-primary chain_model">'+wally_fn.networks[wally_fn.network][asset_var].asset.chainModel+'</span></small>'); 
+        $('#coinjs_network_select button').html('<div class="icon_with_badge"><img src="'+wally_fn.networks[wally_fn.network][asset_var].asset.icon+'" class="icon32"> '+parentTokenBadge+ '</div> ' +wally_fn.networks[wally_fn.network][asset_var].asset.name+' ('+wally_fn.networks[wally_fn.network][asset_var].asset.symbol+') <span class="badge badge-primary chain_model">'+wally_fn.networks[wally_fn.network][asset_var].asset.chainModel+'</span></small>'); 
       }
     }
 
@@ -777,7 +777,7 @@
         //list assets in modal dialog
         var parentTokenBadge = wally_kit.getParentTokenBadge(value.asset.chainModel, value.asset.protocol);
         assetListInModalDefault = (value.asset.slug == wally_fn.asset ? 'checked="checked"' : '')  //set as default 
-        assetListInModal += ('<tr data-asset="'+value.asset.slug+'">        <td>         <div class="testar"><img class="icon icon32" src="'+value.asset.icon+'" /> '+parentTokenBadge+'        </div>        </td>        <td>'+value.asset.symbol+' <small class="d-block text-muted">'+value.asset.name+' <span class="badge badge-primary chain_model">'+value.asset.chainModel+'</span></small></td>        <td>          <input type="radio" name="set-asset-group" value="'+value.asset.slug+'" '+assetListInModalDefault+'/>        </td>       </tr>');
+        assetListInModal += ('<tr data-asset="'+value.asset.slug+'">        <td>         <div class="icon_with_badge"><img class="icon icon32" src="'+value.asset.icon+'" /> '+parentTokenBadge+'        </div>        </td>        <td>'+value.asset.symbol+' <small class="d-block text-muted">'+value.asset.name+' <span class="badge badge-primary chain_model">'+value.asset.chainModel+'</span></small></td>        <td>          <input type="radio" name="set-asset-group" value="'+value.asset.slug+'" '+assetListInModalDefault+'/>        </td>       </tr>');
 
         //footer page supported assets
         supportedAssets += '<li class="mb-1"><a href="javascript:void(0)"><img src="'+value.asset.icon+'" class="icon tokens">'+value.asset.name+'</a></li>';

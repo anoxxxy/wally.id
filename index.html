@@ -37,10 +37,14 @@
     <!-- jBox modal/tooltip/popover/notice -->
     <link rel="stylesheet" href="./assets/css/jbox/jBox.css" media="screen">
 
+    <link rel="stylesheet" href="./assets/css/piechart/piechart.css" media="screen">
+    
+
     <!-- <link rel="stylesheet" href="./assets/css/buttons.css" media="screen"> -->
     <link rel="stylesheet" href="./assets/css/style.css" media="screen">
     <link rel="stylesheet" href="./assets/css/custom.css" media="screen">
     
+
     
     <!-- storage function lib-->
     <script type="text/javascript" src="./assets/js/storage/storage.js" ></script>
@@ -73,7 +77,7 @@
   -->
   
     
-
+    <!-- Animation library -->
     <script type="text/javascript" src="./assets/js/velocity.min.js" ></script>
     <script type="text/javascript" src="./assets/js/velocity.ui.min.js" ></script>
 
@@ -113,7 +117,8 @@
     <script type="text/javascript" src="js/converter/armory.js"></script>
     
 
-    <script type="text/javascript" src="js/ethers-5.6.umd.min.js"></script>
+    <script type="text/javascript" src="js/web3/web3v1.8.1.min.js"></script>
+    <script type="text/javascript" src="js/web3/abi_erc20.js"></script>
     <script type="text/javascript" src="js/converter.base.js"></script>
     
     
@@ -122,6 +127,10 @@
     <script type="text/javascript" src="./assets/js/waves.min.js"></script>
     <script type="text/javascript" src="./assets/js/blockies/pnglib.js"></script>
     <script type="text/javascript" src="./assets/js/blockies/blockie.js"></script>
+
+    <!-- pieChart -->
+    <script type="text/javascript" src="./assets/js/chart/piechart.js" ></script>
+    
 
     <!-- Custom Code -->
     <!-- Internal and DOM Wally functions -->
@@ -146,6 +155,43 @@
       </svg>
     </div>
     
+<!--
+    <header class="main-header">
+      <div class=" container">
+          <div class="left">
+            <div class="menu__item nav_logo ">
+              <a id="homeBtn" href="#home" class=" item-home colorize" alt="Wally logotype homepage">
+                <img src="./assets/images/logo/wally_logo_new.svg" class="logotype-white icon32"  alt="Wally logotype">
+              </a>
+          </div>
+          </div>
+          <div class="middle">
+            
+            <a class="menu__item colorize dropdown-menu-icon " href="#login"  alt="Open Wallet">
+              <img src="./assets/images/purse_wallet.svg" class="icon24" alt="Open Wallet"> Wallet
+            </a>
+            <div class="menu__item" data-dropdown-menu="advanced"><a href="javascript:void(0);" class="colorize">Advanced</a></div>
+            <div class="menu__item" data-dropdown-menu="help"><a href="javascript:void(0)" class="colorize">Help</a></div>
+            <a class="item">Glasses</a>
+            <a class="item">T-Shirts</a>
+          </div>
+          <div class="right">
+            <div class="menu__item show_mobile nav_right">
+            <a class=" colorize dropdown-menu-icon choose-currency-modal dropdown-toggle" data-modal-position="top" data-toggle="modal" href="#" alt="Selected Asset">
+              <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32 dabi-selectedAsset">
+            </a>
+          </div>
+          <div class="menu__item show_mobile nav_right" >
+            <a class="colorize dropdown-menu-icon " href="#settings" alt="Settings">
+              <img src="./assets/images/settings.svg" class="icon28" >
+            </a>
+          </div>
+            <i class="far fa-user-circle fa-2x">333</i>
+          </div>
+        </div>
+
+    </header>
+  -->
 
     <header class="main-header">
       <div class=" container">
@@ -659,9 +705,11 @@
             
             
 
-
+          <!--
           <div class="row">
-            <div class="col-md-6 mb-2">
+
+            
+            <div class="col-md-8 mb-2">
 
               <div class="card-wallet">
               <div class="card-openwallet-header">
@@ -672,16 +720,20 @@
 
               <div class="card-openwallet-body  m-1">
                 <div class="p-1 py-1">
+
+
+                
+
                 </div>
               </div>
               
-              <div class="card-openwallet-footer ">
-                View all Assets
-              </div>
+
 
             </div>
             </div>
-            <div class="col-md-6 mb-2">
+
+            
+            <div class="col-md-4 mb-2">
 
               <div class="card-wallet">
               <div class="card-openwallet-header">
@@ -693,7 +745,7 @@
               <div class="card-openwallet-body m-1">
                 <div class="p-1 py-1">
 
-                  <button class="btn btn-flat-primary">Add or Hide Assets</button>
+                  
                 </div>
               </div>
               
@@ -704,20 +756,96 @@
             </div>
             </div>
           </div>
+        -->
 
 
           <div class="row">
-          <div class="col-md-12 mb-2">
+
+          <div class="col-md-3 mb-2">
+
+              <div id="wallet_menu" class="card-wallet">
+              <div class="card-openwallet-header">
+                <h3 class="card-openwallet-title">
+                  Wallet <small>Menu</small>
+                </h3>
+              </div>
+
+              <div class="card-openwallet-body m-1">
+                <div class="p-1 py-1">
+
+                  <button class="btn btn-block btn-flat-primary"><img src="./assets/images/send.svg" class="icon24"> Add or Hide Assets</button>
+                </div>
+              </div>
+              
+
+
+            </div>
+            </div>
+
+          <div class="col-md-9 mb-2">
             <div class="card-openwallet">
 
               <div class="card-openwallet-header">
                 <h3 class="card-openwallet-title">
-                  Wally.id <small>Wallet Portfolio</small>
+                  Wallet Portfolio <small>Wally.id</small>
                 </h3>
               </div>
 
-              <div class="card-openwallet-body overflow-visible m-1">
+              <div class="card-openwallet-body overflow-visible">
                 <div class="p-1 py-1">
+
+                  <!-- PieChart-->
+                  <div class="col-md-12 mb-6">
+                    <h3 class="card-openwallet-title">
+                      Asset <small>Allocation</small>
+                    </h3>
+                  <div class="d-flex mt-2 pieChart_box" id="pieChartBox">
+
+                    <div id="pieChart" class="pieChart">
+                    </div>
+                    <ul class="pieData pieLegend">
+                      <li data-pie-title="BTC" data-pie-value="11.223424" class="btn btn-block btn-flat-primary ">
+                        <figure class="avatar_with_badge">
+                          <img src="./assets/images/crypto/walrus-wally-logo.svg" class="avatar_main">
+                          <img src="./assets/images/crypto/ethereum-eth-logo.svg" class="avatar_badge">
+                        </figure>
+                        BTC
+                        <span>11.223424</span>
+                      </li>
+                      <li data-pie-title="LTC" data-pie-value="34.4348" class="btn btn-block btn-flat-primary ">
+                        <figure class="avatar_with_badge">
+                          <img src="./assets/images/crypto/litecoin-ltc-logo.svg" class="avatar_main">
+                        </figure>
+
+                        LTC
+                        <span>34.4348</span>
+                      </li>
+                      <li data-pie-title="DOGE" data-pie-value="283.4343" data-title="ttttt" data-content="innehåll">
+                        <em>DOGE</em>
+                        <span>283.4343</span>
+                      </li>
+                      <li data-pie-title="ETH" data-pie-value="22.928">
+                        <em>ETH</em>
+                        <span>22.928</span>
+                      </li>
+                      <li data-pie-title="BAY" data-pie-value="343.2238">
+                        <em>BAY</em>
+                        <span>343.2238</span>
+                      </li>
+                    </ul>
+
+                  </div>
+                  </div>
+
+
+          <div class="col-md-12 mb-2">
+                  
+
+                  
+
+                  <h3 class="card-openwallet-title">
+                      Portfolio <small>Overview</small>
+                    </h3>
 
                   <!-- Filter Asset Options -->
 
@@ -914,6 +1042,55 @@
 
 
 
+
+
+
+<div class="list-border">
+  <div class="list-wrapper">
+
+  <div class="list-name">
+    <div class="coin-icon">
+
+      <div class="">
+        <figure class="avatar_with_badge">
+          <img src="./assets/images/crypto/walrus-wally-logo.svg" class="avatar_main">
+          <img src="./assets/images/crypto/ethereum-eth-logo.svg" class="avatar_badge">
+        </figure>
+      </div>
+
+
+    </div>
+    <div class="coin-info">
+      <span class="title">
+        Happy Walrus Coin
+      </span>
+      <span class="subtitle">
+        <span class="balance">123.00000000</span> WALLY
+      </span>
+    </div>
+  </div>
+
+  <div class="list-details">
+    <div class="calendar">
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-flat-primary" ><img src="./assets/images/send.svg" class="icon24"> Send</button>
+        <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="bi bi-caret-down"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="#" ><img src="./assets/images/send.svg" class="icon28"> Send</a>
+          <a class="dropdown-item" href="#" ><img src="./assets/images/receive.svg" class="icon28"> Receive</a>
+          <a class="dropdown-item" href="#" ><img src="./assets/images/settings.svg" class="icon28"> Settings</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+
+
 <div class="list-border">
   <div class="list-wrapper">
 
@@ -951,6 +1128,7 @@
   </div>
 </div>
 </div>
+                  </div>
                   </div>
 
                   <!--Something Else? -->
@@ -5661,7 +5839,7 @@ closeDropdownTimeout,
 
 
 startCloseTimeout = function () {
-  closeDropdownTimeout = setTimeout(() => closeDropdown(), 50);
+  closeDropdownTimeout = setTimeout(() => closeDropdown(), 300);
 },
 
 stopCloseTimeout = function () {
@@ -5807,6 +5985,7 @@ closeDropdown = function () {
   subCnt.style.opacity = 0;
 
   header.classList.remove('dropdown-active');
+  
 };
 
 
@@ -5841,6 +6020,51 @@ menuSubs.forEach(el => {
   */
 
 });
+
+
+/*pieChart*/
+
+var pieData = [];
+$(".pieLegend li").each(function(e) {
+  pieData.push( {
+    title: $(this).attr('data-pie-title'), 
+    value: parseFloat($(this).attr('data-pie-value')), 
+    color: "#" + Math.random().toString(16).slice(2, 8),
+    //color: '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0')
+    
+  });
+});
+
+var pieChartAllocation = $("#pieChart").drawPieChart(pieData);
+
+$('#pieChartBox .pieLegend li').hover(
+  function () { // mouse-in
+    var attrfor = $(this).attr('data-pie-title');
+    if (attrfor !== undefined)
+      $('#pieChart path.lightPie[data-pie-title="'+attrfor+'"]').click();
+
+    /*$(this).css("background-color", "blue");
+    $(this).html('Hovered!');
+    */
+  },
+  function () { // mouse-out
+    /*$(this).css("background-color", "green");
+    $(this).html('Normal');
+    */
+    var attrfor = $(this).attr('data-pie-title');
+    if (attrfor !== undefined)
+      $('#pieChart path.lightPie[data-pie-title="'+attrfor+'"]').click();
+    //$('#pieChart g[data-active="active"]').attr('data-active', '');
+  }
+);
+
+/*
+  $('#pieChartBox path.lightPie').on("click", function(e) {
+
+    var attr = $(this).attr('data-pie-title');
+
+  });
+  */
 
 
 

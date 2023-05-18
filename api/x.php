@@ -1,4 +1,5 @@
 <?php
+ header("Access-Control-Allow-Origin: *");	//allow cross origin
 //return the json response
 /*
 https://docs.komodoplatform.com/mmV1/coin-integration/electrum-servers-list.html#updated-list-from-the-coins-repository
