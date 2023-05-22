@@ -724,7 +724,7 @@
       if (key.includes('ElectrumX'))
         electrumXContent = ' <small>'+value+'</small>';
 
-      selectNetworkBroadcastAPI.append('<option value="'+value+'" data-icon="" >'+key+'</option>');
+      selectNetworkBroadcastAPI.append('<option value="'+key+'" data-icon="" >'+key+'</option>');
       selectNetworkBroadcastAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-broadcast-provider="'+value+'" data-broadcast-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+electrumXContent+' <i class="icon bi"></i></li>');
 
       if(i==0) {//set broadcast asset
@@ -744,7 +744,7 @@
       if (key.includes('ElectrumX'))
         electrumXContent = ' <small>'+value+'</small>';
 
-      selectNetworkUtxoAPI.append('<option value="'+value+'" data-icon="" >'+key+'</option>');
+      selectNetworkUtxoAPI.append('<option value="'+key+'" data-icon="" >'+key+'</option>');
       selectNetworkUtxoAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-utxo-provider="'+value+'" data-utxo-provider-name="'+key+'"><img src="./assets/images/providers_icon.svg" class="icon32"> '+key+electrumXContent+' <i class="icon bi"></i></li>');
 
 
@@ -1201,10 +1201,10 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
 
 
   }else if (eqSelectId == 'coinjs_utxo_api'){
-    setSelectValue = $(this).attr('data-utxo-provider');
+    setSelectValue = $(this).attr('data-utxo-provider-name');
     //wally_fn.provider.utxo = $(this).attr('data-utxo-provider-name');
   }else if (eqSelectId == 'coinjs_broadcast_api'){
-    setSelectValue = $(this).attr('data-broadcast-provider');
+    setSelectValue = $(this).attr('data-broadcast-provider-name');
     //wally_fn.provider.broadcast = $(this).attr('data-broadcast-provider-name');
   }
 

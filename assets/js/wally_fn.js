@@ -1107,9 +1107,9 @@ Blackcoin 10
             unspent_outputs: {
               'Blockcypher.com': 'btc',
               'Blockchain.info': 'btc', //no arguments needs to be passed
-              'Blockchair.com': 'bitcoin',
+              //'Blockchair.com': 'bitcoin',
               
-              //'Blockstream.info': 'Blockstream.info',
+              'Blockstream.info': 'Blockstream.info',
               //'Chain.so': 'BTC',
               'Coinb.in': 'Coinb.in',
               'Cryptoid.info': 'btc',
@@ -1117,7 +1117,7 @@ Blackcoin 10
             },
             broadcast: {
               'Blockcypher.com': 'btc',
-              'Blockchair.com': 'bitcoin',
+              //'Blockchair.com': 'bitcoin',
               
               'Blockstream.info': 'Blockstream.info', //no arguments needs to be passed
               //'Chain.so': 'BTC',
@@ -1156,13 +1156,13 @@ Blackcoin 10
               //only key is used for the moment, not the value!
             unspent_outputs: {
               'Blockcypher.com': 'ltc',
-              'Blockchair.com': 'litecoin',
+              //'Blockchair.com': 'litecoin',
               //'Chain.so': 'LTC',
               'Cryptoid.info': 'ltc',
             },
             broadcast: {
               'Blockcypher.com': 'ltc',
-              'Blockchair.com': 'litecoin',
+              //'Blockchair.com': 'litecoin',
               //'Chain.so': 'LTC',
               'Cryptoid.info': 'ltc',
             }
@@ -1196,12 +1196,12 @@ Blackcoin 10
           api : {
             unspent_outputs: {
               'Blockcypher.com': 'doge',
-              'Blockchair.com': 'dogecoin',
+              //'Blockchair.com': 'dogecoin',
               //'Chain.so': 'DOGE',
             },
             broadcast: {
               'Blockcypher.com': 'doge',
-              'Blockchair.com': 'dogecoin',
+              //'Blockchair.com': 'dogecoin',
               //'Chain.so': 'DOGE',
             }
           }
@@ -1676,9 +1676,9 @@ Blackcoin 10
               //https://1209k.com/bitcoin-eye/ele.php?chain=tbtc
               //https://github.com/spesmilo/electrum/blob/master/electrum/servers_testnet.json
             unspent_outputs: {
-              'Blockchair.com': 'bitcoin',
+              //'Blockchair.com': 'bitcoin',
               'Blockcypher.com': 'btc',
-              //'Blockstream.info': 'Blockstream.info',
+              'Blockstream.info': 'Blockstream.info',
               //'Chain.so': 'BTCTEST',
               //'Mempool.space': 'testnet',
               'ElectrumX-1 (TCP)': 'testnet.aranguren.org:51001',
@@ -1694,7 +1694,7 @@ Blackcoin 10
 
             },
             broadcast: {
-              'Blockchair.com': 'bitcoin',
+              //'Blockchair.com': 'bitcoin',
               'Blockcypher.com': 'btc',
               'Blockstream.info': 'Blockstream.info',
               //'Chain.so': 'BTCTEST',

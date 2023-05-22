@@ -87,8 +87,11 @@ margin-bottom: 8px;
 transition: all 0.25s ease;
 display: flex;
 
-
+margin-top: 0;
 }
+.pieLegend li.btn-block {
+  margin-top: .2rem;
+  }
 .pieLegend em {
   font-style: normal;
 }
@@ -96,6 +99,14 @@ display: flex;
   float: right;
   padding-left: 10px;
 }
+
+.pieLegend span.badge {
+  height: 20px;
+  width: 20px;
+  top: 2px;
+  margin-right: 2px;
+  box-shadow: 0 1px 0.05rem rgba(0, 0, 0, 0.2), 0 1px 1px rgba(0, 0, 0, 0.3), 0 1px 1px rgba(0, 0, 0, 0.4);
+  }
 
 
 @media (max-width: 375px) {

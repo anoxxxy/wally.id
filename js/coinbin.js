@@ -1,3 +1,5 @@
+var coinbinf = window.coinbinf = function () { };
+
 $(document).ready(function() {
 
 	//***Initialize/Set default Network
@@ -1511,18 +1513,57 @@ profile_data = {
 	}
 
 	function listUnspentBlockstream(redeem, network){
+			console.log('===getBalanceBlockstream===');
+			https://blockstream.info/api/address/1Kr6QSydW9bFQG1mXiPNNu6WpJGmUa9i1g/utxo
+			var apiUrl = 'https://blockstream.info/api/', explorerUrl = 'https://blockstream.info/address/'+redeem.addr;
+			//if(coinjs.asset.network == 'mainnet')
+				//apiUrl = 'https://blockstream.info/api/';	//https://blockstream.info/api/address/1JnfbQerGjFHVq28945y1bhoUHpn6vKM9v
+			if(coinjs.asset.network == 'testnet') {
+				apiUrl = 'https://blockstream.info/testnet/api/';		//https://blockstream.info/testnet/api/address/mxxT1fTdPuJ9gphSJfpS7zsqpjGLM27bne
+				explorerUrl = 'https://blockstream.info/testnet/'+redeem.addr;
+			}
 
-		
-		var apiUrl;
-		if(coinjs.asset.network == 'mainnet')
-			apiUrl = 'https://blockstream.info/api/';
-		if(coinjs.asset.network == 'mainnet')
-			apiUrl = 'https://blockstream.info/testnet/api/';
+			$.ajax ({
+				type: "GET",
+				//url: "https://api.blockcypher.com/v1/"+network+"/main/addrs/"+redeem.addr+"?includeScript=true&unspentOnly=true",
+				url: apiUrl+'/address/'+redeem.addr+'/utxo',
+				dataType: "json",
+				error: function(data) {
+					$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs!');
+					console.log('data: ', data);
+				},
+				success: function(data) {
+					if (data) { // address field will always be present
+						$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="'+explorerUrl+'" target="_blank">'+redeem.addr+'</a>');
 
-		console.log('redeem: ', redeem);
-		console.log('network: ', network);
 
-	};
+						for(var i in data){
+							var o = data[i];
+							var tx = ((""+o.txid).match(/.{1,2}/g).reverse()).join("")+'';
+							if(tx.match(/^[a-f0-9]+$/) && o.status.confirmed == true){
+								var n = o.vout;
+								var script = (redeem.redeemscript==true) ? redeem.decodedRs : coinjs.addressToOutputScript(redeem.addr);
+								var amount = ((o.value.toString()*1)/("1e"+coinjs.decimalPlaces)).toFixed((coinjs.decimalPlaces));
+								addOutput(tx, n, script, amount);
+							}
+						}
+
+
+
+						
+					} else {
+						$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs.');
+					}
+				},
+				complete: function(data, status) {
+					$("#redeemFromBtn").html("Load").attr('disabled',false);
+					totalInputAmount();
+				}
+			});
+
+
+		}
+
 	/* retrieve unspent data from blockchair */
 	function listUnspentBlockchair(redeem,network){
 
@@ -1540,13 +1581,14 @@ profile_data = {
 			url: apiUrl,
 			dataType: "json",
 			error: function(data) {
-				$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs! <div class="alert alert-light">'+data.responseJSON.context.error+' </div>');
-				console.log('erro: ', data.responseJSON.context.error);
+				$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs! <div class="alert alert-light">'+data+' </div>');
+				console.log('error: ', data);
 			},
 			success: function(data) {
 				if((data.context && data.data) && data.context.code =='200'){
 					$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="'+explorer_addr+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
 					var all_info = data.data[redeem.addr];
+					
 					for(var i in all_info.utxo){
 						var o = all_info.utxo[i];
 						var tx = ((""+o.transaction_hash).match(/.{1,2}/g).reverse()).join("")+'';
@@ -1554,7 +1596,7 @@ profile_data = {
 							var n = o.index;
 							var script = (redeem.redeemscript==true) ? redeem.decodedRs : all_info.address.script_hex;
 							//var amount = ((o.value.toString()*1)/100000000).toFixed(8);	//icee remove
-							var amount = ((o.value.toString()*1)/("1e"+coinjs.decimalPlaces)).toFixed(("1e"+coinjs.decimalPlaces));
+							var amount = ((o.value.toString()*1)/("1e"+coinjs.decimalPlaces)).toFixed((coinjs.decimalPlaces));
 
 							addOutput(tx, n, script, amount);
 						}
@@ -1606,143 +1648,6 @@ profile_data = {
 		});
 	}
 
-	/* retrieve unspent data from blockstream */
-	function listUnspentBlockstreams(redeem, network){
-		/*
-
-		https://blockstream.info/api/address/1DX8EFJPMBimWyApUndVSnwucu29Eob4fC/utxo
-		https://blockstream.info/api/scripthash/1DX8EFJPMBimWyApUndVSnwucu29Eob4fC/utxo
-		https://blockstream.info/api/scripthash/:hash/utxo
-		
-txid: tx
-vout: n
-value:
-confirmed: true
-
-https://blockstream.info/api/address/1DX8EFJPMBimWyApUndVSnwucu29Eob4fC/utxo
-[
-  {
-    "txid": "06a6845efa2de56ac9753edc9970e4abb59a16db19379a0e728e087ece83f2c5",
-    "vout": 1,
-    "status": {
-      "confirmed": true,
-      "block_height": 770416,
-      "block_hash": "00000000000000000003db3eb21ac3c4aba6d82d046d3092ccb4f0819f36e6a7",
-      "block_time": 1672888014
-    },
-    "value": 410234
-  },
-  {
-    "txid": "609257f98394f5ec8f05bbacc922452aeb2a56f969852fa052b6b5fc4d05fcd2",
-    "vout": 1,
-    "status": {
-      "confirmed": true,
-      "block_height": 770556,
-      "block_hash": "00000000000000000006e73b3979559249b5f8e682a2b90099d75bfb58229ee9",
-      "block_time": 1672965601
-    },
-    "value": 47139396
-  }
-]
-
-
-https://api.blockcypher.com/v1/btc/main/addrs/1DX8EFJPMBimWyApUndVSnwucu29Eob4fC?includeScript=true&unspentOnly=true
-{
-  "address": "1DX8EFJPMBimWyApUndVSnwucu29Eob4fC",
-  "total_received": 931143573,
-  "total_sent": 883593943,
-  "balance": 47549630,
-  "unconfirmed_balance": 0,
-  "final_balance": 47549630,
-  "n_tx": 141,
-  "unconfirmed_n_tx": 0,
-  "final_n_tx": 141,
-  "txrefs": [
-    {
-      "tx_hash": "609257f98394f5ec8f05bbacc922452aeb2a56f969852fa052b6b5fc4d05fcd2",
-      "block_height": 770556,
-      "tx_input_n": -1,
-      "tx_output_n": 1,
-      "value": 47139396,
-      "ref_balance": 100703630,
-      "spent": false,
-      "confirmations": 6,
-      "confirmed": "2023-01-06T00:40:01Z",
-      "double_spend": false,
-      "script": "76a914895405afd2380af9789c5be1e3c959637150f4aa88ac"
-    },
-    {
-      "tx_hash": "06a6845efa2de56ac9753edc9970e4abb59a16db19379a0e728e087ece83f2c5",
-      "block_height": 770416,
-      "tx_input_n": -1,
-      "tx_output_n": 1,
-      "value": 410234,
-      "ref_balance": 6835881,
-      "spent": false,
-      "confirmations": 146,
-      "confirmed": "2023-01-05T03:06:54Z",
-      "double_spend": false,
-      "script": "76a914895405afd2380af9789c5be1e3c959637150f4aa88ac"
-    }
-  ],
-  "tx_url": "https://api.blockcypher.com/v1/btc/main/txs/"
-}
-
-https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addresses&request=unspent&address=1DX8EFJPMBimWyApUndVSnwucu29Eob4fC&r=0.4235599810492048
-		*/
-
-		console.log('redeem: ', redeem);
-
-		$.ajax ({
-			type: "GET",
-			url: "https://chain.so/api/v2/get_tx_unspent/"+network+"/"+redeem.addr,
-			dataType: "json",
-			error: function(data) {
-				$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs!');
-			},
-			success: function(data) {
-				if (data.length) {	//unspent is in an array, so if empty then wallet is empty
-					$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="'+explorer_addr+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
-
-					for(var i in data){
-						var o = data[i];
-						var tx = ((""+o.txid).match(/.{1,2}/g).reverse()).join("")+'';
-						if(tx.match(/^[a-f0-9]+$/)){
-							var n = o.vout;
-							var script = (redeem.redeemscript==true) ? redeem.decodedRs : o.script_hex;
-							//script_hex is not presented, generate it!
-							//block_hash exists
-							var amount = o.value;
-							addOutput(tx, n, script, amount);
-						}
-					}
-
-				} else {
-					$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs.');
-				}
-
-				if((data.status && data.data) && data.status=='success'){
-					$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="'+explorer_addr+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
-					for(var i in data.data.txs){
-						var o = data.data.txs[i];
-						var tx = ((""+o.txid).match(/.{1,2}/g).reverse()).join("")+'';
-						if(tx.match(/^[a-f0-9]+$/)){
-							var n = o.output_no;
-							var script = (redeem.redeemscript==true) ? redeem.decodedRs : o.script_hex;
-							var amount = o.value;
-							addOutput(tx, n, script, amount);
-						}
-					}
-				} else {
-					$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs.');
-				}
-			},
-			complete: function(data, status) {
-				$("#redeemFromBtn").html("Load").attr('disabled',false);
-				totalInputAmount();
-			}
-		});
-	}
 
 
 	// retrieve unspent data from chainz.cryptoid.info (mainnet and testnet)
@@ -1762,19 +1667,19 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 			  $("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="https://www.blockchain.com/explorer/addresses/'+network+'/'+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
 
 				for(i = 0; i < data.unspent_outputs.length; ++i){
-						var o = data.unspent_outputs[i];
-						var tx = ((""+o.tx_hash_big_endian).match(/.{1,2}/g).reverse()).join("")+'';
-						if(tx.match(/^[a-f0-9]+$/)){
-							var n = o.tx_output_n;
-							var script = (redeem.redeemscript==true) ? redeem.decodedRs : o.script;
-							console.log('script: '+ script);
-							//var amount = (o.value /100000000).toFixed(8);;		//icee remove
-							var amount = (o.value /("1e"+coinjs.decimalPlaces)).toFixed(coinjs.decimalPlaces);
-							
-							console.log(tx, n, script, amount)
-							addOutput(tx, n, script, amount);
-						}
+					var o = data.unspent_outputs[i];
+					var tx = ((""+o.tx_hash_big_endian).match(/.{1,2}/g).reverse()).join("")+'';
+					if(tx.match(/^[a-f0-9]+$/)){
+						var n = o.tx_output_n;
+						var script = (redeem.redeemscript==true) ? redeem.decodedRs : o.script;
+						console.log('script: '+ script);
+						//var amount = (o.value /100000000).toFixed(8);;		//icee remove
+						var amount = (o.value /("1e"+coinjs.decimalPlaces)).toFixed(coinjs.decimalPlaces);
+						
+						console.log(tx, n, script, amount)
+						addOutput(tx, n, script, amount);
 					}
+				}
 
 		   },
 		  complete: function(data, status) {
@@ -1799,18 +1704,18 @@ https://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addre
 			  $("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="https://chainz.cryptoid.info/'+network+'/address.dws?'+redeem.addr+'.htm" target="_blank">'+redeem.addr+'</a>');
 
 				for(i = 0; i < data.unspent_outputs.length; ++i){
-						var o = data.unspent_outputs[i];
-						var tx = ((""+o.tx_hash).match(/.{1,2}/g).reverse()).join("")+'';
-						if(tx.match(/^[a-f0-9]+$/)){
-							var n = o.tx_ouput_n;
-							var script = (redeem.isMultisig==true) ? $("#redeemFrom").val() : o.script;
-							var amount = (o.value /100000000).toFixed(8);	//Cryptoid returns 8 decimals independently from the assets decimals number
-							//var amount = (o.value /("1e"+coinjs.decimalPlaces)).toFixed(coinjs.decimalPlaces);
-							
-							console.log(tx, n, script, amount)
-							addOutput(tx, n, script, amount);
-						}
+					var o = data.unspent_outputs[i];
+					var tx = ((""+o.tx_hash).match(/.{1,2}/g).reverse()).join("")+'';
+					if(tx.match(/^[a-f0-9]+$/)){
+						var n = o.tx_ouput_n;
+						var script = (redeem.isMultisig==true) ? $("#redeemFrom").val() : o.script;
+						var amount = (o.value /100000000).toFixed(8);	//Cryptoid returns 8 decimals independently from the assets decimals number
+						//var amount = (o.value /("1e"+coinjs.decimalPlaces)).toFixed(coinjs.decimalPlaces);
+						
+						console.log(tx, n, script, amount)
+						addOutput(tx, n, script, amount);
 					}
+				}
 
 		   },
 		  complete: function(data, status) {
@@ -1842,7 +1747,9 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 	function listUnspentElectrumX(redeem, network){ 
 		console.log("listUnspentElectrumX: ", redeem);
 
-		var electrum_node = 'electrumx-four.artbyte.live:50012';	//network
+		//var electrum_node = 'electrumx-four.artbyte.live:50012';	//network
+		var electrum_node = coinjs.asset.api.unspent_outputs[wally_fn.provider.utxo];
+
 		var ticker = (coinjs.asset.symbol).toLowerCase();
 		$.ajax ({
 		  type: "GET",
@@ -1876,7 +1783,7 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 					}
 				}
 
-				$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address <a href="https://chainz.cryptoid.info/'+network+'/address.dws?'+redeem.addr+'.htm" target="_blank">'+redeem.addr+'</a>');
+				$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved unspent inputs from address: '+redeem.addr+ ', ElectrumX node: '+electrum_node);
 
 
 			} else if (data.hasOwnProperty('error') ) {
@@ -1990,7 +1897,7 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 		} else if (wally_fn.provider.broadcast == 'Blockchain.info') {
 			rawSubmitBlockhaininfo(this, coinjs.asset.api.broadcast['Blockchain.info']);
 		} else if ( (wally_fn.provider.broadcast).includes('ElectrumX') ) {
-			rawSubmitElectrum(this, coinjs.asset.api.broadcast['ElectrumX']);
+			rawSubmitElectrumX(this, coinjs.asset.api.broadcast['ElectrumX']);
 		} else {
 			rawSubmitDefault(this);
 		}
@@ -2181,11 +2088,13 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 	}
 
 	// broadcast transaction via electrumx node
-	function rawSubmitElectrum(thisbtn, ticker){ 
+	function rawSubmitElectrumX(thisbtn, ticker){ 
 		//https://wally.id/api/x.php?asset=nvc&method=blockchain.transaction.broadcast&server=failover.nvc.ewmcx.biz:50002&rawtx=01000000c6c84364019b3797aaa753f7edbe8810d49c32a07df4a6e56eaf5db4d08430ea0c6de03fae010000006a473044022041280eca4f49bb346c9a20a273de67f7da92e913e92f6655fe8cef09ac91f0fd02202ebbb0255a724e11a437b628c175a662dcfdef3d4201a6b54dea2d4d1294ad7c012103d928fc52610164842551bdd92597f7b22c9a1673f63c36741e40a42f8a24d174feffffff010003164e020000001976a914e40ec92c5974904ad43f03a1b156bb2b6de4c9fd88ac00000000
 
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
-		var electrum_node = 'failover.nvc.ewmcx.biz:50002';
+		var electrum_node = coinjs.asset.api.unspent_outputs[wally_fn.provider.utxo];
+
+
 		var ticker = (coinjs.asset.symbol).toLowerCase();
 		var rawtx = $("#rawTransaction").val();
 		$.ajax ({
@@ -2275,21 +2184,261 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 	}
 
 
+	coinbinf.getBalance = function () {
 
-	function getBalanceElectrumX() {
-		//https://wally.id/api/x.php?asset=aby&method=blockchain.scripthash.get_balance&scripthash=f2c773074a10d44ee5f9d196d9f7bf5da8d173e4a608aa3e752ec35b8be286c9&server=electrumx-four.artbyte.live:50012
-
-		/*response:
-		{
-			"jsonrpc": "2.0",
-			"result": {
-			    "confirmed": 11040000000,
-			    "unconfirmed": 0
-		},
-			"id": "aby"
-		}
+		console.log('===getBalance()===');
+		/*console.log('==redeemFromBtn==');
+		var redeemEl = $("#redeemFrom");
+		var redeemValue = redeemEl.val().trim();
+		redeemEl.val(redeemValue);
+		var redeem = redeemingFrom(redeemValue);
 		*/
+
+		var redeem = redeemingFrom('1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD');
+		getBalanceBlockcypher(redeem, coinjs.asset.api.unspent_outputs['Blockcypher.com']);
+		return;
+		
+
+		if (wally_fn.provider.utxo == 'Blockcypher.com') {
+			getBalanceBlockcypher(redeem, coinjs.asset.api.unspent_outputs['Blockcypher.com']);
+		} else if (wally_fn.provider.utxo == 'Blockchair.com') {
+			listUnspentBlockchair(redeem, coinjs.asset.api.unspent_outputs['Blockchair.com']);
+		} else if (wally_fn.provider.utxo == 'Blockstream.info') {
+			getBalanceBlockstream(redeem, coinjs.asset.api.unspent_outputs['Blockstream.info']);
+			//fix Blockstream for utxo!
+		} else if (wally_fn.provider.utxo == 'Chain.so') {
+			listUnspentChainso(redeem, coinjs.asset.api.unspent_outputs['Chain.so']);
+		} else if (wally_fn.provider.utxo == 'Coinb.in') {
+			listUnspentDefault(redeem);
+			//fix coinbin utxo here
+		} else if (wally_fn.provider.utxo == 'Cryptoid.info') {
+			getBalanceCryptoid(redeem, coinjs.asset.api.unspent_outputs['Cryptoid.info']);
+		} else if (wally_fn.provider.utxo == 'Blockchain.info') {
+			getBalanceBlockhaininfo(redeem, coinjs.asset.api.unspent_outputs['Blockchain.info']);
+		} else if ( (wally_fn.provider.utxo).includes('ElectrumX') ) {
+			getBalanceElectrumX(redeem, coinjs.asset.api.unspent_outputs['ElectrumX']);
+		} 
+
+
+		//url: "https://chainz.cryptoid.info/"+network+"/api.dws?key=1205735eba8c&q=unspent&active="+ redeem.addr,
+
+		//https://btc.cryptoid.info/btc/api.dws?key=1205735eba8c&q=getbalance&a=bc1qgdjqv0av3q56jvd82tkdjpy7gdp9ut8tlqmgrpmv24sq90ecnvqqjwvw97
+
+		/*
+
+		response text
+		*/
+		function getBalanceCryptoid(redeem, network) {
+
+			var ticker = (coinjs.asset.symbol).toLowerCase();
+			console.log("getBalanceCryptoid: ", redeem);
+			$.ajax ({
+			  type: "GET",
+			  url: "https://chainz.cryptoid.info/"+ticker+"/api.dws?key=1205735eba8c&q=getbalance&a="+ redeem.addr,
+			  dataType: "json",
+			  error: function() {
+				//$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve Balance!');
+				console.log('Unexpected error, unable to retrieve Balance!');
+			  },
+			  success: function(data) {
+				//if($(data).find("unspent_outputs").text()==1){
+				  $("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved Balance from address <a href="https://chainz.cryptoid.info/'+network+'/address.dws?'+redeem.addr+'.htm" target="_blank">'+redeem.addr+'</a>');
+
+				  console.log('Retrieved Balance from address <a href="https://chainz.cryptoid.info/'+network+'/address.dws?'+redeem.addr+'.htm" target="_blank">'+redeem.addr+'</a>', data);
+
+			   },
+			  complete: function(data, status) {
+				//$("#redeemFromBtn").html("Load").attr('disabled',false);
+				//totalInputAmount();
+			  }
+			});
+
+
+		}
+
+		function getBalanceElectrumX(redeem, network) {
+			//https://wally.id/api/x.php?asset=aby&method=blockchain.scripthash.get_balance&scripthash=f2c773074a10d44ee5f9d196d9f7bf5da8d173e4a608aa3e752ec35b8be286c9&server=electrumx-four.artbyte.live:50012
+
+			/*response:
+			{
+				"jsonrpc": "2.0",
+				"result": {
+				    "confirmed": 11040000000,
+				    "unconfirmed": 0
+			},
+				"id": "aby"
+			}
+			*/
+
+			var ticker = (coinjs.asset.symbol).toLowerCase();
+
+			var electrum_node = coinjs.asset.api.unspent_outputs[wally_fn.provider.utxo];
+
+
+			console.log("getBalanceCryptoid: ", redeem);
+			$.ajax ({
+			  type: "GET",
+			  url: "https://wally.id/api/x.php?asset="+ticker+"&method=blockchain.scripthash.get_balance&scripthash="+ coinjs.addressToScriptHash(redeem.addr) + '&server='+electrum_node,
+
+			  dataType: "json",
+			  error: function() {
+				//$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve Balance!');
+				console.log('Unexpected error, unable to retrieve Balance!');
+			  },
+			  success: function(data) {
+				//if($(data).find("unspent_outputs").text()==1){
+				  $("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved Balance from address <a href="https://chainz.cryptoid.info/'+network+'/address.dws?'+redeem.addr+'.htm" target="_blank">'+redeem.addr+'</a>');
+
+				  console.log('Retrieved Balance from address: '+redeem.addr, data + ', ElectrumX node: '+electrum_node);
+
+			   },
+			  complete: function(data, status) {
+				//$("#redeemFromBtn").html("Load").attr('disabled',false);
+				//totalInputAmount();
+			  }
+			});
+
+
+		}
+
+		/*
+		
+		https://blockchain.info/balance?active=bc1qjh0akslml59uuczddqu0y4p3vj64hg5mc94c40
+
+		response text
+		*/
+
+		function getBalanceBlockhaininfo(redeem, network) {
+
+			var ticker = (coinjs.asset.symbol).toLowerCase();
+			console.log("getBalanceCryptoid: ", redeem);
+
+			$.ajax ({
+			  type: "GET",
+			  url: 'https://blockchain.info/q/addressbalance/'+redeem.addr+'?confirmations=3',
+			  dataType: "json",
+			  error: function() {
+				//$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve Balance!');
+				console.log('Unexpected error, unable to retrieve Balance!');
+			  },
+			  success: function(data) {
+				//if($(data).find("unspent_outputs").text()==1){
+				  $("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved Balance from address <a href="https://www.blockchain.com/explorer/addresses/btc/'+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
+
+				  console.log('Retrieved Balance from address <a href="https://www.blockchain.com/explorer/addresses/btc/'+redeem.addr+'" target="_blank">'+redeem.addr+'</a>', data);
+				  
+				  var amount = ((data.toString()*1)/("1e"+coinjs.decimalPlaces)).toFixed(coinjs.decimalPlaces);
+				  console.log('amount: ' + amount);
+
+
+			   },
+			  complete: function(data, status) {
+				//$("#redeemFromBtn").html("Load").attr('disabled',false);
+				//totalInputAmount();
+			  }
+			});
+
+		}
+
+		/*
+		API docs
+		https://documenter.getpostman.com/view/12131330/TVCZYVRa
+		https://www.blockcypher.com/dev/bitcoin/?javascript#address-balance-endpoint
+
+		*/
+		function getBalanceBlockcypher(redeem, network) {
+			//https://api.blockcypher.com/v1/btc/main/addrs/1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD/balance
+			//https://api.blockcypher.com/v1/btc/test3/addrs/n1EyXjxZiordizSr2c12Rf1zTtcbFTMD7E/balance
+
+			var apiUrl = 'https://api.blockcypher.com/v1/'+network+'/main/addrs/'+redeem.addr;
+			var explorerUrl = 'https://live.blockcypher.com/btc/address/'+redeem.addr;
+			
+			if (coinjs.asset.network == 'testnet'){
+				apiUrl = 'https://api.blockcypher.com/v1/'+network+'/test3/addrs/'+redeem.addr;
+				var explorerUrl = 'live.blockcypher.com/btc-testnet/address/'+redeem.addr;
+			}
+
+			$.ajax ({
+				type: "GET",
+				//url: "https://api.blockcypher.com/v1/"+network+"/main/addrs/"+redeem.addr+"?includeScript=true&unspentOnly=true",
+				url: apiUrl,
+				dataType: "json",
+				error: function(data) {
+					console.log('Unexpected error, unable to retrieve Balance!');
+				},
+				success: function(data) {
+					if (data.address) { // address field will always be present
+						//$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved Balance from address <a href="https://live.blockcypher.com/'+network+'/address/'+redeem.addr+'" target="_blank">'+redeem.addr+'</a>');
+
+						if (data.final_balance) {
+							var amount = ((data.final_balance.toString()*1)/("1e"+coinjs.decimalPlaces)).toFixed(coinjs.decimalPlaces);
+							console.log('amount: ' + amount);
+
+							console.log('Retrieved Balance from address <a href="'+explorerUrl+'" target="_blank">'+redeem.addr+'</a>', data);
+						}
+
+						
+					} else {
+						//$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve Balance.');
+					}
+				},
+				complete: function(data, status) {
+					//$("#redeemFromBtn").html("Load").attr('disabled',false);
+					//totalInputAmount();
+				}
+			});
+
+
+		}
+
+		
+		function getBalanceBlockstream(redeem, network){
+			console.log('===getBalanceBlockstream===');
+			
+			var apiUrl = 'https://blockstream.info/api/', explorerUrl = 'https://blockstream.info/address/'+redeem.addr;
+			//if(coinjs.asset.network == 'mainnet')
+				//apiUrl = 'https://blockstream.info/api/';	//https://blockstream.info/api/address/1JnfbQerGjFHVq28945y1bhoUHpn6vKM9v
+			if(coinjs.asset.network == 'testnet') {
+				apiUrl = 'https://blockstream.info/testnet/api/';		//https://blockstream.info/testnet/api/address/mxxT1fTdPuJ9gphSJfpS7zsqpjGLM27bne
+				explorerUrl = 'https://blockstream.info/testnet/'+redeem.addr;
+			}
+
+			$.ajax ({
+				type: "GET",
+				//url: "https://api.blockcypher.com/v1/"+network+"/main/addrs/"+redeem.addr+"?includeScript=true&unspentOnly=true",
+				url: apiUrl+'/address/'+redeem.addr,
+				dataType: "json",
+				error: function(data) {
+					$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve Balance!');
+				},
+				success: function(data) {
+					if (data.address) { // address field will always be present
+						$("#redeemFromAddress").removeClass('hidden').html('<i class="bi bi-info-circle-fill"></i> Retrieved Balance from address <a href="'+explorerUrl+'" target="_blank">'+redeem.addr+'</a>');
+
+						var amount_left = data.funded_txo_sum - data.spent_txo_sum;
+
+						if (amount_left) {
+							var amount = ((amount_left.toString()*1)/("1e"+coinjs.decimalPlaces)).toFixed(coinjs.decimalPlaces);
+							console.log('amount: ' + amount_left);
+						}
+
+						
+					} else {
+						$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve Balance.');
+					}
+				},
+				complete: function(data, status) {
+					$("#redeemFromBtn").html("Load").attr('disabled',false);
+					totalInputAmount();
+				}
+			});
+
+
+		}
+
+
 	}
+	
 
 	/* verify script code */
 

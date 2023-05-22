@@ -773,7 +773,7 @@
               <div class="card-openwallet-body m-1">
                 <div class="p-1 py-1">
 
-                  <button class="btn btn-block btn-flat-primary"><img src="./assets/images/send.svg" class="icon24"> Add or Hide Assets</button>
+                  <button class="btn btn-block btn-flat-primary"><img src="./assets/images/import.svg" class="icon24"> Import/Hide Assets</button>
                 </div>
               </div>
               
@@ -805,31 +805,23 @@
                     </div>
                     <ul class="pieData pieLegend">
                       <li data-pie-title="BTC" data-pie-value="11.223424" class="btn btn-block btn-flat-primary ">
-                        <figure class="avatar_with_badge">
-                          <img src="./assets/images/crypto/walrus-wally-logo.svg" class="avatar_main">
-                          <img src="./assets/images/crypto/ethereum-eth-logo.svg" class="avatar_badge">
-                        </figure>
-                        BTC
+                        <span class="badge" style="background-color: transparent;">&nbsp;</span> BTC
                         <span>11.223424</span>
                       </li>
                       <li data-pie-title="LTC" data-pie-value="34.4348" class="btn btn-block btn-flat-primary ">
-                        <figure class="avatar_with_badge">
-                          <img src="./assets/images/crypto/litecoin-ltc-logo.svg" class="avatar_main">
-                        </figure>
-
-                        LTC
+                        <span class="badge" style="background-color: transparent;">&nbsp;</span> LTC
                         <span>34.4348</span>
                       </li>
-                      <li data-pie-title="DOGE" data-pie-value="283.4343" data-title="ttttt" data-content="innehåll">
-                        <em>DOGE</em>
+                      <li data-pie-title="DOGE" data-pie-value="283.4343" class="btn btn-block btn-flat-primary ">
+                        <span class="badge" style="background-color: transparent;">&nbsp;</span> DOGE
                         <span>283.4343</span>
                       </li>
-                      <li data-pie-title="ETH" data-pie-value="22.928">
-                        <em>ETH</em>
+                      <li data-pie-title="ETH" data-pie-value="22.928" class="btn btn-block btn-flat-primary ">
+                        <span class="badge" style="background-color: transparent;">&nbsp;</span>ETH
                         <span>22.928</span>
                       </li>
-                      <li data-pie-title="BAY" data-pie-value="343.2238">
-                        <em>BAY</em>
+                      <li data-pie-title="BAY" data-pie-value="343.2238" class="btn btn-block btn-flat-primary ">
+                        <span class="badge" style="background-color: transparent;">&nbsp;</span>BAY
                         <span>343.2238</span>
                       </li>
                     </ul>
@@ -6033,6 +6025,7 @@ $(".pieLegend li").each(function(e) {
     //color: '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0')
     
   });
+  $(this).find('span.badge').css('background-color', pieData[pieData.length-1].color);
 });
 
 var pieChartAllocation = $("#pieChart").drawPieChart(pieData);
