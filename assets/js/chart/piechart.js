@@ -40,8 +40,8 @@
         
         beforeDraw: function(){  },
         afterDrawed : function(){  },
-        onPieMouseenter : function(e,data){  },
-        onPieMouseleave : function(e,data){  },
+        onPieMouseenter : function(e,data){ $('.pieTip').removeClass('hidden'); },
+        onPieMouseleave : function(e,data){ $('.pieTip').addClass('hidden');  },
         onPieClick : function(e,data){  }
       }, options),
       animationOptions = {

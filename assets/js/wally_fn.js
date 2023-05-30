@@ -656,10 +656,9 @@ wally_fn.generatePassword = function(length = 64) {
 
 /*
 @ Generate Wallet addresses upon Login, compressed or single keys for assets/coins
-param string/array: h
-param string: address_type
+param array: h  (hex-string for private key)
 */
-wally_fn.generateAllWalletAddresses = function(h){
+wally_fn.generateAllWalletAddresses = async function(h){
   console.log('=================wally_fn.generateAllWalletAddresses=================')
 
   var genAddress;
@@ -667,6 +666,8 @@ wally_fn.generateAllWalletAddresses = function(h){
   var keys_combined = []; //used for multisig address generation
   var keys_length = h.length;
 
+  console.log('h: ', h);
+  console.log('keys_length: '+ keys_length);
   for (var [key, value] of Object.entries(wally_fn.networks[ coinjs.asset.network ])) {
     //console.log('loop for key, value: '+ key, value);
 
@@ -721,8 +722,6 @@ wally_fn.generateAllWalletAddresses = function(h){
       if ( (value.asset.supports_address).includes('single') ) {
         $.extend(coinjs, value);  //change asset and generate address
 
-        console.log('h: ' + h);
-        console.log('value.asset: ', value.asset);
         var wweb3 = new Web3(new Web3.providers.HttpProvider(''));
         //var evm_account = wweb3.eth.accounts.privateKeyToAccount('0d11db7762acfdf1fec7518cd5ad5517ccfed719ed4bf228f1d0c5138273a915');
         var evm_account = wweb3.eth.accounts.privateKeyToAccount(h.toString());
@@ -739,7 +738,10 @@ wally_fn.generateAllWalletAddresses = function(h){
       }
 
     }
+    //await wally_fn.nonBlockTick();
+    await wally_fn.timeout(5);
   }
+
 
 //set asset default to Bitcoin
 $.extend(coinjs, wally_fn.networks.mainnet.bitcoin);
@@ -748,6 +750,14 @@ console.log('walletAddress: ', walletAddress);
 return walletAddress;
 }
 
+
+//https://stackoverflow.com/questions/53876344/correct-way-to-write-a-non-blocking-function-in-node-js
+//https://jsbin.com/peritogega/edit?js,console,output
+// Note that this could also use requestIdleCallback or requestAnimationFrame
+//setTimeout is synchronous in nature. Its callback get registered by event loop in timer phase which will be executed as an asynchronous manner.
+wally_fn.nonBlockTick = (fn) => new Promise((resolve) => setTimeout(() => resolve(fn), 5));
+//wally_fn.timeout = ms => new Promise(resolve => window.setTimeout(resolve, ms));  //ES6-style
+wally_fn.timeout = function(ms) { return new Promise(resolve => window.setTimeout(resolve, ms)) };
 
 /*
  Validate/Decode/Convert key to address
@@ -764,7 +774,7 @@ wally_fn.decodeHexPrivKey = function(key){
         key = this.Decimal2Hex;
 
       //check if string is in HEX format
-      //if yes, add padding so its value is in 32bit/64char format
+      //if yes, add padding so its value is in 32bit/64char formatwally_fn.generateAllWalletAddresses;
       if (this.isHex(key)) {
         if(key.length < 64)
           key = (key.toString()).padStart(64, '0')
@@ -1088,6 +1098,8 @@ Dogecoin 3
 Blackcoin 10
 */
 
+  //Summary API
+  //https://chainz.cryptoid.info/explorer/api.dws?q=summary
 
   wally_fn.networks = {
     mainnet : {
@@ -1121,11 +1133,31 @@ Blackcoin 10
               
               'Blockstream.info': 'Blockstream.info', //no arguments needs to be passed
               //'Chain.so': 'BTC',
-              'Coinb.in': 'Coinb.in',                 //no arguments needs to be passed
+              'Coinb.in': '',                 //no arguments needs to be passed
               'Cryptoid.info': 'btc',
               //'Mempool.space': 'btc',
             }
-          }
+          },
+          data: {
+            blocktime: 1231006505,
+            total_tokens: "19382187.00000000",
+          },
+          social: {
+            discord : {
+              official: '',
+            },
+            telegram : {
+              official: '',
+              english: '',
+            },
+            twitter : {
+              official: '',
+            },
+            website: {
+              official: '',
+            },
+          },
+
         },
         pub : 0x00,      //pubKeyHash
         priv : 0x80,     //wif

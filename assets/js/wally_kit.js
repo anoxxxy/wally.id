@@ -273,7 +273,7 @@
         .add(/newTimeLocked(.*)/, function(data){})
         //.add(/(newTransaction)(.*)/, function(data){  //catch #newTransaction/txinputs
         //.add(/(newTransaction|(?<=newTransaction.*)[^\/?\r\n]+)/g, function(data){  //catch #newTransaction/txinputs
-        .add(/(\bnewTransaction\b|(?<=\bnewTransaction\/.*)[^\/?]+)/g, function(data){  //https://regex101.com/r/2RtRfv/6/codegen?language=javascript
+        .add(/(\bnewTransaction\b|(?<=\bnewTransaction\/.*)[^\/?]+|(?<=\bnewTransaction\?.*)(?<=\?).*)/g, function(data){  //https://regex101.com/r/2RtRfv/6/codegen?language=javascript
 
 
           /*
@@ -298,6 +298,96 @@
           //show nested/child route
           if(data[1])
             $('#newTransaction [data-target="#' + data[1] + '"]').tab('show');
+
+        })
+
+        .add(/(\bwallet\b|(?<=\bwallet\/.*)[^\/?]+|(?<=\bwallet\?.*)(?<=\?).*)/g, function(data){
+        //https://stackoverflow.com/questions/4419000/regex-match-everything-after-question-mark
+        //.add(/(wallet|(?<=wallet\/.*)[^/?]+|(?<=\?).*)/g, function(data){  //https://regex101.com/r/2RtRfv/6/codegen?language=javascript
+          console.log('**wallet page**')
+          /*
+          index.html#wallet/send/attans?key=value&param=paramValue
+          gives:
+          [
+            "wallet",
+            "send",
+            "attans",
+            "key=value&param=paramValue"
+          ]
+          */
+          console.log('data: ', data);
+
+          //check nested tab within page, set to activate for navigation when back/forth
+          var walletSubPage='';
+          var walletAssetTabs = ['asset', 'send', 'receive', 'settings'];
+          if (walletAssetTabs.includes(data[1])) {
+            $('#walletAsset [data-target="#' + data[0] + '_' + data[1] +'"]').tab('show');
+            walletSubPage = data[1];
+          }
+
+          console.log('walletSubPage before: ' + walletSubPage);
+
+
+          var assetFound = 0;
+          //if asset set, check if it exists
+          if (Router.urlParams._params_.asset) {
+            console.log('if 1 okey');
+            console.log('Router.urlParams._params_.asset: '+ Router.urlParams._params_.asset);
+
+            
+            //search for asset name and symbol for i.e (bitcoin/btc)
+            for (var [key, value] of Object.entries(wally_fn.networks[ wally_fn.network ])) {
+              console.log('loop for key, value: '+ key);
+
+              if ( (value.asset.symbols).includes(Router.urlParams._params_.asset) ) {
+                assetFound =1;
+                console.log('asset was found: ', value.asset.symbol);
+                console.log('asset key was found: ', key);
+                break;
+              }
+            }
+
+            /*if ((wally_fn.networks[wally_fn.network]).hasOwnProperty(Router.urlParams._params_.asset)) {
+
+
+            //if (wally_fn.networks[wally_fn.network][Router.urlParams._params_.asset] === undefined) {
+              
+              console.log('testar: ' + wally_fn.networks[wally_fn.network][Router.urlParams._params_.asset]);
+              console.log('if 2 okey');
+              
+            }else //asset doesnt exist, redirect to wallet page
+            */
+
+
+              
+          }
+
+/*
+          //if a wallet page is set, dont check if asset exists
+          if (!walletSubPage) {
+            if (assetFound) {
+              $('#walletOverview').addClass('hidden');
+              $('#walletAsset').removeClass('hidden');
+
+              console.log('assetFound: ' + assetFound);
+            } else {
+              $('#walletOverview').removeClass('hidden');
+              $('#walletAsset').addClass('hidden');
+
+              console.log('asset was NOT found!!')
+              Router.navigate('wallet');
+
+            }
+          }
+          */
+
+          if (walletSubPage || (Router.urlParams._params_.asset) ) {
+            $('#walletOverview').addClass('hidden');
+            $('#walletAsset').removeClass('hidden');
+          }else {
+            $('#walletOverview').removeClass('hidden');
+              $('#walletAsset').addClass('hidden');
+          }
 
         })/*
         .add(/txoutputs/, function(data){
@@ -900,8 +990,10 @@
 wally_kit.pageNavigator = function (_elId_ = Router.urlParams.page) {
 
 
+//scroll only smaller screens
+if(window.innerWidth <= 768)
+  wally_kit.scrollToElement(_elId_, 10);
 
-wally_kit.scrollToElement(_elId_, 10);
 return;
 /*
 var target = document.getElementById(_elId_);

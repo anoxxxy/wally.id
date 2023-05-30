@@ -20,7 +20,7 @@
 
 
   //***Validate Wallet login fields
-  login_wizard.validateLogin = function (loginType, walletType, signatures) {
+  login_wizard.validateLogin = async function (loginType, walletType, signatures) {
     console.log('===============validateLogin===============');
 
     try {
@@ -232,9 +232,9 @@
 
       //generate all wallet addresses, pass over the HEX key!
       login_wizard.profile_data.generated = {}; //holds all addresses, inclusive mulitisig addresses
-      login_wizard.profile_data.generated = wally_fn.generateAllWalletAddresses(login_wizard.profile_data.hex_key);
+      login_wizard.profile_data.generated = await wally_fn.generateAllWalletAddresses(login_wizard.profile_data.hex_key);
 
-      //it should generate a wallet backup for downloading
+      //generate a wallet backup for downloading
       login_wizard.generateWalletBackup();
 
 
@@ -1555,15 +1555,32 @@ const folderContentItems = document.querySelectorAll(".folder-content li.js_fold
   /*
   @ nested/child tab show (routing related)
   */
-  $('[data-target="#txoutputs"], [data-target="#txinputs"]').on('click', function(e) {
+  //$('[data-target="#txoutputs"], [data-target="#txinputs"]').on('click', function(e) {
+  $('ul.nav-tabs a.nav-link[data-target]').on('click', function(e) {
+
     
     var data_target = $(this).attr('data-target').slice(1); //slice hashtag (#)
     console.log('-->tab.show [data-target='+data_target+']');
     console.log( 'attr: ' + $(this).attr('data-target'));
+
+    var childTarget = '';
+    if (data_target.includes('/')) {
+      childTarget = data_target.split('/').slice(-1)[0];
+      console.log('childTarget: '+ childTarget);
+    }
+    if (data_target.includes('_')) {
+      childTarget = data_target.split('_').slice(-1)[0];
+      console.log('childTarget: '+ childTarget);
+    }
     
-    //check if a nested/child tab is clicked
+
+    //check if a nested/child tab is clicked, for.i.e #newTransaction/txinputs
     if (Router.urlParams.page  != data_target) {
-      Router.navigate(Router.urlParams.page + '/' + data_target);
+      
+      if (childTarget)
+        Router.navigate(Router.urlParams.page + '/' + childTarget);
+      else
+        Router.navigate(Router.urlParams.page + '/' + data_target);
     } else {
       console.log('no tab is set!');
     }

@@ -62,13 +62,13 @@ profile_data = {
 		
 		var tmp = login_wizard.profile_data;
 		if (login_wizard.profile_data === undefined) {
-			modalTitle = 'Wallet Login!'
-			modalMessage = 'ERROR (#openBtn): Unable to login, bad credentials! ';
+			modalTitle = 'Wallet Login - Failed!'
+			modalMessage = 'ERROR (#openBtn): Unable to login, Bad credentials! ';
       		custom.showModal(modalTitle, modalMessage, 'danger');
 		} else {
 			modalTitle = 'Wallet Login - Success'
 			modalMessage = 'Welcome to the decentralized non-custodial wallet';
-      		custom.showModal(modalTitle, modalMessage, 'danger');
+      		custom.showModal(modalTitle, modalMessage, 'success');
 		}
       
 
@@ -110,11 +110,14 @@ profile_data = {
 		$("#walletKeys .pubkey").val(pubkey);
 		//$("#walletKeys .privkeyaes").val(privkeyaes);
 
-		$("#openLogin").hide();
-		$("#openWallet").removeClass("hidden").show();
+		$("#login").hide();
+		//$("#openLogin").hide();
+		$("#wallet").removeClass("hidden").show();
 
 		walletBalance();
 
+		//
+		$('body').attr('data-user', 'loggedin');
 		
 	});
 
@@ -123,8 +126,10 @@ profile_data = {
 		$("#openPass").val("");
 		$("#openPass-confirm").val("");
 
-		$("#openLogin").show();
-		$("#openWallet").addClass("hidden").show();
+		$("#login").show();
+		//$("#openLogin").show();
+
+		$("#wallet").addClass("hidden").show();
 
 		$("#walletAddress").html("");
 		$("#walletHistory").attr('href',explorer_addr);
@@ -167,15 +172,6 @@ profile_data = {
 		$("#openBtn").click();
 	});
 
-	$("#walletShowKeys").click(function(){
-		$(".walletOptions").removeClass("hidden").addClass("hidden");
-		$("#walletKeys").removeClass("hidden");
-	});
-
-	$("#walletShowBuy").click(function(){
-		$(".walletOptions").removeClass("hidden").addClass("hidden");
-		$("#walletBuy").removeClass("hidden");
-	});
 
 	$("#walletBalance, #walletAddress, #walletQrCode").click(function(){
 		walletBalance();
@@ -325,21 +321,39 @@ profile_data = {
 		}
 	});
 
-	$("#walletShowSpend").click(function(){
-		$(".walletOptions").removeClass("hidden").addClass("hidden");
-		$("#walletSpend").removeClass("hidden");
-	});
-
+/*
 	$("#walletSpendTo .addressAdd").click(function(){
-		var clone = '<div class="form-horizontal output">'+$(this).parent().html()+'</div>';
+		var clone = '<div class="form-horizontal output py-2">'+$(this).parent().parent().parent().html()+'</div>';
 		$("#walletSpendTo").append(clone);
 		$("#walletSpendTo .bi-plus:last").removeClass('bi-plus').addClass('bi-dash');
-		$("#walletSpendTo .bi-dash:last").parent().removeClass('addressAdd').addClass('addressRemove');
+		$("#walletSpendTo .bi-dash:last").parent().parent().removeClass('addressAdd').addClass('addressRemove');
 		$("#walletSpendTo .addressRemove").unbind("");
 		$("#walletSpendTo .addressRemove").click(function(){
-			$(this).parent().fadeOut().remove();
+			$(this).parent().parent().fadeOut().remove();
 		});
 	});
+	*/
+
+	$("#addressAdd").click(function(){
+
+		var clone = '<div class="form-horizontal output callout py-2 hidden">'+$('#walletSpendTo .form-horizontal.output:first-child').html()+'</div>';
+		$("#walletSpendTo").append(clone);
+
+		$('#walletSpendTo .form-horizontal.output:last-child').removeClass('hidden').velocity('slideDown', { duration: 200 });
+
+		$("#walletSpendTo .form-horizontal.output:last-child .bi-plus:last").removeClass('bi-plus').addClass('bi-dash');
+		$("#walletSpendTo .form-horizontal.output:last-child .bi-dash:last").parent().parent().removeClass('addressAdd').addClass('addressRemove').removeClass('hidden');
+		$("#walletSpendTo .addressRemove").unbind("");
+		$("#walletSpendTo .addressRemove").click(function(){
+			//$(this).parent().parent().fadeOut().remove();
+			var parent_row = $(this).parent().parent();
+			parent_row.velocity('slideUp', { duration: 200, complete: function() { parent_row.remove() }});
+
+
+		});
+	});
+
+	
 
 	function walletBalance(){
 		if($("#walletLoader").hasClass("hidden")){
@@ -1166,6 +1180,18 @@ profile_data = {
 		}
 	}
 
+	coinbinf.clearInputsOnload = function () {
+		//$("#inputs .txidRemove, #inputs .txidClear").click();
+		$('#recipients input').val('');
+		$('#inputs input').val('');
+
+		$('#recipients').children( '.row:not(:first)' ).remove();
+		$('#inputs').children( '.row:not(:first)' ).remove();
+
+		$('#totalInput').text( parseFloat('0.00000000').toFixed(coinjs.decimalPlaces) );
+		$('#totalOutput').text( parseFloat('0.00000000').toFixed(coinjs.decimalPlaces) );
+	}
+
 	/* redeem from button code */
 
 	$("#redeemFromBtn").click(function(){
@@ -1193,10 +1219,8 @@ profile_data = {
 			return false;
 		}
 
-		if($("#clearInputsOnLoad").is(":checked")){
-			$("#inputs .txidRemove, #inputs .txidClear").click();
-			$('#inputs input').val('');
-		}
+		coinbinf.clearInputsOnload();
+		
 
 		$("#redeemFromBtn").html("Please wait, loading...").attr('disabled',true);
 
@@ -2207,10 +2231,9 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 			getBalanceBlockstream(redeem, coinjs.asset.api.unspent_outputs['Blockstream.info']);
 			//fix Blockstream for utxo!
 		} else if (wally_fn.provider.utxo == 'Chain.so') {
-			listUnspentChainso(redeem, coinjs.asset.api.unspent_outputs['Chain.so']);
+			//listUnspentChainso(redeem, coinjs.asset.api.unspent_outputs['Chain.so']);
 		} else if (wally_fn.provider.utxo == 'Coinb.in') {
-			listUnspentDefault(redeem);
-			//fix coinbin utxo here
+			getBalanceDefault(redeem);
 		} else if (wally_fn.provider.utxo == 'Cryptoid.info') {
 			getBalanceCryptoid(redeem, coinjs.asset.api.unspent_outputs['Cryptoid.info']);
 		} else if (wally_fn.provider.utxo == 'Blockchain.info') {
@@ -2220,10 +2243,36 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 		} 
 
 
+		function getBalanceDefault(redeem, network) {
+/*
+			http://coinb.in/api/?uid=1&key=12345678901234567890123456789012&setmodule=addresses&request=bal&address=1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY&r=0.310425492702052
+
+			response:
+			<request>
+<result>1</result>
+<confirmed>63372434180</confirmed>
+<unconfirmed>0</unconfirmed>
+<balance>63372434180</balance>
+<response>balance+returned</response>
+</request>
+*/
+
+			coinjs.addressBalance(redeem.addr,function(data){
+				if($(data).find("result").text()==1){
+					//var v = $(data).find("balance").text()/100000000;	//iceee remove
+					var v = $(data).find("balance").text()/("1e"+coinjs.decimalPlaces);
+					console.log('Balance is '+v+' BTC');
+				} else {
+					console.log('Unexpected error, unable to retrieve Balance!');
+				}
+
+				$("#walletLoader").addClass("hidden");
+			});
+
+		}
+
 		//url: "https://chainz.cryptoid.info/"+network+"/api.dws?key=1205735eba8c&q=unspent&active="+ redeem.addr,
-
 		//https://btc.cryptoid.info/btc/api.dws?key=1205735eba8c&q=getbalance&a=bc1qgdjqv0av3q56jvd82tkdjpy7gdp9ut8tlqmgrpmv24sq90ecnvqqjwvw97
-
 		/*
 
 		response text
@@ -3251,7 +3300,11 @@ new jBox('Tooltip', {
 		console.log('settingsBtn wally_fn.asset: '+ wally_fn.asset);
 
 		wally_kit.setNetwork(wally_fn.network, wally_fn.asset, {saveSettings: true, showMessage: true, renderFields: false});
-
+		
+		//clear manual transaction data
+		coinbinf.clearInputsOnload();
+		$("#redeemFromStatus, #redeemFromAddress").addClass('hidden');
+		$("#transactionFee").val( parseFloat('0.00000000').toFixed(coinjs.decimalPlaces) );
 
 
 
@@ -3831,22 +3884,13 @@ $("body").on("click", "#pwdGenerate", function(e){
 	var hasNumber = 	((poppis.find('#pwdNumbers').is(":checked")) ? 1 : 0);
 	var hasSymbol = 	((poppis.find('#pwdSymbols').is(":checked")) ? 1 : 0);
 
-
-/*
-	const hasLength = +$('#pwdLength').val();
-	console.log('length: '+ hasLength);
-	
-	const hasLower = (($('#pwdLowercase').is(":checked")) ? 1 : 0);
-	const hasUpper = (($('#pwdUppercase').is(":checked")) ? 1 : 0);
-	const hasNumber = (($('#pwdNumbers').is(":checked")) ? 1 : 0);
-	const hasSymbol = (($('#pwdSymbols').is(":checked")) ? 1 : 0);
-	*/
-
+	/*
 	console.log('lengthIs: '+ lengthIs);
 	console.log('hasLower: '+ hasLower);
 	console.log('hasUpper: '+ hasUpper);
 	console.log('hasNumber: '+ hasNumber);
 	console.log('hasSymbol: '+ hasSymbol);
+	*/
 
 	
 	generatePwdField.val( GeneratePasswordInPop(lengthIs, hasLower, hasUpper, hasNumber, hasSymbol) );
@@ -3911,6 +3955,40 @@ function getRandomSymbol() {
 	return symbols[Math.floor(Math.random() * symbols.length)];
 }
 
+
+/*wallet*/
+
+
+//Reset Wallet Send Outputs
+$("#walletSendReset").click(function(){
+	$("#txFee").val("0.00001000");
+	$("#developerDonation").val("0.001");
+	
+
+	$('#walletSpendTo').children( '.form-horizontal.output:not(:first)' ).remove();
+
+	$('#walletSpendTo input').val('');
+
+	$('#walletSendStatus').addClass('hidden');
+
+});
+
+
+/*
+ @ Blockie Icon
+*/
+
+  // Create the blockie image
+  var address = '0x138854708D8B603c9b7d4d6e55b6d32D40557F4D';
+
+
+$(".blockie_wrapper .icon").css("background-image", "url(" + makeBlockie(address) + ")").attr('title', address);
+$(".blockie_wrapper .wallet_address").html(address).attr('title', address);
+
+$(".blockie_wrapper .icon").css("background-image", "url(" + makeBlockie(address) + ")").attr('title', address);
+$(".blockie_wrapper .wallet_address").val(address).attr('title', address);
+
+//$(".blockie_wrapper").css("background-image", "url(" + makeBlockie('0x138854708D8B603c9b7d4d6e55b6d32D40557F4D') + ")");
 
 
 });

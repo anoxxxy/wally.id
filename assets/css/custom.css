@@ -102,10 +102,12 @@ a:hover {
 	padding-right: 0;
 }
 
+/*
 .col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto {
-
+	*/
+[class*="col-"] {
 	padding-right: 5px;
-padding-left: 5px;
+	padding-left: 5px;
 }
 /*
 .row.no-gutter [class*='col-']:not(:first-child),
@@ -378,6 +380,23 @@ border-bottom:1px solid #F0F2F4;
 		padding: .375rem 0.75rem;
 	}
 
+	.blockie_list .wallet_address {
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			max-width: 240px;
+
+		}
+
+	
+
+}
+
+@media (min-width:576px) {
+	.row.no-gutter {
+		margin-left: 5px;
+		margin-right: 5px;
+	}
 }
 
 /*converter*/
@@ -476,6 +495,11 @@ vertical-align: -8px;
 	width: 64px;
 	height: 64px;
 	font-size: 64px;
+}
+.icon128 {
+	width: 128px;
+	height: 128px;
+	font-size: 128px;
 }
 
 
@@ -964,7 +988,7 @@ border-color: transparent;
 }
 .input-group input, .input-group .input-group-append > span, .input-group .input-group-append > div, .input-group .input-group-prepend > span, .input-group .input-group-prepend > div {
 
-border-right-color: white !important;
+/*border-right-color: white !important;*/
 border-right-width: 1px;
 border-right-width: 0;
 
@@ -2659,10 +2683,6 @@ position: unset;
 
 /*responsive table, tabs, laptops and up*/
 
-@media (min-width: 576px) {
-	
-}
-
 
 
 
@@ -2752,7 +2772,7 @@ position: unset;
 }
 
 /*mobile devices*/
-@media (max-width: 375px) {
+@media(max-width: 375px) {
 
 /*#wallet loggedin*/
 		#wallet .list-wrapper {
@@ -2764,6 +2784,8 @@ position: unset;
 		#wallet .card-openwallet-body {
 			padding: 1rem 0.2rem;
 		}
+
+		
 }
 
 .table-hover tbody tr:hover{
@@ -2940,6 +2962,7 @@ outline:  none;
   #wallet.tab-content.tab-pane [class*="col-"] {
 		padding-left: 0;
 		padding-right: 0;
+		
 	}
 
 }
@@ -3000,6 +3023,9 @@ overflow: hidden;
 	flex-direction: column;
 }
 
+#wallet .list-border a {
+text-decoration: none;
+}
 #wallet .list-border .coin-info {
 	display: flex;
 	flex-direction: column;
@@ -3024,6 +3050,7 @@ overflow: hidden;
 	border-bottom-left-radius: 0;
 	border-radius: 10px;
 }
+
 
 
 
@@ -3219,3 +3246,204 @@ border-radius: 100%;
   height: 48px;
 
 }
+#wallet_menu .btn img {
+	margin-right: 4px;
+}
+
+
+/*walletAsset*/
+#walletAsset .list-wrapper {
+	padding: 0;
+}
+#walletAsset .coin-info {
+	margin-left: 10px;
+
+}
+#walletAsset figure.avatar_with_badge {
+	position: relative;
+	width: 64px;
+	height: 64px;
+	margin: 0;
+}
+
+#walletAsset figure.avatar_with_badge img.avatar_badge{
+width: 2rem;
+height: 2rem;
+bottom: 0;
+}
+
+#walletAsset .nav-tabs .nav-link:focus, #walletAsset .nav-tabs .nav-link:hover {
+	border-color: transparent;
+}
+
+
+#walletAsset .card-openwallet-body {
+  padding-top: 0rem;
+}
+
+#walletAsset .list-group li {
+	padding: .5rem .5rem;
+}
+
+#walletAsset .list-group.list-group-flush li {
+	border-bottom: 1px solid rgba(0,0,0,.05);
+}
+#walletAsset .list-group.list-group-flush li:last-child {
+	border-bottom: unset;
+}
+#walletAsset .callout-title {
+	top: 12px;
+}
+
+/* Default table styles for flex table "table-ice"*/
+
+.form-horizontal.output {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  
+  border-radius: 10px;
+border-bottom: 2px solid #f6f6f6;
+margin: 0.5rem 0.1rem;
+padding: 1rem 0;
+  padding-top: 1rem;
+
+  
+}
+.form-horizontal.output .callout-title {
+	display: contents;
+}
+.form-horizontal.output .first_box {
+  display:block;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: auto;
+  align-self: auto;
+  order: 0;
+  
+
+	padding:  2px 5px 0 5px;
+}
+.form-horizontal.output .second_box {
+  display:flex;
+  flex-direction: row;
+  
+  flex: 0 1 auto;
+
+  order: 0;
+  justify-content: space-between;
+  padding-left: 5px;
+	padding-right: 5px;
+	padding:  2px 5px 0 5px;
+
+}
+.form-horizontal.output .second_box div{
+  
+  
+  
+	
+  
+}
+.form-horizontal.output .second_box .sec21 {
+  width: 220px;
+  padding-right: 5px;
+  align-items: stretch;
+}
+#walletSpendTo .form-horizontal.output .second_box .sec22 {
+  width: 50px;
+  padding-left: 5px;
+  align-items: stretch;
+}
+.form-horizontal.output .second_box .sec22 .callout-title{
+	opacity: 0;
+	padding: 0px;
+}
+
+
+@media(max-width: 992px) {
+  #walletSpendTo .form-horizontal.output {
+    flex-direction: column;
+  }
+  
+  .form-horizontal.output .first_box {
+  	margin-bottom: .25rem;
+  }
+
+  .form-horizontal.output .second_box .sec21 {
+    flex: 0 0 220px
+  }
+.form-horizontal.output .second_box .sec22 {
+  flex: 0 1 50px;
+  }
+
+  #wallet_advanced_options_dropdown {
+  	display: none;
+  }
+}
+
+
+#walletSpendTo .addressAdd {
+	max-width: 38px;
+margin: 0;
+padding-left: 5px;
+padding-right: 5px;
+}
+
+#walletSpendTo input {
+	box-shadow: unset;
+	border-width: 1px;
+	border-radius: 0.375rem !important;
+	/*border-right-color: transparent !important;*/
+}
+#walletSpendTo .callout-title {
+	display: none;
+}
+#walletSpendTo .input-group-append span{
+	box-shadow: unset;
+	border: unset;
+
+}
+
+#transaction_donation_fee .form-horizontal.output{
+	flex-direction: row;
+	padding: 10px 5px;
+
+}
+#transaction_donation_fee .form-horizontal.output input{
+
+box-shadow: unset;
+border-width: 1px;
+border-radius: 0.375rem !important;
+}
+
+#transaction_donation_fee .form-horizontal.output .col-6 label {
+padding-left: 0.75rem;
+}
+
+
+.blockie_list .blockie_wrapper {
+	align-items: center;
+}
+.blockie_wrapper .icon {
+	display: block;
+	width: 32px;
+	height: 32px;
+	background-size: cover;
+	background-repeat: no-repeat;
+	border-radius: 20%;
+	margin-right: 5px;
+}
+
+.blockie_wrapper.input-group .icon{
+	width: 28px;
+	height: 28px;
+}
+
+/*
+.blockie_wrapper .input-group-prepend .input-group-text,
+.blockie_wrapper .input-group-append .input-group-text,
+.blockie_wrapper input {
+	border: 0;
+	box-shadow: unset;
+}
+*/

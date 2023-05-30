@@ -140,7 +140,7 @@
     <script type="text/javascript" src="./assets/js/wally_login.js"></script> <!-- Open Wallet Functions -->
     
   </head>
-  <body>
+  <body data-user="guest">
     <div class="svg_background">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 100 50" preserveAspectRatio="none" width="100%" height="100%">
         <defs>
@@ -773,7 +773,8 @@
               <div class="card-openwallet-body m-1">
                 <div class="p-1 py-1">
 
-                  <button class="btn btn-block btn-flat-primary"><img src="./assets/images/import.svg" class="icon24"> Import/Hide Assets</button>
+                  <a href="#wallet" class="btn btn-block btn-flat-primary d-flex align-items-center"><img src="./assets/images/import.svg" class="icon icon28"> Wallet Overview</a>
+                  <a href="#" class="btn btn-block btn-flat-primary d-flex align-items-center"><img src="./assets/images/import.svg" class="icon icon28"> Import/Hide Assets</a>
                 </div>
               </div>
               
@@ -782,7 +783,7 @@
             </div>
             </div>
 
-          <div class="col-md-9 mb-2">
+          <div id="walletOverview" class="col-md-9 mb-2 animate__animated animate__fadeIn">
             <div class="card-openwallet">
 
               <div class="card-openwallet-header">
@@ -795,7 +796,7 @@
                 <div class="p-1 py-1">
 
                   <!-- PieChart-->
-                  <div class="col-md-12 mb-6">
+                  <div class="col-md-12 m-0 mb-6">
                     <h3 class="card-openwallet-title">
                       Asset <small>Allocation</small>
                     </h3>
@@ -829,6 +830,12 @@
                   </div>
                   </div>
 
+                  <div class="col-md-12 mb-6">
+                    <div class="callout m-0 py-3 mb-3">
+                    Total Balance: $192,400.00
+                  </div>
+                  </div>
+
 
           <div class="col-md-12 mb-2">
                   
@@ -842,26 +849,32 @@
                   <!-- Filter Asset Options -->
 
                   <!-- List Assets -->
+
+
+                  
+
                   <div class="list_assets">
-                    <div class="list-border">
+                    <div class="list-border position-relative">
   <div class="list-wrapper">
 
   
 
   <div class="list-name">
-    <div class="coin-icon">
+    
+      <div class="coin-icon">
       <div class="icon icon32">
         <img src="./assets/images/crypto/bitcoin-btc-logo.svg">
       </div>
     </div>
     <div class="coin-info">
       <span class="title">
-        Bitcoin
+        <a href="#wallet?asset=btc" class="stretched-link">Bitcoin</a>
       </span>
       <span class="subtitle">
         <span class="balance">9999999.00000000</span> BTC
       </span>
     </div>
+
   </div>
 
   <div class="list-details">
@@ -880,9 +893,12 @@
 
     </div>
   </div>
+  
 </div>
 </div>
-<div class="list-border udf">
+
+
+<div class="list-border position-relative udf">
   <div class="list-wrapper">
 
   <div class="list-name">
@@ -893,7 +909,7 @@
     </div>
     <div class="coin-info">
       <span class="title">
-        Ethereum
+        <a href="#wallet?asset=eth-goerli" class="stretched-link">Ethereum</a>
       </span>
       <span class="subtitle">
         <span class="balance">9999999.00000000</span> ETH
@@ -931,7 +947,7 @@
     </div>
     <div class="coin-info">
       <span class="title">
-        BitBay
+        <a href="#wallet?asset=bay" class="stretched-link">BitBay</a>
       </span>
       <span class="subtitle">
         <span class="balance">9999999.00000000</span> BAY
@@ -968,7 +984,7 @@
     </div>
     <div class="coin-info">
       <span class="title">
-        Litecoin
+        <a href="#wallet?asset=ltc" class="stretched-link">Litecoin</a>
       </span>
       <span class="subtitle">
         <span class="balance">9999999.00000000</span> LTC
@@ -1005,7 +1021,7 @@
     </div>
     <div class="coin-info">
       <span class="title">
-        Dogecoin
+        <a href="#wallet?asset=doge" class="stretched-link">Dogecoin</a>
       </span>
       <span class="subtitle">
         <span class="balance">9999999.00000000</span> DOGE
@@ -1054,7 +1070,7 @@
     </div>
     <div class="coin-info">
       <span class="title">
-        Happy Walrus Coin
+        <a href="#wallet?asset=wally" class="stretched-link">Happy Walrus Coin</a>
       </span>
       <span class="subtitle">
         <span class="balance">123.00000000</span> WALLY
@@ -1094,7 +1110,7 @@
     </div>
     <div class="coin-info">
       <span class="title">
-        Blackcoin
+        <a href="#wallet?asset=blk" class="stretched-link">Blackcoin</a>
       </span>
       <span class="subtitle">
         <span class="balance">9999999.00000000</span> BLK
@@ -1134,6 +1150,420 @@
 
             </div>
           </div>
+
+          <!--START - Wallet Asset Page -->
+           
+
+          <div id="walletAsset" class="col-md-9 mb-2 animate__animated animate__fadeIn hidden">
+            <div class="card-openwallet">
+
+              <div class="card-openwallet-header">
+                <h3 class="card-openwallet-title">
+                  Asset <small>Options</small> 
+                </h3>
+                <span class="d-flex justify-content-end"><a href="javascript:;" id="walletLogout" class="text-decoration-none"><i class="bi bi-person-fill-lock"></i> Logout</a></span>
+              </div>
+
+              <div class="card-openwallet-body overflow-visible">
+                <div class="p-1 py-1">
+
+                  
+
+                   
+    <div class="container">
+      
+
+<!-- Quick Advanced Options Button -->
+        
+
+        <div class="row no-gutter ">
+          <div class="col-12">
+            <div class="callout-title text-muted">Your Address</div>
+            <div class="form-horizontal output callout py-2 mb-3 pl-2 pr-2 d-flex justify-content-between">
+                
+
+                <div class="blockie_list ">
+                  <div class="blockie_wrapper d-flex">
+                    <div class="icon"></div>
+                    <span class="wallet_address text-primary font-weight-bold"></span>
+                    <img src="./assets/images/copy.svg" class="icon24 ml-2">
+                  </div>
+                </div>
+
+                <div id="wallet_advanced_options_dropdown">
+                  <button type="button" class="btn btn-sm btn-flat-secondary dropdown-toggle waves-effect " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Address: <span id="walletToBtn">SegWit</span>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right" style="">
+                      <a class="dropdown-item" href="javascript:void(0);" id="walletToSegWit">SegWit</a>
+                      <a class="dropdown-item" href="javascript:void(0);" id="walletToSegWitBech32">SegWit/Bech32</a>
+                      <a class="dropdown-item" href="javascript:void(0);" id="walletToLegacy">Legacy</a>
+                  </div>
+                </div>
+
+
+
+            </div>
+          </div>
+
+
+        </div>
+
+
+      <div class="row no-gutter">
+        
+        
+
+        <!-- Wallet Tabs-->
+        <div class="col-12">
+          <ul class="nav nav-tabs addIndicator" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#wallet/asset" role="tab" data-target="#wallet_asset" >
+                <img src="./assets/images/crypto/walrus-wally-logo.svg" class="icon24"> Asset
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="profile-tab" href="#wallet/send?asset=blk" data-target="#wallet_send" data-toggle="tab"  role="tab" >
+                <img src="./assets/images/send.svg" class="icon24"> Send
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#wallet/receive" data-target="#wallet_receive" role="tab">
+                <img src="./assets/images/receive.svg" class="icon24"> Receive
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#wallet/settings" data-target="#wallet_settings" role="tab">
+                <img src="./assets/images/settings.svg" class="icon24"> 
+              </a>
+            </li>
+          </ul>
+          <div class="tab-content mt-3 mb-3" >
+            <div class="tab-pane fade show active" id="wallet_asset" role="tabpanel" aria-labelledby="asset-tab">
+              
+               <!-- Asset Information -->
+                  <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="list-wrapper">
+
+  <div class="list-name">
+    <div class="coin-icon">
+
+      <div class="">
+        <figure class="avatar_with_badge">
+          <img src="./assets/images/crypto/walrus-wally-logo.svg" class="avatar_main">
+          <img src="./assets/images/crypto/ethereum-eth-logo.svg" class="avatar_badge">
+        </figure>
+      </div>
+
+
+    </div>
+    <div class="coin-info">
+      <div class="title">
+        <h4 class="card-title mb-1">Happy Walrus Coin</h4>
+      </div>
+      <span class="subtitle ">
+        <span class="balance">123.00000000</span> WALLY
+      </span>
+    </div>
+  </div>
+
+  
+</div>
+
+                                        
+
+                                        <p class="card-text text-muted font-small-2 mt-2">
+                                            Release date: <span> 15th March 2022</span>
+                                        </p>
+                                    </div>
+                                    <div class="col-12 col-md-6" >
+                                        
+                                        <ul class="list-group list-group-flush">
+                                          <li class="list-group-item"><a href="javascript:;" id="walletBalance">0.00 BTC</a></li>
+                                          <li class="list-group-item"><a href="javascript:;" id="walletHistory" target="_blank">History</a></li>
+
+                                          <li class="list-group-item">Supply: <span class="coin_supply"></span> <span class="coin_symbol"></span></li>
+                                          <li class="list-group-item">Price: <span class="coin_price"></span></li>
+                                          <li class="list-group-item">Block Height: <span class="coin_height"></span></li>
+
+                                          
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+              <br>
+              <hr>
+              Another one
+            </div>
+            <div class="tab-pane fade" id="wallet_send" role="tabpanel" aria-labelledby="send-tab">
+              
+              
+              <div id="walletSpend" class="walletOptions ">
+                          
+
+                         
+                    <!--
+                          <div class="col-12" id="walletSpendTo">
+
+                            <div class="form-horizontal output py-2">
+                            <div class="first_box">
+                              <div class="input-group-callout">
+                                <div class="callout-title text-muted text-primary addressTo">Address</div>
+                                <input type="text" class="form-control address" >
+                              </div>
+                            
+                            </div>
+                            <div class="second_box ">
+                              <div class="sec21 ">
+                                
+
+                                  <div class="callout-title text-muted text-primary">Amount</div>
+                                  <div class="input-group">
+
+                                    
+                                    <input type="text" class="form-control amount" placeholder="0">
+                                    <div class="input-group-append">
+                                    <span class="form-control input-group-text coin_symbol">BTC</span>
+                                    </div>
+                                  
+
+                                </div>
+
+                              </div>
+                              <div class="sec22 ">
+                                <div class="callout-title text-muted text-primary" >&nbsp;</div>
+                                  <a href="javascript:;" class="form-control btn btn-flat-primary addressAdd"><i class="bi bi-plus"></i></a>
+
+                              </div>
+                            </div>
+                          </div>
+
+                          </div>
+                        -->
+
+
+
+
+                          <div id="walletSpendTo">
+
+                            <div class="form-horizontal output callout py-2">
+                            <div class="first_box">
+                              <div class="input-group-callout">
+                                <div class="callout-title text-muted text-primary">Address</div>
+                                <input type="text" class="form-control addressTo" placeholder="Address">
+                              </div>
+                            
+                            </div>
+                            <div class="second_box ">
+                              <div class="sec21 ">
+                                
+
+                                  <div class="callout-title text-muted text-primary">Amount</div>
+                                  <div class="input-group">
+
+                                    
+                                    <input type="text" class="form-control amount" placeholder="Amount">
+                                    <div class="input-group-append">
+                                    <span class="form-control input-group-text text-muted coin_symbol">BTC</span>
+                                    </div>
+                                  
+
+                                </div>
+
+                              </div>
+                              <div class="sec22 hidden">
+                                <div class="callout-title text-muted text-primary" >&nbsp;</div>
+                                  <a href="javascript:;" class="form-control btn btn-flat-primary addressAdd"><i class="bi bi-plus"></i></a>
+
+                              </div>
+                            </div>
+                          </div>
+
+                          </div>
+
+                          <div class="row py-3">
+                            <div class="col-12">
+                              <div id="walletSendStatus" class="alert alert-danger mt-3 mb-3 hidden"></div>
+                            </div>
+
+                            <div class="col-6 ">
+                            </div>
+                            <div class="col-6">
+                              <a id="addressAdd" href="javascript:;" class="btn btn-block btn-flat-primary addressAdd">
+                                <i class="bi bi-plus"></i> Add a recipient
+                              </a>
+                            </div>
+                          </div>
+
+
+
+                          
+                          <div class="row py-3" id="transaction_donation_fee">
+                            
+                            <div class="col-12 m-0 p-0">
+                            <div class="form-horizontal output callout">
+                              <div class="col-6">
+                                <label class="text-muted"><abbr title="Amount to pay in network fee">Transaction Fee</abbr>&nbsp;&nbsp;<a href="javascript:;" id="feesestwallet"></a></label>
+                                <input type="text" class="form-control" value="0.00001000" placeholder="0.00000000" id="txFee">
+                              </div>
+                              <div class="col-6">
+                                <label class="text-muted"><abbr title="Amount to donate to Wally.id">Donation</abbr></label>
+                                <input type="text" class="form-control" value="0.001" placeholder="0.00000000" id="developerDonation">
+                              </div>
+                            </div>
+                            </div>
+                          </div>
+
+                          
+
+
+                          <div class="row">
+                            <div class="col-12 d-flex justify-content-end">
+                              
+                              <button class="btn btn-sm btn-flat-warning " type="button" id="walletSendReset"><img src="./assets/images/reset.svg" class="icon28"> Reset</button>
+                              <button class="btn btn-sm btn-flat-primary ml-2" type="button" id="walletSendBtn"><img src="./assets/images/send.svg" class="icon28"> Send</button>
+                          </div>
+                          </div>
+                        </div>
+
+            </div>
+            <div class="tab-pane fade" id="wallet_receive" role="tabpanel" aria-labelledby="receive-tab">
+              Receive <br>
+              <div class="col-12 py-2">
+                <div id="walletQrCode"></div>
+              </div>
+
+
+              <div id="walletKeys" class="walletOptions">
+                <label>Public Key</label>
+                <input class="form-control pubkey" type="text" readonly>
+                <div class="walletSegWitRS hidden">
+                  <label>Redeem Script <i>(SegWit)</i></label>
+                  <input class="form-control" type="text" readonly>
+                </div>
+                <label>Private key</label>
+                <div class="input-group">
+                  <input class="form-control privkey" type="password" readonly>
+                  <span class="input-group-append">
+                  <button class="showKey btn btn-secondary" type="button"><i class="bi bi-eye-fill"></i></button>
+                  </span>
+                </div>
+                <label>Private Key (AES256 encrypted key)</label>
+                <input class="form-control privkeyaes" type="text" readonly>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="wallet_settings" role="tabpanel" aria-labelledby="settings-tab">
+              Settings <br>
+              <div class="col-md-12">
+    
+                
+                <br>
+    <div class="accordion mt-3" id="openWalletAdvancedOptionsButton">
+      <div class="card accordion-item">
+        <h2 class="accordion-header d-flex align-items-center">
+          <button type="button" class="accordion-button collapsed" data-toggle="collapse" data-target="#openWalletAdvancedOptions" aria-expanded="false">
+            <i class="bi bi-gear-fill me-2"></i>
+            Advanced Options
+          </button>
+        </h2>
+
+        <div id="openWalletAdvancedOptions" class="collapse">
+          <div class="accordion-body">
+            <div class="options">
+              <label>Segregated Witness Address</label>
+              <p class="checkbox">
+                <label><input type="checkbox" id="walletSegwit" class="checkbox-inline" checked> Use a segwit address instead of a regular address. <span class="text-muted">(recommended)</span></label> 
+                <br>
+                <label><input type="radio" id="walletSegwitp2sh" class="walletSegwitType" name="walletSegWitType" value="p2sh" checked> p2sh address</label> <br>
+                <label><input type="radio" id="walletSegwitBech32" class="walletSegwitType" name="walletSegWitType" value="bech32"> bech32 address</label>
+              </p>
+              <label>Enable Replace by Fee (RBF)</label>
+              <p class="checkbox">
+                <label><input type="checkbox" id="walletRBF" class="checkbox-inline" checked> Enable RBF on all transactions, allowing you to manually raise the transaction fee later if required. <span class="text-muted">(recommended)</span></label>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+    </div>
+    
+
+                    </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- tabs -->
+
+                  
+                 
+
+
+                  
+
+                    
+
+          <!-- Advanced Wallet Options-->
+          <div class="col-md-12 mt-4 mb-4">
+                  
+
+
+                                    <div class="row">
+
+                    
+                    <div class="col-md-12" align="center">
+                      
+                      <br>
+                      <div>
+                        <span id="walletLoader" class="hidden"><img src="images/loader.gif"></span>
+                        <span id="walletAddress"></span> 
+                        
+
+
+                        
+                      </div>
+                      <br>
+                      <div >
+                        
+                        <br>
+
+                        
+                        
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- List Asset Information -->
+
+
+                  
+                  </div>
+
+                  <!--Something Else? -->
+
+                </div>
+              </div>
+              
+              <div class="card-openwallet-footer ">
+                Wally.id - version: <span class="walletVersion">XYZ</span>
+              </div>
+
+            </div>
+          </div>
+          <!--<<END - Wallet Asset Page -->
         </div>
 
 
@@ -1766,154 +2196,10 @@
                 </div>
 
 
-                <div id="openWallet" class="hidden">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <p><span style="float:right;"><a href="javascript:;" id="walletLogout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></span>Welcome to your wallet, enjoy your stay!</p>
-                    </div>
 
-                    <div class="col-md-12">
-    
-    <div class="accordion mt-3" id="openWalletAdvancedOptionsButton">
-      <div class="card accordion-item">
-        <h2 class="accordion-header d-flex align-items-center">
-          <button type="button" class="accordion-button collapsed" data-toggle="collapse" data-target="#openWalletAdvancedOptions" aria-expanded="false">
-            <i class="bi bi-gear-fill me-2"></i>
-            Advanced Options
-          </button>
-        </h2>
 
-        <div id="openWalletAdvancedOptions" class="collapse">
-          <div class="accordion-body">
-            <div class="options">
-              <label>Segregated Witness Address</label>
-              <p class="checkbox">
-                <label><input type="checkbox" id="walletSegwit" class="checkbox-inline" checked> Use a segwit address instead of a regular address. <span class="text-muted">(recommended)</span></label> 
-                <br>
-                <label><input type="radio" id="walletSegwitp2sh" class="walletSegwitType" name="walletSegWitType" value="p2sh" checked> p2sh address</label> <br>
-                <label><input type="radio" id="walletSegwitBech32" class="walletSegwitType" name="walletSegWitType" value="bech32"> bech32 address</label>
-              </p>
-              <label>Enable Replace by Fee (RBF)</label>
-              <p class="checkbox">
-                <label><input type="checkbox" id="walletRBF" class="checkbox-inline" checked> Enable RBF on all transactions, allowing you to manually raise the transaction fee later if required. <span class="text-muted">(recommended)</span></label>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      
-    </div>
-    
-
-                    </div>
-                    <div class="col-md-12" align="center">
-                      <div id="walletQrCode"></div>
-                      <br>
-                      <div>
-                        <span id="walletLoader" class="hidden"><img src="images/loader.gif"></span>
-                        <span id="walletAddress"></span> 
-                        
-<div class="">
-                                                        <button type="button" class="btn btn-outline-primary dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            Action
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-right" style="">
-                                                            <a class="dropdown-item" href="javascript:void(0);" id="walletToSegWit">SegWit</a>
-                                                            <a class="dropdown-item" href="javascript:void(0);" id="walletToSegWitBech32">SegWit/Bech32</a>
-                                                            <a class="dropdown-item" href="javascript:void(0);" id="walletToLegacy">Legacy</a>
-                                                        </div>
-                                                    </div>
-
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" id="walletToBtn">SegWit <span class="caret"></span></button>
-                          <ul class="dropdown-menu">
-                            <li><a href="javascript:;" id="walletToSegWit">SegWit</a></li>
-                            <li><a href="javascript:;" id="walletToSegWitBech32">SegWit/Bech32</a></li>
-                            <li><a href="javascript:;" id="walletToLegacy">Legacy</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                      <br>
-                      <div style="text-align:center; width:350px;">
-                        <ul class="nav nav-pills" role="tablist">
-                          <li role="presentation" class="active"><a href="javascript:;" id="walletBalance">0.00 BTC</a></li>
-                          <li role="presentation"><a href="javascript:;" id="walletShowSpend">Spend</a></li>
-                          <li role="presentation"><a href="javascript:;" id="walletHistory" target="_blank">History</a></li>
-                          <li role="presentation"><a href="javascript:;" id="walletShowBuy">Buy</a></li>
-                          <li role="presentation"><a href="javascript:;" id="walletShowKeys">Keys</a></li>
-                        </ul>
-                        <br>
-                        <div id="walletBuy" class="row walletOptions hidden">
-                          <div class="col-md-6">
-                            <label>Exchanges</label>
-                            <p><img src="images/hodlhodl16x.png" style="padding:2;"> <b><a href="https://hodlhodl.com/join/XD4F" target="_bank">HodlHodl</a></b><br>Multisig p2p exchange</p>
-                            <p><img src="images/changelly16x.png" style="padding:2;"> <b><a href="https://changelly.com/buy?from=usd&to=btc&amount=150&ref_id=wdo6tcw9bn9yrd91" target="_blank">Changelly</a></b> <br>Instant crypto exchange</p>
-                          </div>
-                          <div class="col-md-6">
-                            <label>Services</label>
-                            <p><img src="images/bitrefill16x.png" style="padding:2;"> <b><a href="https://www.bitrefill.com/signup/?code=zwuxxhbo" target="_bank">Bitrefill</a></b><br>Coupons and vouchers</p>
-                          </div>
-                        </div>
-                        <div id="walletKeys" class="walletOptions hidden">
-                          <label>Public Key</label>
-                          <input class="form-control pubkey" type="text" readonly>
-                          <div class="walletSegWitRS hidden">
-                            <label>Redeem Script <i>(SegWit)</i></label>
-                            <input class="form-control" type="text" readonly>
-                          </div>
-                          <label>Private key</label>
-                          <div class="input-group">
-                            <input class="form-control privkey" type="password" readonly>
-                            <span class="input-group-append">
-                            <button class="showKey btn btn-secondary" type="button"><i class="bi bi-eye-fill"></i></button>
-                            </span>
-                          </div>
-                          <label>Private Key (AES256 encrypted key)</label>
-                          <input class="form-control privkeyaes" type="text" readonly>
-                        </div>
-                        <div id="walletSpend" class="walletOptions hidden">
-                          <div class="row">
-                            <div class="form-inline output">
-                              <div class="col-8">
-                                <label>Address</label>
-                              </div>
-                              <div class="col-3">
-                                <label>Amount</label>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row" id="walletSpendTo">
-                            <div class=" output">
-                              <div class="col-8">
-                                <input type="text" class="form-control addressTo" >
-                              </div>
-                              <div class="col-3">
-                                <input type="text" class="form-control amount"  placeholder="0.00">
-                              </div>
-                              <a href="javascript:;" class="addressAdd"><i class="bi bi-plus"></i></a>
-                              <br><br>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-6">
-                              <label><abbr title="the amount to pay in network miner fee">Transaction Fee</abbr>&nbsp;&nbsp;<a href="javascript:;" id="feesestwallet"><span class="glyphicon glyphicon-question-sign"></span></a></label>
-                              <input type="text" class="form-control" value="0.00001000" id="txFee">
-                            </div>
-                            <div class="col-5">
-                              <label><abbr title="the amount to donate to Wally.id">Donation</abbr></label>
-                              <input type="text" class="form-control" value="0.001" id="developerDonation">
-                            </div>
-                          </div>
-                          <br>
-                          <div id="walletSendStatus" class="alert alert-danger hidden"></div>
-                          <button class="btn btn-primary" type="button" id="walletSendBtn">Send</button>
-                          <button class="btn btn-secondary" type="button">Reset</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                
               </div>
 	        </div>
 	        <div class="card-openwallet-footer ">
@@ -1922,168 +2208,6 @@
 	      </div>
 
 	      
-            <!--
-            <div class="row no-gutters tab-body-open-wallet">
-              
-              	OLD login box
-
-<div class="col-md-12">
-              	
-
-                <h2 class="card-title">Open Wallet</h2>
-                <h4 class="card-subtitle mb-3 text-muted">Multi-currency blockchain wallet!</h4>
-                <div id="openLogin">
-                  <form class="form-signin" action="javascript:;">
-                    <p>Use the form below to open a wallet and begin using this service.</p>
-                    <div class="alert alert-warning">
-                      <b>Notice</b>: Different email address and password combination will open different wallets, be careful when entering your details as lost accounts can not be recovered! 
-                    </div>
-                    <input id="openEmail" type="email" class="form-control" placeholder="Email address" required autofocus>
-                    
-                    <div class="input-group">
-	                  <input id="openPass" type="password" class="form-control" placeholder="Password" required>
-	                  <div class="input-group-append">
-	                  <span class="showKey input-group-text cursor-pointer" type="button"><i class="bi bi-eye-fill"></i></span>
-	                  </div>
-	                </div>
-	                <div class="input-group">
-	                  <input id="openPassConfirm" type="password" class="form-control" placeholder="Password confirm" required>
-	                  <div class="input-group-append">
-	                  <span class="showKey input-group-text cursor-pointer"><i class="bi bi-eye-fill"></i></span>
-	                  </div>
-	                </div>
-
-                    
-                    <br>
-
-                    
-  
-
-
-                    
-                    <div id="openLoginStatus" class="alert alert-danger hidden"></div>
-                    <button id="openBtn" class="btn btn-block btn btn-flat-primary waves-effect" type="submit">Open my Wallet</button>
-                  </form>
-                </div>
-
-
-                <div id="openWallet" class="hidden">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <p><span style="float:right;"><a href="javascript:;" id="walletLogout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></span>Welcome to your wallet, enjoy your stay!</p>
-                    </div>
-                    <div class="col-md-12" align="center">
-                      <div id="walletQrCode"></div>
-                      <br>
-                      <div>
-                        <span id="walletLoader" class="hidden"><img src="images/loader.gif"></span>
-                        <span id="walletAddress"></span> 
-                        
-<div class="">
-                                                        <button type="button" class="btn btn-outline-primary dropdown-toggle waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            Action
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-right" style="">
-                                                            <a class="dropdown-item" href="javascript:void(0);" id="walletToSegWit">SegWit</a>
-                                                            <a class="dropdown-item" href="javascript:void(0);" id="walletToSegWitBech32">SegWit/Bech32</a>
-                                                            <a class="dropdown-item" href="javascript:void(0);" id="walletToLegacy">Legacy</a>
-                                                            <div role="separator" class="dropdown-divider"></div>
-                                                            <a class="dropdown-item" href="javascript:void(0);">Test</a>
-                                                        </div>
-                                                    </div>
-
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" id="walletToBtn">SegWit <span class="caret"></span></button>
-                          <ul class="dropdown-menu">
-                            <li><a href="javascript:;" id="walletToSegWit">SegWit</a></li>
-                            <li><a href="javascript:;" id="walletToSegWitBech32">SegWit/Bech32</a></li>
-                            <li><a href="javascript:;" id="walletToLegacy">Legacy</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                      <br>
-                      <div style="text-align:center; width:350px;">
-                        <ul class="nav nav-pills" role="tablist">
-                          <li role="presentation" class="active"><a href="javascript:;" id="walletBalance">0.00 BTC</a></li>
-                          <li role="presentation"><a href="javascript:;" id="walletShowSpend">Spend</a></li>
-                          <li role="presentation"><a href="javascript:;" id="walletHistory" target="_blank">History</a></li>
-                          <li role="presentation"><a href="javascript:;" id="walletShowBuy">Buy</a></li>
-                          <li role="presentation"><a href="javascript:;" id="walletShowKeys">Keys</a></li>
-                        </ul>
-                        <br>
-                        <div id="walletBuy" class="row walletOptions hidden">
-                          <div class="col-md-6">
-                            <label>Exchanges</label>
-                            <p><img src="images/hodlhodl16x.png" style="padding:2;"> <b><a href="https://hodlhodl.com/join/XD4F" target="_bank">HodlHodl</a></b><br>Multisig p2p exchange</p>
-                            <p><img src="images/changelly16x.png" style="padding:2;"> <b><a href="https://changelly.com/buy?from=usd&to=btc&amount=150&ref_id=wdo6tcw9bn9yrd91" target="_blank">Changelly</a></b> <br>Instant crypto exchange</p>
-                          </div>
-                          <div class="col-md-6">
-                            <label>Services</label>
-                            <p><img src="images/bitrefill16x.png" style="padding:2;"> <b><a href="https://www.bitrefill.com/signup/?code=zwuxxhbo" target="_bank">Bitrefill</a></b><br>Coupons and vouchers</p>
-                          </div>
-                        </div>
-                        <div id="walletKeys" class="walletOptions hidden">
-                          <label>Public Key</label>
-                          <input class="form-control pubkey" type="text" readonly>
-                          <div class="walletSegWitRS hidden">
-                            <label>Redeem Script <i>(SegWit)</i></label>
-                            <input class="form-control" type="text" readonly>
-                          </div>
-                          <label>Private key</label>
-                          <div class="input-group">
-                            <input class="form-control privkey" type="password" readonly>
-                            <span class="input-group-append">
-                            <button class="showKey btn btn-secondary" type="button"><i class="bi bi-eye-fill"></i></button>
-                            </span>
-                          </div>
-                          <label>Private Key (AES256 encrypted key)</label>
-                          <input class="form-control privkeyaes" type="text" readonly>
-                        </div>
-                        <div id="walletSpend" class="walletOptions hidden">
-                          <div class="row">
-                            <div class="form-inline output">
-                              <div class="col-8">
-                                <label>Address</label>
-                              </div>
-                              <div class="col-3">
-                                <label>Amount</label>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row" id="walletSpendTo">
-                            <div class=" output">
-                              <div class="col-8">
-                                <input type="text" class="form-control addressTo" >
-                              </div>
-                              <div class="col-3">
-                                <input type="text" class="form-control amount"  placeholder="0.00">
-                              </div>
-                              <a href="javascript:;" class="addressAdd"><i class="bi bi-plus"></i></a>
-                              <br><br>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-6">
-                              <label><abbr title="the amount to pay in network miner fee">Transaction Fee</abbr>&nbsp;&nbsp;<a href="javascript:;" id="feesestwallet"><span class="glyphicon glyphicon-question-sign"></span></a></label>
-                              <input type="text" class="form-control" value="0.00001000" id="txFee">
-                            </div>
-                            <div class="col-5">
-                              <label><abbr title="the amount to donate to coinb.in">Donation</abbr></label>
-                              <input type="text" class="form-control" value="0.001" id="developerDonation">
-                            </div>
-                          </div>
-                          <br>
-                          <div id="walletSendStatus" class="alert alert-danger hidden"></div>
-                          <button class="btn btn-primary" type="button" id="walletSendBtn">Send</button>
-                          <button class="btn btn-secondary" type="button">Reset</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>	<-- old login box
-            -->
           </div>
           <div class="tab-pane tab-content" id="newAddress" data-route="newAddress">
             <div class="pageScrollSpace">&nbsp;</div>
@@ -2633,31 +2757,6 @@
 </div></div>
 
       
-<div class="container hidden">
-  <hr>
-  <div class="row">
-                    <div class="py-3">
-                <ul class="nav nav-tabs project-tab d-flex flex-row justify-content-between" role="tablist">
-    <li class="ml-2">&nbsp;</li>
-    <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#newTransaction/txoutputs" data-target="#txoutputs2" role="tab" >Home</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#newTransaction/txinputs" data-target="#txinputs2" role="tab" >Profile</a>
-    </li>
-
-  </ul>
-
-  <!-- Tab panes -->
-  <div class="tab-content">
-    <div class="tab-pane p-2 active" id="txoutputs2" role="tabpanel">outputs  tab.</div>
-    <div class="tab-pane p-2" id="txinputs2" role="tabpanel">inputs tab.</div>
-
-  </div>
-</div>
-  </div>
-  <hr>
-</div>
 
                 
                 <br>
@@ -3186,10 +3285,10 @@
                   <table class="table table-striped table-hover ins">
                     <thead>
                       <tr style="font-weight:bold;">
-                        <td><abbr title="the transaction id">Txid</abbr></td>
-                        <td><abbr title="index id of the the transaction">N</abbr></td>
-                        <td><abbr title="transaction script">Script</abbr></td>
-                        <td><abbr title="is input signed?">Signed?</abbr></td>
+                        <td><abbr title="The transaction ID">Txid</abbr></td>
+                        <td><abbr title="Index ID of the the transaction">N</abbr></td>
+                        <td><abbr title="Transaction script">Script</abbr></td>
+                        <td><abbr title="Is input signed?">Signed?</abbr></td>
                         <td><abbr title="is transaction a multisig transaction?">MultiSig?</abbr></td>
                       </tr>
                     </thead>
@@ -3200,9 +3299,9 @@
                   <table class="table table-striped table-hover outs">
                     <thead>
                       <tr style="font-weight:bold;">
-                        <td><abbr title="address the funds are being sent to">Address</abbr></td>
-                        <td><abbr title="the script of the transaction">Script</abbr></td>
-                        <td><abbr title="the amount the address is being sent">Amount</abbr></td>
+                        <td><abbr title="Address the funds are being sent to">Address</abbr></td>
+                        <td><abbr title="Script of the transaction">Script</abbr></td>
+                        <td><abbr title="Amount to send to the address">Amount</abbr></td>
                       </tr>
                     </thead>
                     <tbody>
@@ -3754,10 +3853,10 @@
               <div class="col-12">
                 <h2 class="card-title">Wally.id Token (WAY)</h2>
                 <p>
-                  WAY is a governance and utility token for Wally.id. The goal is to make it easier for people to use cryptocurrencies.<br><br>
+                  WAY is a utility token and can be used as a governance token for Wally.id, enabling smoother utilization of cryptocurrencies while also facilitating decision-making processes. <br>The goal with Wally.id is to make it easier for people to use cryptocurrencies.<br><br>
 
                   There are a few different ways that the WAY token can be used on the Wally.id platform. First, users who hold the token can participate in making decisions about new features and products. Second, the token can be used as payment for certain services within the platform, like submitting requests for new assets. Third, developers who work on creating new apps and features can be rewarded with WAY tokens to encourage them to continue contributing to the platform. Finally, users who help promote and spread the word about the platform can earn WAY tokens as well.<br><br>
-
+ 
                   In the future, there are plans to expand the use of WAY tokens even further. For example, it may be used to offer discounts on certain services, to buy and sell digital collectibles, or to vouch for the quality of different products on the platform.<br><br>
 
                   The price of the WAY token is determined by the users who trade it on different exchanges, so it can go up or down depending on market demand. The token is available on the Polygon chain, which means that it can be sent and received by any wallet that supports that ecosystem.<br><br>
