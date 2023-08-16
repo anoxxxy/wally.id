@@ -13,12 +13,18 @@
   //active/current coin/asset variables
   wally_fn.host = '';
   
-  wally_fn.network = 'mainnet'; //this is the temporary network choosen in settings page but not saved
-  wally_fn.asset = 'bitcoin'; //this is the temporary asset choosen in settings page but not saved
-
+  wally_fn.network = 'mainnet'; //this is the temporary network choosen in settings page but not saved (manual transactions)
+  wally_fn.asset = 'bitcoin'; //this is the temporary asset choosen in settings page but not saved, (manual transactions)
   wally_fn.chainModel = 'utxo';
-  wally_fn.provider = {utxo:'', broadcast:''};
-  wally_fn.assetInfo = {}; //has a copy of "coinjs.asset" object
+  wally_fn.provider = {utxo:'', broadcast:''};  //(manual transactions)
+  wally_fn.assetInfo = {}; //has a copy of "coinjs.asset" object, not used besides dabi (data-binding)
+
+    //not used yet
+  wally_fn.wallet_settings = {
+    asset: '',
+    chainModel: '',
+    provider: '',
+  };
 
   //wally_fn.availablePages = ["home", "newAddress", "newSegWit", "newMultiSig", "newTimeLocked", "newHDaddress", "newTransaction", "verify", "sign", "broadcast", "wallet", "settings", "about", "fees", "converter"];
   
@@ -661,6 +667,30 @@ param array: h  (hex-string for private key)
 wally_fn.generateAllWalletAddresses = async function(h){
   console.log('=================wally_fn.generateAllWalletAddresses=================')
 
+  let coinListModal = BootstrapDialog.show({
+                    title: 'Generating Wallet Addresses',
+                    message: function(dialogRef) {
+                        var $content = $('<div>Progress: <div id="initCoinList" class="initCoinList"></div></div>');
+                        return $content;
+                    },
+                      
+
+                    closable: false,
+                    verticalCentered:true,
+                    closeByBackdrop: false,
+                    closeByKeyboard: false,
+                    data: {
+                      'coin-name': '',
+                    },
+                    buttons: [{
+                        label: 'Please wait ...',
+                        cssClass: 'btn-sm btn-flat-primary',
+                        action: function(dialogRef){
+                            
+                        }
+                    }]
+                });
+
   var genAddress;
   var walletAddress = {};  //used for regular address generation
   var keys_combined = []; //used for multisig address generation
@@ -675,6 +705,10 @@ wally_fn.generateAllWalletAddresses = async function(h){
     if (value.asset.chainModel == 'utxo') {
       //asset supports compressed keys?
       if ( (value.asset.supports_address).includes( 'compressed') ) {
+
+        //UI rendering
+        login_wizard.initCoinList(coinListModal);
+
         $.extend(coinjs, value);  //change asset and generate address
 
           if (walletAddress[key] === undefined)
@@ -715,36 +749,60 @@ wally_fn.generateAllWalletAddresses = async function(h){
       }
     }
 
+
     //Account based coins, like ETH
     if (value.asset.chainModel == 'account') {
 
-      
+      console.log('h2:', h);
+      console.log('h2[]:', h[i]);
       if ( (value.asset.supports_address).includes('single') ) {
+
+        //UI rendering
+        login_wizard.initCoinList(coinListModal);
+
         $.extend(coinjs, value);  //change asset and generate address
 
-        var wweb3 = new Web3(new Web3.providers.HttpProvider(''));
-        //var evm_account = wweb3.eth.accounts.privateKeyToAccount('0d11db7762acfdf1fec7518cd5ad5517ccfed719ed4bf228f1d0c5138273a915');
-        var evm_account = wweb3.eth.accounts.privateKeyToAccount(h.toString());
+        var key = 'web3_account';
+        if (walletAddress[key] === undefined)
+            walletAddress[key] = {};
 
-        //since all account based uses same key-pair generation, we limit it to 1 to speed up the process
-        if (walletAddress['web3_account'] === undefined) {
+        for (i = 0; i< keys_length; i++) {
+
+          walletAddress[ key ][i] = {}
+
+          var wweb3 = new Web3(new Web3.providers.HttpProvider(''));
+          //var evm_account = wweb3.eth.accounts.privateKeyToAccount('0d11db7762acfdf1fec7518cd5ad5517ccfed719ed4bf228f1d0c5138273a915');
+          var evm_account = wweb3.eth.accounts.privateKeyToAccount(h[i]);
+
+          walletAddress[key][i].address = evm_account.address;
+          walletAddress[key][i].privateKey = evm_account.privateKey;
+
+          /*
+          //since all account based uses same key-pair generation, we limit it to 1 to speed up the process
+          if (walletAddress['web3_account'] === undefined) {
             walletAddress['web3_account'] = {};
 
             walletAddress['web3_account'].address = evm_account.address;
             walletAddress['web3_account'].privateKey = evm_account.privateKey;
           }
-        
+          */
+        }
+      
 
       }
 
     }
+    
     //await wally_fn.nonBlockTick();
     await wally_fn.timeout(5);
+
   }
 
 
 //set asset default to Bitcoin
 $.extend(coinjs, wally_fn.networks.mainnet.bitcoin);
+
+coinListModal.close() //close modal
 
 console.log('walletAddress: ', walletAddress);
 return walletAddress;
@@ -1762,6 +1820,47 @@ Blackcoin 10
         txRBFTransaction: true,
         developer: 'moZx3Vhdj4xe1JbEp7BegcpVdMNWTpzWHh',
       },
+      /*
+      "bitcoin-cash" : {
+        symbol: 'tBCH',      //ticker
+        asset: {
+          chainModel: 'utxo',
+          name: 'Bitcoin-Cash',
+          slug: 'bitcoin-cash',
+          symbol: 'tBCH',
+          symbols: ['bch', 'bitcoin-cash'],
+          icon: './assets/images/crypto/bitcoin-cash-bch-logo.svg',
+          network: 'testnet',
+          supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
+          api : {
+              
+            unspent_outputs: {
+              
+
+            },
+            broadcast: {
+              
+
+
+            }
+          }
+        },
+        pub : 0x6f,      //pubKeyHash
+        priv : 0xef,     //wif
+        multisig : 0xc4, //scriptHash
+          hdkey : {'prv':0x04358394, 'pub':0x043587cf}, //iceeee: fix this
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':1, 'hrp':'bchtest:'},
+          //bech32 : {},
+          
+        txExtraTimeField: false,    //Set to true for PoS coins
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:8,
+        txRBFTransaction: true,
+        developer: 'moZx3Vhdj4xe1JbEp7BegcpVdMNWTpzWHh',
+      },
+      */
       litecoin : {
         symbol: 'tLTC',      //ticker
         asset: {
@@ -1821,7 +1920,7 @@ Blackcoin 10
         priv : 0xf1,     //wif
         multisig : 0xc4, //scriptHash
           hdkey : {'prv':0x04358394, 'pub':0x043587cf},
-          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'litecointestnet'},
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, /*'hrp':'litecointestnet'*/},
           
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,

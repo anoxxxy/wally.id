@@ -49,10 +49,26 @@ header .menu .colorize {
   transition: color 0.2s ease;
 }
 
-header .menu .colorize:hover {
+header .menu .colorize:hover img{
   color: #4f349d;
+  -webkit-animation: settingsSpin 2s forwards infinite linear;
+          animation: settingsSpin 2s forwards infinite linear;
 
 }
+
+/* animation  */
+
+
+@keyframes settingsSpin {
+  from {
+    transform: translate(0%, 0%) rotate(0deg);
+  }
+  to {
+    transform: translate(0%, 0%) rotate(360deg);
+  }
+}
+
+
 
 header .menu__item.nav_logo a {
   padding-left: 0;
@@ -329,7 +345,7 @@ position: relative;
 height: 30px;
 }
 
-/*
+/*filter: invert(100%) sepia(10%) saturate(32%) hue-rotate(82deg) brightness(109%) contrast(105%);
 If the color is known in advance, you can use https://codepen.io/sosuke/pen/Pjoqqp to find the filter needed to change your SVG to the desired color. For example, to convert the svg to #00f:
 */
 header  li.menu__item a[href="#settings"]:hover img{

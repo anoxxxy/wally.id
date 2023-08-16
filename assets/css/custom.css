@@ -998,15 +998,9 @@ margin-right: 2px;
 }
 
 
-/*
-icee
-messing up inputs!
-*/
-.input-group > input {
-	/*
-	border-left: 0;
-	border-right: 0;
-	*/
+.input-group-callout .callout-title{
+	z-index: 4;
+
 }
 
 
@@ -2597,22 +2591,20 @@ position: unset;
     border-color: transparent transparent #f3f3f3;
     border-bottom: 3px solid !important;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 500;
 }
 .project-tab .nav-link {
     border: 1px solid transparent;
     
     color: #AAA;
     font-size: 16px;
-    font-weight: 600;
 }
 .project-tab .nav-link:hover {
     border-color: transparent;
 }
 .project-tab a{
     text-decoration: none;
-    color: #333;
-    font-weight: 600;
+    color: #333;;
 }
 
 
@@ -3292,23 +3284,30 @@ bottom: 0;
 	border-bottom: unset;
 }
 #walletAsset .callout-title {
-	top: 12px;
+	top: 8px;
 }
 
 /* Default table styles for flex table "table-ice"*/
 
+.form-horizontal,
 .form-horizontal.output {
   display: flex;
-  flex-direction: row;
+  
   flex-wrap: nowrap;
   
   border-radius: 10px;
-border-bottom: 2px solid #f6f6f6;
-margin: 0.5rem 0.1rem;
-padding: 1rem 0;
-  padding-top: 1rem;
-
-  
+	border-bottom: 2px solid #f6f6f6;
+	margin: 0.5rem 0.1rem;
+	
+  padding-top: 1rem;  
+}
+.form-horizontal {
+	flex-direction: column;
+	padding: 10px 5px;
+}
+.form-horizontal.output {
+	flex-direction: row;
+	padding: 1rem 0;
 }
 .form-horizontal.output .callout-title {
 	display: contents;
@@ -3359,6 +3358,11 @@ padding: 1rem 0;
 	padding: 0px;
 }
 
+.wallet_address_advanced_options.form-horizontal.output{
+	flex-direction: row;
+
+}
+
 
 @media(max-width: 992px) {
   #walletSpendTo .form-horizontal.output {
@@ -3376,10 +3380,18 @@ padding: 1rem 0;
   flex: 0 1 50px;
   }
 
-  #wallet_advanced_options_dropdown {
-  	display: none;
+  .wallet_address_advanced_options.form-horizontal.output{
+  	flex-direction: column;
+  	
+  }
+  .wallet_address_advanced_options.form-horizontal.output #wallet_advanced_options_dropdown{
+  	padding-top: 10px;
+		padding-bottom: 10px;
+		display: flex;
+		justify-content: end;
   }
 }
+
 
 
 #walletSpendTo .addressAdd {
@@ -3439,11 +3451,31 @@ padding-left: 0.75rem;
 	height: 28px;
 }
 
-/*
-.blockie_wrapper .input-group-prepend .input-group-text,
-.blockie_wrapper .input-group-append .input-group-text,
-.blockie_wrapper input {
-	border: 0;
-	box-shadow: unset;
+
+
+.jBox-wrapper {
+	max-width: 280px;
+}
+.jBox-wrapper.jBox-TooltipDark .jBox-container {
+	width: auto;
+  
+  opacity: 0.75;
+}
+.jBox-wrapper.jBox-TooltipDark .jBox-pointer {
+	opacity: 0.75;
+}
+/*.jBox-container {
+  width: auto;
+  max-width: 220px;
+  opacity: 0.95;
 }
 */
+
+#walletAddress {
+	font-size: 0.92rem;
+	font-weight: 500;
+	word-wrap: anywhere;
+}
+
+
+

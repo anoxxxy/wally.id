@@ -36,7 +36,7 @@
     var modalTitle = 'Network Settings', modalMessage, newNetwork;
     try {
       
-      wally_fn.asset = asset_var;
+      
 
       //set default chain type to Mainnet
       if(!listNetworkTypes.includes(network_var))
@@ -58,6 +58,7 @@
       if (options.saveSettings) {
 
 
+
         //extend coinjs with the updated asset configuration
         $.extend(coinjs, wally_fn.networks[network_var][asset_var]);
         //Object.assign(coinjs, (wally_fn.networks[network_var][asset_var]))
@@ -68,6 +69,9 @@
         $('.coin_symbol').text(coinjs.asset.symbol);
         $('.coin_name').text(coinjs.asset.name);
 
+        
+        wally_fn.asset = asset_var;
+        wally_fn.network = network_var;
         wally_fn.chainModel = coinjs.asset.chainModel;
 
         console.log('#modalChangeAsset input[name="set-asset-group"][value="'+asset_var+'"]');
@@ -699,7 +703,7 @@
 
     console.log('===settingsListAssets===');
     try {
-      wally_fn.network = network_var;
+      //wally_fn.network = network_var;
 
       console.log('Network: '+network_var);
       console.log('Asset: '+wally_fn.asset);
@@ -755,7 +759,7 @@
         i++;
       }
 
-      this.settingsListNetworkProviders();
+      this.settingsListNetworkProviders('', network_var);
     } catch (e) {
       console.log('wally_kit.settingsListAssets ERROR:', e);
     }
@@ -764,7 +768,7 @@
   /*
   @ Set Providers for chosen network!
   */
-  wally_kit.settingsListNetworkProviders = function(asset_var) {
+  wally_kit.settingsListNetworkProviders = function(asset_var, network_var) {
     console.log('===settingsListNetworkProviders===');
 
     var selectNetworkBroadcastAPI = $('#coinjs_broadcast_api').text('');
@@ -772,33 +776,36 @@
     var selectNetworkUtxoAPI = $('#coinjs_utxo_api').text('');
     var selectNetworkUtxoAPIwIcons = $('#coinjs_utxo_api_select ul').text('');
 
+    console.log('asset_var: '+ asset_var);
+    console.log('network_var: '+ network_var);
 
+    if(network_var === undefined || network_var == ''){
+      network_var = 'mainnet';
+    }
     
     //console.log('asset_var before: '+asset_var);
     //console.log('wally_fn.asset before: ', wally_fn.asset);
-    //no asset, set the default asset 
-    if(asset_var !== undefined) {
+    //no asset, set the default asset to bitcoin
+    if(asset_var === undefined || asset_var == ''){
+      //wally_fn.asset = 'bitcoin';
+      asset_var = 'bitcoin';
+      console.log('update default asset to: '+wally_fn.asset);
+    } else {
       
 
-      //update select button content relative to asset
-      $('#coinjs_network_select button').text('');
-      if( wally_fn.networks[wally_fn.network][asset_var] !== undefined ) {
+      //update select button content relative to chosen asset and network
+      if( wally_fn.networks[network_var][asset_var] !== undefined ) {
 
-        wally_fn.asset = asset_var;
-        console.log('update asset to: '+asset_var);
-        console.log('updated asset to: '+wally_fn.asset);
+        //wally_fn.asset = asset_var;
+        console.log('updated asset to: '+asset_var);
 
         //check ERC/BEP/PLG-20 Compability
-        var parentTokenBadge = wally_kit.getParentTokenBadge(wally_fn.networks[wally_fn.network][asset_var].asset.chainModel, wally_fn.networks[wally_fn.network][asset_var].asset.protocol);
+        var parentTokenBadge = wally_kit.getParentTokenBadge(wally_fn.networks[network_var][asset_var].asset.chainModel, wally_fn.networks[network_var][asset_var].asset.protocol);
 
-        $('#coinjs_network_select button').html('<div class="icon_with_badge"><img src="'+wally_fn.networks[wally_fn.network][asset_var].asset.icon+'" class="icon32"> '+parentTokenBadge+ '</div> ' +wally_fn.networks[wally_fn.network][asset_var].asset.name+' ('+wally_fn.networks[wally_fn.network][asset_var].asset.symbol+') <span class="badge badge-primary chain_model">'+wally_fn.networks[wally_fn.network][asset_var].asset.chainModel+'</span></small>'); 
+        $('#coinjs_network_select button').html('<div class="icon_with_badge"><img src="'+wally_fn.networks[network_var][asset_var].asset.icon+'" class="icon32"> '+parentTokenBadge+ '</div> ' +wally_fn.networks[network_var][asset_var].asset.name+' ('+wally_fn.networks[network_var][asset_var].asset.symbol+') <span class="badge badge-primary chain_model">'+wally_fn.networks[network_var][asset_var].asset.chainModel+'</span></small>'); 
       }
     }
 
-    if (wally_fn.asset == '') {
-      wally_fn.asset = 'bitcoin';
-      console.log('update default asset to: '+wally_fn.asset);
-    }
     
     
     //$('#coinjs_network_select li[data-asset="'+asset_var+'"]').click();
@@ -806,11 +813,11 @@
 
 
 
-    console.log('wally_fn.asset after: ', wally_fn.asset);
+    console.log('wally_fn.asset after: ', asset_var);
+    console.log('wally_fn.network after: ', network_var);
 
-    $('#coinjs_broadcast_api_select button').text('');
     var i=0, electrumXContent ='';
-    for (var [key, value] of Object.entries(wally_fn.networks[wally_fn.network][wally_fn.asset].asset.api.broadcast)) {
+    for (var [key, value] of Object.entries(wally_fn.networks[network_var][asset_var].asset.api.broadcast)) {
       
       //show ElectrumX server in list
       if (key.includes('ElectrumX'))
@@ -830,8 +837,7 @@
 
     i=0;
 
-    $('#coinjs_utxo_api_select button').text('');
-    for (var [key, value] of Object.entries(wally_fn.networks[wally_fn.network][wally_fn.asset].asset.api.unspent_outputs)) {
+    for (var [key, value] of Object.entries(wally_fn.networks[network_var][asset_var].asset.api.unspent_outputs)) {
       
         //show ElectrumX server in list
       if (key.includes('ElectrumX'))
@@ -1225,7 +1231,11 @@ const shootPeasPromise = (...args) => {
     //console.log('Network Type changed: ' , e);
     //console.log('Network Type to: ' , $(this).attr('data-network-type'));
     //wally_kit.settingsListAssets($(this).attr('data-network-type'));
-    wally_kit.setNetwork($(this).attr('data-network-type'), '',{saveSettings: false, showMessage: false, renderFields: true});
+
+    var network_var = $(this).filter(":checked").val();
+    console.log('portfolioNetworkType.on change -> network_var: ' + network_var)
+
+    wally_kit.setNetwork( network_var, '',{saveSettings: false, showMessage: false, renderFields: true});
   });
 
   portfolioAsset.on('change', function(e) {
@@ -1244,7 +1254,14 @@ const shootPeasPromise = (...args) => {
 
     //update network type and providers
     //wally_kit.setNetwork(wally_fn.network, this.value, {saveSettings: false, showMessage: false});
-    wally_kit.settingsListNetworkProviders(this.value);
+
+    //$('input[type=radio][name=radio_selectNetworkType]').filter(':checked').val()
+    //portfolioNetworkType.filter(":checked").val()
+
+    
+    var network_var = portfolioNetworkType.filter(":checked").val();
+    console.log ('portfolioNetworkType.filter(":checked").val(): ', network_var);
+    wally_kit.settingsListNetworkProviders(this.value, network_var);
 
     //wally_fn.asset = asset_var;
   });
@@ -1311,33 +1328,6 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
 
   //#settings .dropdown-select li
 });
-  
-
-
-    BootstrapDialog.show({
-            title: 'Manipulating Buttons',
-            message: function(dialog) {
-                var $content = $('<div><button class="btn btn-success">Revert button status right now.</button></div>');
-                var $footerButton = dialog.getButton('btn-1');
-                $content.find('button').click({$footerButton: $footerButton}, function(event) {
-                    event.data.$footerButton.enable();
-                    event.data.$footerButton.stopSpin();
-                    dialog.setClosable(true);
-                });
-                
-                return $content;
-            },
-            buttons: [{
-                id: 'btn-1',
-                label: 'Click to disable and spin.',
-                action: function(dialog) {
-                    var $button = this; // 'this' here is a jQuery object that wrapping the <button> DOM element.
-                    $button.disable();
-                    $button.spin();
-                    dialog.setClosable(false);
-                }
-            }]
-        });
   
   
   /* since the select content is dynamic we need to listen to body > element */

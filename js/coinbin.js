@@ -59,7 +59,10 @@ profile_data = {
 
 
 	$("#openBtn").click(function(){
-		
+
+		//try to login
+		//login_wizard.openUserWallet();
+
 		var tmp = login_wizard.profile_data;
 		if (login_wizard.profile_data === undefined) {
 			modalTitle = 'Wallet Login - Failed!'
@@ -71,10 +74,22 @@ profile_data = {
       		custom.showModal(modalTitle, modalMessage, 'success');
 		}
       
+		if (tmp.profile_data.wallet_type == 'multisig') {
+			var totalKeys = tmp.profile_data.hex_key.length;
+
+			//generate public keys from the hex key
+		}
 
 		var adr_legacy = login_wizard.profile_data.generated.bitcoin[0].address;	//legacy (compressed)
 		var wif = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.key;	
 		var pubkey = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.public_key;	
+
+		var adr_legacy_uncompressed = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.uncompressed.address;		//legacy (compressed)
+		var wif_uncompressed = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.uncompressed.key;	
+		var pubkey_uncompressed = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.uncompressed.public_key;	
+
+
+		
 		
 		var adr_bech32 = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.bech32.address;	//bech32
 		var adr_bech32_redeem = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.bech32.redeemscript;	//segwit
@@ -84,31 +99,43 @@ profile_data = {
 		
 		var address = adr_legacy;
 
+		var walletToAddress = 'Legacy <small>(Compressed)</small>';
 
 		$("#walletKeys .walletSegWitRS").addClass("hidden");
 		if($("#walletSegwit").is(":checked")){
 			if($("#walletSegwitBech32").is(":checked")){
 				address = adr_bech32;
 				address_redeem = adr_bech32_redeem
+				var walletToAddress = 'Bech32';
 			} else {
 				address = adr_segwit;
 				address_redeem = adr_segwit_redeem;
+				var walletToAddress = 'SegWit';
 			}
 
 			$("#walletKeys .walletSegWitRS").removeClass("hidden");
 			$("#walletKeys .walletSegWitRS input:text").val(address_redeem);
+		} else {
+			if ($('#walletLegacyUncompressed').is(':checked')) {
+				address = adr_legacy_uncompressed;
+				wif = wif_uncompressed;
+				pubkey = pubkey_uncompressed;
+				var walletToAddress = 'Legacy <small>(Uncompressed)</small>';
+			}
 		}
 
-		$("#walletAddress").html(address);
+		$("#walletAddress").val(address);
+		$(".walletAddress").text(address);
 		$("#walletHistory").attr('href',explorer_addr+address);
 
 		$("#walletQrCode").html("");
 		var qrcode = new QRCode("walletQrCode");
-		qrcode.makeCode("bitcoin:"+address);
+		//qrcode.makeCode("bitcoin:"+address);
+		qrcode.makeCode(coinjs.asset.slug+':'+address);
 
 		$("#walletKeys .privkey").val(wif);
+		$("#walletKeys .privkeyhex").val(login_wizard.profile_data.hex_key);
 		$("#walletKeys .pubkey").val(pubkey);
-		//$("#walletKeys .privkeyaes").val(privkeyaes);
 
 		$("#login").hide();
 		//$("#openLogin").hide();
@@ -146,34 +173,86 @@ profile_data = {
 
 	$("#walletSegwit").click(function(){
 		if($(this).is(":checked")){
+			$("#walletLegacy")[0].checked = false;
 			$(".walletSegwitType").attr('disabled',false);
+			$('.walletLegacyType').attr('disabled',true);
+
 		} else {
+			$("#walletLegacy")[0].checked = true;
 			$(".walletSegwitType").attr('disabled',true);
-		}	
+			$('.walletLegacyType').attr('disabled',false);
+		}
+	});
+
+	$("#walletLegacy").click(function(){
+		if($(this).is(":checked")){
+			$("#walletSegwit")[0].checked = false;
+			$(".walletSegwitType").attr('disabled',true);
+			$('.walletLegacyType').attr('disabled',false);
+		} else {
+			$("#walletSegwit")[0].checked = true;
+			$(".walletSegwitType").attr('disabled',false);
+			$('.walletLegacyType').attr('disabled',true);
+		}
 	});
 
 	$("#walletToSegWit").click(function(){
-		$("#walletToBtn").html('SegWit <span class="caret"></span>');
+		$("#walletToAddress").html('SegWit <span class="caret"></span>');
+		$(".walletToAddress").text('SegWit');
+		$(".walletSegwitType").attr('disabled',false);
+		$('.walletLegacyType').attr('disabled',true);
+
+		$("#walletLegacy")[0].checked = false;
 		$("#walletSegwit")[0].checked = true;
+
 		$("#walletSegwitp2sh")[0].checked = true;
 		$("#openBtn").click();
 	});
 
 	$("#walletToSegWitBech32").click(function(){
-		$("#walletToBtn").html('Bech32 <span class="caret"></span>');
+		$("#walletToAddress").html('Bech32 <span class="caret"></span>');
+		$(".walletToAddress").text('Bech32');
+		$(".walletSegwitType").attr('disabled',false);
+		$('.walletLegacyType').attr('disabled',true);
+
+		$("#walletLegacy")[0].checked = false;
 		$("#walletSegwit")[0].checked = true;
+
 		$("#walletSegwitBech32")[0].checked = true;		
 		$("#openBtn").click();
 	});
 
 	$("#walletToLegacy").click(function(){
-		$("#walletToBtn").html('Legacy <span class="caret"></span>');
+		$("#walletToAddress").html('Legacy <small>(Compressed)</small> <span class="caret"></span>');
+		$(".walletToAddress").html('Legacy <small>(Compressed)</small>');
+		$(".walletSegwitType").attr('disabled',true);
+		$('.walletLegacyType').attr('disabled',false);
+
+		$("#walletLegacy")[0].checked = true;
 		$("#walletSegwit")[0].checked = false;
+		
+		
+		$(".walletLegacyType")[0].checked = true;
+
+		$("#openBtn").click();
+	});
+
+	$("#walletToLegacyUncompressed").click(function(){
+		$("#walletToAddress").html('Legacy <small>(Uncompressed)</small> <span class="caret"></span>');
+		$(".walletToAddress").html('Legacy <small>(Uncompressed)</small>');
+		$(".walletSegwitType").attr('disabled',true);
+		$('.walletLegacyType').attr('disabled',false);
+
+		$("#walletLegacy")[0].checked = true;
+		$("#walletSegwit")[0].checked = false;
+		
+		$(".walletLegacyType")[1].checked = true;
+
 		$("#openBtn").click();
 	});
 
 
-	$("#walletBalance, #walletAddress, #walletQrCode").click(function(){
+	$("#walletBalance, #walletQrCode").click(function(){
 		walletBalance();
 	});
 
@@ -342,12 +421,12 @@ profile_data = {
 		$('#walletSpendTo .form-horizontal.output:last-child').removeClass('hidden').velocity('slideDown', { duration: 200 });
 
 		$("#walletSpendTo .form-horizontal.output:last-child .bi-plus:last").removeClass('bi-plus').addClass('bi-dash');
-		$("#walletSpendTo .form-horizontal.output:last-child .bi-dash:last").parent().parent().removeClass('addressAdd').addClass('addressRemove').removeClass('hidden');
+		$("#walletSpendTo .form-horizontal.output:last-child .bi-dash:last").parent().parent().removeClass('addressAdd').addClass('addressRemove').removeClass('hidden').attr('title', 'Remove recipient');
 		$("#walletSpendTo .addressRemove").unbind("");
 		$("#walletSpendTo .addressRemove").click(function(){
 			//$(this).parent().parent().fadeOut().remove();
 			var parent_row = $(this).parent().parent();
-			parent_row.velocity('slideUp', { duration: 200, complete: function() { parent_row.remove() }});
+				parent_row.velocity('slideUp', { duration: 200, complete: function() { parent_row.remove() }});
 
 
 		});
@@ -2073,13 +2152,15 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 
 	function rawSubmitBlockstream(thisbtn, network){ 
 
-		var apiUrl;
-		if(coinjs.asset.network == 'mainnet')
-			apiUrl = '//blockstream.info/api/';
-		if(coinjs.asset.network == 'mainnet')
-			apiUrl = '//blockstream.info/testnet/api/';
+		var 
+			apiUrl = 'https://blockstream.info/api/tx',
+			txUrl = 'live.blockcypher.com';
 
-		
+		if(coinjs.asset.network == 'testnet'){
+			apiUrl = 'https://blockstream.info/testnet/api/tx';
+			txUrl = 'live.blockcypher.com/btc-testnet';
+		}
+
 
 		console.log('===rawSubmitBlockstream===');
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
@@ -2087,17 +2168,19 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 			type: "POST",
 			url: apiUrl,
 			data: $("#rawTransaction").val(),
+			dataType: "json", 
 			error: function(data) {
 				console.log('Blockstream error data: ', data);
-				var r = 'Failed to broadcast: error code=' + data.status.toString() + ' ' + data.statusText;
-				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
+				var r = 'Failed to broadcast - Error Code: ' + data.status.toString() + ' ' + data.statusText;
+				r += '<br>'+data.responseText;;
+				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i> ');
 			},
             success: function(data) {
             	console.log('Blockstream success data: ', data);
             	var txid = (data.match(/[a-f0-9]{64}/gi)[0]);
             	if(txid){
 					$("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden")
-                    .html(' TXID: ' + txid + '<br> <a href="https://live.blockcypher.com/tx/' + txid + '" target="_blank">View on Blockchain Explorer</a>');
+                    .html(' TXID: ' + txid + '<br> <a href="https://'+txUrl+'/tx/' + txid + '" target="_blank">View on Blockchain Explorer</a>');
 				} else {
 					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
 				}
@@ -2155,6 +2238,16 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 	// broadcast transaction via blockcypher.com (mainnet)
 	function rawSubmitBlockcypher(thisbtn, network){ 
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
+
+		if(coinjs.asset.network == 'mainnet') {
+			txUrl = 'live.blockcypher.com';
+
+		}
+		if(coinjs.asset.network == 'mainnet'){
+			txUrl = 'live.blockcypher.com/btc-testnet';
+		}
+
+
 		$.ajax ({
 			type: "POST",
 			url: "https://api.blockcypher.com/v1/"+network+"/main/txs/push",
@@ -2166,7 +2259,7 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
                         success: function(data) {
 				if((data.tx) && data.tx.hash){
 					$("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden")
-                    .html(' TXID: ' + data.tx.hash + '<br> <a href="https://live.blockcypher.com/'+network+'/tx/' + data.tx.hash + '" target="_blank">View on Blockchain Explorer</a>');
+                    .html(' TXID: ' + data.tx.hash + '<br> <a href="https://'+txUrl+'/tx/' + data.tx.hash + '" target="_blank">View on Blockchain Explorer</a>');
 				} else {
 					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
 				}
@@ -3191,12 +3284,15 @@ new jBox('Tooltip', {
 		    
 	    } else {	//else show a regular popover
 
+	    	/*
 	    	pooppis = $(e).popover( {
 		    	html: true,
 	  			delay: { "show": 100, "hide": 200 },
 	  			customClass: '',
 	  			//customClass: 'animate__animated animate__slideInDown',
 		    });
+		    */
+		    
 	  	    //console.log('popover poppis2: ', pooppis);
 	    }
 	  })
@@ -3237,12 +3333,11 @@ new jBox('Tooltip', {
 	 */
 
 	//tooltip & jBox tooltip
-	$('input[title!=""], abbr[title!=""]').tooltip({'placement':'bottom', delay: { "show": 100, "hide": 300 }});
+	//$('input[title!=""], abbr[title!=""]').tooltip({'placement':'bottom', delay: { "show": 100, "hide": 300 }});
+	//$('[title]').tooltip({'placement':'bottom', delay: { "show": 100, "hide": 300 }});
 
-	  new jBox('Tooltip', {
-	    attach: '.generatePassword',
-	    content: 'We use Crypto Random and Fisher-Yates Shuffle Algorithm!'
-	  });
+	
+	
 
 
 	//init load #hashpage
@@ -3298,6 +3393,7 @@ new jBox('Tooltip', {
 		//wally_fn.provider.utxo = $('#coinjs_utxo_api').val();
 		wally_fn.provider.utxo = $('#coinjs_utxo_api option:selected').text();
 		console.log('settingsBtn wally_fn.asset: '+ wally_fn.asset);
+
 
 		wally_kit.setNetwork(wally_fn.network, wally_fn.asset, {saveSettings: true, showMessage: true, renderFields: false});
 		
@@ -3982,13 +4078,85 @@ $("#walletSendReset").click(function(){
   var address = '0x138854708D8B603c9b7d4d6e55b6d32D40557F4D';
 
 
-$(".blockie_wrapper .icon").css("background-image", "url(" + makeBlockie(address) + ")").attr('title', address);
-$(".blockie_wrapper .wallet_address").html(address).attr('title', address);
+$(".blockie_wrapper .icon").css("background-image", "url(" + makeBlockie(address) + ")");
+$(".blockie_wrapper .wallet_address").html(address);
 
-$(".blockie_wrapper .icon").css("background-image", "url(" + makeBlockie(address) + ")").attr('title', address);
-$(".blockie_wrapper .wallet_address").val(address).attr('title', address);
+$(".blockie_wrapper .icon").css("background-image", "url(" + makeBlockie(address) + ")");
+$(".blockie_wrapper .wallet_address").val(address);
 
+$(".blockie_wrapper_with_title").attr('title', 'Address: ' + address);
 //$(".blockie_wrapper").css("background-image", "url(" + makeBlockie('0x138854708D8B603c9b7d4d6e55b6d32D40557F4D') + ")");
+
+
+
+//remove tooltip and popover after release, and replace with jBox Tooltip!
+	$('[title], [data-content]').each(function(index, value) {
+
+		  var _this_ = $(this);
+
+
+		  if(_this_.attr("data-content")) {
+		  	console.log('jbox tooltip content is empty: ', _this_.attr("data-content"));
+		  	if(_this_.attr("data-content") == '')
+		  		return;
+
+		  	new jBox("Tooltip", {
+			    //id: "jBoxTooltip_" + $(this).attr("id"),
+			    attach: $(this),
+			    //content: $(this).attr("data-jbox-content"),
+			    getTitle: 'title',
+	  			getContent: 'data-content',
+			    //attach: "#" + $(this).attr("id")
+			    closeOnMouseleave: true,
+			  })//.attach();
+		  } else {
+		  	if(_this_.attr("title") == '')
+		  		return;
+		  	new jBox("Tooltip", {
+			    theme: "TooltipDark",
+			    attach: $(this),
+			    //getTitle: 'title',
+	  			getContent: 'title',
+	  			position: {
+			      x: 'center',
+			      y: 'bottom'
+			    },
+	  			closeOnMouseleave: false,
+			  })//.attach();
+		  }
+		  	
+
+		  
+		});
+	
+
+/*
+	$('[data-jbox-content]').each(function() {
+		  new jBox("Tooltip", {
+		    theme: "TooltipDark",
+		    attach: $(this),
+		    getTitle: 'data-jbox-title',
+  			getContent: 'data-jbox-content',
+  			closeOnMouseleave: true,
+		  })//.attach();
+		});
+	*/
+
+
+
+/*
+	  $("[data-jbox-content]").each(function() {
+		  new jBox("Tooltip", {
+		    //id: "jBoxTooltip_" + $(this).attr("id"),
+		    attach: $(this),
+		    //content: $(this).attr("data-jbox-content"),
+		    getTitle: 'data-jbox-title',
+  			getContent: 'data-jbox-content',
+		    //attach: "#" + $(this).attr("id")
+		    closeOnMouseleave: true,
+		  })//.attach();
+		});
+	  */
 
 
 });

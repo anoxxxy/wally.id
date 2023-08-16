@@ -34,5 +34,6 @@ $("#verifyRsDataHodl .date").val(decode['checklocktimeverify'] >= 500000000? mom
 *add Electrumx nodes for all coins (if there any)
 *add json object for all coins social network links, website, contact person, team leader accounts, Github repo etc..
 *Wally logo
+*remove tooltip and popover after release, and replace with jBox Tooltip!
 
-
+*add possibility for m-of-n multisig keys for signing.

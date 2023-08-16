@@ -6,7 +6,7 @@
  * modified by @anoxxxy
  */
 
-var ss = function(
+const storage_s = function(
   a, // placeholder for storage object
   b  // placeholder for JSON
 ){
@@ -41,28 +41,29 @@ var ss = function(
 );
 
 /**
-ss.set('meo', {'kalle': 'banan'})
-ss.get('meo')
+ * 
+storage_s.set('meo', {'kalle': 'banan'})
+storage_s.get('meo')
 -->object
 
-ss.set('wally.group', 'hejsan')
-ss.set('wally.group')
+storage_s.set('wally.group', 'hejsan')
+storage_s.set('wally.group')
 -->string
 
-ss.set('wally.group', ['1', '2']) 
-ss.get('wally.group')
+storage_s.set('wally.group', ['1', '2']) 
+storage_s.get('wally.group')
 -->array
 
-ss.remove('wally.group')
+storage_s.remove('wally.group')
 -->remove an item
 
-ss.clear()
+storage_s.clear()
 -->clear all sessionstorage
 
 **/
 
 
-var sl = function(
+const storage_l = function(
   a, // placeholder for storage object
   b  // placeholder for JSON
 ){
@@ -95,3 +96,25 @@ var sl = function(
   || {},            // or an object otherwise
   JSON              // use native JSON (required)
 );
+
+
+/**
+storage_l.set('meo', {'kalle': 'banan'})
+storage_l.get('meo')
+-->object
+
+storage_l.set('wally.group', 'hejsan')
+storage_l.set('wally.group')
+-->string
+
+storage_l.set('wally.group', ['1', '2']) 
+storage_l.get('wally.group')
+-->array
+
+storage_l.remove('wally.group')
+-->remove an item
+
+storage_l.clear()
+-->clear all sessionstorage
+
+**/

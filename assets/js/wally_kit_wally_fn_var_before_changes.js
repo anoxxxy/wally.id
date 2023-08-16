@@ -781,7 +781,6 @@
       
 
       //update select button content relative to asset
-      $('#coinjs_network_select button').text('');
       if( wally_fn.networks[wally_fn.network][asset_var] !== undefined ) {
 
         wally_fn.asset = asset_var;
@@ -808,7 +807,6 @@
 
     console.log('wally_fn.asset after: ', wally_fn.asset);
 
-    $('#coinjs_broadcast_api_select button').text('');
     var i=0, electrumXContent ='';
     for (var [key, value] of Object.entries(wally_fn.networks[wally_fn.network][wally_fn.asset].asset.api.broadcast)) {
       
@@ -830,7 +828,6 @@
 
     i=0;
 
-    $('#coinjs_utxo_api_select button').text('');
     for (var [key, value] of Object.entries(wally_fn.networks[wally_fn.network][wally_fn.asset].asset.api.unspent_outputs)) {
       
         //show ElectrumX server in list
@@ -1311,33 +1308,6 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
 
   //#settings .dropdown-select li
 });
-  
-
-
-    BootstrapDialog.show({
-            title: 'Manipulating Buttons',
-            message: function(dialog) {
-                var $content = $('<div><button class="btn btn-success">Revert button status right now.</button></div>');
-                var $footerButton = dialog.getButton('btn-1');
-                $content.find('button').click({$footerButton: $footerButton}, function(event) {
-                    event.data.$footerButton.enable();
-                    event.data.$footerButton.stopSpin();
-                    dialog.setClosable(true);
-                });
-                
-                return $content;
-            },
-            buttons: [{
-                id: 'btn-1',
-                label: 'Click to disable and spin.',
-                action: function(dialog) {
-                    var $button = this; // 'this' here is a jQuery object that wrapping the <button> DOM element.
-                    $button.disable();
-                    $button.spin();
-                    dialog.setClosable(false);
-                }
-            }]
-        });
   
   
   /* since the select content is dynamic we need to listen to body > element */

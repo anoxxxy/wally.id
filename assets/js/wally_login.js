@@ -256,10 +256,8 @@ hex key should not be higher then that!
       console.log('profile_data: ', login_wizard.profile_data);
       //openUserWallet(profile_data); //checkUserLogin
 
-      //***Set next step to terms and navigate
+      //***Set next step to terms and navigate to it
       
-
-
       login_wizard.openBtnNextStepPanel = 'terms';  //this makes it -> //setActivePanel('terms');, the function is unreachable from here, thus the workaround
       $('#openBtnNext').click();
 
@@ -371,51 +369,89 @@ login_wizard.generateWalletBackup = function() {
   var keys_length = (login_wizard.profile_data.hex_key).length;
   var i = 1;
 
-  //remove regular addresses for multisig wallet
+  
   if (keys_length == 1)
     walletBackup.assets = tmp;
-
-  else if (keys_length > 1) {
+  else if (keys_length > 1) { //remove regular addresses for multisig wallet accounts
     //loop through the assets
 
     for (var asset in tmp) {
-      //console.log('asset: ' + asset);
-      //console.log('tmp[asset]: ' , tmp[asset]);
+      console.log('asset: ' + asset);
+      console.log('tmp[asset]: ' , tmp[asset]);
         walletBackup.assets[asset] = {};
         for (var [key, value] of Object.entries(tmp[asset])) {
 
-          if (key != 'multisig') {
-            //console.log('key: '+key);
-            //console.log('value: ', value);
-            walletBackup.assets[asset]['private_key_'+i] = value.addresses_supported.compressed.key;
+          if (key != 'multisig') {  //get the private keys of each regular address
+            console.log('key: '+key);
+            console.log('value: ', value);
+
+
+            
+            if (value.privateKey) //for EVM coins (Ethereum)
+              walletBackup.assets[asset]['private_key_'+i] = value.privateKey;
+            else  //for UTXO coins
+              walletBackup.assets[asset]['private_key_'+i] = value.addresses_supported.compressed.key;
+            /*
+            //if (Object.keys(value.addresses_supported) === 1) 
+            if (value.addresses_supported.compressed.key !== undefined) //for UTXO coins
+              walletBackup.assets[asset]['private_key_'+i] = value.addresses_supported.compressed.key;
+            else  //for EVM coins (Ethereum)
+              walletBackup.assets[asset]['private_key_'+i] = value.privateKey;
+            */
           } else
             walletBackup.assets[asset][key] = value;
           i++;
         }
-        i=1;
+        i=1;  //reset key to 1, since we have 1,2,3 ..private keys of each asset
     }
-    console.log('walletBackup: ', walletBackup);
+    
   }
+  console.log('walletBackup: ', walletBackup);
+
   return walletBackup;
 
 }
 
       
       
+/**
+ *
+ * @ Coin address rendering upon login
+ *  
+ **/
+
+login_wizard.initCoinList = function(coinListModal) {
+
+  console.log(`Generating ${coinjs.asset.name} address`);
+  console.log('coinListModal: ', coinListModal);
+  coinListModal.getModalBody().find('.initCoinList').html(`Generating <span class="text-muted font-weight-bold">${coinjs.asset.name}</span> address <img src="${coinjs.asset.icon}" class="coin-icon icon32">`)
+
+  //console.log('coinstListModal initCoinList', coinListModal.getModalBody().find('.initCoinList'));
+
+  //const modalId = coinListModal.options.id;
+  //let modalContent = document.getElementById(modalId);
+
+  //console.log('modalContent: ', modalContent);
+
+  //  modalContent.querySelector('.initCoinList').innerHTML = `Generating ${coinjs.asset.name} address`;
+  //document.querySelector(`#${modalId} .initCoinList`).innerHTML = `Generating ${coinjs.asset.name} address`;
+
+
+
+}
 
 
 //***START Login/OpenWallet
   /*
   @Check/Handle account Login (is logged in)
   */
-  function openUserWallet(userData, session = false) {
+  function openUserWallet(userData) {
 
-    //check if we have a session, save to userData
-    if (session == true)
-      userData = HTML5.sessionStorage('profile_data').get();
+    //check if we have data in localstorage
+    userData = storage_l.get('profile_data');
 
-    //***If the userData is empty exit-> login error! !
-    if(userData == null || userData === undefined || Object.keys(userData).length === 0) {
+    //***If the userData is empty: exit-> login error! !
+    if(userData === null || userData === undefined || Object.keys(userData).length === 0) {
       return ;
     }
     
@@ -424,21 +460,34 @@ login_wizard.generateWalletBackup = function() {
 
     var privkeyaes, privkeyaes2;
 
+    //login_type = ["password", "privatekey_wallet", "import_wallet", "mnemonic_wallet", "hdmaster_wallet", "terms"];
+    //wallet_type = ["regular", "multisig"]
     //***Handle login with importing backup wallet
     if (userData.login_type == 'import_wallet') {
-      console.log('Login with Importing wallet backup');
+      console.log('Login by Importing wallet backup');
     }
 
     //***Handle login with Private Key wallet
-    if (userData.login_type == 'private_key') {
+    if (userData.login_type == 'privatekey_wallet') {
       console.log('Login with Private Key');
+    }
 
+    //***Handle login with Mnemonic Wallet
+    if (userData.login_type == 'mnemonic_wallet') {
+      console.log('Login with Mnemonic Seed');
+    }
+    //***Handle login with BIP32/HDMaster Key
+    if (userData.login_type == 'hdmaster_wallet') {
+      console.log('Login with BIP32/HDMaster Key');
     }
 
     //***Handle login with "email + password" wallet
     if (userData.login_type == 'password') {
 
       console.log('Login with Email+Password');
+
+      /*
+      
 
 
       profile_data.private_keys = [];
@@ -457,16 +506,21 @@ login_wizard.generateWalletBackup = function() {
 
       profile_data.public_keys.push(keys.pubkey);
       profile_data.private_keys.push(keys.wif);
+      */
 
       //we got a regular wallet address, save key-data to backup-fields
       if (userData.wallet_type == "regular") {
+        /*
         profile_data.address = keys.address; //wif, pubkey, address
         var privkeyaes = CryptoJS.AES.encrypt(keys.wif, s);
+        */
       }
+
 
       //is wallet multisig?
       if (userData.wallet_type == "multisig") {
 
+        /*
         //create Multisig address
         var s2 = wally_fn.passwordHasher(userData.email, userData.passwords[1]);
         var keys2 = coinjs.newKeys(s2);
@@ -492,6 +546,7 @@ login_wizard.generateWalletBackup = function() {
 
         //save key-data to backup-fields
         profile_data.redeem_script = multisig["redeemScript"];
+        */
 
       }
 
@@ -502,19 +557,24 @@ login_wizard.generateWalletBackup = function() {
     //All good! Go on! 
     //UI Settings
     if (userData.wallet_type == "regular") {
+      /*
       $('.walletPubKeys .redeemScript_wallet').parent().addClass('hidden');
       $('.wallet_multisig_keys').addClass('hidden');
       $('#walletKeys .privkey2').addClass('hidden');
       $('.walletPubKeys .pubkey2').parent().addClass('hidden');
       $("#walletKeys .privkeyaes2").addClass('hidden');
+      */
     }
 
+    /*
     $("#walletKeys .privkey").val(profile_data.private_keys[0]);
     $(".walletPubKeys .pubkey").val(profile_data.public_keys[0]);
     $("#walletKeys .privkeyaes").val(privkeyaes);
+    */
 
     //is wallet multisig?
     if (userData.wallet_type == "multisig") {
+      /*
       $(".walletPubKeys .redeemScript_wallet").val(profile_data.redeem_script).parent().removeClass('hidden');;
       $('.wallet_multisig_keys').removeClass('hidden');
 
@@ -543,9 +603,9 @@ login_wizard.generateWalletBackup = function() {
         }
       //}
 
-      
+      */
     }
-
+    /*
     $(".amountCoinSymbol").text(coinjs.symbol);
     //$("#walletMail").html(email);
     $("#walletAddress").html(profile_data.address);
@@ -586,6 +646,7 @@ login_wizard.generateWalletBackup = function() {
     //Update user balance and set loop for updating the users balance!
     walletBalance();
     checkBalanceLoop();
+    */
     console.log('End of checkUserLogin');
     return;
     
