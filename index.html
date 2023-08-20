@@ -6,15 +6,15 @@
       file:///media/anoxy/Anoxy/Bitbay/web-wallet/__BAK__/Dev/__baywallet2/index.html#home
       -->
   <title>Wally.id - your Keys, your Crypto | The most powerful, non-custodial decentralized cold wallet!</title>
-  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" >
   <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self'; "> -->
-  <meta name="keywords" content="bitcoin wallet, cold wallet, multisig, multisignature, address, browser, segwit, javascript, js, broadcast, transaction, verify, decode" />
-  <meta name="description" content="A Bitcoin Wallet written in Javascript. Supports Multisig, SegWit, Custom Transactions, nLockTime and more!" />
+  <meta name="keywords" content="bitcoin wallet, cold wallet, multisig, multisignature, address, browser, segwit, javascript, js, broadcast, transaction, verify, decode" >
+  <meta name="description" content="A Bitcoin Wallet written in Javascript. Supports Multisig, SegWit, Custom Transactions, nLockTime and more!" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#a465ea" />
-  <meta name="msapplication-TileColor" content="#a465ea" />
-  <meta name="application-name" content="Wally.id - free non-custodial multi-blockchain cold wallet" />
+  <meta name="theme-color" content="#a465ea" >
+  <meta name="msapplication-TileColor" content="#a465ea" >
+  <meta name="application-name" content="Wally.id - free non-custodial multi-blockchain cold wallet" >
 
   <!-- Boostrap 4 CSS -->
   <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
@@ -771,7 +771,7 @@
 
                     <a href="#wallet" class="btn btn-block btn-flat-primary d-flex align-items-center"><img src="./assets/images/overview.svg" class="icon icon28"> Wallet Overview</a>
                     <a href="#" class="btn btn-block btn-flat-primary d-flex align-items-center"><img src="./assets/images/minus_plus.svg" class="icon icon28"> Import/Hide Assets</a>
-                    <a href="#" class="btn btn-block btn-flat-primary d-flex align-items-center"><img src="./assets/images/lock.svg" class="icon icon28"> Logout</a>
+                    <a href="#logout" class="btn btn-block btn-flat-primary d-flex align-items-center"><img src="./assets/images/lock.svg" class="icon icon28"> Logout</a>
                   </div>
                 </div>
 
@@ -845,7 +845,7 @@
                       <!-- List Assets -->
 
 
-                      <div class="list_assets">
+                      <div class="list_assets" id="userWalletAssets">
                         <div class="list-border position-relative">
                           <div class="list-wrapper">
 
@@ -859,7 +859,7 @@
                               </div>
                               <div class="coin-info">
                                 <span class="title">
-        <a href="#wallet?asset=btc" class="stretched-link">Bitcoin</a> <span class="badge badge-primary chain_model" title="Chain: UTXO">utxo</span>
+        <a href="#wallet/asset/btc" class="stretched-link">Bitcoin</a> <span class="badge badge-primary chain_model" title="Chain: UTXO">utxo</span>
       </span>
                                 <span class="subtitle">
         <span class="balance">9999999.00000000</span> BTC
@@ -900,7 +900,7 @@
                               </div>
                               <div class="coin-info">
                                 <span class="title">
-        <a href="#wallet?asset=eth-goerli" class="stretched-link">Ethereum</a>
+        <a href="#wallet/asset/eth-goerli" class="stretched-link">Ethereum</a>
       </span>
                                 <span class="subtitle">
         <span class="balance">9999999.00000000</span> ETH
@@ -938,7 +938,7 @@
                               </div>
                               <div class="coin-info">
                                 <span class="title">
-        <a href="#wallet?asset=bay" class="stretched-link">BitBay</a>
+        <a href="#wallet/asset/bay" class="stretched-link">BitBay</a>
       </span>
                                 <span class="subtitle">
         <span class="balance">9999999.00000000</span> BAY
@@ -975,7 +975,7 @@
                               </div>
                               <div class="coin-info">
                                 <span class="title">
-        <a href="#wallet?asset=ltc" class="stretched-link">Litecoin</a>
+        <a href="#wallet/asset/ltc" class="stretched-link">Litecoin</a>
       </span>
                                 <span class="subtitle">
         <span class="balance">9999999.00000000</span> LTC
@@ -1012,7 +1012,7 @@
                               </div>
                               <div class="coin-info">
                                 <span class="title">
-        <a href="#wallet?asset=doge" class="stretched-link">Dogecoin</a>
+        <a href="#wallet/asset/doge" class="stretched-link">Dogecoin</a>
       </span>
                                 <span class="subtitle">
         <span class="balance">9999999.00000000</span> DOGE
@@ -1057,7 +1057,7 @@
                               </div>
                               <div class="coin-info">
                                 <span class="title">
-        <a href="#wallet?asset=wally" class="stretched-link">Happy Walrus Coin</a>
+        <a href="#wallet/asset/wally" class="stretched-link">Happy Walrus Coin</a>
       </span>
                                 <span class="subtitle">
         <span class="balance">123.00000000</span> WALLY
@@ -1096,7 +1096,7 @@
                               </div>
                               <div class="coin-info">
                                 <span class="title">
-        <a href="#wallet?asset=blk" class="stretched-link">Blackcoin</a>
+        <a href="#wallet/asset/blk" class="stretched-link">Blackcoin</a>
       </span>
                                 <span class="subtitle">
         <span class="balance">9999999.00000000</span> BLK
@@ -1147,7 +1147,7 @@
                   <h3 class="card-openwallet-title">
                   Asset <small>Options</small> 
                 </h3>
-                  <span class="d-flex justify-content-end"><a href="javascript:;" id="walletLogout" class="text-decoration-none"><i class="bi bi-person-fill-lock"></i> Logout</a></span>
+                  <span class="d-flex justify-content-end walletLogout"><a href="#logout" id="walletLogout" class="text-decoration-none"><i class="bi bi-person-fill-lock"></i> Logout</a></span>
                 </div>
 
                 <div class="card-openwallet-body overflow-visible">
@@ -1202,24 +1202,24 @@
 
                         <!-- Wallet Tabs-->
                         <div class="col-12">
-                          <ul class="nav nav-tabs addIndicator" role="tablist">
+                          <ul class="nav nav-tabs addIndicator" role="tablist" id="walletOptions">
                             <li class="nav-item">
-                              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#wallet/asset" role="tab" data-target="#wallet_asset">
+                              <a class="nav-link active" id="asset-tab" data-toggle="tab" href="#wallet/asset/bitcoin" role="tab" data-target="#wallet_asset" data-asset="">
                                 <img src="./assets/images/crypto/walrus-wally-logo.svg" class="icon24"> Asset
                               </a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="profile-tab" href="#wallet/send?asset=blk" data-target="#wallet_send" data-toggle="tab" role="tab">
+                              <a class="nav-link" id="send-tab" href="#wallet/send/bitcoin" data-target="#wallet_send" data-asset="" data-toggle="tab" role="tab">
                                 <img src="./assets/images/send.svg" class="icon24"> Send
                               </a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#wallet/receive" data-target="#wallet_receive" role="tab">
+                              <a class="nav-link" id="receive-tab" data-toggle="tab" href="#wallet/receive/bitcoin" data-target="#wallet_receive" data-asset="" role="tab">
                                 <img src="./assets/images/receive.svg" class="icon24"> Receive
                               </a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#wallet/settings" data-target="#wallet_settings" role="tab">
+                              <a class="nav-link" id="settings-tab" data-toggle="tab" href="#wallet/settings/bitcoin" data-target="#wallet_settings" data-asset="" role="tab">
                                 <img src="./assets/images/settings.svg" class="icon24">
                               </a>
                             </li>
@@ -1297,7 +1297,7 @@
                             <!-- Send Tab-->
                             <div class="tab-pane fade" id="wallet_send" role="tabpanel" aria-labelledby="send-tab">
 
-                              <div class="row">
+                              <div class="">
                                 <div id="walletSpend" class="walletOptions ">
 
 
@@ -1659,6 +1659,32 @@
 
         </div>
 
+        <!-- Wallet Logout -->
+        <div class="tab-pane tab-content" id="logout" data-route="logout">
+          <div class="card-openwallet-small">
+            <div class="card-openwallet-header ">
+              <h3 class="card-openwallet-title">
+                Wally.id <small>Logout</small>
+              </h3>
+            </div>
+            <div class="card-openwallet-body m-1">
+              <div class="p-1 py-1">
+
+                <div class="alert alert-success text-center">
+                  You are now logged out!
+                </div>
+
+              </div>
+            </div>
+            <div class="card-openwallet-footer ">
+              Wally.id - version: <span class="walletVersion">XYZ</span>
+            </div>
+          </div>
+
+
+        </div>
+        <!-- //Wallet Logout -->
+
         <!-- Wallet Login -->
         <div class="tab-pane tab-content" id="login" data-route="login">
           <div class="pageScrollSpace">&nbsp;</div>
@@ -1831,17 +1857,6 @@
 
                     <div class="">
 
-                      <!--
-<div class="content__inner">    
-
-    <div class="container overflow-hidden">
-      <div class="multisteps-form">
-
-        <div class="row ">
-          <div class="col-12">
-            <div id="multisteps-form__panels" >
-
-            -->
 
                       <div class="">
                         <div class="">
@@ -2544,7 +2559,7 @@
                     </div>
 
                     <div class="input-group hidden" id='timeLockedBlockHeight'>
-                      <input type='text' id='timeLockedBlockHeightVal' class="form-control" placeholder="Blockheight" />
+                      <input type='text' id='timeLockedBlockHeightVal' class="form-control" placeholder="Blockheight" >
                     </div>
 
 
@@ -3906,8 +3921,7 @@
 
               <br>
               <h5>Support</h5>
-              <p>We'd love to connect with you! Catch us on Twitter and Telegram for updates, news, and more.
-                <p>
+              <p>We'd love to connect with you! Catch us on Twitter and Telegram for updates, news, and more.</p>
                   <p> Don't hesitate to drop by our Official Telegram group if you have any questions or need support. We're always here to help and chat!</p>
 
                   <p>You can find us at <a href="https://twitter.com/WallyIDOfficial" target="_blank">Twitter</a> and <a href="https://t.me/wallyid" target="_blank">Telegram</a>.</p>
@@ -4475,26 +4489,26 @@
                 <div class="btn-toolbar ">
                   <div class="btn-group flex-wrap" role="group" data-toggle="buttons" id="enc_from">
                     <label class="btn btn-outline-primary">
-                      <input id="from_hex" name="enc_from" type="radio" />Hex</label>
+                      <input id="from_hex" name="enc_from" type="radio" >Hex</label>
                     <label class="btn btn-outline-primary">
-                      <input id="from_text" name="enc_from" type="radio" />Text</label>
+                      <input id="from_text" name="enc_from" type="radio" >Text</label>
                     <label class="btn btn-outline-primary">
-                      <input id="from_bin" name="enc_from" type="radio" />Bin</label>
+                      <input id="from_bin" name="enc_from" type="radio" >Bin</label>
                     <label class="btn btn-outline-primary">
-                      <input id="from_dec" name="enc_from" type="radio" />Dec</label>
+                      <input id="from_dec" name="enc_from" type="radio" >Dec</label>
                     <label class="btn btn-outline-primary">
-                      <input id="from_base58" name="enc_from" type="radio" />Base58</label>
+                      <input id="from_base58" name="enc_from" type="radio" >Base58</label>
                     <label class="btn btn-outline-primary">
-                      <input id="from_base58check" name="enc_from" type="radio" />B58Check</label>
+                      <input id="from_base58check" name="enc_from" type="radio" >B58Check</label>
                     <label class="btn btn-outline-primary">
-                      <input id="from_base64" name="enc_from" type="radio" />Base64</label>
+                      <input id="from_base64" name="enc_from" type="radio" >Base64</label>
                     <label class="btn btn-outline-primary">
-                      <input id="from_rfc1751" name="enc_from" type="radio" />Rfc1751</label>
+                      <input id="from_rfc1751" name="enc_from" type="radio" >Rfc1751</label>
                     <label class="btn btn-outline-primary">
-                      <input id="from_mnemonic" name="enc_from" type="radio" />Poetry</label>
+                      <input id="from_mnemonic" name="enc_from" type="radio" >Poetry</label>
                     <label class="btn btn-outline-primary">
-                      <input id="from_rot13" name="enc_from" type="radio" />Rot13</label>
-                    <!--<label class="btn btn-outline-primary"><input id="from_easy16" name="enc_from" type="radio" />Easy16</label>-->
+                      <input id="from_rot13" name="enc_from" type="radio" >Rot13</label>
+                    <!--<label class="btn btn-outline-primary"><input id="from_easy16" name="enc_from" type="radio" >Easy16</label>-->
                   </div>
                 </div>
               </div>
@@ -4515,26 +4529,26 @@
                   <div class="btn-toolbar ">
                     <div class="btn-group flex-wrap" role="group" data-toggle="buttons" id="enc_to">
                       <label class="btn btn-outline-primary active">
-                        <input id="to_hex" name="enc_to" type="radio" />Hex</label>
+                        <input id="to_hex" name="enc_to" type="radio" >Hex</label>
                       <label class="btn btn-outline-primary">
-                        <input id="to_text" name="enc_to" type="radio" />Text</label>
+                        <input id="to_text" name="enc_to" type="radio" >Text</label>
                       <label class="btn btn-outline-primary">
-                        <input id="to_bin" name="enc_from" type="radio" />Bin</label>
+                        <input id="to_bin" name="enc_from" type="radio" >Bin</label>
                       <label class="btn btn-outline-primary">
-                        <input id="to_dec" name="enc_from" type="radio" />Dec</label>
+                        <input id="to_dec" name="enc_from" type="radio" >Dec</label>
                       <label class="btn btn-outline-primary">
-                        <input id="to_base58" name="enc_to" type="radio" />Base58</label>
+                        <input id="to_base58" name="enc_to" type="radio" >Base58</label>
                       <label class="btn btn-outline-primary">
-                        <input id="to_base58check" name="enc_to" type="radio" />B58Check</label>
+                        <input id="to_base58check" name="enc_to" type="radio" >B58Check</label>
                       <label class="btn btn-outline-primary">
-                        <input id="to_base64" name="enc_to" type="radio" />Base64</label>
+                        <input id="to_base64" name="enc_to" type="radio" >Base64</label>
                       <label class="btn btn-outline-primary">
-                        <input id="to_rfc1751" name="enc_to" type="radio" />Rfc1751</label>
+                        <input id="to_rfc1751" name="enc_to" type="radio" >Rfc1751</label>
                       <label class="btn btn-outline-primary">
-                        <input id="to_mnemonic" name="enc_to" type="radio" />Poetry</label>
+                        <input id="to_mnemonic" name="enc_to" type="radio" >Poetry</label>
                       <label class="btn btn-outline-primary">
-                        <input id="to_rot13" name="enc_to" type="radio" />Rot13</label>
-                      <!--<label class="btn btn-outline-primary"><input id="to_easy16" name="enc_from" type="radio" />Easy16</label>-->
+                        <input id="to_rot13" name="enc_to" type="radio" >Rot13</label>
+                      <!--<label class="btn btn-outline-primary"><input id="to_easy16" name="enc_from" type="radio" >Easy16</label>-->
                     </div>
                   </div>
                 </div>
@@ -5448,12 +5462,12 @@
                   <tr data-set-asset="BTC">
                     <td>
                       <i class="icon">
-         <img src="" />
+         <img src="" >
         </i>
                     </td>
                     <td>BTC <small class="d-block text-muted">Bitcoin</small></td>
                     <td>
-                      <input type="radio" name="set-asset-group" checked value="BTC" />
+                      <input type="radio" name="set-asset-group" checked value="BTC" >
                     </td>
                   </tr>
 
@@ -5546,7 +5560,7 @@
           </div>
           <div>
             <label>Password length
-              <input type="number" id="pwdLength" value="48" min='24' class="form-control" />
+              <input type="number" id="pwdLength" value="48" min='24' class="form-control" >
             </label>
           </div>
         </div>
@@ -5798,6 +5812,7 @@ iceee - remove me later
 
   <!-- choose currency wallet modal -->
   <div class="hidden" id="entropybucket"></div>
+
   <script>
     $(".choose-currency-modal").on("click", function() {
 

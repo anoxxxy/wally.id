@@ -1,9 +1,5 @@
 <?php
-//sudo php -S 127.0.0.1:80
  header("Access-Control-Allow-Origin: *");	//allow cross origin
-
- //phpinfo();
- //exit();
 //return the json response
 /*
 https://docs.komodoplatform.com/mmV1/coin-integration/electrum-servers-list.html#updated-list-from-the-coins-repository
@@ -19,7 +15,7 @@ wally.id/api/x.php?asset=aby&method=server.version&server=electrumx-four.artbyte
 https://wally.id/api/x.php?asset=aby&method=blockchain.scripthash.get_balance&scripthash=asasasas&server=electrumx-four.artbyte.live:50012
 */
 
-
+try {
 
 	//default settings
 	$useSSL = true;
@@ -141,7 +137,7 @@ https://wally.id/api/x.php?asset=aby&method=blockchain.scripthash.get_balance&sc
 	// Defining host, port, and timeout
 	//$host = 'electrumx-four.artbyte.live';
 	///$port = 50012;
-	$timeoutInSeconds = 10;
+	$timeout = 10;
 	 
 
 	$query='{"id": "'.$asset_q.'", "jsonrpc":"2.0", "method": "'.$method_q.'" '.$params_q.'}';
@@ -180,11 +176,66 @@ if ($useSSL) {
 	stream_context_set_option($context, 'ssl', 'allow_self_signed', true);
 	stream_context_set_option($context, 'ssl', 'verify_peer_name', false);
 	 
-	try {
-
-	if ($socket = stream_socket_client('ssl://'.$host.':'.$port, $errno, $errstr, $timeoutInSeconds, STREAM_CLIENT_CONNECT, $context)) {
 
 
+	if ($socket = stream_socket_client('ssl://'.$host.':'.$port, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $context)) {
+
+
+
+
+		//**CHECK IF the method is supported by ElectrumX
+		//https://electrumx.readthedocs.io/en/latest/protocol-methods.html#blockchain-transaction-broadcast
+		//https://www.geeksforgeeks.org/multidimensional-arrays-in-php/
+		/*$accepted_methods_params = [
+			'blockchain.info' => '',
+			'blockchain.scripthash.get_balance' => ['scripthash'],
+			'blockchain.scripthash.get_history' => ['scripthash'],
+			'blockchain.scripthash.get_mempool' => ['scripthash'],
+			'blockchain.scripthash.listunspent' => ['scripthash'],	//https://api.mbc.wiki/?method=blockchain.address.utxo&params[]=Mbb18MGUuDPnPp2oaAvjACiJzbdndxJ58b&params[]=1000
+			'blockchain.transaction.broadcast' => ['rawtx'],	
+			'blockchain.transaction.get' => ['tx_hash, verbose'],
+			'server.banner' => [''],	
+			'server.features' => [''],	
+			'server.version' => [''],	
+		];*/
+
+
+/*
+	//print_r( $electrum_api['blockchain.info']);
+
+	print_r("\n\r\n\r");
+	//if (in_array("blockchain.info", $electrum_api))
+	if (array_key_exists("blockchain.info", $electrum_api))
+		echo 'blockchain.info: yes';
+	else
+		echo 'blockchain.info: no';
+
+	print_r("\n\r\n\r");
+	//if (in_array('scripthash', $electrum_api['blockchain.info']))
+	if (array_key_exists('scripthash', $electrum_api['blockchain.info']))
+		echo 'scripthash: yes';
+	else
+		echo 'scripthash: no';
+
+	print_r("\n\r\n\r");
+
+	print_r('====================');
+		var_dump($electrum_api);
+		exit();
+
+		*/
+		/*
+		}
+		*/
+		/*
+		$electrum_api = new ArrayObject();                                   
+	    $electrum_api['arr'] = 'array data';                             
+	    $electrum_api->prop = 'prop data'
+	    */
+
+		//send the query to ElectrumX 
+		//$query='{"id": "aby", "method": "blockchain.transaction.broadcast", "params":["01000000d4ee236401dfa539e1a6e4068d12bd139fa8be7f3b52809cfc9f6c926ef650a7ceb0e9a0b6010000006b48304502210097e7c9df1d18241d84d860028f29bf5ed968631bdecafb5be941dfcf3d9b72e9022031d3635317923ef0e6eb56e0f4b4387573249a793906098a99fc5e787426cf10012102f84c509cb39a48c78128b43e0f9f19530ed1f570825bdf7971534339fcf98648feffffff0100080992020000001976a914f13a01323358363dc9963567fe63bc4f9bb3d0d688ac00000000"]}';
+	 
 	    fwrite($socket, $query."\n");
 	    $value=fread($socket,102400);
 	 
@@ -192,13 +243,11 @@ if ($useSSL) {
 	    
 
 	    //check for errors
-	    /*if (isset($result->error)) {
-	    	$result->x = new stdClass(); // Initialize $result->x as an object
-		    	$result->x->code = $result->error->code;
-    			$result->x->message = $result->error->message;
+	    if (isset($result->error)) {
+	    	$return['code'] = $result->error->code;
+	    	$return['message'] = $result->error->message;
 	    }
-	    */
-		 	
+	 	$return = $result;
 	    //print_r($result);
 	    //var_dump($result);
 	 
@@ -209,93 +258,16 @@ if ($useSSL) {
 
 	    fclose($socket);
 	    exit();
-		} else {
-			echo json_encode(["success" => false, "status" => "error", "message" => "SSL 1.1 - Connection Failed: $errno - $errstr"], JSON_PRETTY_PRINT);
-		 	//echo json_encode("ERROR: $errno - $errstr", JSON_PRETTY_PRINT);
-		 	exit();
-		}
-	//catch exception
-	} catch(Exception $e) {
-	  //echo json_encode('Message: ' .$e->getMessage());
-	  echo json_encode(["success" => false, "status" => "error", "message" => "SSL 1.2: " .$e->getMessage()], JSON_PRETTY_PRINT);
-	  exit();
+	} else {
+		echo json_encode(["status" => "error", "message" => "§1.1: $errno - $errstr"], JSON_PRETTY_PRINT);
+	   	//echo json_encode("ERROR: $errno - $errstr", JSON_PRETTY_PRINT);
+	   	exit();
 	}
-} else {
-	
-
-	//ini_set('display_errors', 'On');
-	//error_reporting(E_ALL);
-
-
-		try {
-			// Creating a TCP socket using stream_socket_client
-    	$socket = stream_socket_client("tcp://{$host}:{$port}", $errno, $errstr, $timeoutInSeconds, STREAM_CLIENT_CONNECT);
-
-
-	    // Connecting to the socket
-
-	     if ($socket) {
-	    	// Connection successful
-	    	// Sending query to server
-		     fwrite($socket, $query . "\n");
-
-		    
-		    // Receiving result from the query
-		    $value = fread($socket, 10240);
-		    
-		    $result = json_decode($value);
-		    //check for errors
-		    /*if (isset($result->error)) {
-		    	$result->x = new stdClass(); // Initialize $result->x as an object
-		    	$result->x->code = $result->error->code;
-    			$result->x->message = $result->error->message;
-		    }
-		    */
-
-		    echo json_encode($result, JSON_PRETTY_PRINT);
-		    
-
-		    // Don't forget to close the socket when you're done
-		    socket_close($socket);
-		    exit();
-
-
-			} else {
-				// socket_connect failed due to timeout or other reasons
-				$errorMessage = socket_strerror(socket_last_error());
-				$errorDetails = "Failed to connect to {$host}:{$port} - {$errorMessage}";
-		    $response = [
-			    "success" => false,
-			    "status" => "error",
-			    "message" => "TCP1.1 - Connection Failed: " . $errorDetails
-				];
-		    echo json_encode($response, JSON_PRETTY_PRINT);
-			 	//echo json_encode("ERROR: $errno - $errstr", JSON_PRETTY_PRINT);
-			 	exit();
-			}
-	    
-
-	   
-    //catch exception
-		}  catch (JsonException $jsonException) {
-	    // Handle JSON decoding errors
-	    echo json_encode([
-	        "success" => false,
-	        "status" => "error",
-	        "message" => "TCP 1.2 JSON Exception: " . $jsonException->getMessage()
-	    ], JSON_PRETTY_PRINT);
-	    exit();
-		} catch (Exception $e) {
-		    // Handle other exceptions
-		    echo json_encode([
-		        "success" => false,
-		        "status" => "error",
-		        "message" => "TCP 1.3 Catch: " . $e->getMessage()
-		    ], JSON_PRETTY_PRINT);
-		    exit();
-		}
-
-
+ //catch exception
+} catch(Exception $e) {
+  //echo json_encode('Message: ' .$e->getMessage());
+  echo json_encode(["status" => "error", "message" => "MESSAGE: §1.2: " .$e->getMessage()], JSON_PRETTY_PRINT);
+  exit();
 }
 
  //https://github.com/bitcoinjs/bitcoinjs-lib/issues/990

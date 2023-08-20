@@ -41,6 +41,7 @@
     "sign" : ['utxo'],
     "broadcast" : ['utxo'],
     "login" : ['all'],
+    "logout" : ['all'],
     "wallet" : ['all'],
     "settings" : ['all'],
     "about" : ['all'],
@@ -670,7 +671,7 @@ wally_fn.generateAllWalletAddresses = async function(h){
   let coinListModal = BootstrapDialog.show({
                     title: 'Generating Wallet Addresses',
                     message: function(dialogRef) {
-                        var $content = $('<div>Progress: <div id="initCoinList" class="initCoinList"></div></div>');
+                        var $content = $('<div>Progress: <ul id="initCoinList" class="list-group initCoinList"></ul></div>');
                         return $content;
                     },
                       
@@ -753,8 +754,6 @@ wally_fn.generateAllWalletAddresses = async function(h){
     //Account based coins, like ETH
     if (value.asset.chainModel == 'account') {
 
-      console.log('h2:', h);
-      console.log('h2[]:', h[i]);
       if ( (value.asset.supports_address).includes('single') ) {
 
         //UI rendering
@@ -762,7 +761,7 @@ wally_fn.generateAllWalletAddresses = async function(h){
 
         $.extend(coinjs, value);  //change asset and generate address
 
-        var key = 'web3_account';
+        //var key = 'web3_account';
         if (walletAddress[key] === undefined)
             walletAddress[key] = {};
 
@@ -1138,7 +1137,13 @@ function nonBlockingIncrement(n=1000000, callback){
   
   loop();
 }
+*/
 
+
+
+
+
+/*
 
 BIP 44 derivation paths:
 
@@ -1249,12 +1254,27 @@ Blackcoin 10
               //'Blockchair.com': 'litecoin',
               //'Chain.so': 'LTC',
               'Cryptoid.info': 'ltc',
+              'ElectrumX-1 (TCP)': 'electrum1.cipig.net:10063',
+              'ElectrumX-2 (TCP)': 'electrum2.cipig.net:10063',
+              'ElectrumX-3 (TCP)': 'electrum3.cipig.net:10063',
+              
+              'ElectrumX-1 (SSL)': 'electrum1.cipig.net:20063',
+              'ElectrumX-2 (SSL)': 'electrum2.cipig.net:20063',
+              'ElectrumX-3 (SSL)': 'electrum3.cipig.net:20063',
+
             },
             broadcast: {
               'Blockcypher.com': 'ltc',
               //'Blockchair.com': 'litecoin',
               //'Chain.so': 'LTC',
               'Cryptoid.info': 'ltc',
+              'ElectrumX-1 (TCP)': 'electrum1.cipig.net:10063',
+              'ElectrumX-2 (TCP)': 'electrum2.cipig.net:10063',
+              'ElectrumX-3 (TCP)': 'electrum3.cipig.net:10063',
+              
+              'ElectrumX-1 (SSL)': 'electrum1.cipig.net:20063',
+              'ElectrumX-2 (SSL)': 'electrum2.cipig.net:20063',
+              'ElectrumX-3 (SSL)': 'electrum3.cipig.net:20063',
             }
           }
         },
@@ -1286,11 +1306,27 @@ Blackcoin 10
           api : {
             unspent_outputs: {
               'Blockcypher.com': 'doge',
+              'ElectrumX-1 (TCP)': 'electrum1.cipig.net:10060',
+              'ElectrumX-2 (TCP)': 'electrum2.cipig.net:10060',
+              'ElectrumX-3 (TCP)': 'electrum3.cipig.net:10060',
+              
+              'ElectrumX-1-SSL': 'electrum1.cipig.net:20060',
+              'ElectrumX-2-SSL': 'electrum2.cipig.net:20060',
+              'ElectrumX-3-SSL': 'electrum3.cipig.net:20060',
+
               //'Blockchair.com': 'dogecoin',
               //'Chain.so': 'DOGE',
             },
             broadcast: {
               'Blockcypher.com': 'doge',
+              'ElectrumX-1 (TCP)': 'electrum1.cipig.net:10060',
+              'ElectrumX-2 (TCP)': 'electrum2.cipig.net:10060',
+              'ElectrumX-3 (TCP)': 'electrum3.cipig.net:10060',
+              
+              'ElectrumX-1 (SSL)': 'electrum1.cipig.net:20060',
+              'ElectrumX-2 (SSL)': 'electrum2.cipig.net:20060',
+              'ElectrumX-3 (SSL)': 'electrum3.cipig.net:20060',
+
               //'Blockchair.com': 'dogecoin',
               //'Chain.so': 'DOGE',
             }
@@ -1325,11 +1361,11 @@ Blackcoin 10
           api : {
             unspent_outputs: {
               'Cryptoid.info': 'bay',
-              'BitBay Node': '',
+              //'BitBay Node': '',
             },
             broadcast: {
               'Cryptoid.info': 'bay',
-              'BitBay Node': '',
+              //'BitBay Node': '',
             }
           }
         },
@@ -1394,10 +1430,18 @@ Blackcoin 10
           supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
           api : {
             unspent_outputs: {
-              'Cryptoid.info': 'lynx'
+              'Cryptoid.info': 'lynx',
+              'ElectrumX-5 (SSL)': 'electrum5.getlynx.io:50002',
+              'ElectrumX-6 (SSL)': 'electrum6.getlynx.io:50002',
+              'ElectrumX-7 (SSL)': 'electrum7.getlynx.io:50002',
+              'ElectrumX-9 (SSL)': 'electrum9.getlynx.io:50002',
             },
             broadcast: {
-              'Cryptoid.info': 'lynx'
+              'Cryptoid.info': 'lynx',
+              'ElectrumX-5 (SSL)': 'electrum5.getlynx.io:50002',
+              'ElectrumX-6 (SSL)': 'electrum6.getlynx.io:50002',
+              'ElectrumX-7 (SSL)': 'electrum7.getlynx.io:50002',
+              'ElectrumX-9 (SSL)': 'electrum9.getlynx.io:50002',
             }
           }
         },
@@ -1420,7 +1464,7 @@ Blackcoin 10
         symbol: 'POT',      //ticker
         asset: {
           chainModel: 'utxo',
-          name: 'PotCoin',
+          name: 'Potcoin',
           version: 4,
           slug: 'potcoin',
           symbol: 'POT',
@@ -1430,10 +1474,14 @@ Blackcoin 10
           supports_address : ['compressed', 'uncompressed'],
           api : {
             unspent_outputs: {
-              'Cryptoid.info': 'pot'
+              'Cryptoid.info': 'pot',
+              'ElectrumX-1 (TCP)': '62.171.189.243:50001',
+              'ElectrumX-2 (SSL)': 'pot-duo.ewmcx.net:50012',
             },
             broadcast: {
-              'Cryptoid.info': 'pot'
+              'Cryptoid.info': 'pot',
+              'ElectrumX-1 (TCP)': '62.171.189.243:50001',
+              'ElectrumX-2 (SSL)': 'pot-duo.ewmcx.net:50012',
             }
           },
           
@@ -1467,6 +1515,48 @@ Blackcoin 10
         decimalPlaces:8,
         txRBFTransaction: false,
         developer: 'PF2BMF6TwjAUp7omwgVJh3XmzjHXEYtpFf',
+      },
+      reddcoin : {
+        symbol: 'RDD',      //ticker
+        asset: {
+          chainModel: 'utxo',
+          name: 'Reddcoin',
+          version: 1,
+          slug: 'reddcoin',
+          symbol: 'RDD',
+          symbols: ['rdd', 'reddcoin'],
+          icon: './assets/images/crypto/reddcoin-rdd-logo.svg',
+          network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed'],
+          api : {
+            unspent_outputs: {
+              'ElectrumX-1 (SSL)': 'electrum01.reddcoin.com:50002',
+              'ElectrumX-2 (SSL)': 'electrum02.reddcoin.com:50002',
+              'ElectrumX-3 (SSL)': 'electrum03.reddcoin.com:50002',
+            },
+            broadcast: {
+              'ElectrumX-1 (SSL)': 'electrum01.reddcoin.com:50002',
+              'ElectrumX-2 (SSL)': 'electrum02.reddcoin.com:50002',
+              'ElectrumX-3 (SSL)': 'electrum03.reddcoin.com:50002',
+            }
+          },
+          
+        },
+        
+        pub : 0x3d,      //pubKeyHash
+        priv : 0xbd,     //wif
+        multisig : 0x05, //scriptHash
+          hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
+          bech32 : {},
+          //magic: hex('fbc0b6db'),
+          
+        txExtraTimeField: true,    //Set to true for PoSV coins
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:8,
+        txRBFTransaction: false,
+        developer: 'RcdM87CbTBtyGK6TivE8LkxDyWPBvEKWdd',
       },
       infiniloop: {
         symbol: 'IL8P',      //ticker
@@ -1516,17 +1606,17 @@ Blackcoin 10
           api : {
             unspent_outputs: {
               'Cryptoid.info': 'aby',
-              'ElectrumX-1': 'elec-seeder-one.artbytecoin.org:50012',
-              'ElectrumX-2': 'elec-seeder-two.artbytecoin.org:50012',
-              'ElectrumX-3': 'electrumx-three.artbyte.live:50012',
-              'ElectrumX-4': 'electrumx-four.artbyte.live:50012',
+              //'ElectrumX-1': 'elec-seeder-one.artbytecoin.org:50012',
+              'ElectrumX-2 (SSL)': 'elec-seeder-two.artbytecoin.org:50012',
+              //'ElectrumX-3': 'electrumx-three.artbyte.live:50012',
+              //'ElectrumX-4': 'electrumx-four.artbyte.live:50012',
             },
             broadcast: {
               'Cryptoid.info': 'aby',
-              'ElectrumX-1': 'elec-seeder-one.artbytecoin.org:50012',
-              'ElectrumX-2': 'elec-seeder-two.artbytecoin.org:50012',
-              'ElectrumX-3': 'electrumx-three.artbyte.live:50012',
-              'ElectrumX-4': 'electrumx-four.artbyte.live:50012',
+              //'ElectrumX-1': 'elec-seeder-one.artbytecoin.org:50012',
+              'ElectrumX-2 (SSL)': 'elec-seeder-two.artbytecoin.org:50012',
+              //'ElectrumX-3': 'electrumx-three.artbyte.live:50012',
+              //'ElectrumX-4': 'electrumx-four.artbyte.live:50012',
             }
           },
 
@@ -1662,16 +1752,16 @@ Blackcoin 10
         txRBFTransaction: false,
         developer: '4bATCSp4uUrRZzwwUuQJKAJG4vyXhK85fZ',
       },
-      ["ethereum-goerli-erc20"] : {
-        symbol: 'ETH-Goerli',      //ticker
+      ethereum : {
+        symbol: 'ETH',      //ticker
         asset: {
           chainModel: 'account',
-          name: 'Ethereum-Goerli',
-          slug: 'ethereum-goerli-erc20',
-          symbol: 'ETH-Goerli',
-          symbols: ['eth-goerli', 'ethereum-goerli', 'goerli'],
+          name: 'Ethereum',
+          slug: 'ethereum',
+          symbol: 'ETH',
+          symbols: ['eth', 'ethereum'],
           icon: './assets/images/crypto/ethereum-eth-logo.svg',
-          network: 'testnet',
+          network: 'mainnet',
           supports_address : ['single'],
           api : {
             unspent_outputs: {
@@ -1690,49 +1780,6 @@ Blackcoin 10
         pub : 0,      //not used for account based chains
         priv : 0,     //not used for ....
         multisig : 0, //....
-          hdkey : {'prv':0x04358394, 'pub':0x043587cf},
-          bech32 : {},
-          
-        txExtraTimeField: false,    //not used for ....
-        txExtraTimeFieldValue: false, //....
-        txExtraUnitField: false,
-        txExtraUnitFieldValue: false,
-        decimalPlaces:16,
-        txRBFTransaction: false,
-        developer: '0x000',
-      },
-      ["wally-goerli-erc20"] : {
-        symbol: 'Wally-Goerli',      //ticker
-        asset: {
-          chainModel: 'ERC-20',
-          name: 'Happy Walrus Coin',
-          slug: 'wally-goerli-erc20',
-          symbol: 'Wally',
-          symbols: ['walrus', 'wally'],
-          icon: './assets/images/crypto/walrus-wally-logo.svg',
-          network: 'testnet',
-          supports_address : ['single'],
-          api : {
-            unspent_outputs: {
-              '': '',
-            },
-            broadcast: {
-              '': '',
-            }
-          },
-          protocol: {
-            "type": "ERC20",
-            "protocol_data": {
-                "platform": "ETH",  //-> parent_coin: "ETH",
-                "contract_address": "0x1CE0c2827e2eF14D5C4f29a091d735A204794041"
-            }
-          },
-          
-
-        },
-        pub : 0,      //not used for account based chains
-        priv : 0,     //not used for ....
-        multisig : 0, //....
           hdkey : {},
           bech32 : {},
           
@@ -1744,6 +1791,44 @@ Blackcoin 10
         txRBFTransaction: false,
         developer: '0x000',
       },
+      pinkcoin: {
+        symbol: 'PINK',      //ticker
+        asset: {
+          chainModel: 'utxo',
+          name: 'Pinkcoin',
+          slug: 'pinkcoin',
+          symbol: 'PINK',
+          symbols: ['pink', 'pinkcoin'],
+          icon: './assets/images/crypto/pinkcoin-pink-logo.svg',
+          network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed'],
+          api : {
+            unspent_outputs: {
+              'Cryptoid.info': 'pink',
+              'ElectrumX-1 (TCP)': 'pink-one.ewm-cx.net:50001',
+            },
+            broadcast: {
+              'Cryptoid.info': 'pink',
+              'ElectrumX-1 (TCP)': 'pink-one.ewm-cx.net:50001',
+            }
+          },
+
+        },
+        pub : 0x03,      //pubKeyHash, PUBKEY_ADDRESS
+        priv : 0x83,     //wif, SECRET_KEY
+        multisig : 0x1c, //scriptHash, SCRIPT_ADDRESS
+          hdkey : {'prv':0x0488ade4 /*EXT_SECRET_KEY*/, 'pub':0x0488b21e /*EXT_PUBLIC_KEY*/},
+          bech32 : {},
+          
+        txExtraTimeField: true,    //Set to true for PoS coins
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:8,
+        txRBFTransaction: false,
+        developer: '8RTwrgaA9sSTokWJsJN5tc9f3QKWJuAdzD',
+      },
+      
     },
 
 
@@ -1774,13 +1859,13 @@ Blackcoin 10
               'ElectrumX-1 (TCP)': 'testnet.aranguren.org:51001',
               'ElectrumX-1 (SSL)': 'testnet.aranguren.org:51002',
               'ElectrumX-2 (TCP)': 'testnetnode.arihanc.com:51001',
-              'ElectrumX-3 (SSL)': 'testnetnode.arihanc.com:51002',
-              'ElectrumX-4 (TCP)': 'testnet.hsmiths.com:53011',
-              'ElectrumX-5 (SSL)': 'testnet.hsmiths.com:53012',
-              'ElectrumX-6 (SSL)': 'bitcoin-testnet.stackwallet.com:51002',
+              'ElectrumX-2 (SSL)': 'testnetnode.arihanc.com:51002',
+              'ElectrumX-3 (TCP)': 'testnet.hsmiths.com:53011',
+              'ElectrumX-3 (SSL)': 'testnet.hsmiths.com:53012',
+              'ElectrumX-4 (SSL)': 'bitcoin-testnet.stackwallet.com:51002',
               'ElectrumX-5 (SSL)': 'ax102.blockeng.ch:60002',
-              'ElectrumX-5 (TCP)': 'testnet.qtornado.com:51001',
-              'ElectrumX-5 (SSL)': 'testnet.qtornado.com:51002',
+              'ElectrumX-6 (TCP)': 'testnet.qtornado.com:51001',
+              'ElectrumX-6 (SSL)': 'testnet.qtornado.com:51002',
 
             },
             broadcast: {
@@ -1792,13 +1877,13 @@ Blackcoin 10
               'ElectrumX-1 (TCP)': 'testnet.aranguren.org:51001',
               'ElectrumX-1 (SSL)': 'testnet.aranguren.org:51002',
               'ElectrumX-2 (TCP)': 'testnetnode.arihanc.com:51001',
-              'ElectrumX-3 (SSL)': 'testnetnode.arihanc.com:51002',
-              'ElectrumX-4 (TCP)': 'testnet.hsmiths.com:53011',
-              'ElectrumX-5 (SSL)': 'testnet.hsmiths.com:53012',
-              'ElectrumX-6 (SSL)': 'bitcoin-testnet.stackwallet.com:51002',
+              'ElectrumX-2 (SSL)': 'testnetnode.arihanc.com:51002',
+              'ElectrumX-3 (TCP)': 'testnet.hsmiths.com:53011',
+              'ElectrumX-3 (SSL)': 'testnet.hsmiths.com:53012',
+              'ElectrumX-4 (SSL)': 'bitcoin-testnet.stackwallet.com:51002',
               'ElectrumX-5 (SSL)': 'ax102.blockeng.ch:60002',
-              'ElectrumX-5 (TCP)': 'testnet.qtornado.com:51001',
-              'ElectrumX-5 (SSL)': 'testnet.qtornado.com:51002',
+              'ElectrumX-6 (TCP)': 'testnet.qtornado.com:51001',
+              'ElectrumX-6 (SSL)': 'testnet.qtornado.com:51002',
               
 
 
@@ -1861,6 +1946,45 @@ Blackcoin 10
         developer: 'moZx3Vhdj4xe1JbEp7BegcpVdMNWTpzWHh',
       },
       */
+      ethereum : {
+        symbol: 'ETH-Goerli',      //ticker
+        asset: {
+          chainModel: 'account',
+          name: 'Ethereum-Goerli',
+          slug: 'ethereum-goerli-erc20',
+          symbol: 'ETH-Goerli',
+          symbols: ['eth-goerli', 'ethereum-goerli', 'goerli'],
+          icon: './assets/images/crypto/ethereum-eth-logo.svg',
+          network: 'testnet',
+          supports_address : ['single'],
+          api : {
+            unspent_outputs: {
+              '': '',
+            },
+            broadcast: {
+              '': '',
+            }
+          },
+          protocol: {
+            "type": "account",  //has no parent
+          },
+          
+
+        },
+        pub : 0,      //not used for account based chains
+        priv : 0,     //not used for ....
+        multisig : 0, //....
+          hdkey : {},
+          bech32 : {},
+          
+        txExtraTimeField: false,    //not used for account/evm based coins ....
+        txExtraTimeFieldValue: false, //....
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:16,
+        txRBFTransaction: false,
+        developer: '0x000',
+      },
       litecoin : {
         symbol: 'tLTC',      //ticker
         asset: {
@@ -1976,53 +2100,15 @@ Blackcoin 10
       */
 
       
-      ["ethereum-goerli-erc20"] : {
-        symbol: 'ETH-Goerli',      //ticker
-        asset: {
-          chainModel: 'account',
-          name: 'Ethereum-Goerli',
-          slug: 'ethereum-goerli-erc20',
-          symbol: 'ETH-Goerli',
-          symbols: ['eth-goerli', 'ethereum-goerli', 'goerli'],
-          icon: './assets/images/crypto/ethereum-eth-logo.svg',
-          network: 'testnet',
-          supports_address : ['single'],
-          api : {
-            unspent_outputs: {
-              '': '',
-            },
-            broadcast: {
-              '': '',
-            }
-          },
-          protocol: {
-            "type": "account",  //has no parent
-          },
-          
-
-        },
-        pub : 0,      //not used for account based chains
-        priv : 0,     //not used for ....
-        multisig : 0, //....
-          hdkey : {'prv':0x04358394, 'pub':0x043587cf},
-          bech32 : {},
-          
-        txExtraTimeField: false,    //not used for ....
-        txExtraTimeFieldValue: false, //....
-        txExtraUnitField: false,
-        txExtraUnitFieldValue: false,
-        decimalPlaces:16,
-        txRBFTransaction: false,
-        developer: '0x000',
-      },
-      ["wally-goerli-erc20"] : {
+      
+      wally : {
         symbol: 'Wally-Goerli',      //ticker
         asset: {
           chainModel: 'ERC-20',
           name: 'Happy Walrus Coin',
-          slug: 'wally-goerli-erc20',
+          slug: 'wally',
           symbol: 'Wally',
-          symbols: ['walrus', 'wally'],
+          symbols: ['wally', 'walrus'],
           icon: './assets/images/crypto/walrus-wally-logo.svg',
           network: 'testnet',
           supports_address : ['single'],
@@ -2037,7 +2123,7 @@ Blackcoin 10
           protocol: {
             "type": "ERC20",
             "protocol_data": {
-                "platform": "ETH",  //-> parent_coin: "ETH",
+                "platform": "ethereum",  //-> parent_coin: "ETH",
                 "contract_address": "0x1CE0c2827e2eF14D5C4f29a091d735A204794041"
             }
           },
@@ -2107,7 +2193,7 @@ Blackcoin 10
 
   }
 
-  //assets are now sorted in the object
+  //sorted assets in ASC order in the object
   //https://stackoverflow.com/questions/5467129/sort-javascript-object-by-key
   wally_fn.networks.mainnet = Object.fromEntries(Object.entries(wally_fn.networks.mainnet).sort());
   wally_fn.networks.testnet = Object.fromEntries(Object.entries(wally_fn.networks.testnet).sort());
@@ -2356,6 +2442,13 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
   };
 
 
+  /*
+  wally_fn.api = {};
+  wally_fn.api.coingecko.balance = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,bitbay,potcoin,reddcoin,lynx,artbyte,infiniloop&vs_currencies=btc&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true';
+  wally_fn.api.coingecko.AllMarketData = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d,30d,1y&locale=en';
+  wally_fn.api.coingecko.supportedMarketData = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,bitbay,potcoin,reddcoin,lynx,artbyte,infiniloop&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d,30d,1y&locale=en';
+  */
+  
 
 })();
 

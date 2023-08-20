@@ -166,6 +166,14 @@
     }
     var loginWalletInteraction = function () {
           
+          //if user is logged in navigate to wallet page
+          const userIsAuth = $('body').attr('data-user');
+
+          if (userIsAuth === "auth" && ((login_wizard.profile_data).hasOwnProperty('hex_key') && login_wizard.profile_data.hex_key.length)) {
+            Router.navigate('wallet');
+            return ;
+          }
+
           console.log('Router.urlParams: ', Router.urlParams);
           
           //portfolio panel is not active/Set, route back to open portfolio
@@ -318,7 +326,7 @@
           console.log('data: ', data);
 
           //check nested tab within page, set to activate for navigation when back/forth
-          var walletSubPage='';
+          var walletSubPage = false;
           var walletAssetTabs = ['asset', 'send', 'receive', 'settings'];
           if (walletAssetTabs.includes(data[1])) {
             $('#walletAsset [data-target="#' + data[0] + '_' + data[1] +'"]').tab('show');
@@ -327,40 +335,70 @@
 
           console.log('walletSubPage before: ' + walletSubPage);
 
+          //get asset name
+          const choosenAsset = data[data.length-1];
 
-          var assetFound = 0;
+
+          var assetFound = false;
           //if asset set, check if it exists
-          if (Router.urlParams._params_.asset) {
-            console.log('if 1 okey');
-            console.log('Router.urlParams._params_.asset: '+ Router.urlParams._params_.asset);
+          if (choosenAsset) {
+            //console.log('if 1 okey');
+            //console.log('Router.urlParams._params_.asset: '+ Router.urlParams._params_.asset);
 
             
             //search for asset name and symbol for i.e (bitcoin/btc)
             for (var [key, value] of Object.entries(wally_fn.networks[ wally_fn.network ])) {
-              console.log('loop for key, value: '+ key);
+              //console.log('loop for key, value: '+ key);
 
-              if ( (value.asset.symbols).includes(Router.urlParams._params_.asset) ) {
-                assetFound =1;
+              if ( (value.asset.symbols).includes(choosenAsset) ) {
+                assetFound = true;
                 console.log('asset was found: ', value.asset.symbol);
                 console.log('asset key was found: ', key);
+                
+                //update coinjs.asset info
+
+                $.extend(coinjs, value);  //change asset and generate address
+
                 break;
+
               }
             }
-
-            /*if ((wally_fn.networks[wally_fn.network]).hasOwnProperty(Router.urlParams._params_.asset)) {
-
-
-            //if (wally_fn.networks[wally_fn.network][Router.urlParams._params_.asset] === undefined) {
-              
-              console.log('testar: ' + wally_fn.networks[wally_fn.network][Router.urlParams._params_.asset]);
-              console.log('if 2 okey');
-              
-            }else //asset doesnt exist, redirect to wallet page
-            */
 
 
               
           }
+
+          //Show Asset page or Overview page?
+          if (walletSubPage) {
+            $('#walletOverview').addClass('hidden');
+            $('#walletAsset').removeClass('hidden');
+            console.log('Wallet Overview - page');
+          }else {
+            $('#walletOverview').removeClass('hidden');
+            $('#walletAsset').addClass('hidden');
+            console.log('Wallet Asset -page');
+          }
+
+
+          if (!coinjs.asset || !assetFound)
+            return;
+
+          
+          $("#walletOptions a").each(function() {
+            var originalHref = $(this).attr("href");
+            
+            // Remove any existing coin name from the originalHref
+            var newPath = originalHref.split('/').slice(0, -1).join('/');
+            
+            // Add the new coin name to the path
+            var newHref = newPath + "/" + choosenAsset;
+
+            console.log('newHref: ', newHref)
+            
+            $(this).attr("href", newHref);
+            $(this).attr("data-asset", choosenAsset);
+          });
+          
 
 /*
           //if a wallet page is set, dont check if asset exists
@@ -381,13 +419,28 @@
           }
           */
 
-          if (walletSubPage || (Router.urlParams._params_.asset) ) {
-            $('#walletOverview').addClass('hidden');
-            $('#walletAsset').removeClass('hidden');
-          }else {
-            $('#walletOverview').removeClass('hidden');
-              $('#walletAsset').addClass('hidden');
+          
+
+          //render UI relative to utxo /evm
+
+          if (coinjs.asset.chainModel === "utxo") {
+            $('#wallet_advanced_options_dropdown').removeClass('hidden')
+
+            //hide segwit and bech32 options by default
+            $('#walletToSegWit').addClass('hidden');
+            $('#walletToSegWitBech32').addClass('hidden');
+            
+
+            if (coinjs.asset.supports_address.includes('bech32'))
+              $('#walletToSegWitBech32').removeClass('hidden');
+
+            if (coinjs.asset.supports_address.includes('segwit'))
+              $('#walletToSegWit').removeClass('hidden')
+
+          } else {
+            $('#wallet_advanced_options_dropdown').addClass('hidden')
           }
+
 
         })/*
         .add(/txoutputs/, function(data){
@@ -409,6 +462,52 @@
           
           loginWalletInteraction();
 
+
+        })
+        .add(/logout(.*)/, function(data) {
+          console.log('**logout page**');
+          //alert('sign page');
+          
+          //if user is logged in navigate to wallet page
+          const userIsAuth = $('body').attr('data-user');
+
+          if (userIsAuth === "guest") {
+            Router.navigate('home');
+            return ;
+          }
+
+          //remove session if remember me is false
+          if (!login_wizard.profile_data.remember)
+            storage_l.remove('wally.profile');
+
+          $('body').attr('data-user', 'guest');
+
+          login_wizard.profile_data = {};
+          //clear all inputs
+          $('input').val('');
+
+
+          //from old coding
+          $("#openEmail").val("");
+          $("#openPass").val("");
+          $("#openPass-confirm").val("");
+
+          //$("#login").removeClass('hidden');
+          //$("#openLogin").show();
+
+          //$("#wallet").addClass("hidden");
+
+          $("#walletAddress").html("");
+          $("#walletHistory").attr('href',"");
+
+          $("#walletQrCode").html("");
+          var qrcode = new QRCode("walletQrCode");
+          qrcode.makeCode("bitcoin:");
+
+          $("#walletKeys .privkey").val("");
+          $("#walletKeys .pubkey").val("");
+
+          $("#openLoginStatus").html("").hide();
 
         })
         .add(/about(.*)/, function(data){
@@ -885,6 +984,105 @@
       
   }
 
+
+/*
+ @ generate a list of user wallet assets
+*/
+
+wally_kit.listUserAssets = function() {
+  console.log('===wally_kit.listUserAssets===');
+  let userAssetList = '';
+  for (var [key, value] of Object.entries(wally_fn.networks[ coinjs.asset.network ])) {
+
+    
+    userAssetList += `
+      <div class="list-border position-relative">
+        <div class="list-wrapper">
+          <div class="list-name">
+            <div class="coin-icon">
+              <div class="icon icon32">
+                <img src="${value.asset.icon}">
+              </div>
+            </div>
+            <div class="coin-info">
+              <span class="title">
+                <a href="#wallet/asset/btc" class="stretched-link">${value.asset.name}</a>
+                <span class="badge badge-primary chain_model">${value.asset.chainModel}</span>
+              </span>
+              <span class="subtitle">
+                <span class="balance">0</span> ${value.asset.symbol} </span>
+            </div>
+          </div>
+          <div class="list-details">
+            <div class="calendar">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-flat-primary">
+                  <img src="./assets/images/send.svg" class="icon24"> Send </button>
+                <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="bi bi-caret-down"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <a class="dropdown-item" href="#wallet/send/${value.asset.symbols[0]}">
+                    <img src="./assets/images/send.svg" class="icon28"> Send </a>
+                  <a class="dropdown-item" href="#wallet/receive/${value.asset.symbols[0]}">
+                    <img src="./assets/images/receive.svg" class="icon28"> Receive </a>
+                  <a class="dropdown-item" href="#wallet/settings/${value.asset.symbols[0]}">
+                    <img src="./assets/images/settings.svg" class="icon28"> Settings </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  //add user assets to the list
+  $('#userWalletAssets').html(userAssetList);
+  
+};
+
+/**
+ * Fetches coin information from Coingecko API and updates wallet assets data.
+ * @function
+ */
+wally_kit.getCoinInfo = function () {
+  // Assuming you have your login_wizard.profile_data.generated object
+  var walletAssets = login_wizard.profile_data.generated;
+
+  //get user coinids
+  var coinids = Object.keys(login_wizard.profile_data.generated).join(","); 
+
+  // API URL
+  //var apiUrl = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,bitbay,potcoin,reddcoin,lynx,artbyte,infiniloop&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d,30d,1y&locale=en";
+  var apiUrl = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids="+coinids+"&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d,30d,1y&locale=en";
+
+  // Fetch data from Coingecko
+  $.ajax({
+    url: apiUrl,
+    method: "GET",
+    success: function(coingeckoData) {
+      var currentTimestamp = new Date().getTime();
+      
+      coingeckoData.forEach(function(coin) {
+        var coinId = coin.id;
+
+        if (walletAssets[coinId]) {
+          coin.apiname = 'Coingecko';
+          coin.apitime = currentTimestamp;  // Update the api_timestamp in the object
+          walletAssets[coinId].coininfos = coin;
+        }
+      });
+    },
+    error: function(error) {
+      console.error("Error fetching data from Coingecko:", error);
+    }
+  });
+
+  login_wizard.profile_data.generated = walletAssets;
+};
+
+
+
   /*
   @ Switch Blockchain Network Settings
   */
@@ -1313,7 +1511,7 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
 });
   
 
-
+/*
     BootstrapDialog.show({
             title: 'Manipulating Buttons',
             message: function(dialog) {
@@ -1338,7 +1536,7 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
                 }
             }]
         });
-  
+  */
   
   /* since the select content is dynamic we need to listen to body > element */
   /*

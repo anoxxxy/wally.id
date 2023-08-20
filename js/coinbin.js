@@ -60,23 +60,38 @@ profile_data = {
 
 	$("#openBtn").click(function(){
 
-		//try to login
-		//login_wizard.openUserWallet();
+		console.log('openBtn clicked');
+
+		//Remember me?
+      	const loginRemember = $('#loginRemember').is(':checked');
+
+      	//save to localStorage if remember is checked, or else remove user data
+      	if (loginRemember) {
+			login_wizard.profile_data.remember = loginRemember;
+			storage_l.set('wally.profile', login_wizard.profile_data);
+		} else {
+			storage_l.remove('wally.profile');
+		}
+
+
 
 		var tmp = login_wizard.profile_data;
+		let modalTitle = 'Wallet Login - Success';
+		let modalMessage = 'Welcome to the decentralized non-custodial wallet';
+
+		console.log('tmp: ', tmp);
 		if (login_wizard.profile_data === undefined) {
 			modalTitle = 'Wallet Login - Failed!'
 			modalMessage = 'ERROR (#openBtn): Unable to login, Bad credentials! ';
       		custom.showModal(modalTitle, modalMessage, 'danger');
-		} else {
-			modalTitle = 'Wallet Login - Success'
-			modalMessage = 'Welcome to the decentralized non-custodial wallet';
-      		custom.showModal(modalTitle, modalMessage, 'success');
+      		return;
 		}
-      
-		if (tmp.profile_data.wallet_type == 'multisig') {
-			var totalKeys = tmp.profile_data.hex_key.length;
 
+  		custom.showModal(modalTitle, modalMessage, 'success');
+
+
+		if (login_wizard.profile_data.wallet_type === 'multisig') {
+			var totalKeys = login_wizard.profile_data.hex_key.length;
 			//generate public keys from the hex key
 		}
 
@@ -137,38 +152,23 @@ profile_data = {
 		$("#walletKeys .privkeyhex").val(login_wizard.profile_data.hex_key);
 		$("#walletKeys .pubkey").val(pubkey);
 
-		$("#login").hide();
+		Router.navigate('wallet');
+		//$("#login").addClass('hidden');
 		//$("#openLogin").hide();
-		$("#wallet").removeClass("hidden").show();
+		//$("#wallet").removeClass("hidden");
 
-		walletBalance();
+		//walletBalance();
 
-		//
-		$('body').attr('data-user', 'loggedin');
+		//generate a list of user assets
+		wally_kit.listUserAssets();
+
+		//set body to user is auth!
+		$('body').attr('data-user', 'auth');
 		
 	});
 
 	$("#walletLogout").click(function(){
-		$("#openEmail").val("");
-		$("#openPass").val("");
-		$("#openPass-confirm").val("");
-
-		$("#login").show();
-		//$("#openLogin").show();
-
-		$("#wallet").addClass("hidden").show();
-
-		$("#walletAddress").html("");
-		$("#walletHistory").attr('href',explorer_addr);
-
-		$("#walletQrCode").html("");
-		var qrcode = new QRCode("walletQrCode");
-		qrcode.makeCode("bitcoin:");
-
-		$("#walletKeys .privkey").val("");
-		$("#walletKeys .pubkey").val("");
-
-		$("#openLoginStatus").html("").hide();
+		
 	});
 
 	$("#walletSegwit").click(function(){
@@ -206,7 +206,7 @@ profile_data = {
 		$("#walletSegwit")[0].checked = true;
 
 		$("#walletSegwitp2sh")[0].checked = true;
-		$("#openBtn").click();
+		//$("#openBtn").click();
 	});
 
 	$("#walletToSegWitBech32").click(function(){
@@ -219,7 +219,7 @@ profile_data = {
 		$("#walletSegwit")[0].checked = true;
 
 		$("#walletSegwitBech32")[0].checked = true;		
-		$("#openBtn").click();
+		//$("#openBtn").click();
 	});
 
 	$("#walletToLegacy").click(function(){
@@ -234,7 +234,7 @@ profile_data = {
 		
 		$(".walletLegacyType")[0].checked = true;
 
-		$("#openBtn").click();
+		//$("#openBtn").click();
 	});
 
 	$("#walletToLegacyUncompressed").click(function(){
@@ -248,7 +248,7 @@ profile_data = {
 		
 		$(".walletLegacyType")[1].checked = true;
 
-		$("#openBtn").click();
+		//$("#openBtn").click();
 	});
 
 
@@ -2199,14 +2199,14 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 		//https://wally.id/api/x.php?asset=nvc&method=blockchain.transaction.broadcast&server=failover.nvc.ewmcx.biz:50002&rawtx=01000000c6c84364019b3797aaa753f7edbe8810d49c32a07df4a6e56eaf5db4d08430ea0c6de03fae010000006a473044022041280eca4f49bb346c9a20a273de67f7da92e913e92f6655fe8cef09ac91f0fd02202ebbb0255a724e11a437b628c175a662dcfdef3d4201a6b54dea2d4d1294ad7c012103d928fc52610164842551bdd92597f7b22c9a1673f63c36741e40a42f8a24d174feffffff010003164e020000001976a914e40ec92c5974904ad43f03a1b156bb2b6de4c9fd88ac00000000
 
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
-		var electrum_node = coinjs.asset.api.unspent_outputs[wally_fn.provider.utxo];
-
+		var electrum_node = coinjs.asset.api.broadcast[wally_fn.provider.broadcast];
+		var use_ssl = electrum_node.includes('(SSL)') ? "useSSL=true&" : "";
 
 		var ticker = (coinjs.asset.symbol).toLowerCase();
 		var rawtx = $("#rawTransaction").val();
 		$.ajax ({
 			type: "POST",
-			url: "https://wally.id/api/x.php?asset="+ticker+"&method=blockchain.transaction.broadcast&server="+electrum_node+"&rawtx="+rawtx,
+			url: "https://wally.id/api/x.php?"+use_ssl+"asset="+ticker+"&method=blockchain.transaction.broadcast&server="+electrum_node+"&rawtx="+rawtx,
 			data: rawtx,
 			error: function(data) {
 				var r = 'Failed to broadcast';
@@ -2415,12 +2415,13 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 			var ticker = (coinjs.asset.symbol).toLowerCase();
 
 			var electrum_node = coinjs.asset.api.unspent_outputs[wally_fn.provider.utxo];
+			var use_ssl = electrum_node.includes('(SSL)') ? "useSSL=true&" : "";
 
 
 			console.log("getBalanceCryptoid: ", redeem);
 			$.ajax ({
 			  type: "GET",
-			  url: "https://wally.id/api/x.php?asset="+ticker+"&method=blockchain.scripthash.get_balance&scripthash="+ coinjs.addressToScriptHash(redeem.addr) + '&server='+electrum_node,
+			  url: "https://wally.id/api/x.php?"+use_ssl+"asset="+ticker+"&method=blockchain.scripthash.get_balance&scripthash="+ coinjs.addressToScriptHash(redeem.addr) + '&server='+electrum_node,
 
 			  dataType: "json",
 			  error: function() {

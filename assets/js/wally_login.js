@@ -58,6 +58,8 @@
       var loginEmailConfirmEl = $("#openEmail-confirm");
       var loginEmailConfirm = loginEmailConfirmEl.val().toLowerCase().trim();
 
+      
+
       //***Validate the input fields
       if(!wally_fn.validateEmail(loginEmail)) {
         login_wizard.errorMessage += '<p>&#8226; Email is not valid!</p>';
@@ -210,10 +212,12 @@
       $('#walletLoginStatusBox').velocity('fadeOut').addClass('hidden');
       login_wizard.errorMessage ='';
 
+      //set remember me in profile_data
+      login_wizard.profile_data.remember = false;
 
       //***Save wallet credentials so user can download it
       var hexKey = '';
-      login_wizard.wallet_credentials = 'email: '+loginEmail+'\n';
+      //login_wizard.wallet_credentials = 'email: '+loginEmail+'\n';
       for(var i = 0; i < (login_wizard.profile_data.passwords).length; i++) {
         login_wizard.wallet_credentials += 'password '+(i+1)+': '+login_wizard.profile_data.passwords[i]+'\n';
         
@@ -234,6 +238,7 @@
       login_wizard.profile_data.generated = {}; //holds all addresses, inclusive mulitisig addresses
       login_wizard.profile_data.generated = await wally_fn.generateAllWalletAddresses(login_wizard.profile_data.hex_key);
 
+      
       //generate a wallet backup for downloading
       login_wizard.generateWalletBackup();
 
@@ -376,14 +381,14 @@ login_wizard.generateWalletBackup = function() {
     //loop through the assets
 
     for (var asset in tmp) {
-      console.log('asset: ' + asset);
-      console.log('tmp[asset]: ' , tmp[asset]);
+      //console.log('asset: ' + asset);
+      //console.log('tmp[asset]: ' , tmp[asset]);
         walletBackup.assets[asset] = {};
         for (var [key, value] of Object.entries(tmp[asset])) {
 
           if (key != 'multisig') {  //get the private keys of each regular address
-            console.log('key: '+key);
-            console.log('value: ', value);
+            //console.log('key: '+key);
+            //console.log('value: ', value);
 
 
             
@@ -402,7 +407,7 @@ login_wizard.generateWalletBackup = function() {
             walletBackup.assets[asset][key] = value;
           i++;
         }
-        i=1;  //reset key to 1, since we have 1,2,3 ..private keys of each asset
+        i=1;  //reset key to 1, since we can have multiple (for i.e 1,2,3) ..private keys of each asset
     }
     
   }
@@ -412,43 +417,26 @@ login_wizard.generateWalletBackup = function() {
 
 }
 
-      
-      
+
+
 /**
  *
  * @ Coin address rendering upon login
  *  
  **/
-
 login_wizard.initCoinList = function(coinListModal) {
-
-  console.log(`Generating ${coinjs.asset.name} address`);
-  console.log('coinListModal: ', coinListModal);
-  coinListModal.getModalBody().find('.initCoinList').html(`Generating <span class="text-muted font-weight-bold">${coinjs.asset.name}</span> address <img src="${coinjs.asset.icon}" class="coin-icon icon32">`)
-
-  //console.log('coinstListModal initCoinList', coinListModal.getModalBody().find('.initCoinList'));
-
-  //const modalId = coinListModal.options.id;
-  //let modalContent = document.getElementById(modalId);
-
-  //console.log('modalContent: ', modalContent);
-
-  //  modalContent.querySelector('.initCoinList').innerHTML = `Generating ${coinjs.asset.name} address`;
-  //document.querySelector(`#${modalId} .initCoinList`).innerHTML = `Generating ${coinjs.asset.name} address`;
-
-
-
+  coinListModal.getModalBody().find('.initCoinList').html(`<li class="list-group-item"><img src="${coinjs.asset.icon}" class="coin-icon icon32"> Generating <span class="text-muted font-weight-bold">${coinjs.asset.name}</span> address</li>`);
 }
 
 
 //***START Login/OpenWallet
   /*
-  @Check/Handle account Login (is logged in)
+  @Check/Handle account Login (is user auth?)
   */
-  function openUserWallet(userData) {
+  login_wizard.openUserWallet = function() {
 
     //check if we have data in localstorage
-    userData = storage_l.get('profile_data');
+    userData = storage_l.get('wally.profile');
 
     //***If the userData is empty: exit-> login error! !
     if(userData === null || userData === undefined || Object.keys(userData).length === 0) {
@@ -457,6 +445,9 @@ login_wizard.initCoinList = function(coinListModal) {
     
     //update global variable for user data
     login_wizard.profile_data = userData;
+
+    $('#openBtn').click();
+    return ;
 
     var privkeyaes, privkeyaes2;
 
@@ -549,7 +540,6 @@ login_wizard.initCoinList = function(coinListModal) {
         */
 
       }
-
     }
 
 
@@ -621,10 +611,8 @@ login_wizard.initCoinList = function(coinListModal) {
     qrcode.makeCode(wally_fn.asset+":" + profile_data.address);
     //qrcode.makeCode("bitcoin:" + profile_data.address);
 
-
     //console.log('keys: ', keys);
     $(".walletPubKeys .address").val(profile_data.address);
-
 
     //Remember me - store the userData on the Client side with HTML5 sessionStorage 
     if (userData.remember_me)
@@ -649,7 +637,7 @@ login_wizard.initCoinList = function(coinListModal) {
     */
     console.log('End of checkUserLogin');
     return;
-    
+
   }
 
 //***END Login/OpenWallet
@@ -1621,29 +1609,34 @@ const folderContentItems = document.querySelectorAll(".folder-content li.js_fold
 
     
     var data_target = $(this).attr('data-target').slice(1); //slice hashtag (#)
+    
     console.log('-->tab.show [data-target='+data_target+']');
     console.log( 'attr: ' + $(this).attr('data-target'));
 
     var childTarget = '';
     if (data_target.includes('/')) {
       childTarget = data_target.split('/').slice(-1)[0];
-      console.log('childTarget: '+ childTarget);
+      console.log('childTarget1: '+ childTarget);
     }
     if (data_target.includes('_')) {
       childTarget = data_target.split('_').slice(-1)[0];
-      console.log('childTarget: '+ childTarget);
+      console.log('childTarget2: '+ childTarget);
     }
     
+    //check if we should pass over any asset link
+    var data_asset = $(this).attr('data-asset');
+    if (data_asset)
+      data_asset = '/'+data_asset;
 
     //check if a nested/child tab is clicked, for.i.e #newTransaction/txinputs
     if (Router.urlParams.page  != data_target) {
       
       if (childTarget)
-        Router.navigate(Router.urlParams.page + '/' + childTarget);
+        Router.navigate(Router.urlParams.page + '/' + childTarget + data_asset);
       else
-        Router.navigate(Router.urlParams.page + '/' + data_target);
+        Router.navigate(Router.urlParams.page + '/' + data_target + data_asset);
     } else {
-      console.log('no tab is set!');
+      console.log('Data-target: No tab is set!');
     }
   });
 
@@ -1955,6 +1948,9 @@ $('#openLogin input[type="password"], #openLogin input[type="text"], #openLogin 
 
 });
 
+
+  //check if user is auth
+  login_wizard.openUserWallet();
 
 }); //End DOM ready
 
