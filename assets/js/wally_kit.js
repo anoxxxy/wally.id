@@ -338,20 +338,22 @@
           //get asset name
           const choosenAsset = data[data.length-1];
 
-
-          var assetFound = false;
-          //if asset set, check if it exists
+          //does asset exist?
+          var isAssetFound = false;
+          var assetKeyInObject = '';
           if (choosenAsset) {
             //console.log('if 1 okey');
             //console.log('Router.urlParams._params_.asset: '+ Router.urlParams._params_.asset);
 
-            
             //search for asset name and symbol for i.e (bitcoin/btc)
             for (var [key, value] of Object.entries(wally_fn.networks[ wally_fn.network ])) {
-              //console.log('loop for key, value: '+ key);
+              console.log('loop for key, value: '+ key);
+              console.log('loop for symbol: '+ value.asset.symbol);
 
-              if ( (value.asset.symbols).includes(choosenAsset) ) {
-                assetFound = true;
+              if ( (value.asset.symbols).includes(choosenAsset.toLowerCase()) ) {
+              //if ( (value.asset.symbols).includes(choosenAsset) ) {
+                isAssetFound = true;
+                assetKeyInObject = key;
                 console.log('asset was found: ', value.asset.symbol);
                 console.log('asset key was found: ', key);
                 
@@ -379,11 +381,11 @@
             console.log('Wallet Asset -page');
           }
 
-
-          if (!coinjs.asset || !assetFound)
+          if (!coinjs.asset || !isAssetFound)
             return;
 
-          
+
+          //update tabs and their links relative to the choosen asset
           $("#walletOptions a").each(function() {
             var originalHref = $(this).attr("href");
             
@@ -400,14 +402,16 @@
           });
           
 
+
+
 /*
           //if a wallet page is set, dont check if asset exists
           if (!walletSubPage) {
-            if (assetFound) {
+            if (isAssetFound) {
               $('#walletOverview').addClass('hidden');
               $('#walletAsset').removeClass('hidden');
 
-              console.log('assetFound: ' + assetFound);
+              console.log('isAssetFound: ' + isAssetFound);
             } else {
               $('#walletOverview').removeClass('hidden');
               $('#walletAsset').addClass('hidden');
@@ -422,7 +426,6 @@
           
 
           //render UI relative to utxo /evm
-
           if (coinjs.asset.chainModel === "utxo") {
             $('#wallet_advanced_options_dropdown').removeClass('hidden')
 
@@ -441,6 +444,88 @@
             $('#wallet_advanced_options_dropdown').addClass('hidden')
           }
 
+          var coininfo = login_wizard.profile_data.api.assets;
+          
+          $('.coin_name').text(coinjs.asset.name)
+          $('.coin_symbol').text(coinjs.asset.symbol)
+          $('.coin_chain').text(coinjs.asset.chainModel)
+
+          if (coinjs.asset.chainModel == "utxo" || coinjs.asset.chainModel == "account" || coinjs.asset.chainModel == "evm") {
+            $('.avatar_main.coin_icon').attr('src', coinjs.asset.icon).removeClass('hidden');
+            $('.avatar_badge.coin_icon').text(coinjs.asset.name).addClass('hidden');  //hide the parent badge asset token->parentchain asset-icon
+          } else {
+
+            //check if it is a token, show token icon and its parent badge icon
+            if ( (coinjs.asset).hasOwnProperty('protocol') ) {
+              //set parent icon
+              var parentChainKey = coinjs.asset.protocol.protocol_data.platform;
+              var parentAsset = wally_fn.networks[wally_fn.network].parentChain;
+              $('.avatar_badge.coin_icon').attr('src', parentAsset.asset.icon).removeClass('hidden');
+
+              //set asset icon
+              $('.avatar_main.coin_icon').attr('src', coinjs.asset.icon).removeClass('hidden');
+
+            }
+
+          }
+          
+          // API call request denied, skip rendering asset coininfo data
+          if (coininfo[assetKeyInObject].coininfos ===  undefined)
+            return;
+
+          $('.coin_price_change_24h').text(parseFloat(coininfo[assetKeyInObject].coininfos.price_change_24h).toFixed(8) + ' ('+parseFloat(coininfo[assetKeyInObject].coininfos.price_change_percentage_24h).toFixed(2) + '%)')
+          $('.coin_price').text( '$' + parseFloat(coininfo[assetKeyInObject].coininfos.current_price).toFixed(8));
+          
+          var coinSupplyTotal = parseFloat(coininfo[assetKeyInObject].coininfos.total_supply);
+          if (isNaN(coinSupplyTotal) || coinSupplyTotal === 0) 
+            coinSupplyTotal = '-';
+          else
+            coinSupplyTotal = wally_fn.formatNumberWithCommas(coinSupplyTotal);
+          $('.coin_supply_total').text(coinSupplyTotal)
+
+          
+          var coinSupplyCirculation = parseFloat(coininfo[assetKeyInObject].coininfos.circulating_supply);
+          if (isNaN(coinSupplyCirculation) || coinSupplyCirculation === 0)
+            coinSupplyCirculation = '-';
+          else
+            coinSupplyCirculation = wally_fn.formatNumberWithCommas(coinSupplyCirculation);
+          $('.coin_supply_circulation').text(coinSupplyCirculation)
+
+          var coinVolume = parseFloat(coininfo[assetKeyInObject].coininfos.total_volume);
+          if (isNaN(coinVolume) || coinVolume === 0) 
+            coinVolume = '-';
+          else
+            coinVolume = wally_fn.formatNumberWithCommas(coinVolume);
+          $('.coin_volume').text('$'+coinVolume)
+
+
+
+          //coininfo[assetKeyInObject].coininfos.name
+          //coininfo[assetKeyInObject].coininfos.low_24h
+          //coininfo[assetKeyInObject].coininfos.circulating_supply
+          //coininfo[assetKeyInObject].coininfos.total_supply
+          //coininfo[assetKeyInObject].coininfos.total_volume
+          //coininfo[assetKeyInObject].coininfos.price_change_24h
+          //coininfo[assetKeyInObject].coininfos.price_change_percentage_7d_in_currency
+          //coininfo[assetKeyInObject].coininfos.high_24h
+          //coininfo[assetKeyInObject].coininfos.current_price
+          //coininfo[assetKeyInObject].coininfos.atl
+          //coininfo[assetKeyInObject].coininfos.atl_date
+          //coininfo[assetKeyInObject].coininfos.ath
+          //coininfo[assetKeyInObject].coininfos.ath_date
+          //coininfo[assetKeyInObject].coininfos.apitime
+          //coininfo[assetKeyInObject].coininfos.ath_change_percentage
+          //coininfo[assetKeyInObject].coininfos.market_cap
+          //coininfo[assetKeyInObject].coininfos.market_cap_rank
+          //coininfo[assetKeyInObject].coininfos.price_change_percentage_1y_in_currency
+          //coininfo[assetKeyInObject].coininfos.fully_diluted_valuation
+          
+          //coininfo[assetKeyInObject].coininfos.roi
+          //coininfo[assetKeyInObject].coininfos.last_updated
+          //coininfo[assetKeyInObject].coininfos.
+          //coininfo[assetKeyInObject].coininfos.
+
+          
 
         })/*
         .add(/txoutputs/, function(data){
@@ -478,7 +563,7 @@
 
           //remove session if remember me is false
           if (!login_wizard.profile_data.remember)
-            storage_l.remove('wally.profile');
+            storage_s.remove('wally.profile');
 
           $('body').attr('data-user', 'guest');
 
@@ -767,18 +852,18 @@
   }
 
   /*
-  @ get token badge (depending of chainModel and if it has any parent, like ERC-20 tokens)
+  @ get token badge (depending of chainModel and if it has any parent, like ERC20 tokens)
   */
 
   wally_kit.getParentTokenBadge = function(chain, protocol) {
     var parentTokenBadge = '';
-    if (chain.includes('ERC-20') || chain.includes('BEP-20') || chain.includes('PLG-20') ) {
+    if (chain.includes('ERC20') || chain.includes('BEP-20') || chain.includes('PLG-20') ) {
         
-        if (chain.includes('ERC-20'))
+        if (chain.includes('ERC20'))
           parentTokenBadge = '<img src="./assets/images/crypto/ethereum-eth-logo.svg" class="icon16 icon-badge">';
-        if (chain.includes('BEP-20'))
+        if (chain.includes('BEP20'))
           parentTokenBadge = '<img src="./assets/images/crypto/binance-bep-logo.svg" class="icon16 icon-badge">';
-        if (chain.includes('PLG-20'))
+        if (chain.includes('PLG20'))
           parentTokenBadge = '<img src="./assets/images/crypto/polygon-plg-logo.svg" class="icon16 icon-badge">';
 
         /*
@@ -1006,7 +1091,7 @@ wally_kit.listUserAssets = function() {
             </div>
             <div class="coin-info">
               <span class="title">
-                <a href="#wallet/asset/btc" class="stretched-link">${value.asset.name}</a>
+                <a href="#wallet/asset/${value.asset.symbol}" class="stretched-link">${value.asset.name}</a>
                 <span class="badge badge-primary chain_model">${value.asset.chainModel}</span>
               </span>
               <span class="subtitle">
@@ -1041,47 +1126,159 @@ wally_kit.listUserAssets = function() {
   
 };
 
+
+
 /**
  * Fetches coin information from Coingecko API and updates wallet assets data.
  * @function
  */
-wally_kit.getCoinInfo = function () {
-  // Assuming you have your login_wizard.profile_data.generated object
-  var walletAssets = login_wizard.profile_data.generated;
+wally_kit.getCoinInfo = async function () {
+  console.log('===wally_kit.getCoinInfo===');
+  
+  try {
+    
 
-  //get user coinids
-  var coinids = Object.keys(login_wizard.profile_data.generated).join(","); 
+    
+    //fetch coininfo from Coingecko
 
-  // API URL
-  //var apiUrl = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,bitbay,potcoin,reddcoin,lynx,artbyte,infiniloop&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d,30d,1y&locale=en";
-  var apiUrl = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids="+coinids+"&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d,30d,1y&locale=en";
+    // Get the current timestamp
+    var currentTimestamp = new Date().getTime();
+    
+    // Check if enough time has passed since the last API call (e.g., 60 seconds)
+    if (currentTimestamp - login_wizard.profile_data.api.coingecko >= 60000) {
+    //if (currentTimestamp - wally_kit.ApiCallTimestamp.coingecko >= 60000) {
+      // You can make the API call because 60 seconds have passed since the last call
 
-  // Fetch data from Coingecko
-  $.ajax({
-    url: apiUrl,
-    method: "GET",
-    success: function(coingeckoData) {
-      var currentTimestamp = new Date().getTime();
-      
-      coingeckoData.forEach(function(coin) {
-        var coinId = coin.id;
 
-        if (walletAssets[coinId]) {
-          coin.apiname = 'Coingecko';
-          coin.apitime = currentTimestamp;  // Update the api_timestamp in the object
-          walletAssets[coinId].coininfos = coin;
+      // Assuming you have your login_wizard.profile_data.generated object
+      var walletAssets = login_wizard.profile_data.generated;
+      var walletApiData = login_wizard.profile_data.api;
+
+      //get user's assets "coinids"
+      var coinids = Object.keys(login_wizard.profile_data.generated).join(","); 
+
+      // API URL
+      //var apiUrl = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,bitbay,potcoin,reddcoin,lynx,artbyte,infiniloop&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d,30d,1y&locale=en";
+      var apiUrl = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids="+coinids+"&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d,30d,1y&locale=en";
+
+      // Fetch data from Coingecko
+      $.ajax({
+        url: apiUrl,
+
+        method: "GET",
+        success: function(data) {
+          var currentTimestamp = new Date().getTime();
+          
+          data.forEach(function(coin) {
+            var coinId = coin.id;
+              //add assetKey if undefined
+            if (walletApiData.assets[coinId] === undefined) {
+              walletApiData.assets[coinId] = {};
+              console.log('walletApiData asset not found in api call: ', coinId)
+            }
+
+            //check if any coin is matched from the Coingecko API
+            if (walletAssets[coinId]) {
+              coin.apiname = 'Coingecko';
+              coin.apitime = currentTimestamp;  // Update the api_timestamp in the object
+              walletApiData.assets[coinId].coininfos = coin;
+            }
+
+
+          });
+
+         //reference update doesnt work, bypass it by manually updating the profile variable
+          walletApiData.coingecko = currentTimestamp;
+          //login_wizard.profile_data.api = walletApiData;
+          //login_wizard.profile_data.api.assets = walletApiData.assets;
+
+          console.log('walletApiData.coingecko: ', walletApiData.coingecko)
+          console.log('walletApiData.coingecko currentTimestamp: ', currentTimestamp)
+          console.log ('walletApiData storage_s before: ', storage_s.get('wally.profile'));
+          wally_fn.sleep(100);
+          storage_s.set('wally.profile', login_wizard.profile_data);
+          console.log ('walletApiData storage_s after: ', storage_s.get('wally.profile'));
+          console.log ('walletApiData profile_data: ', login_wizard.profile_data);
+          
+
+        },
+        error: function(error) {
+          console.error("Error fetching data from Coingecko:", error);
         }
       });
-    },
-    error: function(error) {
-      console.error("Error fetching data from Coingecko:", error);
-    }
-  });
 
-  login_wizard.profile_data.generated = walletAssets;
+      //login_wizard.profile_data.api.assets = walletApiData.assets;
+
+      // Update the last API call timestamp
+      //wally_kit.ApiCallTimestamp.coingecko = currentTimestamp;
+      //login_wizard.profile_data.api.coingecko = currentTimestamp;
+      
+      
+
+    } else {
+      // Rate limit exceeded, do not make the API call
+      console.log("wally_kit.getCoinInfo ERROR: Coingecko Rate limit exceeded. Skipping API call.");
+    }
+  } catch (e) {
+    console.log('wally_kit.getCoinInfo ERROR: ', e);
+    Router.navigate('logout');
+  }
 };
 
+/*
 
+wally_kit.getCoinInfo = async function () {
+  try {
+    // Get the current timestamp
+    var currentTimestamp = new Date().getTime();
+    
+    // Check if enough time has passed since the last API call for Coingecko (e.g., 60 seconds)
+    if (currentTimestamp - wally_kit.lastApiCallTimestamp.coingecko >= 60000) {
+      // Make the Coingecko API call because 60 seconds have passed since the last call
+      // ...
+
+      // Update the last API call timestamp for Coingecko
+      wally_kit.lastApiCallTimestamp.coingecko = currentTimestamp;
+    } else {
+      // Rate limit exceeded for Coingecko, do not make the API call
+      console.log("Coingecko rate limit exceeded. Skipping API call.");
+    }
+
+    // Check if enough time has passed since the last API call for Coinmarketcap (e.g., 60 seconds)
+    if (currentTimestamp - wally_kit.lastApiCallTimestamp.coinmarketcap >= 60000) {
+      // Make the Coinmarketcap API call because 60 seconds have passed since the last call
+      // ...
+
+      // Update the last API call timestamp for Coinmarketcap
+      wally_kit.lastApiCallTimestamp.coinmarketcap = currentTimestamp;
+    } else {
+      // Rate limit exceeded for Coinmarketcap, do not make the API call
+      console.log("Coinmarketcap rate limit exceeded. Skipping API call.");
+    }
+
+    // For individual assets, you can set timestamps like this
+    var assetName = 'your_asset_name'; // Replace with the actual asset name
+    if (!wally_kit.lastApiCallTimestamp.assets[assetName] || currentTimestamp - wally_kit.lastApiCallTimestamp.assets[assetName] >= 60000) {
+      // Make the API call for this asset because 60 seconds have passed since the last call
+      // ...
+
+      // Update the last API call timestamp for this asset
+      wally_kit.lastApiCallTimestamp.assets[assetName] = currentTimestamp;
+    } else {
+      // Rate limit exceeded for this asset, do not make the API call
+      console.log(assetName + " rate limit exceeded. Skipping API call.");
+    }
+
+  } catch (e) {
+    console.log('wally_kit.getCoinInfo ERROR: ', e);
+    Router.navigate('logout');
+  }
+};
+*/
+/*
+get electrumx active nodes:
+https://electrum-status.dragonhound.info/api/v1/electrums_status
+*/
 
   /*
   @ Switch Blockchain Network Settings

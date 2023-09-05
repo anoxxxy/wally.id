@@ -4,21 +4,33 @@
 
  //phpinfo();
  //exit();
-//return the json response
+
+	//ini_set('display_errors', 'On');
+	//error_reporting(E_ALL);
+
+
 /*
 https://docs.komodoplatform.com/mmV1/coin-integration/electrum-servers-list.html#updated-list-from-the-coins-repository
 
 https://stats.kmd.io/atomicdex/electrum_status/
 */
+//return the json response
 header("Content-Type: application/json;charset=utf-8");
 //https://www.lampdocs.com/how-to-query-an-electrumx-server-with-php/
 
-/*
-wally.id/api/x.php?asset=aby&method=server.version&server=electrumx-four.artbyte.live:50012
 
-https://wally.id/api/x.php?asset=aby&method=blockchain.scripthash.get_balance&scripthash=asasasas&server=electrumx-four.artbyte.live:50012
-*/
 
+function outputJsonResponse($success, $status, $message) {
+    $response = ["success" => $success, "status" => $status, "message" => $message];
+    echo json_encode($response, JSON_PRETTY_PRINT);
+    exit();
+}
+
+function validateQueryParam($paramName, $errorMessage) {
+    if (!isset($_GET[$paramName]) || empty($_GET[$paramName])) {
+        outputJsonResponse(false, "error", $errorMessage);
+    }
+}
 
 
 	//default settings
@@ -44,10 +56,15 @@ https://wally.id/api/x.php?asset=aby&method=blockchain.scripthash.get_balance&sc
 
 
 	// if we have Missing Parameters -> Quit
-	if (!$asset_q && $method_q && $server_q ) {
+	/*if (!$asset_q && $method_q && $server_q ) {
 		echo json_encode(["status" => "error", "message" => "MISSING_PARAMS"], JSON_PRETTY_PRINT);
 		exit();
 	}
+	*/
+	if (empty($asset_q) || empty($method_q) || empty($server_q)) {
+    outputJsonResponse(false, "error", "MISSING_PARAMS");
+	}
+
 
 	$electrum_api = array(
 	      //https://www.geeksforgeeks.org/multidimensional-associative-array-in-php/?ref=lbp
@@ -78,37 +95,33 @@ https://wally.id/api/x.php?asset=aby&method=blockchain.scripthash.get_balance&sc
 	);
 
 	//exit if method doesnt exist in the query
-	if (!array_key_exists($method_q, $electrum_api)) {
+	/*if (!array_key_exists($method_q, $electrum_api)) {
 		echo json_encode(["status" => "error", "message" => "METHOD_REQUIRED"], JSON_PRETTY_PRINT);
 		exit();
 	}
+	*/
+	if (!array_key_exists($method_q, $electrum_api)) {
+    outputJsonResponse(false, "error", "METHOD_REQUIRED");
+	}
 
-
-	//exit if required params doesnt exist in the query
-	//if (array_key_exists($params_q, $electrum_api[$method_q]))
-	//	exit('PARAM_REQUIRED');
-
-	//exit('ok: '.array_key_exists($electrum_api[$method_q]['scripthash']));
+	//exit if required params doesnt exist in the query	
 	if (array_key_exists('scripthash', $electrum_api[$method_q])) {
-		if ($scripthash_q == ''){
-			echo json_encode(["status" => "error", "message" => "MISSING_PARAM_SCRIPTHASH"], JSON_PRETTY_PRINT);
-			exit();
-		}
+		if ($scripthash_q == '')
+			validateQueryParam('scripthash', 'MISSING_PARAM_SCRIPTHASH');
+		
 		$params_q = $scripthash_q;
 		$params_q = '"'.$params_q.'"';
 	}else if (array_key_exists('rawtx', $electrum_api[$method_q])) {
-		if ($rawtx_q == ''){
-			echo json_encode(["status" => "error", "message" => "MISSING_PARAM_RAWTX"], JSON_PRETTY_PRINT);
-			exit();
-		}
+		if ($rawtx_q == '')
+			validateQueryParam('rawtx', 'MISSING_PARAM_RAWTX');
+		
 		$params_q = $rawtx_q;
 		$params_q = '"'.$params_q.'"';
 	}
 	else if (array_key_exists('tx_hash', $electrum_api[$method_q])) {
-		if ($tx_hash_q == ''){
-			echo json_encode(["status" => "error", "message" => "MISSING_PARAM_TXHASH"], JSON_PRETTY_PRINT);
-			exit();
-		}
+		if ($tx_hash_q == '')
+			validateQueryParam('tx_hash', 'MISSING_PARAM_TXHASH');
+		
 		$params_q = $tx_hash_q;
 		$params_q = '"'.$params_q.'"';
 
@@ -128,244 +141,113 @@ https://wally.id/api/x.php?asset=aby&method=blockchain.scripthash.get_balance&sc
 	//explode server_q to arr and get host and port for electrumx server
 	$server_arr = (explode(":",$server_q));
 
-	//echo '$server_arr: ' . $server_arr[0];	//host
-	//echo '$server_arr: ' . $server_arr[1];	//port
+	$host = $server_arr[0] ?? '';
+	$port = $server_arr[1] ?? '';
 
-	$host = $server_arr[0];
-	$port = $server_arr[1];
-
-	//echo json_encode($server_arr, JSON_PRETTY_PRINT);
-	//exit();
-
+	//handle empty host and port
+	if (empty($host) || empty($port)) {
+    outputJsonResponse(false, "error", "MISSING_HOST_OR_PORT");
+	}
 
 	// Defining host, port, and timeout
 	//$host = 'electrumx-four.artbyte.live';
 	///$port = 50012;
-	$timeoutInSeconds = 10;
+	$timeoutInSeconds = 30;
 	 
 
 	$query='{"id": "'.$asset_q.'", "jsonrpc":"2.0", "method": "'.$method_q.'" '.$params_q.'}';
+	
 	if ( $exit_q) {
 		echo json_encode($query, JSON_PRETTY_PRINT);
 		exit();
 	}
-	//$query='{"id": "'.$asset_q.'", "jsonrpc":"2.0", "method": "'.$method_q.'", "params":['.$params_q.']}';
 
-	//exit($query);
-	//$query='{"id": "aby", "jsonrpc":"2.0", "method": "server.version"}';
-	//$query='{"id": "aby", "jsonrpc":"2.0", "method": "blockchain.scripthash.get_balance", "params":["f2c773074a10d44ee5f9d196d9f7bf5da8d173e4a608aa3e752ec35b8be286c9"]}';
-
-
-
-
-
-		//echo json_encode($query, JSON_PRETTY_PRINT);
-		//exit();
-
-
-	//http://127.0.0.1:9998/api?method=blockchain.transaction.broadcast&params=01000000d4ee236401dfa539e1a6e4068d12bd139fa8be7f3b52809cfc9f6c926ef650a7ceb0e9a0b6010000006b48304502210097e7c9df1d18241d84d860028f29bf5ed968631bdecafb5be941dfcf3d9b72e9022031d3635317923ef0e6eb56e0f4b4387573249a793906098a99fc5e787426cf10012102f84c509cb39a48c78128b43e0f9f19530ed1f570825bdf7971534339fcf98648feffffff0100080992020000001976a914f13a01323358363dc9963567fe63bc4f9bb3d0d688ac00000000
-
-	//$query='{"id": "aby", "method": "blockchain.transaction.broadcast", "params":["5"]}';
-
-
-	//echo json_encode('ssl://'.$host.':'.$port, JSON_PRETTY_PRINT);
-	//exit();
-
-	//Connect to ElectrumX server
 
 //SSL connection
-if ($useSSL) {
-		// Setting context options
-	$context = stream_context_create();
-	stream_context_set_option($context, 'ssl', 'allow_self_signed', true);
-	stream_context_set_option($context, 'ssl', 'verify_peer_name', false);
-	 
-	try {
-
-	if ($socket = stream_socket_client('ssl://'.$host.':'.$port, $errno, $errstr, $timeoutInSeconds, STREAM_CLIENT_CONNECT, $context)) {
-
-
-	    fwrite($socket, $query."\n");
-	    $value=fread($socket,102400);
-	 
-	    $result=json_decode($value);
-	    
-
-	    //check for errors
-	    /*if (isset($result->error)) {
-	    	$result->x = new stdClass(); // Initialize $result->x as an object
-		    	$result->x->code = $result->error->code;
-    			$result->x->message = $result->error->message;
-	    }
-	    */
-		 	
-	    //print_r($result);
-	    //var_dump($result);
-	 
-
-	    //print_r($return);
-	    
-	    echo json_encode($result, JSON_PRETTY_PRINT);
-
-	    fclose($socket);
-	    exit();
-		} else {
-			echo json_encode(["success" => false, "status" => "error", "message" => "SSL 1.1 - Connection Failed: $errno - $errstr"], JSON_PRETTY_PRINT);
-		 	//echo json_encode("ERROR: $errno - $errstr", JSON_PRETTY_PRINT);
-		 	exit();
-		}
-	//catch exception
-	} catch(Exception $e) {
-	  //echo json_encode('Message: ' .$e->getMessage());
-	  echo json_encode(["success" => false, "status" => "error", "message" => "SSL 1.2: " .$e->getMessage()], JSON_PRETTY_PRINT);
-	  exit();
-	}
-} else {
-	
-
-	//ini_set('display_errors', 'On');
-	//error_reporting(E_ALL);
-
-
-		try {
-			// Creating a TCP socket using stream_socket_client
-    	$socket = stream_socket_client("tcp://{$host}:{$port}", $errno, $errstr, $timeoutInSeconds, STREAM_CLIENT_CONNECT);
-
-
-	    // Connecting to the socket
-
-	     if ($socket) {
-	    	// Connection successful
-	    	// Sending query to server
-		     fwrite($socket, $query . "\n");
-
-		    
-		    // Receiving result from the query
-		    $value = fread($socket, 10240);
-		    
-		    $result = json_decode($value);
-		    //check for errors
-		    /*if (isset($result->error)) {
-		    	$result->x = new stdClass(); // Initialize $result->x as an object
-		    	$result->x->code = $result->error->code;
-    			$result->x->message = $result->error->message;
-		    }
-		    */
-
-		    echo json_encode($result, JSON_PRETTY_PRINT);
-		    
-
-		    // Don't forget to close the socket when you're done
-		    socket_close($socket);
-		    exit();
-
-
-			} else {
-				// socket_connect failed due to timeout or other reasons
-				$errorMessage = socket_strerror(socket_last_error());
-				$errorDetails = "Failed to connect to {$host}:{$port} - {$errorMessage}";
-		    $response = [
-			    "success" => false,
-			    "status" => "error",
-			    "message" => "TCP1.1 - Connection Failed: " . $errorDetails
-				];
-		    echo json_encode($response, JSON_PRETTY_PRINT);
-			 	//echo json_encode("ERROR: $errno - $errstr", JSON_PRETTY_PRINT);
-			 	exit();
-			}
-	    
-
-	   
-    //catch exception
-		}  catch (JsonException $jsonException) {
-	    // Handle JSON decoding errors
-	    echo json_encode([
-	        "success" => false,
-	        "status" => "error",
-	        "message" => "TCP 1.2 JSON Exception: " . $jsonException->getMessage()
-	    ], JSON_PRETTY_PRINT);
-	    exit();
-		} catch (Exception $e) {
-		    // Handle other exceptions
-		    echo json_encode([
-		        "success" => false,
-		        "status" => "error",
-		        "message" => "TCP 1.3 Catch: " . $e->getMessage()
-		    ], JSON_PRETTY_PRINT);
-		    exit();
-		}
-
-
+// Function to handle error responses
+function handleErrorResponse($message) {
+    $response = [
+        "success" => false,
+        "status" => "error",
+        "message" => $message
+    ];
+    echo json_encode($response, JSON_PRETTY_PRINT);
+    exit();
 }
 
- //https://github.com/bitcoinjs/bitcoinjs-lib/issues/990
-/*
-https://github.com/checksum0/go-electrum
-// Asking the server for the balance of address 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
-	// 8b01df4e368ea28f8dc0423bcf7a4923e3a12d307c875e47a0cfbf90b5c39161
-	// We must use scripthash of the address now as explained in ElectrumX docs
-	scripthash, _ := electrum.AddressToElectrumScriptHash("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa")
-	balance, err := client.GetBalance(ctx, scripthash)
+// Function to connect using SSL
+function connectUsingSSL($host, $port, $query, $timeoutInSeconds) {
+    $context = stream_context_create();
+    stream_context_set_option($context, 'ssl', 'allow_self_signed', true);
+    stream_context_set_option($context, 'ssl', 'verify_peer_name', false);
+    
+    try {
+        $socket = stream_socket_client('ssl://' . $host . ':' . $port, $errno, $errstr, $timeoutInSeconds, STREAM_CLIENT_CONNECT, $context);
+        
+        if ($socket) {
+            fwrite($socket, $query . "\n");
+            $value = fread($socket, 81920);
+            fclose($socket);
 
+            if ($value === false) {
+                throw new Exception("Error reading response");
+            }
 
-	For example, the legacy Bitcoin address from the genesis block:
+            $result = json_decode($value);
 
-		1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+            if ($result === null) {
+                throw new Exception("Error decoding response");
+            }
 
-		has P2PKH script:
+            echo json_encode($result, JSON_PRETTY_PRINT);
+            exit();
+        } else {
+            handleErrorResponse("SSL 1.1 - Connection Failed: $errno - $errstr");
+        }
+    } catch (Exception $e) {
+        handleErrorResponse("SSL 1.2: " . $e->getMessage());
+    }
+}
 
-		76a91462e907b15cbf27d5425399ebf6f0fb50ebb88f1888ac
+// Function to connect using TCP
+function connectUsingTCP($host, $port, $query, $timeoutInSeconds) {
+    try {
+        $socket = stream_socket_client("tcp://{$host}:{$port}", $errno, $errstr, $timeoutInSeconds, STREAM_CLIENT_CONNECT);
 
-		with SHA256 hash:
+        if ($socket) {
+            fwrite($socket, $query . "\n");
+            $value = fread($socket, 81920);
+            fclose($socket);
 
-		6191c3b590bfcfa0475e877c302da1e323497acf3b42c08d8fa28e364edf018b
+            if ($value === false) {
+                throw new Exception("Error reading response");
+            }
 
-		which is sent to the server reversed as:
+            $result = json_decode($value);
 
-		8b01df4e368ea28f8dc0423bcf7a4923e3a12d307c875e47a0cfbf90b5c39161
+            if ($result === null) {
+                throw new Exception("Error decoding response");
+            }
 
-https://learnmeabitcoin.com/tools/sha256/?string=76a91462e907b15cbf27d5425399ebf6f0fb50ebb88f1888ac&multiple=1&binary=true
+            echo json_encode($result, JSON_PRETTY_PRINT);
+            exit();
+        } else {
+            $errorMessage = socket_strerror(socket_last_error());
+            $errorDetails = "Failed to connect to {$host}:{$port} - {$errorMessage}";
+            handleErrorResponse("TCP 1.1 - Connection Failed: " . $errorDetails);
+        }
+    } catch (JsonException $jsonException) {
+        handleErrorResponse("TCP 1.2 JSON Exception: " . $jsonException->getMessage());
+    } catch (Exception $e) {
+        handleErrorResponse("TCP 1.3 Catch: " . $e->getMessage());
+    }
+}
 
+if ($useSSL) {
+    connectUsingSSL($host, $port, $query, $timeoutInSeconds);
+} else {
+    connectUsingTCP($host, $port, $query, $timeoutInSeconds);
+}
 
-
-
-
------------------------
-
-?>
-// "base58check address, to hex ripemd160 hash of public key";
-var testInput = "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa";
-var testExpected = "62e907b15cbf27d5425399ebf6f0fb50ebb88f18";
-var bytes = coinjs.base58decode(testInput);
-var front = bytes.slice(1, bytes.length-4);
-var ripemd160hash = Crypto.util.bytesToHex(front);
-console.log('testOutput', testOutput);	//gives 62e907b15cbf27d5425399ebf6f0fb50ebb88f18
-
-
-var a = Crypto.SHA256(ripemd160hash);
-var b = Crypto.util.hexToBytes(a).reverse();
-var c = Crypto.util.bytesToHex(b);
-
-console.log('scripthash from address: ', c)
-
-var address = '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa';
-
-var pubkeyHashScript = Crypto.util.bytesToHex( i.pubkeyHash(address).buffer);
-//should generate: 76a91462e907b15cbf27d5425399ebf6f0fb50ebb88f1888ac
-console.log('pubkeyHashScript: ', pubkeyHashScript);
-
-var pubkeyHashScriptSHA256 = Crypto.SHA256(pubkeyHashScript);
-
-//should generate: 6191c3b590bfcfa0475e877c302da1e323497acf3b42c08d8fa28e364edf018b
-console.log('pubkeyHashScriptSHA256: ', pubkeyHashScriptSHA256);
-
-var pubkeyHashScriptSHA256Reversed = Crypto.util.bytesToHex(Crypto.util.hexToBytes(pubkeyHashScriptSHA256).reverse());
-console.log('pubkeyHashScriptSHA256Reversed: ', pubkeyHashScriptSHA256Reversed);
-
-//should generate: 8b01df4e368ea28f8dc0423bcf7a4923e3a12d307c875e47a0cfbf90b5c39161
-
---------------
-var hash = Crypto.SHA256(buffer, {asBytes: true});
-
-
-*/
+// If the code runs below this, something is wrong
+handleErrorResponse("ERROR-1 Connection Failed");

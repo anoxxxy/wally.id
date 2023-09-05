@@ -78,6 +78,16 @@
 
 
 /**
+ * Format a number with commas as thousands separators.
+ *
+ * @param {number} number - The number to be formatted.
+ * @returns {string} The formatted number with commas.
+ */
+wally_fn.formatNumberWithCommas = function(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+/**
 https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
 */
 wally_fn.getUrlParams = function (url) {
@@ -441,7 +451,7 @@ wally_fn.generatePassword = function(length = 64) {
   /*
   @ Vanity Address Generator
   */
-  wally_fn.vanityAddress = function (searchAddress, times=50) {
+  wally_fn.vanityAddress = async function (searchAddress, times=50) {
 
     var coin, genPassword, passLength;
     
@@ -482,6 +492,7 @@ wally_fn.generatePassword = function(length = 64) {
 
       */
       console.log('Vanity test:'+ i);
+      await wally_fn.timeout(15);
     }
     return false;
 
@@ -1464,6 +1475,7 @@ Blackcoin 10
         symbol: 'POT',      //ticker
         asset: {
           chainModel: 'utxo',
+          chainFamily: 'rdd',
           name: 'Potcoin',
           version: 4,
           slug: 'potcoin',
@@ -1512,6 +1524,7 @@ Blackcoin 10
         txExtraTimeFieldValue: false,
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
+
         decimalPlaces:8,
         txRBFTransaction: false,
         developer: 'PF2BMF6TwjAUp7omwgVJh3XmzjHXEYtpFf',
@@ -1520,8 +1533,9 @@ Blackcoin 10
         symbol: 'RDD',      //ticker
         asset: {
           chainModel: 'utxo',
+          chainFamily: 'rdd',
           name: 'Reddcoin',
-          version: 1,
+          version: 2,
           slug: 'reddcoin',
           symbol: 'RDD',
           symbols: ['rdd', 'reddcoin'],
@@ -2104,7 +2118,7 @@ Blackcoin 10
       wally : {
         symbol: 'Wally-Goerli',      //ticker
         asset: {
-          chainModel: 'ERC-20',
+          chainModel: 'ERC20',
           name: 'Happy Walrus Coin',
           slug: 'wally',
           symbol: 'Wally',

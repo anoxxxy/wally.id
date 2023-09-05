@@ -1535,7 +1535,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 
 			
-				if(coinjs.asset.slug == 'potcoin'){
+				if (coinjs.asset?.chainFamily === 'rdd') {
 					if (coinjs.txExtraTimeField) {
 						//hash = Crypto.SHA256(Crypto.SHA256())
 						//console.log('1: ', Crypto.SHA256(Crypto.SHA256(hash, {asBytes: true}), {asBytes: true}) );
@@ -1973,7 +1973,7 @@ var hash = Crypto.SHA256(message);
 			buffer = buffer.concat(coinjs.numToBytes(parseInt(this.version),4));
 
 			//time, PoS coins, add extra timefield to TX
-			if(coinjs.asset.slug != 'potcoin'){
+			if(coinjs.asset?.chainFamily !== 'rdd'){
 				if (coinjs.txExtraTimeField) {
 					buffer = buffer.concat(coinjs.numToBytes(parseInt(this.nTime),4));
 				}
@@ -2018,7 +2018,7 @@ var hash = Crypto.SHA256(message);
 			buffer = buffer.concat(coinjs.numToBytes(parseInt(this.lock_time),4));
 
 			//time, PoS coins, add extra timefield to TX
-			if(coinjs.asset.slug == 'potcoin'){
+			if(coinjs.asset?.chainFamily === 'rdd'){
 				if (coinjs.txExtraTimeField) {
 					buffer = buffer.concat(coinjs.numToBytes(parseInt(this.nTime),4));
 				}
@@ -2079,7 +2079,7 @@ var hash = Crypto.SHA256(message);
 				obj.version = readAsInt(4);
 
 				//PoS coins
-				if(coinjs.asset.slug != 'potcoin'){
+				if(coinjs.asset?.chainFamily !== 'rdd'){
 					if (coinjs.txExtraTimeField) {
 						console.log('txExtra:');
 						obj.nTime = readAsInt(4);
@@ -2136,7 +2136,7 @@ var hash = Crypto.SHA256(message);
 				}
 
 				//PoS coins
-				if(coinjs.asset.slug == 'potcoin'){
+				if(coinjs.asset?.chainFamily === 'rdd'){
 					if (coinjs.txExtraTimeField) {
 						console.log('txExtra:');
 						obj.nTime = readAsInt(4);

@@ -859,7 +859,7 @@
                               </div>
                               <div class="coin-info">
                                 <span class="title">
-        <a href="#wallet/asset/btc" class="stretched-link">Bitcoin</a> <span class="badge badge-primary chain_model" title="Chain: UTXO">utxo</span>
+        <a href="#wallet/asset/btc" class="stretched-link">Bitcoin</a> <span class="badge badge-primary chain_model">utxo</span>
       </span>
                                 <span class="subtitle">
         <span class="balance">9999999.00000000</span> BTC
@@ -1243,8 +1243,8 @@
 
                                                 <div class="">
                                                   <figure class="avatar_with_badge">
-                                                    <img src="./assets/images/crypto/walrus-wally-logo.svg" class="avatar_main">
-                                                    <img src="./assets/images/crypto/ethereum-eth-logo.svg" class="avatar_badge">
+                                                    <img src="./assets/images/crypto/walrus-wally-logo.svg" class="avatar_main coin_icon">
+                                                    <img src="./assets/images/crypto/ethereum-eth-logo.svg" class="avatar_badge coin_icon">
                                                   </figure>
                                                 </div>
 
@@ -1252,12 +1252,12 @@
                                               </div>
                                               <div class="coin-info">
                                                 <div class="title">
-                                                  <h4 class="card-title mb-1">Happy Walrus Coin</h4>
+                                                  <h4 class="card-title mb-1"><span class="coin_name">Happy Walrus Coin</span></h4>
                                                 </div>
                                                 <span class="subtitle ">
-                                                  <span class="balance">123.00000000</span> <span class="coin_symbol"></span>
+                                                  <span class="balance"><span class="coin_balance">123.00000000</span> <span class="coin_symbol"></span>
                                                 </span>
-                                                <div class="chain_model"><span class="badge badge-primary " title="Chain: UTXO">utxo</span></div>
+                                                <div class="chain_model"><span class="badge badge-primary coin_chain" title="Chain: UTXO">utxo</span></div>
 
                                               </div>
                                             </div>
@@ -1266,7 +1266,7 @@
                                           </div>
 
 
-                                          <p class="card-text text-muted font-small-2 mt-2">
+                                          <p class="card-text text-muted font-small-2 mt-2 hidden">
                                             Release date: <span> 15th March 2022</span>
                                           </p>
                                         </div>
@@ -1274,14 +1274,16 @@
 
                                           <ul class="list-group list-group-flush">
                                             <li class="list-group-item">
-                                              <a href="javascript:;" id="walletBalance" class="badge badge-success">0.00 BTC</a>
+                                              <a href="javascript:;" id="walletBalance" class="badge badge-success">0.00 <span class="coin_symbol"></span></a>
                                               <a href="javascript:;" id="walletHistory" target="_blank" class="badge badge-secondary">History</a>
                                             </li>
 
 
-                                            <li class="list-group-item"><span class="text-muted">Supply:</span> <span class="coin_supply">-</span> <span class="coin_symbol"></span></li>
+                                            <li class="list-group-item"><span class="text-muted">Total Supply:</span> <span class="coin_supply_total">-</span> <span class="coin_symbol"></span></li>
+                                            <li class="list-group-item"><span class="text-muted">Circulation Supply:</span> <span class="coin_supply_circulation">-</span> <span class="coin_symbol"></span></li>
                                             <li class="list-group-item"><span class="text-muted">Price:</span> <span class="coin_price">-</span></li>
-                                            <li class="list-group-item"><span class="text-muted">Block Height:</span> <span class="coin_height">-</span></li>
+                                            <li class="list-group-item"><span class="text-muted">Price Change (24h):</span> <span class="coin_price_change_24h">-</span></li>
+                                            <li class="list-group-item"><span class="text-muted">Volume:</span> <span class="coin_volume">-</span></li>
 
 
                                           </ul>
@@ -1931,14 +1933,14 @@
 
                                 <li class="folder-item js_folder-item" data-wallet-type="privatekey_wallet" data-formwizard-step="2">
                                   <div class="folder-item__icon">
-                                    <img src="./assets/images/wallet_paper.svg" class="icon32">
+                                    <img src="./assets/images/key.svg" class="icon32">
                                   </div>
                                   <div class="folder-item__details">
                                     <div class="folder-item__details__name">
-                                      Private Key
+                                      Master Key
                                     </div>
                                     <div class="folder-item__details__subname">
-                                      Login with paper wallet!
+                                      Supports public key, private key!
                                     </div>
                                   </div>
                                   <div class="folder-item__size">

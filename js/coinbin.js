@@ -68,9 +68,9 @@ profile_data = {
       	//save to localStorage if remember is checked, or else remove user data
       	if (loginRemember) {
 			login_wizard.profile_data.remember = loginRemember;
-			storage_l.set('wally.profile', login_wizard.profile_data);
+			storage_s.set('wally.profile', login_wizard.profile_data);
 		} else {
-			storage_l.remove('wally.profile');
+			storage_s.remove('wally.profile');
 		}
 
 
@@ -1852,12 +1852,13 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 
 		//var electrum_node = 'electrumx-four.artbyte.live:50012';	//network
 		var electrum_node = coinjs.asset.api.unspent_outputs[wally_fn.provider.utxo];
+		var use_ssl = (wally_fn.provider.utxo).includes('(SSL)') ? "useSSL=true&" : "";
 
 		var ticker = (coinjs.asset.symbol).toLowerCase();
 		$.ajax ({
 		  type: "GET",
 		  //https://wally.id/api/x.php?asset=aby&method=blockchain.scripthash.listunspent&scripthash=3f677078a1a9ad42d277fd91e38c102ff89d5cb5160f1a9595dca6552e84561c&server=electrumx-four.artbyte.live:50012
-		  url: "https://wally.id/api/x.php?asset="+ticker+"&method=blockchain.scripthash.listunspent&scripthash="+ coinjs.addressToScriptHash(redeem.addr) + '&server='+electrum_node,
+		  url: "https://wally.id/api/x.php?"+use_ssl+"asset="+ticker+"&method=blockchain.scripthash.listunspent&scripthash="+ coinjs.addressToScriptHash(redeem.addr) + '&server='+electrum_node,
 		  dataType: "json",
 		  error: function() {
 			$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs!');
@@ -2200,7 +2201,8 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
 		var electrum_node = coinjs.asset.api.broadcast[wally_fn.provider.broadcast];
-		var use_ssl = electrum_node.includes('(SSL)') ? "useSSL=true&" : "";
+		var use_ssl = (wally_fn.provider.broadcast).includes('(SSL)') ? "useSSL=true&" : "";
+
 
 		var ticker = (coinjs.asset.symbol).toLowerCase();
 		var rawtx = $("#rawTransaction").val();
@@ -2415,7 +2417,7 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 			var ticker = (coinjs.asset.symbol).toLowerCase();
 
 			var electrum_node = coinjs.asset.api.unspent_outputs[wally_fn.provider.utxo];
-			var use_ssl = electrum_node.includes('(SSL)') ? "useSSL=true&" : "";
+			var use_ssl = (wally_fn.provider.utxo).includes('(SSL)') ? "useSSL=true&" : "";
 
 
 			console.log("getBalanceCryptoid: ", redeem);

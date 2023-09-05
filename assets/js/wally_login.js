@@ -238,6 +238,12 @@
       login_wizard.profile_data.generated = {}; //holds all addresses, inclusive mulitisig addresses
       login_wizard.profile_data.generated = await wally_fn.generateAllWalletAddresses(login_wizard.profile_data.hex_key);
 
+      /* Keep Track of API request timestamps*/
+      login_wizard.profile_data.api = {
+        coingecko: 0, // Initialize to 0 for Coingecko
+        coinmarketcap: 0, // Initialize to 0 for Coinmarketcap
+        assets: {}, // To store individual asset timestamps
+      };
       
       //generate a wallet backup for downloading
       login_wizard.generateWalletBackup();
@@ -433,18 +439,35 @@ login_wizard.initCoinList = function(coinListModal) {
   /*
   @Check/Handle account Login (is user auth?)
   */
-  login_wizard.openUserWallet = function() {
-
+  login_wizard.openUserWallet = async function() {
+    console.log('===login_wizard.openUserWallet===');
     //check if we have data in localstorage
-    userData = storage_l.get('wally.profile');
+    userData = storage_s.get('wally.profile');
 
     //***If the userData is empty: exit-> login error! !
     if(userData === null || userData === undefined || Object.keys(userData).length === 0) {
       return ;
     }
     
+    //user is auth, proceed!
+
     //update global variable for user data
     login_wizard.profile_data = userData;
+
+
+    wally_kit.ApiCallTimestamp = {
+      coingecko: 0, // Initialize to 0 for Coingecko
+      coinmarketcap: 0, // Initialize to 0 for Coinmarketcap
+      assets: {}, // To store individual asset timestamps
+    };
+
+    //fetch coininfo from Coingecko
+    await wally_kit.getCoinInfo();
+
+    //todo: render dom with coininfo
+    //this is done in router settings
+    //
+
 
     $('#openBtn').click();
     return ;
@@ -636,6 +659,7 @@ login_wizard.initCoinList = function(coinListModal) {
     checkBalanceLoop();
     */
     console.log('End of checkUserLogin');
+
     return;
 
   }

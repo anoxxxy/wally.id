@@ -3212,6 +3212,7 @@ figure.avatar_with_badge {
 figure.avatar_with_badge img.avatar_main{
 max-width: 100%;
 height: auto;
+height: 64px;
 
 transition: transform 0.5s ease;
 }
@@ -3303,7 +3304,7 @@ bottom: 0;
 }
 .form-horizontal {
 	flex-direction: column;
-	padding: 10px 5px;
+	/*padding: 10px 5px;*/
 }
 .form-horizontal.output {
 	flex-direction: row;
