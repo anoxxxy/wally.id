@@ -35,7 +35,9 @@
     "newSegWit" : ['utxo'],
     "newMultiSig" : ['utxo'],
     "newTimeLocked" : ['utxo'],
-    "newHDaddress" : ['utxo'],
+    "newHDaddress" : ['all'],
+    "newMnemonicAddress" : ['all'],
+
     "newTransaction" : ['utxo'],
     "verify" : ['utxo'],
     "sign" : ['utxo'],

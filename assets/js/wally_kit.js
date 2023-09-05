@@ -562,8 +562,8 @@
           }
 
           //remove session if remember me is false
-          if (!login_wizard.profile_data.remember)
-            storage_s.remove('wally.profile');
+          //if (!login_wizard.profile_data.remember)
+          storage_s.remove('wally.profile');
 
           $('body').attr('data-user', 'guest');
 

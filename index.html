@@ -109,6 +109,7 @@
   <script type="text/javascript" src="js/qcode-decoder.min.js"></script>
   <script type="text/javascript" src="js/jsbn.js"></script>
   <script type="text/javascript" src="js/ellipticcurve.js"></script>
+  <script type="text/javascript" src="js/bip39.js"></script>
   <script type="text/javascript" src="js/coin.js"></script>
   <script type="text/javascript" src="js/coinbin.js"></script>
   <script type="text/javascript" src="js/converter/mnemonic.js"></script>
@@ -320,6 +321,11 @@
                     <li class="mb-0">
                       <a href="#newHDaddress" data-route="link" data-pagescroll="page_tab_iceee">
                 HD Address
+                </a>
+                    </li>
+                    <li class="mb-0">
+                      <a href="#newMnemonicAddress" data-route="link" data-pagescroll="page_tab_iceee">
+                Mnemonic Address
                 </a>
                     </li>
                     <li class="mb-0">
@@ -2643,6 +2649,67 @@
             </div>
           </div>
         </div>
+
+        <!-- Mnemonic Address -->
+        <div class="tab-pane tab-content" id="newMnemonicAddress" data-route="newMnemonicAddress">
+          <div class="pageScrollSpace">&nbsp;</div>
+          <div class="row no-gutters tab-body">
+            <div class="col-12">
+
+              <h2 class="card-title">New Mnemonic Address</h2>
+              <h4 class="card-subtitle mb-3 text-muted">making BIP derivation even easier</h4>
+
+              <p>Use the form below to generate a <a href="https://en.bitcoin.it/wiki/Seed_phrase#Two-factor_seed_phrases" target="_blank">Mnemonic seed</a> master address.</p>
+
+              <label>xPub Address</label>
+
+              <div class="input-group">
+                <input id="newMnemonicPub" type="text" class="form-control" value="" readonly>
+                <div class="input-group-append">
+                  <button class="deriveHDbtn form-control btn btn-flat-primary" disabled title="Derive from Public Key"><i class="bi bi-caret-right-fill"></i> </button>
+                </div>
+              </div>
+              <label>xPrv Address</label>
+              <div class="input-group">
+                <input id="newMnemonicPrv" type="text" class="form-control" value="" readonly>
+                <div class="input-group-append">
+                  <button class="deriveHDbtn form-control btn btn-flat-primary" disabled title="Derive from Private Key"><i class="bi bi-caret-right-fill"></i> </button>
+                </div>
+              </div>
+
+
+
+              <h5 class="py-2 mt-4">BIP & Address Options</h5>
+              <p>You can use the advanced options below to generate different kinds of Mnemonic Master Keys</p>
+
+              <label for="newMnemonicWords" title="">BIP39 Mnemonic</label>
+
+              <div class="input-group">
+                <input id="newMnemonicWords" type="text" class="form-control" >
+                  <div class="input-group-append">
+                    <span id="newMnemonicGenerate" class="input-group-text cursor-pointer generatePassword" data-input-for="#newMnemonicWords" data-content="We use Crypto Random and Fisher-Yates Shuffle Algorithm!">Generate</span>
+                    <span class="input-group-text cursor-pointer" data-input-for="#newMnemonicWords" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top"><i class="bi bi-gear-fill"></i></span>
+                  </div>
+                </div>
+
+              <div class="checkbox mt-2">
+                <label>
+                  <input type="checkbox" id="newMnemonicBrainwalletCheck" class="checkbox-inline"> BIP Password (recommended)</label>
+
+                <div class="input-group" >
+                  <input type="text" class="form-control hidden" id="MnemonicBrainwallet">
+                  <span class="input-group-btn hidden">
+                      <button class="btn btn-default generatePassword" type="button" data-input-for="MnemonicBrainwallet">Generate Password</button>
+                    </span>
+                </div>
+              </div>
+
+              <input type="button" class="btn btn-primary" value="Generate" id="newMnemonicKeysBtn">
+            </div>
+          </div>
+        </div>
+
+
         <div class="tab-pane tab-content" id="newTransaction" data-route="newTransaction">
           <div class="pageScrollSpace">&nbsp;</div>
           <div class="row no-gutters tab-body">
