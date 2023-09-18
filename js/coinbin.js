@@ -1,10 +1,73 @@
+var bip39 = new BIP39('en');
 var coinbinf = window.coinbinf = function () { };
+//var coinbinjs = {}; 
 
 $(document).ready(function() {
 
 	//***Initialize/Set default Network
   	wally_kit.initNetwork($('input[type=radio][name=radio_selectNetworkType]'));
 
+
+  	//Init POPUP for BIP PROTOCOLS AND CLIENTS DERIVATION
+  	new jBox('Tooltip', {
+    attach: '.newMnemonicWords',
+    width: 280,
+    trigger: 'click',
+    class: 'popover',
+    closeOnClick: 'body',
+    addClass: 'JBoxPopover',
+    id: 'popBIPSettingsJBox',
+    //closeOnMouseleave: true,
+    animation: 'zoomIn',
+    content: $('#popBIPSettings').html(),
+    onOpen: function () {
+      //this.source.addClass('active').html('Now scroll');
+    },
+    onClose: function () {
+      //this.source.removeClass('active').html('Click me');
+    }
+  }).open().close();
+
+  	//BIP Path to render from
+  	coinbinf.bippath = $("#bip_path");
+
+  	//derive from BIP Protocol on Mnemonic page
+  	coinbinf.deriveFromBipProtocol = $('#popBIPSettingsJBox #bipProtocol');
+
+  	//select - client wallet
+  	coinbinf.bip32Client = $("#bip32-client");
+  	coinbinf.bipMnemonicClientProtocol = $('#popBIPSettingsJBox .bipMnemonicClientProtocol');
+
+  	coinbinf.newMnemonicPubInput = $('#newMnemonicPub');
+  	coinbinf.newMnemonicPrvInput = $('#newMnemonicPrv');
+
+  	  // BIP Tab names
+  coinbinf.hdkeyTab = $('#bipDerivationTabBip32');
+  coinbinf.bip32Tab = $('#bipDerivationTabBip32');
+  coinbinf.bip44Tab = $('#bipDerivationTabBip44');
+  coinbinf.bip49Tab = $('#bipDerivationTabBip49');
+  coinbinf.bip84Tab = $('#bipDerivationTabBip84');
+
+  //BIP Tab Content
+  coinbinf.hdkeyTabContent = $('#bipTab32');
+  coinbinf.bip32TabContent = $('#bipTab32');
+  coinbinf.bip44TabContent = $('#bipTab44');
+  coinbinf.bip49TabContent = $('#bipTab49');
+  coinbinf.bip84TabContent = $('#bipTab84');
+  
+  //BIP Path
+  coinbinf.bip32path = $('#bip32-path');
+  coinbinf.bip44path = $('#bip44-path');
+  coinbinf.bip49path = $('#bip49-path');
+  coinbinf.bip84path = $('#bip84-path');
+
+  //BIP Coin BIP/SLIP path
+  coinbinf.bipCoinPathTabContent = $('#bipDerivationTabContents input.coin');
+
+  //BIP Verify Script
+  coinbinf.verifyScript = $("#verifyScript");
+
+  coinbinf.bipAddressSemantics = 'p2wpkh';	//added for electrum address derivation
 
 
 	/* open wallet code */
@@ -858,7 +921,7 @@ profile_data = {
 	/* new -> Hd address code */
 
 	$(".deriveHDbtn").click(function(){
-		$("#verifyScript").val($("input[type='text']",$(this).parent().parent()).val());
+		coinbinf.verifyScript.val($("input[type='text']",$(this).parent().parent()).val());
 		window.location = "#verify";
 		$("#verifyBtn").click();
 	});
@@ -883,6 +946,213 @@ profile_data = {
 		}
 	});
 
+
+	/* new -> Mnemonic address code */
+	$(".deriveSeedbtn").click(function(){
+		coinbinf.verifyScript.val($("input[type='text']",$(this).parent().parent()).val());
+		window.location = "#verify";
+		$("#verifyBtn").click();
+	});
+
+	coinbinf.deriveFromBipProtocol.on('change', function(e) {
+		var protocol = this.value;
+		console.log('coinbinf.deriveFromBipProtocol');
+		$('#newMnemonicAddress .bipProtocolStr').text(protocol);
+	});
+
+
+
+	//coinbinf.deriveFromBipProtocol.on('')
+	/*Popover event listener for BIP protocol*/
+	$("body").on("change", '#popBIPSettingsJBox input[name="radio_bip_protocol"]', function(e){
+		var poppis = $('.popover.show');
+		var bipProtocolRadio = poppis.find('input[name="radio_bip_protocol"]');
+		
+		//clear master keys
+		coinbinf.newMnemonicPubInput.val("");
+		coinbinf.newMnemonicPrvInput.val("");
+
+		//get bip protocol value
+		bipProtocolVal = $(this).val();
+		 console.log( 'is checked: ' + $(this).is(":checked"));
+		 console.log( 'bipProtocol val: ' + bipProtocolVal);
+		
+		//var choosenBipProtocol = bipProtocolRadio.val();
+
+		
+		//list of supported bip-types, bip44 is added here for registered coin types/slip support 
+		//https://github.com/satoshilabs/slips/blob/master/slip-0044.md
+		var bipTypes = ['hdkey', 'bip44', 'bip49', 'bip84'];
+		
+		//check bip type, hdkey/bip32, bip44, bip49, bip84
+		if (bipTypes.includes(bipProtocolVal)) {
+			console.log('bip supported: '+ bipProtocolVal);
+		} else {
+			console.log('bip NOT supported: ' + bipProtocolVal);
+			bipProtocolVal = 'hdkey';	//Default BIP (=bip32) if no BIP type is choosen
+		}
+
+		coinbinf.deriveFromBipProtocol.val(bipProtocolVal).trigger('change');
+
+		$(this).val(bipProtocolVal);
+
+		
+	});
+
+	
+	//Check if we have custom BIP Derivation protocols like Electrum
+	$("body").on("change", '#popBIPSettingsJBox .bipMnemonicClientProtocol', function(e){
+		
+		//clear master keys
+		coinbinf.newMnemonicPubInput.val("");
+		coinbinf.newMnemonicPrvInput.val("");
+
+		//should we use electrum for derivating bip master keys?
+		var useClientProtocol = $(this).is(":checked");
+
+		//get popup element inputs
+		var poppis = $('#popBIPSettingsJBox');
+		var mnemonicLengthEl = poppis.find('.bipMnemonicLength');
+		var mnemonicProtocols = poppis.find('.bipMnemonicProtocols');
+
+		//Element - Protocol string
+		var bipProtocolStr = $('#newMnemonicAddress .bipProtocolStr');
+
+
+		//for electrum maximum 12 words is used
+		if (useClientProtocol) {
+			mnemonicProtocols.find('label').not('[data-bip-option="bip84"]').addClass('disabled').removeClass('active');
+			mnemonicLengthEl.val(12).prop('disabled', true);
+			mnemonicProtocols.find('label[data-bip-option="bip84"]').addClass('active').find('input').prop('checked', true);
+			coinbinf.deriveFromBipProtocol.val('bip84').trigger('change');
+			//coinbinf.bip32Client.find('option:contains("Electrum")').prop('selected', true);
+			coinbinf.bip32Client.prop('disabled', true);
+			//coinbinf.bippath.val("m/0'/0");
+			coinbinf.bippath.val("m/0").prop('disabled', true);
+			//coinbinf.bip32path.val("m/0'/0").prop('readonly', true);
+			coinbinf.bip32path.val("m/0").prop('disabled', true);
+
+			bipProtocolStr.text( bipProtocolStr.text() + ' (Electrum)' );
+		}
+		else {
+			mnemonicProtocols.find('label').not('[data-bip-option="bip84"]').removeClass('disabled');
+			mnemonicLengthEl.prop('disabled', false)
+			coinbinf.bip32Client.val('custom').prop('disabled', false);
+			coinbinf.bip32path.val("m/0'/0").prop('disabled', false);
+			coinbinf.bippath.val("m/0").prop('disabled', false);
+
+
+			bipProtocolStr.text( (bipProtocolStr.text()).replace(' (Electrum)', '') );
+		}
+	});
+
+	/*Popover for BIP options*/
+	$("body").on("click", ".newMnemonicGenerate", function(e){
+		console.log('newMnemonicGenerate');
+		coinbinf.newMnemonicPubInput.val("");
+		coinbinf.newMnemonicPrvInput.val("");
+
+		//get elements in opened/active popover
+		var poppis = $('#popBIPSettingsJBox');
+		var mnemonicLengthEl = poppis.find('.bipMnemonicLength');
+		var mnemonicLength = 	mnemonicLengthEl.val();
+		
+		console.log('mnemonic length1: '+ mnemonicLength);
+		//set default to 24, if out of range. 12 <= mnemonicLength <= 24
+		if (isNaN(mnemonicLength) ||  mnemonicLength > 24 )
+			mnemonicLength = 24;
+		
+		if (isNaN(mnemonicLength) || mnemonicLength < 12  )
+			mnemonicLength = 12;
+		mnemonicLengthEl.val(mnemonicLength);
+
+		var s = bip39.generateMnemonic((mnemonicLength/3)*32);	//24 mnemonic words!
+		$("#newMnemonicWords").val(s);
+		$("#newMnemonicWords").removeClass("border-danger");
+		$("#newMnemonicWords").parent().removeClass("border-danger").removeAttr('title').attr('title', '').attr("data-original-title", '');
+	});
+
+
+	$("#newMnemonicKeysBtn").click(function(){
+
+		//console.log('checked? ', $("#newMnemonicBrainwalletCheck").is(":checked"));
+		coinjs.compressed = true;
+		var s  = $("#newMnemonicWords").val().trim();	//seed
+		var bipProtocolVal  = coinbinf.deriveFromBipProtocol.val();	//get bip protocol
+
+		console.log('bipProtocolVal: '+ bipProtocolVal);
+
+		isElectrumProtocol = coinbinf.bipMnemonicClientProtocol.is(':checked');
+
+		if (isElectrumProtocol)
+			bip39 = new BIP39('en', 'electrum');
+		else
+			bip39 = new BIP39('en');
+
+		console.log('isElectrumProtocol: ', isElectrumProtocol);
+		//validate bip39 mnemonic
+		if(bip39.validate(s)){
+	        $("#newMnemonicWords").removeClass("border-danger");
+			$("#newMnemonicWords").parent().removeClass("border-danger").removeAttr('title');
+
+			$("#newMnemonicWords .tooltip").remove();
+			$('#newMnemonicAddress .deriveSeedbtn').prop('disabled',false);
+    		//$("#walletSpendTo .addressRemove").find(".tooltip").remove().unbind("");
+		
+		} else {
+			coinbinf.newMnemonicPubInput.val("");
+			coinbinf.newMnemonicPrvInput.val("");
+	        $("#newMnemonicWords").addClass("border-danger");
+	        $("#newMnemonicWords").parent().addClass("border-danger").attr('title', 'Incorrect BIP39 Phrase').attr("data-original-title", 'Incorrect BIP39 Phrase').tooltip();
+
+	        $('#newMnemonicAddress .deriveSeedbtn').prop('disabled',true);
+	        return ;
+	        }
+
+
+		var p  = ($("#newMnemonicBrainwalletCheck").is(":checked")) ? $("#MnemonicBrainwallet").val() : null;	//user pass
+
+		var hd = coinjs.hd();
+
+		//convert default bip protocol to "hdkey" if another option is not set (for internal functionality)
+		if (bipProtocolVal !== 'bip49' && bipProtocolVal !== 'bip84')
+			bipProtocolVal = 'hdkey';
+
+		var pair = hd.masterMnemonic(s, p, bipProtocolVal);
+
+		
+		//render xPub, xPrv elements
+		bipProtocolPrvEl = $('.bipProtocolPrv').text( (pair.privkey).charAt(0) );
+		bipProtocolPubEl = $('.bipProtocolPub').text( (pair.pubkey).charAt(0) );
+		
+		//Electrum Master Key generation
+		if (isElectrumProtocol) {
+			coinjs.compressed = true;
+			s = pair.privkey;
+			//console.log('s: ', s);
+			var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
+			//console.log('hex: ', hex);
+			var hd = coinjs.hd(s);
+
+			//console.log('hd: ', hd);
+			var derived_electrum = hd.derive_electrum_path("m/0'/0/0", 'bip84', 'hdkey', 'p2wpkh');
+			//console.log('derived_electrum: ', derived_electrum);
+			pair.pubkey = derived_electrum.keys_extended.pubkey;
+			pair.privkey = derived_electrum.keys_extended.privkey;
+		}
+
+		coinbinf.newMnemonicPubInput.val(pair.pubkey).fadeIn();
+		coinbinf.newMnemonicPrvInput.val(pair.privkey).fadeIn();
+
+	});
+
+	$("#newMnemonicBrainwalletCheck").click(function(){
+		if($(this).is(":checked")){
+			$("#MnemonicBrainwallet").parent().removeClass("hidden");
+		} else {
+			$("#MnemonicBrainwallet").parent().addClass("hidden");
+		}
+	});
 
 	/* new -> transaction code */
 
@@ -1091,10 +1361,10 @@ profile_data = {
 	$("#transactionCreateOptions .transactionToVerify, #signCreateOptions .verifySignedData").on( "click", function() {
 		if ($(this).hasClass('verifySignedData')){
 			console.log('verifySignedData');
-			$("#verifyScript").val( $('#signedData textarea').val() ).fadeOut().fadeIn();
+			coinbinf.verifyScript.val( $('#signedData textarea').val() ).fadeOut().fadeIn();
 		}
 		else
-			$("#verifyScript").val( $('#transactionCreate textarea').val() ).fadeOut().fadeIn();
+			coinbinf.verifyScript.val( $('#transactionCreate textarea').val() ).fadeOut().fadeIn();
 		
 		window.location.hash = "#verify";
 		$("#verifyBtn").click();
@@ -2610,9 +2880,9 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 				if(coinjs.asset.network != 'mainnet')
 					network_slug = '&network='+coinjs.asset.network;
 
-				//$("#verify a.verifyLink").attr('href','verify='+$("#verifyScript").val()+'/asset='+coinjs.asset.slug+network_slug);
-				//$("#verify a.verifyLink").attr('href','#verify/asset='+coinjs.asset.slug+network_slug+'&decode='+$("#verifyScript").val());
-				var verifyScript = $("#verifyScript").val();
+				//$("#verify a.verifyLink").attr('href','verify='+coinbinf.verifyScript.val()+'/asset='+coinjs.asset.slug+network_slug);
+				//$("#verify a.verifyLink").attr('href','#verify/asset='+coinjs.asset.slug+network_slug+'&decode='+coinbinf.verifyScript.val());
+				var verifyScript = coinbinf.verifyScript.val();
 				$("#verify input.verifyLink").val(wally_fn.host+'#verify?asset='+coinjs.asset.slug+network_slug+'&decode='+verifyScript).trigger('change');
 				//console.log(wally_fn.host+'#verify?asset='+coinjs.asset.slug+network_slug+'&decode='+verifyScript);
 				
@@ -2633,8 +2903,10 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 	});
 
 	function decodeRedeemScript(){
+		console.log('===coinjs.decodeRedeemScript===');
+		
 		var script = coinjs.script();
-		var decode = script.decodeRedeemScript($("#verifyScript").val());
+		var decode = script.decodeRedeemScript(coinbinf.verifyScript.val());
 		if(decode){
 			var decodeSuccess = false;
 
@@ -2677,6 +2949,7 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 	}
 
 	function decodeTransactionScript(){
+		console.log('===coinjs.decodeTransactionScript===');
 		var tx = coinjs.transaction();
 		console.log('tx: ', tx);
 		/*
@@ -2685,7 +2958,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
     console.log('testar: ',  regex.test(tx));
 		*/
 		try {
-			var decode = tx.deserialize($("#verifyScript").val());
+			var decode = tx.deserialize(coinbinf.verifyScript.val());
 			console.log('decode: ', decode);
 			if (!decode)
 				return false;
@@ -2840,7 +3113,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		console.log('===coinjs.decodePrivKey===');
 
 		try {
-			var privkey = $("#verifyScript").val();
+			var privkey = coinbinf.verifyScript.val();
 			
 
 			//try to decode WIF key
@@ -2951,8 +3224,8 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 	}
 
 	function decodePubKey(){
-		console.log('===decodePubKey===')
-		var pubkey = $("#verifyScript").val().trim();
+		console.log('===coinjs.decodePubKey===')
+		var pubkey = coinbinf.verifyScript.val().trim();
 		if(pubkey.length==66 || pubkey.length==130){
 			try {
 				console.log('correct format!')
@@ -2993,37 +3266,132 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 	}
 
 	function decodeHDaddress(){
-		coinjs.compressed = true;
+		
 		console.log('===coinjs.decodeHDaddress===');
-		var s = $("#verifyScript").val();
+		
 		try {
-			var hex = Crypto.util.bytesToHex((coinjs.base58decode(s)).slice(0,4));
-			var hex_cmp_prv = Crypto.util.bytesToHex((coinjs.numToBytes(coinjs.hdkey.prv,4)).reverse());
-			var hex_cmp_pub = Crypto.util.bytesToHex((coinjs.numToBytes(coinjs.hdkey.pub,4)).reverse());
-			if(hex == hex_cmp_prv || hex == hex_cmp_pub){
-				var hd = coinjs.hd(s);
-				$("#verifyHDaddress .hdKey").html(s);
-				$("#verifyHDaddress .chain_code").val(Crypto.util.bytesToHex(hd.chain_code));
-				$("#verifyHDaddress .depth").val(hd.depth);
-				$("#verifyHDaddress .version").val('0x'+(hd.version).toString(16));
-				$("#verifyHDaddress .child_index").val(hd.child_index);
-				$("#verifyHDaddress .hdwifkey").val((hd.keys.wif)?hd.keys.wif:'');
-				$("#verifyHDaddress .key_type").html((((hd.depth==0 && hd.child_index==0)?'Master':'Derived')+' '+hd.type).toLowerCase());
-				$("#verifyHDaddress .parent_fingerprint").val(Crypto.util.bytesToHex(hd.parent_fingerprint));
-				$("#verifyHDaddress .derived_data table tbody").html("");
-				deriveHDaddress();
+			coinjs.compressed = true;
+			var s = coinbinf.verifyScript.val().trim();
+			var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
+			console.log('hex: ', hex);
+			var hd_type;
+			var derive_success = false;
+			var is_privkey = false;
 
-				$("#verifyHDaddress").removeClass("hidden");
-				return true;
+			function checkAndProcessHDKey(prv, pub, type) {
+			    const hex_cmp_prv = Crypto.util.bytesToHex(coinjs.numToBytes(prv, 4).reverse());
+			    const hex_cmp_pub = Crypto.util.bytesToHex(coinjs.numToBytes(pub, 4).reverse());
+
+			    if (hex === hex_cmp_prv || hex === hex_cmp_pub) {
+
+				    var hd = coinjs.hd(s);
+				    console.log(`checkAndProcessHDKey xPrv ${type}`);
+				    console.log('checkAndProcessHDKey hd: ', hd);
+
+				    var privkeyHex;
+				    if (hd.type === "private") {
+				    	is_privkey = true;
+				    }
+
+				    $("#verifyHDaddress .hdKey").html(s);
+				    $("#verifyHDaddress .chain_code").val(Crypto.util.bytesToHex(hd.chain_code));
+				    $("#verifyHDaddress .depth").val(hd.depth);
+				    $("#verifyHDaddress .version").val(`0x${hd.version.toString(16)}`);
+				    $("#verifyHDaddress .child_index").val(hd.child_index);
+				    $("#verifyHDaddress .hdwifkey").val(hd.keys.wif || '');
+				    $("#verifyHDaddress .hdhexkey").val(hd.keys.hexkey || '');
+				    $("#verifyHDaddress .hdpubkey").val(hd.keys.pubkey || '');
+				    $("#verifyHDaddress .hdaddress").val(hd.keys.hdaddress || '');
+
+				    $("#verifyHDaddress .key_type").text(`${hd.depth === 0 && hd.child_index === 0 ? 'Master' : 'Derived'} ${hd.type}`.toLowerCase() + `, Protocol:` + `${hd.bip}`.toUpperCase() );
+				    $("#verifyHDaddress .parent_fingerprint").val(Crypto.util.bytesToHex(hd.parent_fingerprint));
+				    $("#verifyHDaddress .derived_data table tbody").html("");
+				    
+
+				    deriveHDaddress(hd, type);
+
+				    $("#verifyHDaddress").removeClass("hidden");
+
+				    console.log(`verifyHDaddress checkAndProcessHDKey: BIP type: ${type}`);
+
+				    hd_type = type;
+
+
+			        derive_success = true;
+			        return true;
+			    }
+
+			    return false;
 			}
+
+			//check and process BIP derivations
+			if (
+			    checkAndProcessHDKey(coinjs.hdkey.prv, coinjs.hdkey.pub, 'hdkey') ||
+			    checkAndProcessHDKey(coinjs.bip49.prv, coinjs.bip49.pub, 'bip49') ||
+			    checkAndProcessHDKey(coinjs.bip84.prv, coinjs.bip84.pub, 'bip84')
+			) {
+				if (is_privkey)
+			    	$('#verifyHDaddress .verifyLinkGroup').addClass('hidden');
+			    else
+			    	$('#verifyHDaddress .verifyLinkGroup').removeClass('hidden');
+
+			} else {
+				$('#verifyHDaddress .verifyLinkGroup').removeClass('hidden');
+			    console.log('No matching BIP key type found.');
+			}
+
+
+			// hd_type now contains the BIP type if a match was found
+			return derive_success;
+
+
 		} catch (e) {
 			return false;
 		}
 	}
+	/**
+ * Extracts the BIP protocol from a given derivation path.
+ *
+ * @param {string} derivationPath - The derivation path to extract the BIP protocol from.
+ * @returns {string|null} The extracted BIP protocol or hdkey if not found.
+ *
+ */
+	function extractBIPProtocol(derivationPath) {
+	  // Use a regular expression to match the BIP protocol and the first integer after "m"
+	  const match = derivationPath.match(/m\/(\d+)\/?/);
 
-	function deriveHDaddress() {
-		var hd = coinjs.hd($("#verifyHDaddress .hdKey").html());
-		var index_start = $("#verifyHDaddress .derivation_index_start").val();
+	  // Check if a match was found
+	  if (match && match.length > 1) {
+	    const firstInteger = parseInt(match[1], 10);
+	    
+	    // Determine the BIP protocol based on the first integer
+	    var bipProtocol = 'hdkey';	//default to hdkey/bip32
+	    if (firstInteger === 49) {
+	      bipProtocol = 'bip49';
+	    } else if (firstInteger === 84) {
+	      bipProtocol = 'bip84';
+	    }
+	  }
+
+	  // If no match or unknown integer, return undefined
+	  return bipProtocol;
+	}
+
+
+	function deriveHDaddress(decoded, bip_protocol = 'bip32') {
+		try {
+		console.log('===coinjs.deriveHDaddress===');
+		console.log('===coinjs.deriveHDaddress=== bip_protocol: ' + bip_protocol);
+
+		
+		const bip32_custom_master_keys = $('#bip32-custom-keys');
+		const bip_electrum_prv = $('#bip32-custom-key-electrum-prv');
+		const bip_electrum_pub = $('#bip32-custom-key-electrum-pub');
+
+		//var hd = coinjs.hd($("#verifyHDaddress .hdKey").text());
+		var hd = decoded;
+		console.log('hdKey: ', hd);
+		var index_start = $("#bipDerivationIndexStart").val();
 		if ((index_start.length > 1) && (index_start[index_start.length - 1] == '\'')) {
 			var use_private_index = '\'';
 			index_start = index_start.replace(/[']/, "") * 1;
@@ -3031,36 +3399,78 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			var use_private_index = '';
 			index_start = index_start.replace(/[']/, "") * 1;
 		}
-		var index_end = $("#verifyHDaddress .derivation_index_end").val().replace(/[']/, "") * 1;
-		$("#verifyHDaddress .derivation_index_end").val(index_end + use_private_index);
+		var index_end = $("#bipDerivationIndexEnd").val().replace(/[']/, "") * 1;
+		$("#bipDerivationIndexEnd").val(index_end + use_private_index);
 		var html = '';
 		$("#verifyHDaddress .derived_data table tbody").html("");
 		for(var i=index_start;i<=index_end;i++){
-			if($("#hdpathtype option:selected").val()=='simple'){
-				var derived = hd.derive(i);
-			} else {
-				var derived = hd.derive_path(($("#hdpath input").val().replace(/\/+$/, ""))+'/'+i+use_private_index);
-			}
+			//if($("#hdpathtype option:selected").val()=='simple'){
+				//var derived = hd.derive(i);
+			//} else {
+				var bip_path = coinbinf.bippath.val();
+				bip_path = bip_path.replace("h", "'");
+				bip_path = bip_path.replace("H", "'");
+				coinbinf.bippath.val(bip_path);
+
+				var derivation_path = (bip_path.replace(/\/+$/, ""));
+				var derivation_path_protocol = extractBIPProtocol(derivation_path);
+
+				console.log('===coinjs.deriveHDaddress=== extraced BIP: ' + bip_protocol);
+				console.log('===coinjs.deriveHDaddress=== derivation_path: ' + derivation_path_protocol);
+				console.log('===coinjs.deriveHDaddress=== derivation_path electrum: ' + derivation_path+'/'+i+use_private_index);
+				
+				var derived = hd.derive_path(derivation_path+'/'+i+use_private_index, bip_protocol, derivation_path_protocol, coinbinf.bipAddressSemantics);
+				
+				//check if electrum master key should be generated
+				if (coinbinf.bip32Client.find('option:selected').text() === 'Electrum') {
+					if (i == index_start) {
+						var derived_electrum = hd.derive_electrum_path(derivation_path+'/'+i+use_private_index, bip_protocol, derivation_path_protocol, coinbinf.bipAddressSemantics);
+						console.log('verifyHDaddress Electrum Key derived_electrum: '+i+':', derived_electrum);
+
+						bip_electrum_prv.val(derived_electrum.keys_extended.privkey);
+						bip_electrum_pub.val(derived_electrum.keys_extended.pubkey);
+						bip32_custom_master_keys.removeClass('hidden');
+					}
+				} else {
+					bip32_custom_master_keys.addClass('hidden');
+				} 
+
+				
+				
+
+				//get the Electrum Master Key
+				//if(i == index_start ) {
+					console.log('verifyHDaddress Electrum Key '+i+': ', derived);
+					console.log('verifyHDaddress Electrum Key '+i+':', derived.bip_electrum);
+					
+				//}
+			//}
+			console.log('derived: ', derived);
 			html += '<tr>';
 			html += '<td>'+i+'</td>';
-			html += '<td><input type="text" class="form-control" value="'+derived.keys.address+'" readonly></td>';
+
+			html += '<td>';
+			//if (derived.bip === "hdkey")
+			if (derived.keys.address.redeemscript === undefined)	//check if redeemscript is present
+				html += '<input type="text" class="form-control" value="'+derived.keys.address+'" readonly>';
+			else {
+				html += '<input type="text" class="form-control" value="'+derived.keys.address.address+'" readonly>';
+				html += '<br><input type="text" class="form-control" value="'+derived.keys.address.redeemscript+'" readonly>';
+			}
+			html += '</td>';
+
 			html += '<td><input type="text" class="form-control" value="'+((derived.keys.wif)?derived.keys.wif:'')+'" readonly></td>';
 			html += '<td><input type="text" class="form-control" value="'+derived.keys_extended.pubkey+'" readonly></td>';
 			html += '<td><input type="text" class="form-control" value="'+((derived.keys_extended.privkey)?derived.keys_extended.privkey:'')+'" readonly></td>';
 			html += '</tr>';
+			
 		}
 		$(html).appendTo("#verifyHDaddress .derived_data table tbody");
-	}
 
-
-	$("#hdpathtype").change(function(){
-		if($(this).val()=='simple'){
-			$("#hdpath").removeClass().addClass("hidden");
-		} else {
-			$("#hdpath").removeClass();
+		} catch(err) {
+			console.log('===coinjs.deriveHDaddress=== error:', err);
 		}
-	});
-
+	}
 
 	/* sign code */
 
@@ -3183,6 +3593,8 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 	});
 
 
+
+
 /*
 	$('a[data-toggle="popover"], button[data-toggle="popover"]').popover({
     	
@@ -3202,13 +3614,14 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 	    //if target is set, clone the original element to popover
 	    if (data.target) {
+	    	console.log('popover has target!');
     		//console.log('target found!'+ data.target);
     		var targetEl = $(data.target);
 
-	        var contentHtml = targetEl.html();
+	        //var contentHtml = targetEl.html();
 
-	        var contentTitle, contentFooter;
-	        var contentBody = $(data.target + ' .popover-body').html();
+	        //var contentTitle, contentFooter;
+	        //var contentBody = $(data.target + ' .popover-body').html();
 
 	        //this is for generating passwords on popover so we can bind the generated value to the password-input field of the page!
 	        var inputFor = $(e).attr( "data-input-for");
@@ -3216,7 +3629,8 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
     		if(inputFor !== undefined && (inputFor.charAt(0) == '#'))
     			inputFor = inputFor.substring(1);
 
-    		$(data.target ).find('#pwdGenerate').attr('data-input-for', inputFor);
+    		console.log('$(data.target ): ', $(data.target ));
+    		$(data.target ).find('.pwdGenerate').attr('data-input-for', inputFor);
 
 	        //console.log('contentBody: ', $(data.target ).find('#pwdGenerate').attr('data-input-for', inputFor));
 	        //console.log('contentBody data-input-for: ', $(data.target + ' #pwdGenerate').attr('data-input-for'));
@@ -3224,6 +3638,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 	        var contentBody = $(data.target + ' .popover-body').clone();	//https://stackoverflow.com/questions/23391444/how-to-keep-content-of-bootstrap-popover-after-hiding-it-or-how-to-really-hide
 
 
+	        console.log('contentBody: ', contentBody);
 	        /*
 	        //this is for generating passwords on popover so we can bind the generated value to the password-input field of the page!
 	        var inputFor = $(e).attr( "data-input-for");
@@ -3294,7 +3709,7 @@ new jBox('Tooltip', {
 
 		    
 	    } else {	//else show a regular popover
-
+	    	console.log('popover has no target!');
 	    	/*
 	    	pooppis = $(e).popover( {
 		    	html: true,
@@ -3312,7 +3727,7 @@ new jBox('Tooltip', {
 
 	//}).on('hide.bs.popover', function (e) {
 	}).on('hidden.bs.popover', function (e) {
-
+		console.log('e: ', e)
 		//$("#popPasswordSettingsContainer").append($("#popPasswordSettings"));
     	//$(".modal-backdrop").remove();
 	});
@@ -3637,13 +4052,13 @@ new jBox('Tooltip', {
 	$("#verify input.verifyLink").on('change', function(e) {
 		
 		console.log('input.verifyLink changed!', e.target);
-		//$("#verify a.verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+$("#verifyScript").val());
+		//$("#verify a.verifyLink").attr('href','?asset='+coinjs.asset.slug+'&verify='+coinbinf.verifyScript.val());
 		
 		var network_slug = '';
 		if(coinjs.asset.network != 'mainnet')
 			network_slug = '&network='+coinjs.asset.network;
 
-		$("#verify a.verifyLink").attr('href','#verify?asset='+coinjs.asset.slug+network_slug+'&decode='+$("#verifyScript").val());
+		$("#verify a.verifyLink").attr('href','#verify?asset='+coinjs.asset.slug+network_slug+'&decode='+coinbinf.verifyScript.val());
 	});
 
 	// clear results when data changed
@@ -3928,6 +4343,291 @@ $(document).ready( function() {
 });
 */
 
+/*
+ * BIP Derivation Path functions, borrowed from 
+ * https://github.com/iancoleman/bip39
+ */
+
+//const bip141semantics = $(".bip141-semantics");
+
+
+const bipTabs = $("#bipDerivationTabs a");
+var bipTabSelected = 'bipTab32';
+
+
+const bipHardenedAddresses = $("#bip-hardened-addresses");
+const bip32path = $("#bip32-path");
+const bip32pathWally = coinbinf.bippath;
+
+
+const bipTab44coin = $("#bipTab44 .coin");
+
+const bipAccounts = $("#bipDerivationTabContents input.account");
+const bipChange = $("#bipDerivationTabContents input.change");
+
+
+const bipClients = [
+    {
+        name: "Bitcoin Core",
+        onSelect: function() {
+            bip32path.val("m/0'/0'");
+            bip32pathWally.val("m/0'/0'");
+            coinbinf.bipAddressSemantics = ''
+            bipHardenedAddresses.prop('checked', true).trigger('change');
+        },
+    },
+    {
+        name: "Blockchain.info",
+        onSelect: function() {
+            bip32path.val("m/44'/0'/0'");
+            bip32pathWally.val("m/44'/0'/0'");
+            coinbinf.bipAddressSemantics = ''
+            bipHardenedAddresses.prop('checked', false).trigger('change');
+        },
+    },
+    {
+        name: "MultiBit HD",
+        onSelect: function() {
+            bip32path.val("m/0'/0");
+            bip32pathWally.val("m/0'/0");
+            coinbinf.bipAddressSemantics = ''
+            bipHardenedAddresses.prop('checked', false).trigger('change');
+        },
+    },
+    {
+        name: "Coinomi, Ledger",
+        onSelect: function() {
+            bip32path.val("m/44'/"+bipTab44coin.val()+"'/0'");
+            bip32pathWally.val("m/44'/"+bipTab44coin.val()+"'/0'");
+            coinbinf.bipAddressSemantics = ''
+            bipHardenedAddresses.prop('checked', false).trigger('change');
+        },
+    },
+    {
+        name: "Electrum",
+        onSelect: function() {
+            bip32path.val("m/0'/0");
+            bip32pathWally.val("m/0'/0");
+            coinbinf.bipAddressSemantics = 'p2wpkh';
+            bipHardenedAddresses.prop('checked', false).trigger('change');
+        },
+    },
+    {
+        name: "Coinb.in",
+        onSelect: function() {
+            bip32path.val("m");
+            bip32pathWally.val("m");
+            coinbinf.bipAddressSemantics = ''
+            bipHardenedAddresses.prop('checked', false).trigger('change');
+        },
+    },
+]
+
+//coinbinf.bipAddressSemantics.on("input", calcForDerivationPath);
+
+bipAccounts.on("input", calcForDerivationPath);
+bipChange.on("input", calcForDerivationPath);
+
+function calcForDerivationPath() {
+	
+	isbipHardenedAddresses = bipHardenedAddresses.is(':checked');
+	console.log('=calcForDerivationPath=', isbipHardenedAddresses);
+	
+	const bip_index_start_El = $("#bipDerivationIndexStart");
+	const bip_index_end_El = $("#bipDerivationIndexEnd");
+	
+	var bip_index_start_val= bip_index_start_El.val();
+	var bip_index_end_val= bip_index_end_El.val();
+
+	
+	
+	if (isbipHardenedAddresses) {
+		bip_index_start_El.val(bip_index_start_val.replace("'", "")+"'");
+		bip_index_end_El.val(bip_index_end_val.replace("'", "")+"'");		
+	} else {
+		bip_index_start_El.val( parseIntNoNaN(bip_index_start_val.replace("'", "")) );
+		bip_index_end_El.val( parseIntNoNaN(bip_index_end_val.replace("'", "")) );
+
+	}
+	derivationPath = getDerivationPath();
+
+	//render only if success
+	if (derivationPath)
+		bipRootKeyChanged();
+}
+
+bipHardenedAddresses.on("change", calcForDerivationPath);
+
+coinbinf.bip32Client.on("change", bip32ClientChanged);
+function bip32ClientChanged(e) {
+    var clientIndex = coinbinf.bip32Client.val();
+    if (clientIndex == "custom") {	//hiden custom input in bip32 tab
+        bip32path.prop("readonly", true).parent().parent().addClass('hidden');
+        bip32path.val("m/0");
+        coinbinf.bippath.fadeOut().fadeIn();
+    } else {
+        bip32path.prop("readonly", true).parent().parent().removeClass('hidden');
+        bipClients[clientIndex].onSelect();
+        bipRootKeyChanged();
+    }
+}
+
+
+    function segwitSelected() {
+        return bip49TabSelected() || bip84TabSelected() || bip141TabSelected();
+    }
+
+    function p2wpkhSelected() {
+        return bip84TabSelected() ||
+                bip141TabSelected() && bip141semantics.val() === "p2wpkh";
+    }
+
+    function p2wpkhInP2shSelected() {
+        return bip49TabSelected() ||
+            (bip141TabSelected() && bip141semantics.val() === "p2wpkh-p2sh");
+    }
+
+
+bipTabs.on("shown.bs.tab", bipTabChanged);
+
+function bipTabChanged() {
+
+	console.log('=bipTabChanged=');
+	console.log('=bipTabChanged= this', this);
+	console.log('=bipTabChanged= this', $(this));
+
+	var bipTabName = this.innerText;
+	var bipTabHash = this.hash;
+	
+	//get the cpins bip-path for the choosen bip tab
+	var bipTabContentId = bipTabHash.substring(1);
+	bipTabSelected = bipTabContentId;
+	
+	if (coinbinf.verifyScript.val() !== '')
+		calcForDerivationPath();
+	
+	/*console.log('bipTabSelected: '+ bipTabSelected);
+	var getCoinPath = $('#'+bipTabContentId).find('.bip-coin-path').val();
+	bip32pathWally.val(getCoinPath);
+	*/
+
+	
+}
+
+
+function bipRootKeyChanged() {
+	//$("#verifyBtn").click();
+	if(!decodeHDaddress()){
+		$("#verifyStatus").removeClass('hidden').fadeOut().fadeIn();
+	}
+}
+
+
+function getDerivationPath() {
+	console.log('=getDerivationPath=');
+	var selectedTab = $('#'+bipTabSelected);
+	const bipTypeArr = bipTabSelected.match(/\d/g);
+	const bipType = parseInt(bipTypeArr.join(''), 10);
+	const bipCoinPath = selectedTab.find('input.bip-coin-path');
+	
+
+	console.log('=getDerivationPath= bipTabSelected: '+ bipTabSelected);
+	console.log('=getDerivationPath= selectedTab: ', selectedTab);
+	console.log('=getDerivationPath= bipType: '+ bipType);
+
+    if (bipType === 44 || bipType === 49 || bipType === 84) {
+
+    	//$("#verifyHDaddress #coin-bip44").val(coinjs.bip_path);
+		//$("#verifyHDaddress #bip44-path").val("m/44'/"+coinjs.bip_path+"'/0'/0");
+
+        var purpose = parseIntNoNaN(selectedTab.find('.purpose').val(), bipType);
+        //var coin = parseIntNoNaN(selectedTab.find('.coin').val(), 0);
+
+        var coin = parseIntNoNaN(coinjs.bip_path, 0);
+        var account = parseIntNoNaN(selectedTab.find('.account').val(), 0);
+        var change = parseIntNoNaN(selectedTab.find('.change').val(), 0);
+
+        var path = "m/";
+        path += purpose + "'/";
+        path += coin + "'/";
+        path += account + "'/";
+        path += change;
+
+        bipCoinPath.val(path);
+
+        bip32pathWally.val(path);
+
+        var derivationPath = path;
+        console.log("Using derivation path from BIP"+bipType+" tab: " + derivationPath);
+        return derivationPath;
+    } else if (bipType == 32) {
+    	var path = bip32path.val();
+    	bip32pathWally.val(path);
+        var derivationPath = path;
+        console.log("Using derivation path from BIP32 tab: " + derivationPath);
+        return derivationPath;
+    }
+    else {
+        console.log("Unknown derivation path");
+    }
+    return false
+}
+
+function findDerivationPathErrors(path) {
+    // TODO is not perfect but is better than nothing
+    // Inspired by
+    // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#test-vectors
+    // and
+    // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#extended-keys
+    var maxDepth = 255; // TODO verify this!!
+    var maxIndexValue = Math.pow(2, 31); // TODO verify this!!
+    if (path[0] != "m") {
+        return "First character must be 'm'";
+    }
+    if (path.length > 1) {
+        if (path[1] != "/") {
+            return "Separator must be '/'";
+        }
+        var indexes = path.split("/");
+        if (indexes.length > maxDepth) {
+            return "Derivation depth is " + indexes.length + ", must be less than " + maxDepth;
+        }
+        for (var depth = 1; depth<indexes.length; depth++) {
+            var index = indexes[depth];
+            var invalidChars = index.replace(/^[0-9]+'?$/g, "")
+            if (invalidChars.length > 0) {
+                return "Invalid characters " + invalidChars + " found at depth " + depth;
+            }
+            var indexValue = parseInt(index.replace("'", ""));
+            if (isNaN(depth)) {
+                return "Invalid number at depth " + depth;
+            }
+            if (indexValue > maxIndexValue) {
+                return "Value of " + indexValue + " at depth " + depth + " must be less than " + maxIndexValue;
+            }
+        }
+    }
+    // Check root key exists or else derivation path is useless!
+    if (!bip32RootKey) {
+        return "No root key";
+    }
+    // Check no hardened derivation path when using xpub keys
+    var hardenedPath = path.indexOf("'") > -1;
+    var hardenedAddresses = bip32TabSelected() && DOM.hardenedAddresses.prop("checked");
+    var hardened = hardenedPath || hardenedAddresses;
+    var isXpubkey = bip32RootKey.isNeutered();
+    if (hardened && isXpubkey) {
+        return "Hardened derivation path is invalid with xpub key";
+    }
+    return false;
+}
+function parseIntNoNaN(val, defaultVal) {
+    var v = parseInt(val);
+    if (isNaN(v)) {
+        return defaultVal;
+    }
+    return v;
+}
 
 
 	//Crypto Random Password generator! 
@@ -3935,25 +4635,34 @@ $('.generatePassword').on("click", function () {
     var $el = $(this);
 
     
-
-    if($el[0].dataset.inputFor == 'MnemonicBrainwallet') {
-      $("#newMnemonicxpub").val("");
-      $("#newMnemonicxprv").val("");
+    //bip seed
+    	
+    console.log($el[0].dataset.inputFor);
+    if($el[0].dataset.inputFor == '#newMnemonicWords') {
+      coinbinf.newMnemonicPubInput.val("");
+      coinbinf.newMnemonicPrvInput.val("");
+      console.log('return seed');
+      return;
     }
 
-    if($el[0].dataset.inputFor == 'HDBrainwallet') {
+    if($el[0].dataset.inputFor == '#MnemonicBrainwallet') {
+      coinbinf.newMnemonicPubInput.val("");
+      coinbinf.newMnemonicPrvInput.val("");
+    }
+
+    if($el[0].dataset.inputFor == '#HDBrainwallet') {
       $("#newHDxpub").val("");
       $("#newHDxprv").val("");
     }
 
-    if($el[0].dataset.inputFor == 'brainwallet') {
+    if($el[0].dataset.inputFor == '#brainwallet') {
       $("#newBitcoinAddress").val("");
       $("#newPubKey").val("");
       $("#newPrivKey").val("");
       $("#newPrivKeyHex").val("");
     }
 
-    if($el[0].dataset.inputFor == 'brainwalletSegWit') {
+    if($el[0].dataset.inputFor == '#brainwalletSegWit') {
       $("#newSegWitAddress").val("");
       $("#newSegWitRedeemScript").val("");
       $("#newSegWitPubKey").val("");
@@ -3978,12 +4687,12 @@ const randomFunc = {
 	symbol: getRandomSymbol
 }
 
-$("body").on("click", "#pwdGenerate", function(e){
+$("body").on("click", ".pwdGenerate", function(e){
 	console.log('===pwdGenerate===');
 	//console.log('this data-input-for: ', $(this).attr( "data-input-for"));
 	var generatePwdField = $('#'+ $(this).attr( "data-input-for"));
 
-	//get open popover
+	//get elements in opened/active popover
 	var poppis = $('.popover.show');
 	var lengthIs = 	poppis.find('#pwdLength').val();
 	var hasLower = 	((poppis.find('#pwdLowercase').is(":checked")) ? 1 : 0);;
@@ -4018,11 +4727,21 @@ function GeneratePasswordInPop(length=48, lower=1, upper=1, number=1, symbol=1) 
 
 
 	//**set min/max password, if out of range!
-	if (length < 23)
+	var isPwdInRange = true;
+	if (length < 23) {
 		length = 24;
-	if (length > 3000)
+		isPwdInRange = false;
+	}
+	if (length > 3000) {
 		length = 3000;
+		isPwdInRange = false;
+	}
 
+	if (!isPwdInRange) {
+		var poppis = $('.popover.show');
+		poppis.find('#pwdLength').val(length);
+	}
+	
 	// create a loop
 	for(var i=0; i<length; i+=typesCount) {
 		typesArr.forEach(type => {

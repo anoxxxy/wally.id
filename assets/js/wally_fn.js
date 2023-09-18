@@ -1238,7 +1238,20 @@ Blackcoin 10
         pub : 0x00,      //pubKeyHash
         priv : 0x80,     //wif
         multisig : 0x05, //scriptHash
+          //bip32, xpub
           hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
+          //bip32 : {'prv':0x0488ade4, 'pub':0x0488b21e}, //bip32, xpub
+          //https://github.com/iancoleman/bip39/blob/master/src/js/segwit-parameters.js
+
+          //bip49/p2wpkhInP2sh - deriving P2WPKH-nested-in-P2SH - segwit, ypub
+          bip49 : {'prv':0x049d7878, 'pub':0x049d7cb2}, //bip49 ypub
+          //bip84/p2wpkh - Derives segwit + bech32 addresses from seed, zprv/zpub and vprv/vpub in javascript
+          bip84 : {'prv':0x04b2430c, 'pub':0x04b24746}, // zpub
+          
+          bip_path: 0,  //bip path constants are used as hardened derivation.
+          //electrumbip: 'bip49', 'derivation': m/0, generate "bc" /  Address (Bech32) insead of segwit
+
+
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'},
           
         txExtraTimeField: false,    //Set to true for PoS coins
@@ -1295,6 +1308,13 @@ Blackcoin 10
         priv : 0xb0,     //wif
         multisig : 0x32, //scriptHash
           hdkey : {'prv':0x019d9cfe, 'pub':0x019da462},
+
+           //bip49/p2wpkhInP2sh - deriving P2WPKH-nested-in-P2SH - segwit, ypub
+          bip49 : {'prv':0x01b26792, 'pub':0x01b26ef6}, //bip49/p2wpkh zpub
+          //bip84/p2wpkh - Derives segwit + bech32 addresses from seed, zprv/zpub and vprv/vpub in javascript
+          bip84 : {'prv':0x04b2430c, 'pub':0x04b24746}, // zpub
+          bip_path: 2,
+
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'},
           
         txExtraTimeField: false,    //Set to true for PoS coins
@@ -1348,9 +1368,10 @@ Blackcoin 10
         pub : 0x1e,      //pubKeyHash
         priv : 0x9e,     //wif
         multisig : 0x16, //scriptHash
-          hdkey : {'prv':0x089944e4, 'pub':0x0827421e},
+          hdkey : {'prv':0x02fac398, 'pub':0x02facafd},
+          bip_path: 3,
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'doge'},
-          
+
           
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
@@ -1386,6 +1407,7 @@ Blackcoin 10
         priv : 0x99,     //wif
         multisig : 0x55, //scriptHash
           hdkey : {'prv':0x02cfbf60, 'pub':0x02cfbede},
+          bip_path: 2125,
           bech32 : {},
           
         txExtraTimeField: true,    //Set to true for PoS coins
@@ -1420,7 +1442,9 @@ Blackcoin 10
         priv : 0x99,     //wif
         multisig : 0x55, //scriptHash
           hdkey : {'prv':0x02cfbf60, 'pub':0x02cfbede},
+          bip_path: 10,
           bech32 : {},
+
           
         txExtraTimeField: true,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
@@ -1462,6 +1486,7 @@ Blackcoin 10
         priv : 0xad,     //wif
         multisig : 0x32, //scriptHash
           hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e}, //fix this! iceeee
+          bip_path: 191,
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'},
           
         txExtraTimeField: false,    //Set to true for PoS coins
@@ -1519,6 +1544,7 @@ Blackcoin 10
         priv : 0xb7,     //wif
         multisig : 0x05, //scriptHash
           hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
+          bip_path: 81,
           bech32 : {},
           //magic: hex('fbc0b6db'),
           
@@ -1563,6 +1589,7 @@ Blackcoin 10
         priv : 0xbd,     //wif
         multisig : 0x05, //scriptHash
           hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
+          bip_path: 4,
           bech32 : {},
           //magic: hex('fbc0b6db'),
           
@@ -1598,6 +1625,7 @@ Blackcoin 10
         priv : 0x99,     //wif
         multisig : 0x55, //scriptHash
           hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
+          bip_path: 722,
           bech32 : {},
           
         txExtraTimeField: true,    //Set to true for PoS coins
@@ -1641,6 +1669,7 @@ Blackcoin 10
         priv : 153,     //wif
         multisig : 85, //scriptHash
           hdkey : {'prv':0x0488ade4 /*EXT_SECRET_KEY*/, 'pub':0x0488b21e /*EXT_PUBLIC_KEY*/},
+          bip_path: 720,
           bech32 : {},
           
         txExtraTimeField: true,    //Set to true for PoS coins
@@ -1675,6 +1704,7 @@ Blackcoin 10
         priv : 153,     //wif
         multisig : 85, //scriptHash
           hdkey : {'prv':0x0488ade4 /*EXT_SECRET_KEY*/, 'pub':0x0488b21e /*EXT_PUBLIC_KEY*/},
+          bip_path: 719,
           bech32 : {},
           
         txExtraTimeField: true,    //Set to true for PoS coins
@@ -1710,6 +1740,7 @@ Blackcoin 10
         priv : 181,     //wif, SECRET_KEY
         multisig : 30, //scriptHash, SCRIPT_ADDRESS
           hdkey : {'prv':0xe1a32b3e /*EXT_SECRET_KEY*/, 'pub':0xad1b12a4 /*EXT_PUBLIC_KEY*/},
+          bip_path: 724,
           bech32 : {},
           
         txExtraTimeField: true,    //Set to true for PoS coins
@@ -1758,6 +1789,7 @@ Blackcoin 10
         priv : 0x88,     //wif, "wiftype": 136,
         multisig : 0x14, //scriptHash, "p2shtype": 20,
           hdkey : {'prv':0x0488ade4 /*EXT_SECRET_KEY*/, 'pub':0x0488b21e /*EXT_PUBLIC_KEY*/}, //bip32
+          bip_path: 50,
           bech32 : {},
           
         txExtraTimeField: true,    //Set to true for PoS coins
@@ -1797,6 +1829,7 @@ Blackcoin 10
         priv : 0,     //not used for ....
         multisig : 0, //....
           hdkey : {},
+          bip_path: 60,
           bech32 : {},
           
         txExtraTimeField: false,    //not used for ....
@@ -1834,6 +1867,7 @@ Blackcoin 10
         priv : 0x83,     //wif, SECRET_KEY
         multisig : 0x1c, //scriptHash, SCRIPT_ADDRESS
           hdkey : {'prv':0x0488ade4 /*EXT_SECRET_KEY*/, 'pub':0x0488b21e /*EXT_PUBLIC_KEY*/},
+          bip_path: 117,
           bech32 : {},
           
         txExtraTimeField: true,    //Set to true for PoS coins
@@ -1911,7 +1945,15 @@ Blackcoin 10
         multisig : 0xc4, //scriptHash
           hdkey : {'prv':0x04358394, 'pub':0x043587cf},
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'tb'},
-          //bech32 : {},
+          
+          //bip49/p2wpkhInP2sh - deriving P2WPKH-nested-in-P2SH - segwit, ypub
+          // p2wpkh in p2sh
+          bip49 : {'prv':0x044a4e28, 'pub':0x044a5262}, //bip49/p2wpkh zpub
+          
+          //bip84/p2wpkh - Derives segwit + bech32 addresses from seed, zprv/zpub and vprv/vpub in javascript
+          bip84 : {'prv':0x045f18bc, 'pub':0x045f1cf6}, // zpub
+          bip_path: 1,
+
           
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
@@ -1992,6 +2034,7 @@ Blackcoin 10
         multisig : 0, //....
           hdkey : {},
           bech32 : {},
+          bip_path: 1,
           
         txExtraTimeField: false,    //not used for account/evm based coins ....
         txExtraTimeFieldValue: false, //....
@@ -2027,6 +2070,13 @@ Blackcoin 10
         multisig : 0xc4, //scriptHash
           hdkey : {'prv':0x04358394, 'pub':0x043587cf},
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'litecointestnet'},
+          //bip49/p2wpkhInP2sh - deriving P2WPKH-nested-in-P2SH - segwit, ypub
+          bip49 : {'prv':0x04358394, 'pub':0x043587cf}, //bip49/p2wpkh zpub
+          
+          //bip84/p2wpkh - Derives segwit + bech32 addresses from seed, zprv/zpub and vprv/vpub in javascript
+          bip84 : {'prv':0x04358394, 'pub':0x043587cf}, // zpub
+          bip_path: 1,
+
           
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
@@ -2060,7 +2110,14 @@ Blackcoin 10
         priv : 0xf1,     //wif
         multisig : 0xc4, //scriptHash
           hdkey : {'prv':0x04358394, 'pub':0x043587cf},
-          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, /*'hrp':'litecointestnet'*/},
+          //bip49/p2wpkhInP2sh - deriving P2WPKH-nested-in-P2SH - segwit, ypub
+          bip49 : {'prv':0x04358394, 'pub':0x043587cf}, //bip49/p2wpkh zpub
+          
+          //bip84/p2wpkh - Derives segwit + bech32 addresses from seed, zprv/zpub and vprv/vpub in javascript
+          bip84 : {'prv':0x04358394, 'pub':0x043587cf}, // zpub
+          bip_path: 1,
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, /*'hrp':'dogecointestnet'*/},
+          
           
         txExtraTimeField: false,    //Set to true for PoS coins
         txExtraTimeFieldValue: false,
@@ -2151,6 +2208,7 @@ Blackcoin 10
         multisig : 0, //....
           hdkey : {},
           bech32 : {},
+          bip_path: 1,
           
         txExtraTimeField: false,    //not used for ....
         txExtraTimeFieldValue: false, //....

@@ -2537,6 +2537,9 @@ position: unset;
 #verify input.form-control {
 	padding-bottom: 0;
 }
+#verify #bipDerivationTabContents input.form-control {
+	padding-bottom: 4px;
+}
 
 #verify .callout-title {
 	top: 8px;
@@ -2548,11 +2551,20 @@ position: unset;
 #verify input.form-control {
 	box-shadow: 0 0 0 0px rgba(43,45,80,.1),0 1px 0px 0 rgba(43,45,80,.1),0 3px 9px 0 rgba(43,45,80,.08),0 0px 0px 0 rgba(0,0,0,.08),0 0px 1px 0 rgba(0,0,0,.08);
 }
+#verify #verifyHDaddress input.form-control {
+	box-shadow: 0 0 0 1px rgba(43,45,80,.1),0 2px 5px 0 rgba(43,45,80,.1),0 3px 9px 0 rgba(43,45,80,.08),0 1px 1.5px 0 rgba(0,0,0,.08),0 1px 2px 0 rgba(0,0,0,.08)
+}
 #verify .form-control:disabled, #verify .form-control[readonly] {
-  background-color: #fefefe;
+  /*background-color: #fefefe;*/
 }
 
- input.form-control[readonly] {
+#verify #bipDerivationTabContents .form-control:disabled,
+#verify #bipDerivationTabContents .form-control[readonly] {
+	
+}
+
+select.form-control,
+ input.form-control {
 	padding-bottom: 4px;
 	margin-bottom:  4px;
 }
@@ -2630,7 +2642,7 @@ position: unset;
   border-top-left-radius:  10px;
 }
 .popover-body {
-  padding: 10px 15px;
+  padding: 10px 10px;
 }
 .popover-footer {
   padding: 10px 15px;
@@ -3478,5 +3490,7 @@ padding-left: 0.75rem;
 	word-wrap: anywhere;
 }
 
-
+.bip-options-group label{
+	font-size: 0.9rem;
+}
 

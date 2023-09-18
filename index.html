@@ -96,7 +96,7 @@
 
 
   <script src="./assets/js/bootstrap-dialog.js" type="text/javascript"></script>
-  <script type="text/javascript" src="js/moment.min.js"></script>
+  <!-- <script type="text/javascript" src="js/moment.min.js"></script>-->
 
   <script type="text/javascript" src="./assets/js/datetime-flatpickr.js"></script>
   <script type="text/javascript" src="js/crypto-min.js"></script>
@@ -109,6 +109,9 @@
   <script type="text/javascript" src="js/qcode-decoder.min.js"></script>
   <script type="text/javascript" src="js/jsbn.js"></script>
   <script type="text/javascript" src="js/ellipticcurve.js"></script>
+  
+  <!-- <script type="text/javascript" src="js/sjcl-bip39.js"></script>
+  <script type="text/javascript" src="js/jsbip39.js"></script>-->
   <script type="text/javascript" src="js/bip39.js"></script>
   <script type="text/javascript" src="js/coin.js"></script>
   <script type="text/javascript" src="js/coinbin.js"></script>
@@ -319,20 +322,26 @@
                 </a>
                     </li>
                     <li class="mb-0">
-                      <a href="#newHDaddress" data-route="link" data-pagescroll="page_tab_iceee">
-                HD Address
-                </a>
-                    </li>
-                    <li class="mb-0">
-                      <a href="#newMnemonicAddress" data-route="link" data-pagescroll="page_tab_iceee">
-                Mnemonic Address
-                </a>
-                    </li>
-                    <li class="mb-0">
                       <a href="#newTimeLocked" data-route="link" data-pagescroll="page_tab_iceee">
                 Time Locked Address
                 </a>
                     </li>
+                  </ul>
+                </div>
+                <div>
+                  <h2 class="menu-title">Derived Address</h2>
+                  <ul>
+                    <li class="mb-0">
+                      <a href="#newHDaddress" data-route="link" data-pagescroll="page_tab_iceee">
+                HD Address <small>(BIP32)</small>
+                </a>
+                    </li>
+                    <li class="mb-0">
+                      <a href="#newMnemonicAddress" data-route="link" data-pagescroll="page_tab_iceee">
+                Mnemonic Seed <small>(XYZ)</small>
+                </a>
+                    </li>
+                    
                   </ul>
                 </div>
                 <div>
@@ -350,7 +359,7 @@
                     </li>
                     <li class="mb-1">
                       <a href="#broadcast" data-route="link" data-pagescroll="page_tab_iceee">
-                        <img src="./assets/images/send.svg" class="icon32 "> Send Transaction <small>Broadcast</small>
+                        <img src="./assets/images/send.svg" class="icon32 "> Send Transaction
                       </a>
                     </li>
                   </ul>
@@ -360,13 +369,13 @@
             <div class="bottom-section info">
               <ul>
                 <li>
-                  <a href="#verify"><img src="./assets/images/verify.svg" class="icon32 mx-2"> Verify/Decode</a>
+                  <a href="#verify"><img src="./assets/images/verify.svg" class="icon32 me-2"> Verify/Decode</a>
                 </li>
                 <li>
-                  <a href="#converter"><img src="./assets/images/convertshape-2.svg" class="icon32 mx-2"> Converter</a>
+                  <a href="#converter"><img src="./assets/images/convertshape-2.svg" class="icon32 me-2"> Converter</a>
                 </li>
                 <li>
-                  <a href="#settings"><img src="./assets/images/settings.svg" class="icon32 mx-2"> Settings</a>
+                  <a href="#settings"><img src="./assets/images/settings.svg" class="icon32 me-2"> Settings</a>
                 </li>
               </ul>
             </div>
@@ -388,13 +397,13 @@
             <div class="bottom-section">
               <ul>
                 <li>
-                  <a href="https://github.com/anoxxxy" alt="Wally.id - Official Github repo"><img src="./assets/images/brands/github_logo.svg" class="icon32"> Github</a>
+                  <a href="https://github.com/anoxxxy" alt="Wally.id - Official Github repo"><img src="./assets/images/brands/github_logo.svg" class="icon32 mx-2"> Github</a>
                 </li>
                 <li>
-                  <a href="https://t.me/wallyid" alt="Wally.id - Official Telegram group"><img src="./assets/images/brands/telegram_logo.svg" class="icon32"> Telegram</a>
+                  <a href="https://t.me/wallyid" alt="Wally.id - Official Telegram group"><img src="./assets/images/brands/telegram_logo.svg" class="icon32 mx-2"> Telegram</a>
                 </li>
                 <li>
-                  <a href="https://twitter.com/WallyIDOfficial" alt="Wally.id - Official Twitter group"><img src="./assets/images/brands/twitter_logo.svg" class="icon32"> Twitter</a>
+                  <a href="https://twitter.com/WallyIDOfficial" alt="Wally.id - Official Twitter group"><img src="./assets/images/brands/twitter_logo.svg" class="icon32 mx-2"> Twitter</a>
                 </li>
 
               </ul>
@@ -2328,8 +2337,8 @@
                   <input type="checkbox" id="newBrainwallet" class="checkbox-inline"> Custom Seed or Brain Wallet</label>
 
 
-                <div class="input-group hidden">
-                  <input type="text" class="form-control mb-2" id="brainwallet">
+                <div class="input-group mb-2 hidden">
+                  <input type="text" class="form-control " id="brainwallet">
                   <div class="input-group-append">
                     <span class="input-group-text cursor-pointer generatePassword" data-input-for="#brainwallet" data-content="We use Crypto Random and Fisher-Yates Shuffle Algorithm!">Generate</span>
                     <span class="input-group-text cursor-pointer brainWalletPwdGenerator" data-input-for="#brainwallet" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top"><i class="bi bi-gear-fill"></i></span>
@@ -2411,8 +2420,8 @@
                 <label>
                   <input type="checkbox" id="newSegWitBrainwallet" class="checkbox-inline"> Custom Seed or Brain Wallet</label>
 
-                <div class="input-group hidden">
-                  <input type="text" class="form-control mb-2" id="brainwalletSegWit">
+                <div class="input-group mb-2 hidden">
+                  <input type="text" class="form-control" id="brainwalletSegWit">
                   <div class="input-group-append">
                     <span class="input-group-text cursor-pointer generatePassword" data-input-for="#brainwalletSegWit" data-content="We use Crypto Random and Fisher-Yates Shuffle Algorithm!">Generate</span>
                     <span class="input-group-text cursor-pointer" data-input-for="#brainwalletSegWit" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top"><i class="bi bi-gear-fill"></i></span>
@@ -2605,9 +2614,9 @@
           <div class="row no-gutters tab-body">
             <div class="col-12">
               <h2 class="card-title">New HD Address</h2>
-              <h4 class="card-subtitle mb-3 text-muted">Making bip32 even easier</h4>
+              <h4 class="card-subtitle mb-3 text-muted">Making BIP32 even easier</h4>
               <p>Use the form below to generate a
-                <a href="https://en.bitcoin.it/wiki/Deterministic_wallet" target="_blank"><i>master</i> Hierarchical Deterministic address (HD address).</a>
+                <a href="https://en.bitcoin.it/wiki/Deterministic_wallet" target="_blank">master Hierarchical Deterministic key (HD address).</a>
               </p>
 
               <label>xPub Address</label>
@@ -2632,8 +2641,8 @@
                 <label>
                   <input type="checkbox" id="newHDBrainwallet" class="checkbox-inline"> Custom Seed or Brain Wallet</label>
 
-                <div class="input-group hidden">
-                  <input type="text" class="form-control mb-2" id="HDBrainwallet">
+                <div class="input-group mb-2 hidden">
+                  <input type="text" class="form-control" id="HDBrainwallet">
                   <div class="input-group-append">
                     <span class="input-group-text cursor-pointer generatePassword" data-input-for="#HDBrainwallet" data-content="We use Crypto Random and Fisher-Yates Shuffle Algorithm!">Generate</span>
                     <span class="input-group-text cursor-pointer" data-input-for="#HDBrainwallet" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top"><i class="bi bi-gear-fill"></i></span>
@@ -2659,21 +2668,24 @@
               <h2 class="card-title">New Mnemonic Address</h2>
               <h4 class="card-subtitle mb-3 text-muted">making BIP derivation even easier</h4>
 
-              <p>Use the form below to generate a <a href="https://en.bitcoin.it/wiki/Seed_phrase#Two-factor_seed_phrases" target="_blank">Mnemonic seed</a> master address.</p>
+              <p>Use the form below to generate a <a href="https://en.bitcoin.it/wiki/Seed_phrase#Two-factor_seed_phrases" target="_blank">Mnemonic seed</a> public key.</p>
 
-              <label>xPub Address</label>
+              <p>
+                BIP Protocol: <span class="text-uppercase bipProtocolStr text-primary">BIP44</span>
+              </p>
+              <label><span class="bipProtocolPrv">x</span>Pub Key - Master Public Key</label>
 
               <div class="input-group">
                 <input id="newMnemonicPub" type="text" class="form-control" value="" readonly>
                 <div class="input-group-append">
-                  <button class="deriveHDbtn form-control btn btn-flat-primary" disabled title="Derive from Public Key"><i class="bi bi-caret-right-fill"></i> </button>
+                  <button class="deriveSeedbtn form-control btn btn-flat-primary" disabled title="Derive from Public Key"><i class="bi bi-caret-right-fill"></i> </button>
                 </div>
               </div>
-              <label>xPrv Address</label>
+              <label><span class="bipProtocolPub">x</span>Prv Key - Master Private Key</label>
               <div class="input-group">
                 <input id="newMnemonicPrv" type="text" class="form-control" value="" readonly>
                 <div class="input-group-append">
-                  <button class="deriveHDbtn form-control btn btn-flat-primary" disabled title="Derive from Private Key"><i class="bi bi-caret-right-fill"></i> </button>
+                  <button class="deriveSeedbtn form-control btn btn-flat-primary" disabled title="Derive from Private Key"><i class="bi bi-caret-right-fill"></i> </button>
                 </div>
               </div>
 
@@ -2682,29 +2694,41 @@
               <h5 class="py-2 mt-4">BIP & Address Options</h5>
               <p>You can use the advanced options below to generate different kinds of Mnemonic Master Keys</p>
 
-              <label for="newMnemonicWords" title="">BIP39 Mnemonic</label>
+              
+
+              <label for="newMnemonicWords" title="">BIP Mnemonic</label>
 
               <div class="input-group">
                 <input id="newMnemonicWords" type="text" class="form-control" >
-                  <div class="input-group-append">
-                    <span id="newMnemonicGenerate" class="input-group-text cursor-pointer generatePassword" data-input-for="#newMnemonicWords" data-content="We use Crypto Random and Fisher-Yates Shuffle Algorithm!">Generate</span>
-                    <span class="input-group-text cursor-pointer" data-input-for="#newMnemonicWords" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top"><i class="bi bi-gear-fill"></i></span>
-                  </div>
-                </div>
-
-              <div class="checkbox mt-2">
-                <label>
-                  <input type="checkbox" id="newMnemonicBrainwalletCheck" class="checkbox-inline"> BIP Password (recommended)</label>
-
-                <div class="input-group" >
-                  <input type="text" class="form-control hidden" id="MnemonicBrainwallet">
-                  <span class="input-group-btn hidden">
-                      <button class="btn btn-default generatePassword" type="button" data-input-for="MnemonicBrainwallet">Generate Password</button>
-                    </span>
+                <div class="input-group-append">
+                  <span id="newMnemonicGenerate" class="input-group-text cursor-pointer newMnemonicGenerate" data-input-for="#newMnemonicWords" data-content="Create a random Mnemonic seed phrase">Create</span>
+                  <span class="input-group-text cursor-pointer newMnemonicWords"><i class="bi bi-gear-fill"></i></span>
+                  <!--
+                  <span class="input-group-text cursor-pointer " data-input-for="#newMnemonicWords" data-toggle="popover" data-html="true" data-target="#popBIPSettings" data-placement="top"><i class="bi bi-gear-fill"></i></span> 
+                  -->
                 </div>
               </div>
 
-              <input type="button" class="btn btn-primary" value="Generate" id="newMnemonicKeysBtn">
+              <div class="checkbox mt-2">
+                <label>
+                  <input type="checkbox" id="newMnemonicBrainwalletCheck" class="checkbox-inline"> BIP39 Passphrase <span class="text-muted">(optional)</span></label>
+
+                
+                <div class="input-group mb-2 hidden">
+                  <input id="MnemonicBrainwallet" type="text" class="form-control" >
+                  <div class="input-group-append">
+                    <span class="input-group-text cursor-pointer generatePassword" data-input-for="#MnemonicBrainwallet" data-content="We use Crypto Random and Fisher-Yates Shuffle Algorithm!">Generate</span>
+                    <span class="input-group-text cursor-pointer" data-input-for="#MnemonicBrainwallet" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top"><i class="bi bi-gear-fill"></i></span>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="btn-group mt-3">
+                <input type="button" class="btn btn-primary" value="Generate Keys" id="newMnemonicKeysBtn">
+              </div>
+
+              
             </div>
           </div>
         </div>
@@ -3503,11 +3527,13 @@
                 <div class="mb-3 text-muted">The Private Key has been decoded.</div>
 
 
-                <div class="callout-title text-muted text-primary">Shareable link</div>
-                <div class="input-group py-2" title="Shareable verification link">
-                  <input type="text" class="form-control verifyLink" value="" readonly>
-                  <div class="input-group-append">
-                    <a href="" class="btn btn-flat-primary verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
+                <div class="verifyLinkGroup hidden">
+                  <div class="callout-title text-muted text-primary">Shareable link</div>
+                  <div class="input-group py-2" title="Shareable verification link">
+                    <input type="text" class="form-control verifyLink" value="" readonly>
+                    <div class="input-group-append">
+                      <a href="" class="btn btn-flat-primary verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
+                    </div>
                   </div>
                 </div>
 
@@ -3539,11 +3565,13 @@
                   <h2 class="card-title">Private Key</h2>
                   <div class="mb-3 text-muted">The Private Key has been decoded.</div>
 
-                  <div class="callout-title text-muted text-primary">Shareable link</div>
-                  <div class="input-group py-2" title="Shareable verification link">
-                    <input type="text" class="form-control verifyLink" value="" readonly>
-                    <div class="input-group-append">
-                      <a href="" class="btn btn-flat-primary verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
+                  <div class="verifyLinkGroup hidden">
+                    <div class="callout-title text-muted text-primary">Shareable link</div>
+                    <div class="input-group py-2" title="Shareable verification link">
+                      <input type="text" class="form-control verifyLink" value="" readonly>
+                      <div class="input-group-append">
+                        <a href="" class="btn btn-flat-primary verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
+                      </div>
                     </div>
                   </div>
 
@@ -3698,92 +3726,564 @@
               </div>
               <div class="hidden verifyData" id="verifyHDaddress">
                 <h2 class="card-title">HD Address</h2>
-                <div class="mb-3 text-muted">The key <small><span class="hdKey hidden"></span></small> has been decoded</div>
+                <div class="mb-3 text-muted">The Master Key <small><span class="hdKey hidden"></span></small> has been decoded</div>
 
-                <div class="callout-title text-muted text-primary">Shareable link</div>
-                <div class="input-group py-2" title="Shareable verification link">
-                  <input type="text" class="form-control verifyLink" value="" readonly>
-                  <div class="input-group-append">
-                    <a href="" class="btn btn-flat-primary verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
-                  </div>
-                </div>
-
-                <hr>
-
-
-                <div class="row">
-                  <div class="col-2">
-                    <b>Type</b>
-                    <br>
-                    <span class="key_type"></span>
-                  </div>
-                  <div class="col-5">
-                    <b>Chain Code</b>
-                    <br>
-                    <input type="text" class="form-control chain_code" value="" readonly>
-                  </div>
-                  <div class="col-5">
-                    <b>Key</b>
-                    <br>
-                    <input type="text" class="form-control hdwifkey" value="" readonly>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-3">
-                    <b>Version</b>
-                    <br>
-                    <input type="text" class="form-control version" value="" readonly>
-                  </div>
-                  <div class="col-3">
-                    <b>Parent FingerPrint</b>
-                    <br>
-                    <input type="text" class="form-control parent_fingerprint" value="" readonly>
-                  </div>
-                  <div class="col-3">
-                    <b>Depth</b>
-                    <br>
-                    <input type="text" class="form-control depth" value="" readonly>
-                  </div>
-                  <div class="col-3">
-                    <b>Index</b>
-                    <br>
-                    <input type="text" class="form-control child_index" value="" readonly>
-                  </div>
-                </div>
-                <div class="row">
-                </div>
-                <hr>
-                <h4>Key Derivation</h4>
-                <p>The path of key derivation</p>
-                <div class="row">
-                  <div class="col-8">
-                    <b>Path</b>
-                    <br>
-                    <select class="form-control" id="hdpathtype">
-                      <option value="simple">Simple: m/i</option>
-                      <option value="custom">Custom</option>
-                    </select>
-                    <div id="hdpath" class="hidden" style="margin-top:4px">
-                      <span class="input-group">
-                        <input type="text" class="form-control" value="m/0/1">  <br>
-                        <span class="input-group-addon"> / </span>
-                      </span>
+                <div class="verifyLinkGroup">
+                  <div class="callout-title text-muted text-primary">Shareable link</div>
+                  <div class="input-group py-2" title="Shareable verification link">
+                    <input type="text" class="form-control verifyLink" value="" readonly>
+                    <div class="input-group-append">
+                      <a href="" class="btn btn-flat-primary verifyLink" title="Link to this page"><i class="bi bi-share-fill"></i></a>
                     </div>
                   </div>
-                  <div class="col-2">
-                    <b><u>I</u>ndex (Start)</b>
-                    <br>
-                    <input type="text" class="form-control derivation_index_start" value="0">
+                </div>
+
+                <hr>
+
+
+                <div class="callout m-0 mb-3">
+                  <div class="row">
+                    <div class="col-6">
+                      <b>Key Type</b>
+                      <div class="key_type"></div>
+                    </div>
+                    <div class="col-6">
+                      <b>Version</b>
+                      <div><input type="text" class="form-control version" value="" readonly></div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                      <b>Chain Code</b>
+                      <div><input type="text" class="form-control chain_code" value="" readonly></div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <b>Parent FingerPrint</b>
+                      
+                      <div><input type="text" class="form-control parent_fingerprint" value="" readonly></div>
+                    </div>
+                    <div class="col-6"> 
+                      <b>Depth</b>
+                      <div><input type="text" class="form-control depth" value="" readonly></div>
+                    </div>
+                    <div class="col-6">
+                      <b>Index</b>
+                      <div><input type="text" class="form-control child_index" value="" readonly></div>
+                    </div>
                   </div>
-                  <div class="col-2">
-                    <b><u>I</u>ndex (End)</b>
-                    <br>
-                    <input type="text" class="form-control derivation_index_end" value="1">
+                  
+                  <div class="row mt-4">  
+                    <div class="col-12 hidden">
+                      <b>Address</b>
+                      <div><input type="text" class="form-control hdaddress" value="" readonly></div>
+                    </div>
+
+                    <div class="col-12 ">
+                      <b>Public Key </b>
+                      <div><input type="text" class="form-control hdpubkey" value="" readonly></div>
+                    </div>
+
+                    <div class="col-12">
+                      <b>Private Key(WIF) </b>
+                      <div><input type="text" class="form-control hdwifkey" value="" readonly></div>
+                    </div>
+                    <div class="col-12 ">
+                      <b>Private Key(HEX) </b>
+                      <div><input type="text" class="form-control hdhexkey" value="" readonly></div>
+                    </div>
                   </div>
+
+                </div>
+
+
+
+
+                <div class="row">
                 </div>
                 <hr>
-                <h4>Keys</h4>
-                <p>Keys derived from the hd address provided</p>
+                <h5>BIP/Custom Derivation Path</h5>
+
+                <div class="row ">
+                <div class="col-12">
+                  <div class="card tab-card">
+                    <div class="card-header tab-card-header">
+                      <ul class="nav nav-tabs card-header-tabs" id="bipDerivationTabs" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" id="bipDerivationTabBip32" data-toggle="tab" href="#bipTab32" role="tab">BIP32</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="bipDerivationTabBip44" data-toggle="tab" href="#bipTab44" role="tab">BIP44</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="bipDerivationTabBip49" data-toggle="tab" href="#bipTab49" role="tab">BIP49</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="bipDerivationTabBip84" data-toggle="tab" href="#bipTab84" role="tab">BIP84</a>
+                        </li>
+                        <li class="nav-item hidden">
+                          <a class="nav-link" id="bipDerivationTabBip141" data-toggle="tab" href="#bipTab141" role="tab">BIP141</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="tab-content" id="bipDerivationTabContents">
+                      
+                      <!-- BIP32 Tab -->
+                      <div class="tab-pane fade show active p-3" id="bipTab32" role="tabpanel">
+                        <h5 class="card-title">BIP32</h5>
+                        <p class="card-text">For more info see the <a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki" target="_blank">BIP32 spec</a></p>
+
+                        <form class="" role="form">
+                                
+                            <div class="unavailable hidden">
+                                  <div class="row">
+                                      <div class="col-12 col-md-2"></div>
+                                      <div class="col-12 col-md-10">
+                                          <p>BIP32 is unavailable for this coin.</p>
+                                      </div>
+                                  </div>
+                              </div>
+
+                                <div class="available pt-2">
+                                <div class="row">
+                                    <label for="bip32-client" class="col-12 col-md-2 control-label">Client</label>
+                                    <div class="col-12 col-md-10">
+                                        <select id="bip32-client" class="client form-control">
+                                            <option value="custom">Custom derivation path</option>
+                                            <!-- populated by javascript -->
+                                            <option value="0">Bitcoin Core</option>
+                                            <option value="1">Blockchain.info</option>
+                                            <option value="5">Coinb.in</option>
+                                            <option value="2">MultiBit HD</option>
+                                            <option value="3">Coinomi, Ledger</option>
+                                            <option value="4">Electrum</option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="bip32-path" class="col-12 col-md-2 control-label">BIP32 Derivation Path</label>
+                                    <div class="col-12 col-md-10">
+                                        <input id="bip32-path" type="text" class="bip-coin-path form-control" value="m/0">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <label for="core-path" class="col-12 col-md-2 control-label">Bitcoin Core</label>
+                                    <div class="col-12 col-md-10">
+                                        <p class="form-control no-border h-auto">
+                                        Use path <code>m/0'/0'</code> with hardened addresses.
+                                        </p>
+                                        <p class="form-control no-border h-auto">
+                                            For more info see the
+                                            <a href="https://github.com/bitcoin/bitcoin/pull/8035" target="_blank">Bitcoin Core BIP32 implementation</a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="core-path" class="col-12 col-md-2 control-label">Multibit</label>
+                                    <div class="col-12 col-md-10">
+                                        <p class="form-control no-border h-auto">
+                                            <span>Use path <code>m/0'/0</code>.</span>
+                                        </p>
+                                        <p class="form-control no-border">
+                                            <span>For more info see</span>
+                                            <a href="https://multibit.org/" target="_blank">MultiBit HD</a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-12 col-md-2 control-label">Block Explorers</label>
+                                    <div class="col-12 col-md-10">
+                                        <p class="form-control no-border h-auto">
+                                            <span>Use path <code>m/44'/0'/0'</code>.</span>
+                                            <span>Only enter the <code>xpub</code> extended key into block explorer search fields, never the <code>xprv</code> key.</span>
+                                        </p>
+                                        <p class="form-control no-border">
+                                            <span>Can be used with</span>:
+                                            <a href="https://blockchain.info/" target="_blank">blockchain.info</a>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Electrum Master Keys -->
+                                <div class="row" id="bip32-custom-keys">
+                                    <label class="col-12 col-md-2 control-label text-primary">Electrum Private Key</label>
+                                    <div class="col-12 col-md-10">
+                                        <input id="bip32-custom-key-electrum-prv" type="text" class="form-control" value="" readonly="">
+                                        
+                                    </div>
+                                    <label class="col-12 col-md-2 control-label text-primary">Electrum Public Key</label>
+                                    <div class="col-12 col-md-10">
+                                        <input id="bip32-custom-key-electrum-pub" type="text" class="form-control" value="" readonly="">
+                                    </div>
+                                </div>
+
+
+                              </div>
+                              
+                            </form>
+
+                      </div>
+
+                      <!-- BIP 44 Tab-->
+                      <div class="tab-pane fade p-3" id="bipTab44" role="tabpanel">
+                        <h5 class="card-title">BIP44</h5>
+                        <p class="card-text">For more info see the <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki" target="_blank">BIP44 spec</a>.</p>
+
+                        <form class="" role="form">
+
+                              <div class="unavailable hidden">
+                                    <div class="row">
+                                        <div class="col-12 col-md-2"></div>
+                                        <div class="col-12 col-md-10">
+                                            <p>BIP44 is unavailable for this coin.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="available pt-2">
+                                  <div class="row">
+                                      <label for="purpose-bip44" class="col-12 col-md-2 control-label">
+                                          <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#purpose" target="_blank">Purpose</a>
+                                      </label>
+                                      <div class="col-12 col-md-10">
+                                          <input id="purpose-bip44" type="text" class="purpose form-control" value="44" readonly="">
+                                      </div>
+                                  </div>
+                                  <div class="row">
+                                      <label for="coin-bip44" class="col-12 col-md-2 control-label">
+                                          <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#registered-coin-types" target="_blank">Coin</a>
+                                      </label>
+                                      <div class="col-12 col-md-10">
+                                          <input id="coin-bip44" type="text" class="coin form-control" value="0" readonly="">
+                                      </div>
+                                  </div>
+                                  <div class="row">
+                                      <label for="account-bip44" class="col-12 col-md-2 control-label">
+                                          <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#account" target="_blank">Account</a>
+                                      </label>
+                                      <div class="col-12 col-md-10">
+                                          <input id="account-bip44" type="text" class="account form-control" value="0">
+                                      </div>
+                                  </div>
+                                  <div class="row">
+                                      <label for="change-bip44" class="col-12 col-md-2 control-label">
+                                          <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#change" target="_blank">External / Internal</a>
+                                      </label>
+                                      <div class="col-12 col-md-10">
+                                          <input id="change-bip44" type="text" class="change form-control" value="0">
+                                      </div>
+                                  </div>
+                                  <div class="row">
+                                      <label class="col-12 col-md-2 control-label">
+                                      </label>
+                                      <div class="col-12 col-md-10">
+                                          <p>The account extended keys can be used for importing to most BIP44 compatible wallets, such as mycelium or electrum.</p>
+                                      </div>
+                                  </div>
+                                  <div class="row mb-2 hidden">
+                                      <label for="account-xprv" class="col-12 col-md-2 control-label">
+                                          <span>Account Extended Private Key</span>
+                                      </label>
+                                      <div class="col-12 col-md-10">
+                                          <textarea id="account-xprv-bip44" type="text" class="account-xprv private-data form-control" readonly="" data-show-qr=""></textarea>
+                                      </div>
+                                  </div>
+                                  <div class="row hidden">
+                                      <label for="account-xpub" class="col-12 col-md-2 control-label">
+                                          <span>Account Extended Public Key</span>
+                                      </label>
+                                      <div class="col-12 col-md-10">
+                                          <textarea id="account-xpub-bip44" type="text" class="account-xpub form-control" readonly="" data-show-qr=""></textarea>
+                                      </div>
+                                  </div>
+                                  <div class="row">
+                                      <label class="col-12 col-md-2 control-label">
+                                      </label>
+                                      <div class="col-12 col-md-10">
+                                          <p>The BIP32 derivation path and extended keys are the basis for the derived addresses.</p>
+                                      </div>
+                                  </div>
+                                  <div class="row">
+                                      <label for="bip44-path" class="col-12 col-md-2 control-label">BIP32 Derivation Path</label>
+                                      <div class="col-12 col-md-10">
+                                          <input id="bip44-path" type="text" class="bip-coin-path form-control" value="m/44'/0'/0'/0" readonly="readonly">
+                                      </div>
+                                  </div>
+                                </div>
+                            </form>
+                      </div>
+
+                      <!-- BIP 49 Tab -->
+                      <div class="tab-pane fade p-3" id="bipTab49" role="tabpanel">
+                        <h5 class="card-title">BIP49</h5>
+                        <p>For more info see the <a href="https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki" target="_blank">BIP49 spec</a>.</p>
+
+                        <form class="form-horizontal" role="form">
+
+                                <div class="unavailable hidden">
+                                    <div class="row">
+                                        <div class="col-12 col-md-2"></div>
+                                        <div class="col-12 col-md-10">
+                                            <p>BIP49 is unavailable for this coin.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="available pt-2">
+                                    <div class="row">
+                                        <label for="purpose-bip49" class="col-12 col-md-2 control-label">
+                                            <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#purpose" target="_blank">Purpose</a>
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <input id="purpose-bip49" type="text" class="purpose form-control" value="49" readonly="">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="coin-bip49" class="col-12 col-md-2 control-label">
+                                            <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#registered-coin-types" target="_blank">Coin</a>
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <input id="coin-bip49" type="text" class="coin form-control" value="0" readonly="">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="account-bip49" class="col-12 col-md-2 control-label">
+                                            <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#account" target="_blank">Account</a>
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <input id="account-bip49" type="text" class="account form-control" value="0">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="change-bip49" class="col-12 col-md-2 control-label">
+                                            <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#change" target="_blank">External / Internal</a>
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <input id="change-bip49" type="text" class="change form-control" value="0">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-12 col-md-2 control-label">
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <p>The account extended keys can be used for importing to most BIP49 compatible wallets.</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2 hidden">
+                                        <label for="account-xprv" class="col-12 col-md-2 control-label">
+                                            <span>Account Extended Private Key</span>
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <textarea id="account-xprv-bip49" type="text" class="account-xprv private-data form-control" readonly="" data-show-qr=""></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row hidden">
+                                        <label for="account-xpub" class="col-12 col-md-2 control-label">
+                                            <span>Account Extended Public Key</span>
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <textarea id="account-xpub-bip49" type="text" class="account-xpub form-control" readonly="" data-show-qr=""></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-12 col-md-2 control-label">
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <p>The BIP32 derivation path and extended keys are the basis for the derived addresses.</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="bip49-path" class="col-12 col-md-2 control-label">BIP32 Derivation Path</label>
+                                        <div class="col-12 col-md-10">
+                                            <input id="bip49-path" type="text" class="bip-coin-path form-control" value="m/49'/0'/0'/0" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                      </div>
+
+                      <!-- BIP 84 Tab -->
+                      <div class="tab-pane fade p-3" id="bipTab84" role="tabpanel">
+                        <h5 class="card-title">BIP84</h5>
+                        <p class="card-text">For more info see the <a href="https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki" target="_blank">BIP84 spec</a>.</p>
+
+                        <form class="" role="form">
+
+                                <div class="unavailable hidden">
+                                    <div class="row">
+                                        <div class="col-12 col-md-2"></div>
+                                        <div class="col-12 col-md-10">
+                                            <p>BIP84 is unavailable for this coin.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="available pt-2">
+                                    <div class="row">
+                                        <label for="purpose-bip84" class="col-12 col-md-2 control-label">
+                                            Purpose
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <input id="purpose-bip84" type="text" class="purpose form-control" value="84" readonly="">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="coin-bip84" class="col-12 col-md-2 control-label">
+                                            Coin
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <input id="coin-bip84" type="text" class="coin form-control" value="0" readonly="">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="account-bip84" class="col-12 col-md-2 control-label">
+                                            Account
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <input id="account-bip84" type="text" class="account form-control" value="0">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="change-bip84" class="col-12 col-md-2 control-label">
+                                            External / Internal
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <input id="change-bip84" type="text" class="change form-control" value="0">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-12 col-md-2 control-label">
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <p>The account extended keys can be used for importing to most BIP84 compatible wallets.</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2 hidden">
+                                        <label for="account-xprv" class="col-12 col-md-2 control-label">
+                                            <span>Account Extended Private Key</span>
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <textarea id="account-xprv-bip84" type="text" class="account-xprv private-data form-control" readonly="" data-show-qr=""></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row hidden">
+                                        <label for="account-xpub" class="col-12 col-md-2 control-label">
+                                            <span>Account Extended Public Key</span>
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <textarea id="account-xpub-bip84" type="text" class="account-xpub form-control" readonly="" data-show-qr=""></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-12 col-md-2 control-label">
+                                        </label>
+                                        <div class="col-12 col-md-10">
+                                            <p>The BIP32 derivation path and extended keys are the basis for the derived addresses.</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="bip84-path" class="col-12 col-md-2 control-label">BIP32 Derivation Path</label>
+                                        <div class="col-12 col-md-10">
+                                            <input id="bip84-path" type="text" class="bip-coin-path form-control" value="m/84'/0'/0'/0" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                      </div>
+
+                      <!-- BIP141 -->
+                      
+                      <div class="tab-pane fade p-3 hidden" id="bipTab141" role="tabpanel">
+                        <h5 class="card-title">BIP141</h5>
+                        <p class="card-text">For more info see the <a href="https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki" target="_blank">BIP141 spec</a>.</p>
+                        <a href="#" class="btn btn-primary">BIP141</a>
+
+                            <form class="form-horizontal" role="form">
+
+                                <div class="unavailable hidden">
+                                    <div class="row">
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-10">
+                                            <p>BIP141 is unavailable for this coin.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="available">
+                                    <div class="col-2"></div>
+                                    <div class="col-10">
+                                        <p>
+                                            For more info see the
+                                            <a href="https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki" target="_blank">BIP141 spec</a>
+                                        </p>
+                                    </div>
+                                    <div class="row">
+                                        <label for="bip141-path" class="col-sm-2 control-label">BIP32 Derivation Path</label>
+                                        <div class="col-sm-10">
+                                            <input id="bip141-path" type="text" class="bip141-path form-control" value="m/0">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-2 control-label">Script Semantics</label>
+                                        <div class="col-10">
+                                            <select class="form-control bip141-semantics">
+                                                <option value="p2wpkh">P2WPKH</option>
+                                                <option value="p2wpkh-p2sh" selected="">P2WPKH nested in P2SH</option>
+                                                <option value="p2wsh">P2WSH (1-of-1 multisig)</option>
+                                                <option value="p2wsh-p2sh">P2WSH nested in P2SH (1-of-1 multisig)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                <h5>Derivation Path</h5>
+                <div class="callout m-0 mb-3">
+                <div class="row">
+                  <div class="col-12 col-md-8 ">
+                    <b>Path</b>
+                    <br>
+                    
+                      
+                      <div id="hdpath" class="input-group mt-1">
+                        <input id="bip_path" type="text" class="form-control" value="m/0/1" >
+                        <div class="input-group-append">
+                          <span class="form-control input-group-text" > / </span>
+                        </div>
+                      </div>
+
+                  </div>
+                  <div class="col-6 col-md-2">
+                    <b><u>I</u>ndex (Start)</b>
+                    <br>
+                    <div class="mt-1" >
+                      <input id="bipDerivationIndexStart" type="text" class="form-control" value="0">
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-2">
+                    <b><u>I</u>ndex (End)</b>
+                    <br>
+                    <div class="mt-1" >
+                      <input id="bipDerivationIndexEnd" type="text" class="form-control" value="1">
+                    </div>
+                  </div>
+                </div>
+                <div class="row pt-1 pb-2">
+                    <div class="col-12"></div>
+                    <label class="col-12 ">
+                        <input id="bip-hardened-addresses" class="hardened-addresses" type="checkbox">
+                        <span>Use hardened addresses</span>
+                    </label>
+                </div>
+              </div>
+
+                <hr>
+                <h4>Derived Addresses</h4>
+                <p>Note these addresses are derived from the BIP32 Extended Key</p>
                 <div class="derived_data">
                   <table class="table table-striped table-hover">
                     <thead>
@@ -3803,7 +4303,7 @@
               </div>
               <div id="verifyStatus" class="alert alert-danger mt-3 mb-4 hidden"><span class="glyphicon glyphicon-exclamation-sign"></span> Unable to decode</div>
               <div class="mt-4">
-                <input type="button" value="Verify" class="btn btn-primary" id="verifyBtn">
+                <input type="button" value="Decode" class="btn btn-primary" id="verifyBtn">
               </div>
 
             </div>
@@ -5606,7 +6106,7 @@
     <div id="popPasswordSettings" class="popover hidden">
       <div class="arrow"></div>
       <div class="popover-header popover-title">
-        <button class="close" data-dismiss="popover">&times;</button>Password Generator <small class="text-muted">(Crypto Random)</small>
+        <button class="close" data-dismiss="popover">&times;</button>Password Generator <small class="text-muted text-primary">(Crypto Random)</small>
       </div>
       <div class="popover-body popover-content">
 
@@ -5636,7 +6136,63 @@
 
       </div>
       <div class="popover-footer">
-        <input type="button" class="btn btn-block btn-sm btn-flat-primary" id="pwdGenerate" value="Generate">
+        <input type="button" class="btn btn-block btn-sm btn-flat-primary pwdGenerate" value="Generate">
+      </div>
+    </div>
+  </div>
+
+
+  <!-- BIP Options -->
+
+  <div id="popBIPSettingsContainer">
+    <div id="popBIPSettings" class="popover hidden">
+      <div class="arrow"></div>
+      <div class="popover-header popover-title">
+        <!-- <button class="close" data-dismiss="popover">&times;</button>-->
+        Protocol Options<small class="text-muted"></small>
+      </div>
+      <div class="popover-body popover-content">
+
+        <!-- Choose BIP protocol -->
+        <div class="">
+          <!-- button group checkbox -->
+
+          <div id="bipMnemonicProtocols" class="btn-group btn-group-toggle bip-options-group bipMnemonicProtocols" data-toggle="buttons">
+            <label class="btn btn-outline-primary active waves-effect" data-bip-option="hdkey">
+              <input type="radio" name="radio_bip_protocol" value="bip32" > BIP32
+            </label>
+            <label class="btn btn-outline-primary active waves-effect" data-bip-option="bip44">
+              <input type="radio" name="radio_bip_protocol" value="bip44" checked=""> BIP44
+            </label>
+            <label class="btn btn-outline-primary waves-effect" data-bip-option="bip49">
+              <input type="radio" name="radio_bip_protocol" value="bip49"> BIP49
+            </label>
+            <label class="btn btn-outline-primary waves-effect" data-bip-option="bip84">
+              <input type="radio" name="radio_bip_protocol" value="bip84"> BIP84
+            </label>
+          </div>
+          <!-- Contains the BIP protocol derivation -->
+          <input id="bipProtocol" type="text"  value="bip44" class="hidden">
+
+          <div class="checkbox my-3">
+            <label>
+              <input type="checkbox" id="bipMnemonicClientProtocol" class="checkbox-inline bipMnemonicClientProtocol">
+              Electrum Wallet <span class="text-muted">(Derivation)</span></label>
+            </div>
+
+
+          <div class="mt-3">
+            <label>Mnemonic length <span class="text-muted">(words)</span>:
+              <input type="number" id="bipMnemonicLength" value="24" min='12' class="form-control bipMnemonicLength" >
+            </label>
+          </div>
+
+        </div>
+        <!-- //Choose BIP protocol -->
+
+      </div>
+      <div class="popover-footer">
+        <input type="button" class="btn btn-block btn-sm btn-flat-primary generateInput newMnemonicGenerate" id="newMnemonicGeneratePop" value="Create Mnemonic">
       </div>
     </div>
   </div>
@@ -5714,7 +6270,7 @@ iceee - remove me later
 
     </div>
     <div class="popover-footer">
-      <input type="button" class="btn btn-block btn-sm btn-flat-primary" id="pwdGenerate" value="Generate">
+      <input type="button" class="btn btn-block btn-sm btn-flat-primary" id="pwdGenerate2" value="Generate">
     </div>
   </div>
 

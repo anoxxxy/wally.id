@@ -1,3 +1,4 @@
+'use strict';
 /*
  @ Developed by Anoxy for Wally.id
  * Wally.id functions and DOM handler!
@@ -7,7 +8,7 @@
 
   var wally_kit = window.wally_kit = function () { };
 
-
+  
 
   /*
   @ Set Blockchain Network Settings
@@ -59,7 +60,127 @@
 
 
         //extend coinjs with the updated asset configuration
+          //"remove" bip types which is not common among other coins/assets
+        coinjs.bip49 = {};  //set to empty
+        coinjs.bip84 = {};
         $.extend(coinjs, wally_fn.networks[network_var][asset_var]);
+
+        coinjs.bip32 = wally_fn.networks[network_var][asset_var].hdkey;
+        coinjs.bip44 = wally_fn.networks[network_var][asset_var].hdkey;
+
+        //render BIP types on UI
+        var bip, bip_name, bip_options='';;
+        for (i=0; i< coinjs.biptypes.length;i++){
+          //compare if version matches bip-type prv or pub 
+          bip = coinjs.biptypes[i];
+          if (coinjs[coinjs.biptypes[i]] && Object.keys(coinjs[coinjs.biptypes[i]]).length === 2) {
+            bip_name = bip;
+            
+            if (bip === 'hdkey')
+              bip_name = 'bip32';
+
+            bip_options += `
+            <label class="btn btn-outline-primary waves-effect text-uppercase" data-bip-option="${bip}">
+              <input type="radio" name="radio_bip_protocol" value="${bip}" > ${bip_name}
+            </label>`;
+
+            //show BIP Tab and its content
+            console.log('setNetwork show BIP: ' + bip);
+            coinbinf[bip+'Tab'].removeClass('hidden');
+            coinbinf[bip+'TabContent'].removeClass('hidden'); 
+            
+          } else {
+            console.log('setNetwork hide BIP: ' + bip);
+            coinbinf[bip+'Tab'].addClass('hidden');
+            coinbinf[bip+'TabContent'].addClass('hidden'); 
+          }
+        }
+        //remove check from Electrum Wallet derivation
+        coinbinf.bipMnemonicClientProtocol.prop('checked', false).trigger('change');
+        
+        //Set bip44 as default
+        coinbinf.deriveFromBipProtocol.val('BIP44').trigger('change');
+        //set BIP coin path
+        coinbinf.bipCoinPathTabContent.val(coinjs.bip_path);
+        //set BIP cointype
+        
+        coinbinf.bippath.val("m/0");
+        coinbinf.bip32path.val("m/0");
+        coinbinf.bip44path.val("m/44'/"+coinjs.bip_path+"'/0'/0");
+        coinbinf.bip49path.val("m/49'/"+coinjs.bip_path+"'/0'/0");
+        coinbinf.bip84path.val("m/84'/"+coinjs.bip_path+"'/0'/0");
+
+        //set BIP44 tab as default
+        coinbinf.bip32Tab.click();
+
+        $('#popBIPSettingsJBox .bip-options-group').html(bip_options);
+        //Set bip44 as default
+        
+        var popoverBipOptionsGroup = $('#popBIPSettingsJBox label[data-bip-option]');
+        popoverBipOptionsGroup.filter('[data-bip-option="bip44"]').addClass('active').find('input').prop('checked', true);
+
+        //set coin slip/bip path settings
+        //iceee kalle
+        //$("#verifyHDaddress #coin-bip44").val(coinjs.bip_path);
+        //$("#verifyHDaddress #bip44-path").val("m/44'/"+coinjs.bip_path+"'/0'/0");
+
+        
+        //disable bip49, bip84 for none bech32 coins
+        /*
+        if( (coinjs.asset.supports_address).includes('bech32') || (coinjs.asset.supports_address).includes('segwit')) {
+          $('#bipDerivationTabBip49').addClass('hidden');
+          $('#bipDerivationTabBip84').addClass('hidden');
+          $('#bipTab49').addClass('hidden');
+          $('#bipTab84').addClass('hidden');
+        } {
+          $('#bipDerivationTabBip49').addClass('hidden');
+          $('#bipDerivationTabBip84').addClass('hidden');
+          $('#bipTab49').addClass('hidden');
+          $('#bipTab84').addClass('hidden');
+        }
+        */
+
+
+        
+
+
+        
+
+        /*
+        //check and render only supported bip types
+        var bipOptionsGroup = $('#popBIPSettingsJBox label[data-bip-option]');
+
+        // A flag to check if any element is checked
+        var anyChecked = false;
+        
+
+        console.log('bipOptionsGroup: ', bipOptionsGroup);
+        // Iterate through elements with the data-bip-option attribute
+        bipOptionsGroup.each(function() {
+            var bipOptionValue = $(this).data('bip-option');
+            
+            // Check if bipOptionValue exists in coinjs
+            if (coinjs[bipOptionValue] && Object.keys(coinjs[bipOptionValue]).length === 2) {
+              $(this).removeClass('hidden active');
+
+              
+
+            } else  {
+              $(this).addClass('hidden').removeClass('active');
+              // Check if this element is checked
+              if ($(this).is(':checked'))
+                  anyChecked = true;
+
+            }
+        });
+
+        // If no element is checked, find the element with data-bip-option="bip44" and check it
+        //if (!anyChecked) {
+          bipOptionsGroup.filter('[data-bip-option="bip44"]').addClass('active').find('input').prop('checked', true);
+        //}
+        */
+
+
         //Object.assign(coinjs, (wally_fn.networks[network_var][asset_var]))
         
 
@@ -1226,56 +1347,6 @@ wally_kit.getCoinInfo = async function () {
 };
 
 /*
-
-wally_kit.getCoinInfo = async function () {
-  try {
-    // Get the current timestamp
-    var currentTimestamp = new Date().getTime();
-    
-    // Check if enough time has passed since the last API call for Coingecko (e.g., 60 seconds)
-    if (currentTimestamp - wally_kit.lastApiCallTimestamp.coingecko >= 60000) {
-      // Make the Coingecko API call because 60 seconds have passed since the last call
-      // ...
-
-      // Update the last API call timestamp for Coingecko
-      wally_kit.lastApiCallTimestamp.coingecko = currentTimestamp;
-    } else {
-      // Rate limit exceeded for Coingecko, do not make the API call
-      console.log("Coingecko rate limit exceeded. Skipping API call.");
-    }
-
-    // Check if enough time has passed since the last API call for Coinmarketcap (e.g., 60 seconds)
-    if (currentTimestamp - wally_kit.lastApiCallTimestamp.coinmarketcap >= 60000) {
-      // Make the Coinmarketcap API call because 60 seconds have passed since the last call
-      // ...
-
-      // Update the last API call timestamp for Coinmarketcap
-      wally_kit.lastApiCallTimestamp.coinmarketcap = currentTimestamp;
-    } else {
-      // Rate limit exceeded for Coinmarketcap, do not make the API call
-      console.log("Coinmarketcap rate limit exceeded. Skipping API call.");
-    }
-
-    // For individual assets, you can set timestamps like this
-    var assetName = 'your_asset_name'; // Replace with the actual asset name
-    if (!wally_kit.lastApiCallTimestamp.assets[assetName] || currentTimestamp - wally_kit.lastApiCallTimestamp.assets[assetName] >= 60000) {
-      // Make the API call for this asset because 60 seconds have passed since the last call
-      // ...
-
-      // Update the last API call timestamp for this asset
-      wally_kit.lastApiCallTimestamp.assets[assetName] = currentTimestamp;
-    } else {
-      // Rate limit exceeded for this asset, do not make the API call
-      console.log(assetName + " rate limit exceeded. Skipping API call.");
-    }
-
-  } catch (e) {
-    console.log('wally_kit.getCoinInfo ERROR: ', e);
-    Router.navigate('logout');
-  }
-};
-*/
-/*
 get electrumx active nodes:
 https://electrum-status.dragonhound.info/api/v1/electrums_status
 */
@@ -1524,7 +1595,6 @@ https://alloyui.com/api/files/yui3_src_history_js_history-hash.js.html#
 
 $(document).ready(function() {
     'use strict';
-
 
 
 

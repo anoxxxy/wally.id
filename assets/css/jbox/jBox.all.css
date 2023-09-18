@@ -15,13 +15,15 @@
   background: #fff;
 }
 
+
+
 .jBox-content {
   padding: 8px 12px;
   overflow-x: hidden;
   overflow-y: auto;
   transition: opacity .2s;
+  
 }
-
 .jBox-footer {
   box-sizing: border-box;
 }
@@ -42,6 +44,15 @@
 .jBox-Mouse.jBox-hasTitle .jBox-content {
   padding-top: 5px;
 }
+
+
+.JBoxPopover .jBox-container{
+  border-radius: 10px;
+}
+.JBoxPopover .jBox-content {
+  padding: 0;
+}
+
 
 .jBox-Mouse {
   pointer-events: none;
