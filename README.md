@@ -1,13 +1,15 @@
-coinbin
+Wally.id -  your Keys, your Crypto! 
 =======
+The most powerful, non-custodial decentralized cold wallet! 
 
-A Open Source Browser Based Bitcoin Wallet. Version 1.7 beta by OutCast3k
 
-Live version available at http://coinb.in/ or coinbin3ravkwb24f7rmxx6w3snkjw45jhs5lxbh3yfeg3vpt6janwqd.onion
+Wally.id is an Open Source Browser Based Bitcoin and Crypto Wallet (based on Coinb.in - by OutCast3k).
 
-Github URL: https://github.com/OutCast3k/coinbin/
+Live version available at https://Wally.id
 
-Coinb.in supports a number of key features such as: 
+Github URL: https://github.com/anoxxxy/wally/
+
+Wally.id supports a number of key features such as: 
 
 - Offline Compressed & uncompressed Address creation.
 - Offline Multisignature Address creation.
@@ -30,7 +32,10 @@ Coinb.in supports a number of key features such as:
 - Replace by fee (RBF) Support.
 - Segwit Support.
 - Bech32 address support.
-- Fee calculator - https://coinb.in/#fees
+- Fee calculator - https://Wally.id/#fees
 - Transaction rebuild support for RBF and double spending.
 
-Donate to 33tht1bKDgZVxb39MnZsWa8oxHXHvUYE4G to see more development!
+- BIP XYZ integration (BIP32, BIP44, BIP49, BIP84)
+- Electrum Wallet derivation
+
+Donate to bitcoin:1o18b93etEEbg2sB4tQYk8LBW45N9K8RJ to see more development!
