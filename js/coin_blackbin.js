@@ -10,119 +10,27 @@
 	var coinjs = window.coinjs = function () { };
 
 	/* public vars */
-	coinjs.pub = 0;
+	// coinjs.pub = 0x6f; /* testnet */
+	// coinjs.priv = 0xef; /* testnet */
+	// coinjs.multisig = 0xc4; /* testnet */
+	// coinjs.hdkey = {'prv':0x043587cf, 'pub':0x04358394}; /* testnet */
+	coinjs.pub = 0x00;
 	coinjs.priv = 0x80;
 	coinjs.multisig = 0x05;
 	coinjs.hdkey = {'prv':0x0488ade4, 'pub':0x0488b21e};
-	coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'};
-	
-	//coinjs.bip32 = coinjs.hdkey;
-	coinjs.bip44 = coinjs.hdkey;
-	//bip49/p2wpkhInP2sh - deriving P2WPKH-nested-in-P2SH - segwit, ypub
-  coinjs.bip49 = {'prv':0x049d7878, 'pub':0x049d7cb2}; //bip49 ypub
-  //bip84/p2wpkh - Derives segwit + bech32 addresses from seed, zprv/zpub and vprv/vpub in javascript
-  coinjs.bip84 = {'prv':0x04b2430c, 'pub':0x04b24746}; // zpub
-  
-  coinjs.bippath = 0;  //bip path constants are used as hardened derivation.
-	coinjs.biptypes = ['bip32', 'bip44', 'bip49', 'bip84'];	//supported bip types
-
-	//for PoS coins!
-	coinjs.txExtraTimeField = false;
-	coinjs.txExtraTimeFieldValue = false;
-	coinjs.txExtraUnitField = false;
-	coinjs.txExtraUnitFieldValue = false;
-
-	coinjs.decimalPlaces = 8;
-	coinjs.symbol = 'BTC';
-	coinjs.coinName = 'Bitcoin';
-
-
-
-/*
-var types = {
-  MULTISIG: 'multisig',
-  NONSTANDARD: 'nonstandard',
-  NULLDATA: 'nulldata',
-  P2PK: 'pubkey',
-  P2PKH: 'pubkeyhash',
-  P2SH: 'scripthash',
-  P2WPKH: 'witnesspubkeyhash',
-  P2WSH: 'witnessscripthash',
-  WITNESS_COMMITMENT: 'witnesscommitment'
-}
-
-module.exports = {
-  classifyInput: classifyInput,
-  classifyOutput: classifyOutput,
-  classifyWitness: classifyWitness,
-  multisig: multisig,
-  nullData: nullData,
-  pubKey: pubKey,
-  pubKeyHash: pubKeyHash,
-  scriptHash: scriptHash,
-  witnessPubKeyHash: witnessPubKeyHash,
-  witnessScriptHash: witnessScriptHash,
-  witnessCommitment: witnessCommitment,
-  types: types
-}
-
-<option value="litecoin_testnet" rel="0x6f;0xef;0xc4;0x43587cf;0x4358394;NOT.SET;NOT.SET">Litecoin (testnet)</option>
-<option value="dogecoin_testnet" rel="0x71;0xf1;0xc4;0x43587cf;0x4358394;NOT.SET;NOT.SET">Bitcoin (testnet)</option>
-
-libs.bitcoin.networks.crown = {
-  messagePrefix: 'unused',
-  bip32: {
-    public: 0x0488b21e,
-    private: 0x0488ade4
-  },
-  pubKeyHash: 0x00,
-  scriptHash: 0x05,
-  wif: 0x80,
-
-
-libs.bitcoin.networks.litecointestnet = {
-  messagePrefix: '\x18Litecoin Signed Message:\n',
-  bip32: {
-    public: 0x043587cf,
-    private: 0x04358394,
-  },
-  pubKeyHash: 0x6f,
-  scriptHash: 0xc4,
-  wif: 0xef,
-};
-
-libs.bitcoin.networks.dogecointestnet = {
-  messagePrefix: '\x19Dogecoin Signed Message:\n',
-  bip32: {
-    public: 0x043587cf,
-    private: 0x04358394
-  },
-  pubKeyHash: 0x71,
-  scriptHash: 0xc4,
-  wif: 0xf1
-};
-
-
-
-	coinjs.pub = 0x19;
-	coinjs.priv = 0x99;
-	coinjs.multisig = 0x55;
-	coinjs.multisig_str = "55";
-	coinjs.hdkey = {'prv':0x02cfbf60, 'pub':0x02cfbede};
-	coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'};
-
-	https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZeJJTEHvSzGR8Uy|BJLZ29gAk9aGW9HoAnsEzqmWp6BX7tZEN8|bSg6gu7nH8aHwz2FTqfNF3h6TBExozfkMc|BEWNxapAtBtj2hqQGbQ8Ae6xNyyz5qcMrJ|bNZQjohFer1caZT8YbbvDqA5A4VRuY1NZ7&key=fcda1e67b06e&n=0
-
-https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZeJJTEHvSzGR8Uy|BJLZ29gAk9aGW9HoAnsEzqmWp6BX7tZEN8|bSg6gu7nH8aHwz2FTqfNF3h6TBExozfkMc|BEWNxapAtBtj2hqQGbQ8Ae6xNyyz5qcMrJ|bNZQjohFer1caZT8YbbvDqA5A4VRuY1NZ7&key=fcda1e67b06e&n=0
-
-73 addresses
-*/
-
+	 coinjs.bech32 = {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'};
 
 	coinjs.compressed = false;
 
 	/* other vars */
-	coinjs.developer = ''; //donation address
+	coinjs.developer = 'BMWvMeEa88iqBCevi9dVX8GAhnPCh3JBHx'; //blackcoin
+
+	coinjs.txExtraTimeField = true;
+	coinjs.txExtraTimeFieldValue = false;
+	coinjs.txExtraUnitField = false;
+	coinjs.txExtraUnitFieldValue = false;
+
+	$("#nTime").val(Date.now() / 1000 | 0);
 
 	/* bit(coinb.in) api vars */
 	coinjs.hostname	= ((document.location.hostname.split(".")[(document.location.hostname.split(".")).length-1]) == 'onion') ? 'coinbin3ravkwb24f7rmxx6w3snkjw45jhs5lxbh3yfeg3vpt6janwqd.onion' : 'coinb.in';
@@ -221,13 +129,6 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		return coinjs.base58encode(x.concat(checksum));
 	}
 
-	/* provide an address and return ripemd160 hash of public key */
-	coinjs.address2ripemd160 = function(a){
-		var bytes = coinjs.base58decode(a);
-    var front = bytes.slice(1, bytes.length-4);
-    return Crypto.util.bytesToHex(front);
-	}
-
 	/* new multisig address, provide the pubkeys AND required signatures to release the funds */
 	coinjs.pubkeys2MultisigAddress = function(pubkeys, required) {
 		var s = coinjs.script();
@@ -318,7 +219,6 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		return r;
 	}
 
-	
 	/* provide a privkey and return an WIF  */
 	coinjs.privkey2wif = function(h){
 		var r = Crypto.util.hexToBytes(h);
@@ -421,19 +321,25 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				throw "Invalid checksum";
 			}
 		} catch(e) {
-			if(coinjs.bech32.charset !== undefined) {
-				bech32rs = coinjs.bech32redeemscript(addr);
-				if(bech32rs)
-					return {'type':'bech32', 'redeemscript':bech32rs};
+			bech32rs = coinjs.bech32redeemscript(addr);
+			if(bech32rs){
+				return {'type':'bech32', 'redeemscript':bech32rs};
+			} else {
+				return false;
 			}
-			return false;
 		}
 	}
 
 	/* retreive the balance from a given address */
-	coinjs.addressBalance = function(address, callback){
-		coinjs.ajax(coinjs.host+'?uid='+coinjs.uid+'&key='+coinjs.key+'&setmodule=addresses&request=bal&address='+address+'&r='+Math.random(), callback, "GET");
+	coinjs.addressBalance = function(explorer_api, address, callback){
+		coinjs.ajax(explorer_api+address, callback, "GET");
 	}
+	/*
+iceee - remove?
+	coinjs.addressBalance = function(explorer_api, address, callback){
+		coinjs.ajax(coinjs.host+'?uid='+coinjs.uid+'&key='+coinjs.key+'&setmodule=addresses&request=bal&address='+address+'&r='+Math.random(), callback, "GET");
+		coinjs.ajax(explorer_api+address, callback, "GET");
+	}*/
 
 	/* decompress an compressed public key */
 	coinjs.pubkeydecompress = function(pubkey) {
@@ -691,7 +597,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 	};
 
 	/* start of hd functions, thanks bip32.org */
-	coinjs.hd = function(data, bip_derive_child = '', bip_address_semantics = ''){
+	coinjs.hd = function(data){
 
 		var r = {};
 
@@ -724,71 +630,20 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				var c = coinjs.compressed; // get current default
 				coinjs.compressed = true;
 
-				//check bip type, hdkey/bip32, bip49, bip84
-				var bip = 'hdkey';	//set default to bip32
-				for (i=0; i< coinjs.biptypes.length;i++){
-					//compare if version matches bip-type prv or pub 
-						if (coinjs[coinjs.biptypes[i]].prv === r.version || coinjs[coinjs.biptypes[i]].pub === r.version) {
-							bip = coinjs.biptypes[i];
-						}
-				}
-				r.bip = bip;
-				//r.bip_derive_protocol = bip;
-
-				if (bip_derive_child !== '')
-					r.bip = bip_derive_child;
-				
-				if (bip_address_semantics !== '')
-					r.bip_address_semantics = bip_address_semantics;
-
-
-				console.log('coinjs.hd.parse bip: '+ bip);
-				console.log('coinjs.hd parse version: '+ r.version);
-				console.log('coinjs.hd parse bip: '+ bip);
-				console.log('coinjs.hd parse bip_address_semantics: '+ bip_address_semantics);
-
-
 				if(r.key_bytes[0] == 0x00) {
 					r.type = 'private';
 					var privkey = (r.key_bytes).slice(1, 33);
 					var privkeyHex = Crypto.util.bytesToHex(privkey);
 					var pubkey = coinjs.newPubkey(privkeyHex);
 
-					var address;
-					address = r.derive_to_address(pubkey, r.bip, r.bip_address_semantics);
-					/*
-					if(bip === 'bip49'){
-						address = coinjs.segwitAddress(pubkey);
-					} else if(bip === 'bip84'){
-						address = coinjs.bech32Address(pubkey);
-					} else {
-						address = coinjs.pubkey2address(pubkey)
-					}
-					*/
-
 					r.keys = {'privkey':privkeyHex,
 						'pubkey':pubkey,
-						'address':address,
-						'wif':coinjs.privkey2wif(privkeyHex),
-						'hexkey':privkeyHex};
+						'address':coinjs.pubkey2address(pubkey),
+						'wif':coinjs.privkey2wif(privkeyHex)};
 
 				} else if(r.key_bytes[0] == 0x02 || r.key_bytes[0] == 0x03) {
 					r.type = 'public';
 					var pubkeyHex = Crypto.util.bytesToHex(r.key_bytes);
-
-
-					var address;
-					address = r.derive_to_address(pubkeyHex, r.bip, r.bip_address_semantics);
-
-					/*
-					if(bip === 'bip49'){
-						address = coinjs.segwitAddress(pubkeyHex);
-					} else if(bip === 'bip84'){
-						address = coinjs.bech32Address(pubkeyHex);
-					} else {
-						address = coinjs.pubkey2address(pubkeyHex)
-					}
-					*/
 
 					r.keys = {'pubkey': pubkeyHex,
 						'address':coinjs.pubkey2address(pubkeyHex)};
@@ -796,78 +651,35 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 					r.type = 'invalid';
 				}
 
-				r.keys_extended = r.extend(bip);
-				r.bip_master_key = data;
+				r.keys_extended = r.extend();
 
 				coinjs.compressed = c; // reset to default
 			}
 
 			return r;
 		}
-		// derive to address
-		// @keyHex can be either pub or priv
-		r.derive_to_address = function(keyHex, bip = 'hdkey', address_semantics = '') {
-			var address;
-			console.log('===r.derive_to_address fn.bip: '+ bip);
-			/*//bip = r.bip_derive_protocol;
-			console.log('r.derive_to_address bip: '+ bip);
-			console.log('r.derive_to_address r.bip: '+ bip);
-			console.log('r.derive_to_address r.bip_derive_protocol: '+ r.bip_derive_protocol);
-			console.log('r.derive_to_address this.bip_derive_protocol: '+ this.bip_derive_protocol);
-			*/
-			if(bip === 'bip49'){
-					console.log('r.derive_to_address bip49');
-					address = coinjs.segwitAddress(keyHex);
-					console.log('r.derive_to_address bip49 address: ', address)
-				} else if(bip === 'bip84'){
-					address = coinjs.bech32Address(keyHex);
-					console.log('r.derive_to_address bip84 address: ', address);
-				} else {
-					if (address_semantics === 'p2wpkh') {
-						console.log('r.derive_to_address address_semantics electrum : ', address_semantics);
-						console.log('r.derive_to_address address_semantics electrum keyHex : ', keyHex);
-						address = coinjs.bech32Address(keyHex);
-					}
-					else
-						address = coinjs.pubkey2address(keyHex)
-
-					console.log('r.derive_to_address address_semantics: ', address_semantics);
-					console.log('r.derive_to_address address_semantics hdkey address: ', address);
-
-				}
-				return address;
-		}
 
 		// extend prv/pub key
 		r.extend = function(){
 			var hd = coinjs.hd();
-			console.log('r.bip: ', r.bip);
 			return hd.make({'depth':(this.depth*1)+1,
 				'parent_fingerprint':this.parent_fingerprint,
 				'child_index':this.child_index,
 				'chain_code':this.chain_code,
 				'privkey':this.keys.privkey,
-				'pubkey':this.keys.pubkey,
-				'bip': r.bip,
-			});
+				'pubkey':this.keys.pubkey});
 		}
 
 		// derive from path
-		r.derive_path = function(path, bip = 'hdkey', derivation_protocol = 'hdkey', bip_address_semantics = '') {
+		r.derive_path = function(path) {
 
-			r.bip = bip;
-			//r.bip_derive_protocol = derivation_protocol;
-			
-
-			//console.log('===r.derive_path: r', r);
-			//console.log('===r.derive_path: derivation_protocol', derivation_protocol);
 			if( path == 'm' || path == 'M' || path == 'm\'' || path == 'M\'' ) return this;
 
 			var p = path.split('/');
 			var hdp = coinjs.clone(this);  // clone hd path
-			//console.log('==r.derive_path=== before hdp: ', hdp);
+
 			for( var i in p ) {
-				//console.log('========r.derive_path i: ' + i);
+
 				if((( i == 0 ) && c != 'm') || i == 'remove'){
 					continue;
 				}
@@ -879,86 +691,18 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				if(use_private)
 					child_index += 0x80000000;
 
-				//hdp.bip_derive_protocol = derivation_protocol;
-				hdp = hdp.derive(child_index, derivation_protocol, bip_address_semantics);
+				hdp = hdp.derive(child_index);
 				var key = ((hdp.keys_extended.privkey) && hdp.keys_extended.privkey!='') ? hdp.keys_extended.privkey : hdp.keys_extended.pubkey;
-				
-				//if (i === 1)
-					hdp.bip_master_key = key;
-					//this.bip_electrum = key;
-
-				//console.log('==r.derive_path i:'+i+' child_index: ', child_index);
-				//console.log('==r.derive_path i:'+i+' hdp1: ', hdp);
-				//console.log('==r.derive_path i:'+i+' key: ', key);
-				//key.bip_derive_protocol = derivation_protocol;
-				//if (key != '')
-				hdp = coinjs.hd(key, derivation_protocol, bip_address_semantics);
-				//console.log('==r.derive_path i:'+i+' hdp2: ', hdp);
-				//hdp.bip_derive_protocol = derivation_protocol;
-				
-			}
-			return hdp;
-		}
-
-		r.derive_electrum_path = function(path, bip = 'hdkey', derivation_protocol = 'hdkey', bip_address_semantics = 'p2wpkh') {
-			console.log('==derive_electrum_path===');
-			r.bip = bip;
-			//r.bip_derive_protocol = derivation_protocol;
-			
-
-			//console.log('===r.derive_electrum_path: r', r);
-			//console.log('===r.derive_electrum_path: derivation_protocol', derivation_protocol);
-			if( path == 'm' || path == 'M' || path == 'm\'' || path == 'M\'' ) return this;
-
-			var p = path.split('/');
-			var hdp = coinjs.clone(this);  // clone hd path
-			//console.log('==r.derive_electrum_path=== before hdp: ', hdp);
-			for( var i in p ) {
-				if (i != 1)
-					continue;
-
-				//console.log('========r.derive_electrum_path i: ' + i);
-				if((( i == 0 ) && c != 'm') || i == 'remove'){
-					continue;
-				}
-
-				var c = p[i];
-
-				var use_private = (c.length > 1) && (c[c.length-1] == '\'');
-				var child_index = parseInt(use_private ? c.slice(0, c.length - 1) : c) & 0x7fffffff;
-				if(use_private)
-					child_index += 0x80000000;
-				
-				//hdp.bip_derive_protocol = derivation_protocol;
-				hdp = hdp.derive(child_index, derivation_protocol, bip_address_semantics);
-				var key = ((hdp.keys_extended.privkey) && hdp.keys_extended.privkey!='') ? hdp.keys_extended.privkey : hdp.keys_extended.pubkey;
-				
-				return hdp;
-
-				//console.log('==r.derive_electrum_path i:'+i+' child_index: ', child_index);
-				console.log('==r.derive_electrum_path i:'+i+' hdp1: ', hdp);
-				console.log('==r.derive_electrum_path i:'+i+' key: ', key);
-				//key.bip_derive_protocol = derivation_protocol;
-				//if (key != '')
-				//hdp = coinjs.hd(key, derivation_protocol, bip_address_semantics);
-
-				
-				//console.log('==r.derive_electrum_path i:'+i+' hdp2: ', hdp);
-				//hdp.bip_derive_protocol = derivation_protocol;
-				
+				hdp = coinjs.hd(key);
 			}
 			return hdp;
 		}
 
 		// derive key from index
-		r.derive = function(i, derivation_protocol, bip_address_semantics = ''){
-			console.log('===r.derive=== bip_derive_protocol: ', derivation_protocol)
+		r.derive = function(i){
+
 			i = (i)?i:0;
-			if (i >= 0x80000000) {
-				var blob = (Crypto.util.hexToBytes("00").concat(Crypto.util.hexToBytes(this.keys.privkey)).concat(coinjs.numToBytes(i,4).reverse()));
-			} else {
-				var blob = (Crypto.util.hexToBytes(this.keys.pubkey)).concat(coinjs.numToBytes(i,4).reverse());
-			}
+			var blob = (Crypto.util.hexToBytes(this.keys.pubkey)).concat(coinjs.numToBytes(i,4).reverse());
 
 			var j = new jsSHA(Crypto.util.bytesToHex(blob), 'HEX');
  			var hash = j.getHMAC(Crypto.util.bytesToHex(r.chain_code), "HEX", "SHA-512", "HEX");
@@ -982,14 +726,10 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 				pubkey = coinjs.newPubkey(key);
 
-				var address;
-				address = r.derive_to_address(key, derivation_protocol, bip_address_semantics);
-
 				o.keys = {'privkey':key,
 					'pubkey':pubkey,
 					'wif':coinjs.privkey2wif(key),
-					'address':address};
-					//'address':coinjs.pubkey2address(pubkey)};
+					'address':coinjs.pubkey2address(pubkey)};
 
 			} else if (this.type=='public'){
 				// derive xpub key from an xpub key
@@ -1007,13 +747,8 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				}
 				pubkey = Crypto.util.bytesToHex(publicKeyBytesCompressed);
 
-				var address;
-				address = r.derive_to_address(pubkey, derivation_protocol, bip_address_semantics);
-
-
 				o.keys = {'pubkey':pubkey,
 					'address':coinjs.pubkey2address(pubkey)}
-					//'address':coinjs.pubkey2address(pubkey)}
 			} else {
 				// fail
 			}
@@ -1041,37 +776,6 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				'pubkey':coinjs.newPubkey(I.slice(0, 64))});
 		}
 
-		// make a master hd xprv/xpub
-		r.masterMnemonic = function(seed, pass, bip = 'hdkey', bip39) {
-			
-			seed = seed.normalize('NFKD');
-			pass = (pass !== null) ? pass.normalize('NFKD') : pass;
-
-			seeder = bip39.mnemonicToSeed(seed, pass);
-
-			var hasher = new jsSHA(seeder, 'HEX');
-			var I = hasher.getHMAC("Bitcoin seed", "TEXT", "SHA-512", "HEX");
-
-			//console.log('seeder: ', seeder);
-			//console.log('hasher: ', hasher);
-			//console.log('I: ', I);
-
-			var isl64 = I.slice(0, 64);
-			var privkey = Crypto.util.hexToBytes(isl64);
-			var chain = Crypto.util.hexToBytes(I.slice(64, 128));
-
-			var hd = coinjs.hd();
-			return hd.make({'depth':0,
-				'parent_fingerprint':[0,0,0,0],
-				'child_index':0,
-				'chain_code':chain,
-				'privkey':isl64,
-				'pubkey':coinjs.newPubkey(isl64),
-				'bip': bip,
-			});
-		}
-
-
 		// encode data to a base58 string
 		r.make = function(data){ // { (int) depth, (array) parent_fingerprint, (int) child_index, (byte array) chain_code, (hex str) privkey, (hex str) pubkey}
 			var k = [];
@@ -1090,13 +794,9 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 			var o = {}; // results
 
-			//set bip to hdkey as default
-			if (data.bip === undefined)
-					data.bip = 'hdkey';
-
 			//encode xprv key
 			if(data.privkey){
-				var prv = (coinjs.numToBytes(coinjs[data.bip].prv, 4)).reverse();
+				var prv = (coinjs.numToBytes(coinjs.hdkey.prv, 4)).reverse();
 				prv = prv.concat(k);
 				prv.push(0x00);
 				prv = prv.concat(Crypto.util.hexToBytes(data.privkey));
@@ -1108,7 +808,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 			//encode xpub key
 			if(data.pubkey){
-				var pub = (coinjs.numToBytes(coinjs[data.bip].pub, 4)).reverse();
+				var pub = (coinjs.numToBytes(coinjs.hdkey.pub, 4)).reverse();
 				pub = pub.concat(k);
 				pub = pub.concat(Crypto.util.hexToBytes(data.pubkey));
 				var hash = Crypto.SHA256( Crypto.SHA256(pub, { asBytes: true } ), { asBytes: true } );
@@ -1297,8 +997,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 	coinjs.transaction = function() {
 
 		var r = {};
-		//r.version = 1;
-		r.version = (coinjs.asset.version !== undefined ? coinjs.asset.version : 1);
+		r.version = 1;
 		r.lock_time = 0;
 		r.ins = [];
 		r.outs = [];
@@ -1306,20 +1005,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		r.timestamp = null;
 		r.block = null;
 
-		r.rawTxSerialized = '';
-
-		//PoS coins
-		if (coinjs.txExtraTimeField) {
-			//r.nTime = (Date.now() / 1000)*1;
-			r.nTime = $("#nTime").val()*1;
-			console.log('extra time field added');
-		}
-		if (coinjs.txExtraUnitField) {
-			r.nUnit = 0;
-			//r.nUnit = $("#nUnit").val()*1;
-			//coinjs.txExtraUnitFieldValue = $("#nUnit").val()*1;
-			console.log('extra unit field added');
-		}
+		r.nTime = (Date.now() / 1000)*1;
 
 		/* add an input to a transaction */
 		r.addinput = function(txid, index, script, sequence){
@@ -1333,7 +1019,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		/* add an output to a transaction */
 		r.addoutput = function(address, value){
 			var o = {};
-			o.value = new BigInteger('' + Math.round((value*1) * ("1e"+coinjs.decimalPlaces)), 10);
+			o.value = new BigInteger('' + Math.round((value*1) * 1e8), 10);
 			var s = coinjs.script();
 			o.script = s.spendToScript(address);
 
@@ -1373,7 +1059,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 			this.outs.push(v);
 			
 			var o = {};
-			o.value = new BigInteger('' + Math.round((value*1) * ("1e"+coinjs.decimalPlaces)), 10);
+			o.value = new BigInteger('' + Math.round((value*1) * 1e8), 10);
 			var s = coinjs.script();
 			o.script = s.spendToScript(sendaddress);
 			
@@ -1397,13 +1083,19 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 		/* list unspent transactions */
 		r.listUnspent = function(address, callback) {
-			coinjs.ajax(coinjs.host+'?uid='+coinjs.uid+'&key='+coinjs.key+'&setmodule=addresses&request=unspent&address='+address+'&r='+Math.random(), callback, "GET");
+			coinjs.ajax('https://chainz.cryptoid.info/blk/api.dws?key=1205735eba8c&q=unspent&active='+address, callback, "GET");
 		}
 
 		/* list transaction data */
 		r.getTransaction = function(txid, callback) {
+			coinjs.ajax('https://chainz.cryptoid.info/blk/api.dws?key=1205735eba8c&q=unspent&active='+txid+'&r='+Math.random(), callback, "GET");
+		}
+		/*
+		iceee -remove?
+		r.getTransaction = function(txid, callback) {
 			coinjs.ajax(coinjs.host+'?uid='+coinjs.uid+'&key='+coinjs.key+'&setmodule=bitcoin&request=gettransaction&txid='+txid+'&r='+Math.random(), callback, "GET");
 		}
+		*/
 
 		/* add unspent to transaction */
 		r.addUnspent = function(address, callback, script, segwit, sequence){
@@ -1423,38 +1115,92 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 					xmlDoc.loadXML(data);
 				}
 
-				var unspent = xmlDoc.getElementsByTagName("unspent")[0];
+				// var unspent = xmlDoc.getElementsByTagName("unspent")[0];
+				var jsonDoc = JSON.parse(data);
+				var unspent = jsonDoc.unspent_outputs;
 
-				if(unspent){ 
-					for(i=1;i<=unspent.childElementCount;i++){
-						var u = xmlDoc.getElementsByTagName("unspent_"+i)[0]
-						var txhash = (u.getElementsByTagName("tx_hash")[0].childNodes[0].nodeValue).match(/.{1,2}/g).reverse().join("")+'';
-						var n = u.getElementsByTagName("tx_output_n")[0].childNodes[0].nodeValue;
-						var scr = script || u.getElementsByTagName("script")[0].childNodes[0].nodeValue;
+				for(i=0;i<unspent.length;i++){
+					var u = unspent[i];
+	                console.log(u);
 
-						if(segwit){
-							/* this is a small hack to include the value with the redeemscript to make the signing procedure smoother. 
-							It is not standard and removed during the signing procedure. */
+                    var txhash = u.tx_hash;
+					var n = u.tx_ouput_n;
+					var scr = u.script;
 
-							s = coinjs.script();
-							s.writeBytes(Crypto.util.hexToBytes(script));
-							s.writeOp(0);
-							s.writeBytes(coinjs.numToBytes(u.getElementsByTagName("value")[0].childNodes[0].nodeValue*1, 8));
-							scr = Crypto.util.bytesToHex(s.buffer);
-						}
+					if(segwit){
+						/* this is a small hack to include the value with the redeemscript to make the signing procedure smoother. 
+						It is not standard and removed during the signing procedure. */
 
-						var seq = sequence || false;
-						self.addinput(txhash, n, scr, seq);
-						value += u.getElementsByTagName("value")[0].childNodes[0].nodeValue*1;
-						total++;
+						s = coinjs.script();
+						s.writeBytes(Crypto.util.hexToBytes(script));
+						s.writeOp(0);
+						s.writeBytes(coinjs.numToBytes(u.getElementsByTagName("value")[0].childNodes[0].nodeValue*1, 8));
+						scr = Crypto.util.bytesToHex(s.buffer);
 					}
+
+					var seq = sequence || false;
+					self.addinput(txhash, n, scr, seq);
+					value += u.value*1;
+					total++;
 				}
 
-				x.result = xmlDoc.getElementsByTagName("result")[0].childNodes[0].nodeValue;
 				x.unspent = unspent;
 				x.value = value;
 				x.total = total;
-				x.response = xmlDoc.getElementsByTagName("response")[0].childNodes[0].nodeValue;
+
+				return callback(x);
+			});
+		}
+
+		r.addUnspentIceee = function(address, callback, script, segwit, sequence){
+			var self = this;
+			this.listUnspent(address, function(data){
+				var s = coinjs.script();
+				var value = 0;
+				var total = 0;
+				var x = {};
+
+				if (window.DOMParser) {
+					parser=new DOMParser();
+					xmlDoc=parser.parseFromString(data,"text/xml");
+				} else {
+					xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+					xmlDoc.async=false;
+					xmlDoc.loadXML(data);
+				}
+
+				// var unspent = xmlDoc.getElementsByTagName("unspent")[0];
+				var jsonDoc = JSON.parse(data);
+				var unspent = jsonDoc.unspent_outputs;
+
+				for(i=0;i<unspent.length;i++){
+					var u = unspent[i];
+	                console.log(u);
+
+                    var txhash = u.tx_hash;
+					var n = u.tx_ouput_n;
+					var scr = u.script;
+
+					if(segwit){
+						/* this is a small hack to include the value with the redeemscript to make the signing procedure smoother. 
+						It is not standard and removed during the signing procedure. */
+
+						s = coinjs.script();
+						s.writeBytes(Crypto.util.hexToBytes(script));
+						s.writeOp(0);
+						s.writeBytes(coinjs.numToBytes(u.getElementsByTagName("value")[0].childNodes[0].nodeValue*1, 8));
+						scr = Crypto.util.bytesToHex(s.buffer);
+					}
+
+					var seq = sequence || false;
+					self.addinput(txhash, n, scr, seq);
+					value += u.value*1;
+					total++;
+				}
+
+				x.unspent = unspent;
+				x.value = value;
+				x.total = total;
 
 				return callback(x);
 			});
@@ -1472,8 +1218,32 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 		/* broadcast a transaction */
 		r.broadcast = function(callback, txhex){
-			var tx = txhex || this.serialize();
-			coinjs.ajax(coinjs.host+'?uid='+coinjs.uid+'&key='+coinjs.key+'&setmodule=bitcoin&request=sendrawtransaction', callback, "POST", ["rawtx="+tx]);
+			console.log("Reqesting");
+			console.log(txhex);
+			$.ajax({
+				type: "POST",
+				url: "https://chainz.cryptoid.info/blk/api.dws?q=pushtx&key=1205735eba8c",
+				data: txhex,
+				dataType: "text", //"json",
+				error: function(data) {
+						var r = ' Failed to Broadcast.'; // this wants a preceding space
+						$("#walletSendConfirmStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+				},
+				success: function(data) {
+						if(data){
+								var txid = data; // is this right?
+								$("#walletSendConfirmStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden").html(` Txid: <a href="https://chainz.cryptoid.info/blk/tx.dws?${txid}.htm" target="_BLANK"> ${txid} </a>`);
+						} else {
+								$("#walletSendConfirmStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again').prepend('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+						}
+				},
+				complete: function (data, status) {
+															console.log(data);
+
+						$("#walletSendConfirmStatus").fadeOut().fadeIn();
+						// $(thisbtn).val('Submit').attr('disabled',false);
+				}
+			});
 		}
 
 		/* generate the transaction hash to sign from a transaction input */
@@ -1491,7 +1261,6 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 			var extract = this.extractScriptKey(index);
 			clone.ins[index].script = coinjs.script(extract['script']);
-
 
 			if((clone.ins) && clone.ins[index]){
 
@@ -1551,13 +1320,6 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				buffer = buffer.concat(coinjs.numToBytes(parseInt(shType), 4));
 				var hash = Crypto.SHA256(buffer, {asBytes: true});
 				var r = Crypto.util.bytesToHex(Crypto.SHA256(hash, {asBytes: true}));
-				console.log('generated TXID: ', r);
-
-				this.rawTxSerialized = clone.serialize();	//added for REDD-family, iceee
-				console.log('_cloneTx '+index+': ', this.rawTxSerialized);
-
-
-
 				return r;
 			} else {
 				return false;
@@ -1713,7 +1475,6 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		/* generate a signature from a transaction hash */
 		r.transactionSig = function(index, wif, sigHashType, txhash){
 
-			console.log('===r.transactionSig===');
 			function serializeSig(r, s) {
 				var rBa = r.toByteArraySigned();
 				var sBa = s.toByteArraySigned();
@@ -1732,55 +1493,10 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 				return sequence;
 			}
-/*
-			function REDDFamilySign(txhash) {
-				var timestamp = txHash.slice(-8);	//get the timestamp
-				
-				for every (index)
-					txhash = txhash.slice(0, -8) + '01000000';	//for#strip the posv timestamp and add the hashcode (needs to be done before signing)
 
-				1. deserialise the rawtx
-				2. remove ALL script 	(newtx["ins"][i]["script"] = '') from INPUTS except for the currenct index input
-				3. serialize the rawtx
-				4. sign with low level s signature
-
-
-			}
-*/
 			var shType = sigHashType || 1;
-			//var hash = txhash || Crypto.util.hexToBytes(this.transactionHash(index, shType, rawTx));
-			var hash = txhash || this.transactionHash(index, shType);
-			
+			var hash = txhash || Crypto.util.hexToBytes(this.transactionHash(index, shType));
 
-
-			
-				if (coinjs.asset?.chainFamily === 'rdd') {
-					if (coinjs.txExtraTimeField) {
-						//hash = Crypto.SHA256(Crypto.SHA256())
-						//console.log('1: ', Crypto.SHA256(Crypto.SHA256(hash, {asBytes: true}), {asBytes: true}) );
-						//console.log('2: ', Crypto.util.bytesToHex(Crypto.SHA256(Crypto.SHA256(hash, {asBytes: true}), {asBytes: true}) ));
-						//console.log('3: ', Crypto.util.bytesToHex(Crypto.SHA256(Crypto.SHA256(hash, {asBytes: false}), {asBytes: true}) ));
-						//console.log('4: ', (Crypto.SHA256(Crypto.SHA256(hash, {asBytes: false}), {asBytes: false}) ));
-						//hash = Crypto.SHA256(Crypto.SHA256(hash));
-						
-
-
-						//var scriptPOSv_timestamp = this.rawTxSerialized.slice(-8);	//get the timestamp
-						this.rawTxSerialized = this.rawTxSerialized.slice(0, -8) + '01000000';	//for POSv coins, remove timestamp, needs to be done before signing
-
-						//console.log('this.rawTxSerialized redd: ', this.rawTxSerialized);
-
-						var hashPOT= Crypto.util.bytesToHex(Crypto.SHA256(coinjs.hexToString(this.rawTxSerialized),  {asBytes: true}));
-						hash = Crypto.util.bytesToHex(Crypto.SHA256(coinjs.hexToString(hashPOT),  {asBytes: true}));
-						//console.log('hash POT: ',hash);						
-
-					}
-				} 
-
-			//console.log('hash: ', hash);
-			hash = Crypto.util.hexToBytes(hash);
-
-			// Generate a low-S ECDSA signature
 			if(hash){
 				var curve = EllipticCurve.getSECCurveByName("secp256k1");
 				var key = coinjs.wif2privkey(wif);
@@ -1793,9 +1509,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 					var G = curve.getG();
 					var Q = G.multiply(k);
 					var r = Q.getX().toBigInteger().mod(n);
-
 					var s = k.modInverse(n).multiply(e.add(priv.multiply(r))).mod(n);
-
 					badrs++
 				} while (r.compareTo(BigInteger.ZERO) <= 0 || s.compareTo(BigInteger.ZERO) <= 0);
 
@@ -1804,143 +1518,15 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				if (s.compareTo(halfn) > 0) {
 					s = n.subtract(s);
 				};
-				
 
 				var sig = serializeSig(r, s);
-
-				//console.log('**sig: ', Crypto.util.bytesToHex(sig))
 				sig.push(parseInt(shType, 10));
 
-				//console.log('**sig.push: ', Crypto.util.bytesToHex(sig));
-
-
 				return Crypto.util.bytesToHex(sig);
-				
 			} else {
 				return false;
 			}
 		}
-
-
-/**
- * Generate a low-S ECDSA signature
- * @param {string} key - The private key in hexadecimal format
- * @param {string} message - The message to sign
- * @returns {Array} - The r and s components of the signature, as hexadecimal strings
- *
-
-	function signNumberLowS(key, number) {
-	  const curve = EllipticCurve.getSECCurveByName("secp256k1");
-	  const G = curve.getG();
-	  const order = curve.n;	//curve.getN();
-
-	  const privateKey = new BigInteger(key);
-	  const eckey = new ECKey(privateKey);
-
-	  const sig = eckey.sign(BigInteger.fromHex(number), false);  // false means we do not want to use deterministic k
-
-	  let s = sig.s;
-	  if (s.compareTo(order.divide(BigInteger.valueOf(2))) > 0) {
-	    s = order.subtract(s);
-	  }
-
-	  const r = sig.r;
-	  return [r.toString(16), s.toString(16)];
-	}
-
-var ECDSA = {
-  signNumberLowSOlder: function(key, number) {
-    const curve = EllipticCurve.getSECCurveByName("secp256k1");
-    const G = curve.getG();
-    const order = curve.n;
-
-    const privateKey = potcoin.BigInteger.fromHex(key);
-console.log('privateKey: ', privateKey);
-    const eckey = potcoin.potcoin.ECKey.fromWIF(privateKey);
-console.log('eckey: ', eckey);
-
-    const hash = potcoin.BigInteger.fromHex(number);
-    const sig = ECDSA.sign(eckey, hash);
-console.log('sig: ', sig);
-
-    let s = sig.s;
-    if (s.compareTo(order.divide(BigInteger.valueOf(2))) > 0) {
-      s = order.subtract(s);
-    }
-
-    const r = sig.r;
-    return [r.toString(16), s.toString(16)];
-  },
-
-  sign: function(eckey, hash) {
-    const d = eckey.priv;
-    const n = EllipticCurve.getSECCurveByName("secp256k1").getN();
-    const e = hash;
-
-    let k = null;
-    let r = null;
-    let s = null;
-
-    do {
-      k = ECDSA.generateK(n);
-      const Q = G.multiply(k);
-      r = Q.getX().toBigInteger().mod(n);
-      s = k.modInverse(n).multiply(e.add(d.multiply(r))).mod(n);
-    } while (s.compareTo(n.divide(BigInteger.valueOf(2))) > 0);
-
-    return new Bitcoin.ECSignature(r, s);
-  },
-
-  generateK: function(n) {
-    const secureRandom = new SecureRandom();
-    const bytes = new Array(32);
-    secureRandom.nextBytes(bytes);
-    return BigInteger.fromByteArrayUnsigned(bytes).mod(n);
-  }
-};
-
-ECDSA.signNumberLowS('ed457c36da2618d0d467b24dbb67c75186511164e823a82aaaf6f6410f08ae59', 1)
-
-function signNumberLowS_older(key, number) {
-  var network = bitcoinjs.networks.bitcoin;
-console.log('network: ', network);
-  var keyPair = bitcoinjs.ECPair.fromPrivateKey(bitcoinjs.Buffer.from(key, 'hex'), { network });
-  var message = bitcoinjs.Buffer.from(number, 'hex');
-  //var hash = CryptoJS.SHA256(message).toString(CryptoJS.enc.Hex);
-	var hash = Crypto.SHA256(message);
-  var signature = keyPair.sign(bitcoinjs.Buffer.from(hash, 'hex'), { lowR: true });
-  var curve = bitcoinjs.ECPair.curve;
-  var order = curve.n;
-  var s = signature.s;
-  if (s.cmp(order.div(2)) > 0) {
-    s = order.sub(s);
-  }
-  return [signature.r.toString(16), s.toString(16)];
-}
-
-function signNumberLowS(key, number) {
-  const network = bitcoinjs.networks.bitcoin;
-  const keyPair = bitcoinjs.ECPair.fromPrivateKey(bitcoinjs.Buffer.from(key, 'hex'), { network });
-  const message = bitcoinjs.Buffer.from(number, 'hex');
-  //const hash = CryptoJS.SHA256(message).toString(CryptoJS.enc.Hex);
-var hash = Crypto.SHA256(message);
-  const signature = keyPair.sign(bitcoinjs.Buffer.from(hash, 'hex'), { lowR: true });
-  const curve = keyPair.getPublicKeyBuffer().slice(0, 1)[0] === 0x02 ? bitcoinjs.ECKey.Secp256k1 : bitcoinjs.ECKey.Secp256k1p;
-  const order = curve.getN();
-  let s = signature.s;
-  if (s.cmp(order.div(2)) > 0) {
-    s = order.sub(s);
-  }
-  return [signature.r.toString(16), s.toString(16)];
-}
-
- signNumberLowS('936d57bc58e6b65840b9cdaa4f60ff4331f0f0eec0c75ed0fed6dce13997de7c', '68656c6c6f');
-
-
-
-
-*/
-
 
 		// https://tools.ietf.org/html/rfc6979#section-3.2
 		r.deterministicK = function(wif, hash, badrs) {
@@ -2005,11 +1591,10 @@ var hash = Crypto.SHA256(message);
 		};
 
 		/* sign a "standard" input */
-		r.signinput = function(index, wif, sigHashType, rawTx){
+		r.signinput = function(index, wif, sigHashType){
 			var key = coinjs.wif2pubkey(wif);
 			var shType = sigHashType || 1;
 			var signature = this.transactionSig(index, wif, shType);
-			//var signature = this.transactionSig(index, wif, shType, rawTx);
 			var s = coinjs.script();
 			s.writeBytes(Crypto.util.hexToBytes(signature));
 			s.writeBytes(Crypto.util.hexToBytes(key['pubkey']));
@@ -2152,12 +1737,8 @@ var hash = Crypto.SHA256(message);
 		}
 
 		/* sign inputs */
-		r.sign = function(wif, sigHashType, rawTx){
+		r.sign = function(wif, sigHashType){
 			var shType = sigHashType || 1;
-
-			console.log('===r.sign===');
-			console.log('rawTx: ', rawTx);
-
 			for (var i = 0; i < this.ins.length; i++) {
 				var d = this.extractScriptKey(i);
 
@@ -2166,7 +1747,7 @@ var hash = Crypto.SHA256(message);
 				var pubkeyHash = script.pubkeyHash(w2a['address']);
 
 				if(((d['type'] == 'scriptpubkey' && d['script']==Crypto.util.bytesToHex(pubkeyHash.buffer)) || d['type'] == 'empty') && d['signed'] == "false"){
-					this.signinput(i, wif, shType, rawTx);
+					this.signinput(i, wif, shType);
 
 				} else if (d['type'] == 'hodl' && d['signed'] == "false") {
 					this.signhodl(i, wif, shType);
@@ -2187,18 +1768,11 @@ var hash = Crypto.SHA256(message);
 		/* serialize a transaction */
 		r.serialize = function(){
 			var buffer = [];
-
-			//version
 			buffer = buffer.concat(coinjs.numToBytes(parseInt(this.version),4));
 
-			//time, PoS coins, add extra timefield to TX
-			if(coinjs.asset?.chainFamily !== 'rdd'){
-				if (coinjs.txExtraTimeField) {
-					buffer = buffer.concat(coinjs.numToBytes(parseInt(this.nTime),4));
-				}
+			if (coinjs.txExtraTimeField) {
+				buffer = buffer.concat(coinjs.numToBytes(parseInt(this.nTime),4));
 			}
-
-			//witness
 			if(coinjs.isArray(this.witness)){
 				buffer = buffer.concat([0x00, 0x01]);
 			}
@@ -2233,265 +1807,95 @@ var hash = Crypto.SHA256(message);
 				}
 			}
 
-			//locktime
 			buffer = buffer.concat(coinjs.numToBytes(parseInt(this.lock_time),4));
-
-			//time, PoS coins, add extra timefield to TX
-			if(coinjs.asset?.chainFamily === 'rdd'){
-				if (coinjs.txExtraTimeField) {
-					buffer = buffer.concat(coinjs.numToBytes(parseInt(this.nTime),4));
-				}
-			}
-
-			//Additional TxUnit field, add extra unit field to TX
-			if (coinjs.txExtraUnitField) {
-				buffer = buffer.concat(coinjs.numToBytes(parseInt(coinjs.txExtraUnitFieldValue),1));
-			}
-
 			return Crypto.util.bytesToHex(buffer);
 		}
 
 		/* deserialize a transaction */
 		r.deserialize = function(buffer){
-
-			try {
-				if (typeof buffer == "string") {
-					buffer = Crypto.util.hexToBytes(buffer)
-				}
-
-				console.log('r.deserialize buffer: ', buffer);
-				console.log('r.deserialize buffer.length: ', buffer.length);
-				var pos = 0;
-				var witness = false;
-
-				var readAsInt = function(bytes) {
-					if (bytes == 0) return 0;
-					pos++;
-
-					//dont go any further then buffer.length
-					if (pos > buffer.length)
-						throw ('Not Within Buffer Range (length), No need to read more!');
-
-					//console.log('pos: '+ pos);
-					return buffer[pos-1] + readAsInt(bytes-1) * 256;
-				}
-
-				var readVarInt = function() {
-					pos++;
-					if (buffer[pos-1] < 253) {
-						return buffer[pos-1];
-					}
-					return readAsInt(buffer[pos-1] - 251);
-				}
-
-				var readBytes = function(bytes) {
-					pos += bytes;
-					return buffer.slice(pos - bytes, pos);
-				}
-
-				var readVarString = function() {
-					var size = readVarInt();
-					return readBytes(size);
-				}
-
-				var obj = new coinjs.transaction();
-				obj.version = readAsInt(4);
-
-				//PoS coins
-				if(coinjs.asset?.chainFamily !== 'rdd'){
-					if (coinjs.txExtraTimeField) {
-						console.log('txExtra:');
-						obj.nTime = readAsInt(4);
-					}
-				}
-
-				if(buffer[pos] == 0x00 && buffer[pos+1] == 0x01){
-					// segwit transaction
-					witness = true;
-					obj.witness = [];
-					pos += 2;
-				}
-
-				var ins = readVarInt();
-				for (var i = 0; i < ins; i++) {
-					obj.ins.push({
-						outpoint: {
-							hash: Crypto.util.bytesToHex(readBytes(32).reverse()),
-	 						index: readAsInt(4)
-						},
-						script: coinjs.script(readVarString()),
-						sequence: readAsInt(4)
-					});
-				}
-
-				var outs = readVarInt();
-				for (var i = 0; i < outs; i++) {
-					obj.outs.push({
-						value: coinjs.bytesToNum(readBytes(8)),
-						script: coinjs.script(readVarString())
-					});
-				}
-
-				if(witness == true){
-					for (i = 0; i < ins; ++i) {
-						var count = readVarInt();
-						var vector = [];
-						for(var y = 0; y < count; y++){
-							var slice = readVarInt();
-							pos += slice;
-							if(!coinjs.isArray(obj.witness[i])){
-								obj.witness[i] = [];
-							}
-							obj.witness[i].push(Crypto.util.bytesToHex(buffer.slice(pos - slice, pos)));
-						}
-					}
-				}
-
-	 			obj.lock_time = readAsInt(4);
-
-	 			//Additional TxUnit field
-	 			if (coinjs.txExtraUnitField) {
-					obj.nUnit = readAsInt(1);
-				}
-
-				//PoS coins
-				if(coinjs.asset?.chainFamily === 'rdd'){
-					if (coinjs.txExtraTimeField) {
-						console.log('txExtra:');
-						obj.nTime = readAsInt(4);
-					}
-				}
-
-
-				return obj;
-			} catch (e) {
-				console.log('r.deserialize error: ', e);
+			if (typeof buffer == "string") {
+				buffer = Crypto.util.hexToBytes(buffer)
 			}
-			return false;
-		}
 
-		/* deserialize a transaction */
-		r.adeserialize = function(buffer, options = {}){
+			var pos = 0;
+			var witness = false;
 
-			try {
-				if (typeof buffer == "string") {
-					buffer = Crypto.util.hexToBytes(buffer)
-				}
-
-				console.log('r.adeserialize buffer: ', buffer);
-				console.log('r.adeserialize buffer.length: ', buffer.length);
-				var pos = 0;
-				var witness = false;
-
-				var readAsInt = function(bytes) {
-					if (bytes == 0) return 0;
-					pos++;
-
-					//dont go any further then buffer.length
-					if (pos > buffer.length)
-						throw ('Not Within Buffer Range (length), No need to read more!');
-
-					//console.log('pos: '+ pos);
-					return buffer[pos-1] + readAsInt(bytes-1) * 256;
-				}
-
-				var readVarInt = function() {
-					pos++;
-					if (buffer[pos-1] < 253) {
-						return buffer[pos-1];
-					}
-					return readAsInt(buffer[pos-1] - 251);
-				}
-
-				var readBytes = function(bytes) {
-					pos += bytes;
-					return buffer.slice(pos - bytes, pos);
-				}
-
-				var readVarString = function() {
-					var size = readVarInt();
-					return readBytes(size);
-				}
-
-				var obj = new coinjs.transaction();
-				obj.version = readAsInt(4);
-
-				//PoS coins
-				/*
-				if(coinjs.asset.slug != 'potcoin'){
-					if (coinjs.txExtraTimeField) {
-						console.log('txExtra:');
-						obj.nTime = readAsInt(4);
-					}
-				}
-				*/
-
-				if(buffer[pos] == 0x00 && buffer[pos+1] == 0x01){
-					// segwit transaction
-					witness = true;
-					obj.witness = [];
-					pos += 2;
-				}
-
-				var ins = readVarInt();
-				for (var i = 0; i < ins; i++) {
-					obj.ins.push({
-						outpoint: {
-							hash: Crypto.util.bytesToHex(readBytes(32).reverse()),
-	 						index: readAsInt(4)
-						},
-						script: coinjs.script(readVarString()),
-						sequence: readAsInt(4)
-					});
-				}
-
-				var outs = readVarInt();
-				for (var i = 0; i < outs; i++) {
-					obj.outs.push({
-						value: coinjs.bytesToNum(readBytes(8)),
-						script: coinjs.script(readVarString())
-					});
-				}
-
-				if(witness == true){
-					for (i = 0; i < ins; ++i) {
-						var count = readVarInt();
-						var vector = [];
-						for(var y = 0; y < count; y++){
-							var slice = readVarInt();
-							pos += slice;
-							if(!coinjs.isArray(obj.witness[i])){
-								obj.witness[i] = [];
-							}
-							obj.witness[i].push(Crypto.util.bytesToHex(buffer.slice(pos - slice, pos)));
-						}
-					}
-				}
-
-	 			obj.lock_time = readAsInt(4);
-
-	 			//Additional TxUnit field
-	 			if (coinjs.txExtraUnitField) {
-					obj.nUnit = readAsInt(1);
-				}
-
-				/*
-				//PoSv coins, we have already stripped out the txtime field before signing, coinbin.js around line: 26x9
-
-				if(coinjs.asset.slug == 'potcoin'){
-					if (coinjs.txExtraTimeField) {
-						console.log('txExtra:');
-						obj.nTime = readAsInt(4);
-					}
-				}
-				*/
-
-
-				return obj;
-			} catch (e) {
-				console.log('r.deserialize error: ', e);
+			var readAsInt = function(bytes) {
+				if (bytes == 0) return 0;
+				pos++;
+				return buffer[pos-1] + readAsInt(bytes-1) * 256;
 			}
-			return false;
+
+			var readVarInt = function() {
+				pos++;
+				if (buffer[pos-1] < 253) {
+					return buffer[pos-1];
+				}
+				return readAsInt(buffer[pos-1] - 251);
+			}
+
+			var readBytes = function(bytes) {
+				pos += bytes;
+				return buffer.slice(pos - bytes, pos);
+			}
+
+			var readVarString = function() {
+				var size = readVarInt();
+				return readBytes(size);
+			}
+
+			var obj = new coinjs.transaction();
+			obj.version = readAsInt(4);
+			
+
+			if (coinjs.txExtraTimeField) {
+				obj.nTime = readAsInt(4);
+			}
+
+			if(buffer[pos] == 0x00 && buffer[pos+1] == 0x01){
+				// segwit transaction
+				witness = true;
+				obj.witness = [];
+				pos += 2;
+			}
+
+			var ins = readVarInt();
+			for (var i = 0; i < ins; i++) {
+				obj.ins.push({
+					outpoint: {
+						hash: Crypto.util.bytesToHex(readBytes(32).reverse()),
+ 						index: readAsInt(4)
+					},
+					script: coinjs.script(readVarString()),
+					sequence: readAsInt(4)
+				});
+			}
+
+			var outs = readVarInt();
+			for (var i = 0; i < outs; i++) {
+				obj.outs.push({
+					value: coinjs.bytesToNum(readBytes(8)),
+					script: coinjs.script(readVarString())
+				});
+			}
+
+			if(witness == true){
+				for (i = 0; i < ins; ++i) {
+					var count = readVarInt();
+					var vector = [];
+					for(var y = 0; y < count; y++){
+						var slice = readVarInt();
+						pos += slice;
+						if(!coinjs.isArray(obj.witness[i])){
+							obj.witness[i] = [];
+						}
+						obj.witness[i].push(Crypto.util.bytesToHex(buffer.slice(pos - slice, pos)));
+					}
+				}
+			}
+
+ 			obj.lock_time = readAsInt(4);
+			return obj;
 		}
 
 		r.size = function(){
@@ -2628,12 +2032,7 @@ var hash = Crypto.SHA256(message);
 	}
 
 	/* raw ajax function to avoid needing bigger frame works like jquery, mootools etc */
-	coinjs.ajax = function(u, f, m='GET', a){	//url, callbackFunction, method, a?isAwhat? =parameters for POST
-		console.log('u:', u);
-		console.log('f:', f);
-		console.log('m:', m);
-		console.log('a:', a);
-
+	coinjs.ajax = function(u, f, m, a){
 		var x = false;
 		try{
 			x = new ActiveXObject('Msxml2.XMLHTTP')
@@ -2651,10 +2050,8 @@ var hash = Crypto.SHA256(message);
 
 		x.open(m, u, true);
 		x.onreadystatechange=function(){
-			if((x.readyState==4) && f){
-				console.log('back to callBackFunc!');
+			if((x.readyState==4) && f)
 				f(x.responseText);
-				}
 		};
 
 		if(m == 'POST'){
@@ -2765,109 +2162,7 @@ var hash = Crypto.SHA256(message);
 		for(x=0;x<l;x++) {
 			r += chars.charAt(Math.floor(Math.random() * 62));
 		}
-		return coinjs.generatePass();
+		return r;
 	}
 
-	coinjs.formatAmount = function(amount) {
-		return (amount/("1e"+coinjs.decimalPlaces)).toString() + " " + coinjs.symbol;
-	}
-
-	coinjs.generatePass = function(length) {
-  var generatePass = (
-  //length = 20,
-  wishlist = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~'
-) =>
-  Array.from(crypto.getRandomValues(new Uint32Array(length)))
-    .map((x) => wishlist[x % wishlist.length])
-    .join('');
-
-  return generatePass();  
-}
-
-//https://emn178.github.io/online-tools/js/main.js
-	coinjs.hexToString = function(hex) {
-    if (!hex.match(/^[0-9a-fA-F]+$/)) {
-      throw new Error('is not a hex string.');
-    }
-    if (hex.length % 2 !== 0) {
-      hex = '0' + hex;
-    }
-    var bytes = [];
-    for (var n = 0; n < hex.length; n += 2) {
-      var code = parseInt(hex.substr(n, 2), 16)
-      bytes.push(code);
-    }
-    return bytes;
-  }
-
-  coinjs.addressToOutputScript = function(address){
-  	var script = coinjs.script();
-  	var pubkeyHashScript = Crypto.util.bytesToHex( script.pubkeyHash(address).buffer, {asBytes: false});
-  	return pubkeyHashScript;
-  }
-
-  /*
- 	@ for ElectrumX integration
-  */
-  coinjs.addressToScriptHash = function(address) {
-  	/*
-  	
-
-  	For example, the legacy Bitcoin address from the genesis block:
-		1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
-
-		has P2PKH script:
-		76a91462e907b15cbf27d5425399ebf6f0fb50ebb88f1888ac
-
-		with SHA256 hash:
-		6191c3b590bfcfa0475e877c302da1e323497acf3b42c08d8fa28e364edf018b
-
-		which is sent to the server reversed as:
-		8b01df4e368ea28f8dc0423bcf7a4923e3a12d307c875e47a0cfbf90b5c39161
-
-
-function hexToString(hex) {
-    if (!hex.match(/^[0-9a-fA-F]+$/)) {
-      throw new Error('is not a hex string.');
-    }
-    if (hex.length % 2 !== 0) {
-      hex = '0' + hex;
-    }
-    var bytes = [];
-    for (var n = 0; n < hex.length; n += 2) {
-      var code = parseInt(hex.substr(n, 2), 16)
-      bytes.push(code);
-    }
-    return bytes;
-  }
-
-var script = coinjs.script();
-var address = 'CeTNuWQ5pC3RS4NexFEeAysF7X25zp1qB4';
-
-
-var pubkeyHashScript = hexToString(Crypto.util.bytesToHex( script.pubkeyHash(address).buffer, {asBytes: true}));
-console.log('pubkeyHashScript: ', pubkeyHashScript);
-var pubkeyHashScriptSHA256 = Crypto.SHA256(pubkeyHashScript);
-console.log('pubkeyHashScriptSHA256: ', pubkeyHashScriptSHA256);
-
-var pubkeyHashScriptSHA256Reversed = Crypto.util.bytesToHex(Crypto.util.hexToBytes(pubkeyHashScriptSHA256).reverse());
-console.log('pubkeyHashScriptSHA256Reversed: ', pubkeyHashScriptSHA256Reversed);
-
-
-		*/
-  	var script = coinjs.script();
-		//var address = '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa';
-
-
-		var pubkeyHashScript = coinjs.hexToString(Crypto.util.bytesToHex( script.pubkeyHash(address).buffer, {asBytes: true}));
-		//console.log('pubkeyHashScript: ', pubkeyHashScript);
-		var pubkeyHashScriptSHA256 = Crypto.SHA256(pubkeyHashScript);
-		//console.log('pubkeyHashScriptSHA256: ', pubkeyHashScriptSHA256);
-
-		var pubkeyHashScriptSHA256Reversed = Crypto.util.bytesToHex(Crypto.util.hexToBytes(pubkeyHashScriptSHA256).reverse());
-		//console.log('pubkeyHashScriptSHA256Reversed: ', pubkeyHashScriptSHA256Reversed);
-
-		return pubkeyHashScriptSHA256Reversed;
-
-  }
 })();

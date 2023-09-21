@@ -67,7 +67,7 @@ $(document).ready(function() {
   //BIP Verify Script
   coinbinf.verifyScript = $("#verifyScript");
 
-  coinbinf.bipAddressSemantics = 'p2wpkh';	//added for electrum address derivation
+  coinbinf.bipAddressSemantics = '';	//added for electrum address derivation
 
 
 	/* open wallet code */
@@ -1077,6 +1077,7 @@ profile_data = {
 
 		//console.log('checked? ', $("#newMnemonicBrainwalletCheck").is(":checked"));
 		coinjs.compressed = true;
+		var success = false;
 		var s  = $("#newMnemonicWords").val().trim();	//seed
 		var bipProtocolVal  = coinbinf.deriveFromBipProtocol.val();	//get bip protocol
 
@@ -1084,33 +1085,50 @@ profile_data = {
 
 		isElectrumProtocol = coinbinf.bipMnemonicClientProtocol.is(':checked');
 
-		if (isElectrumProtocol)
-			bip39 = new BIP39('en', 'electrum');
-		else
-			bip39 = new BIP39('en');
+		if (isElectrumProtocol){
+			bip39.setProtocol('electrum');
+			//bip39 = new BIP39('en', 'electrum');
+		}else {
+			bip39.setProtocol('bip39');
+			//bip39 = new BIP39('en', 'bip39');
+		}
 
 		console.log('isElectrumProtocol: ', isElectrumProtocol);
 		//validate bip39 mnemonic
 		if(bip39.validate(s)){
+			success = true;
+		} else {
+			success = false;
+        }
+
+        //return if seed words doesnt equal 12 words!
+        if (isElectrumProtocol)
+			if (wally_fn.wordCount(s) !== 12)
+				success = false;
+
+        if (!success) {
+        	coinbinf.newMnemonicPubInput.val("");
+			coinbinf.newMnemonicPrvInput.val("");
+	        $("#newMnemonicWords").addClass("border-danger");
+	        $("#newMnemonicWords").parent().addClass("border-danger").attr('title', 'Incorrect BIP39 Seed').tooltip();
+
+	        $('#newMnemonicAddress .deriveSeedbtn').prop('disabled',true);
+	        return ;
+
+        }
+        //all good proceed!
+        if ($("#newMnemonicWords").hasClass("border-danger")) {
 	        $("#newMnemonicWords").removeClass("border-danger");
 			$("#newMnemonicWords").parent().removeClass("border-danger").removeAttr('title');
 
 			$("#newMnemonicWords .tooltip").remove();
 			$('#newMnemonicAddress .deriveSeedbtn').prop('disabled',false);
-    		//$("#walletSpendTo .addressRemove").find(".tooltip").remove().unbind("");
+		}
+    	//$("#walletSpendTo .addressRemove").find(".tooltip").remove().unbind("");
 		
-		} else {
-			coinbinf.newMnemonicPubInput.val("");
-			coinbinf.newMnemonicPrvInput.val("");
-	        $("#newMnemonicWords").addClass("border-danger");
-	        $("#newMnemonicWords").parent().addClass("border-danger").attr('title', 'Incorrect BIP39 Phrase').attr("data-original-title", 'Incorrect BIP39 Phrase').tooltip();
-
-	        $('#newMnemonicAddress .deriveSeedbtn').prop('disabled',true);
-	        return ;
-	        }
 
 
-		var p  = ($("#newMnemonicBrainwalletCheck").is(":checked")) ? $("#MnemonicBrainwallet").val() : null;	//user pass
+		var p  = ($("#newMnemonicBrainwalletCheck").is(":checked")) ? $("#MnemonicBrainwallet").val() : null;	//user bip passphrase
 
 		var hd = coinjs.hd();
 
@@ -1118,7 +1136,7 @@ profile_data = {
 		if (bipProtocolVal !== 'bip49' && bipProtocolVal !== 'bip84')
 			bipProtocolVal = 'hdkey';
 
-		var pair = hd.masterMnemonic(s, p, bipProtocolVal);
+		var pair = hd.masterMnemonic(s, p, bipProtocolVal, bip39);
 
 		
 		//render xPub, xPrv elements
@@ -3424,7 +3442,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				//check if electrum master key should be generated
 				if (coinbinf.bip32Client.find('option:selected').text() === 'Electrum') {
 					if (i == index_start) {
-						var derived_electrum = hd.derive_electrum_path(derivation_path+'/'+i+use_private_index, bip_protocol, derivation_path_protocol, coinbinf.bipAddressSemantics);
+						var derived_electrum = hd.derive_electrum_path(derivation_path+'/'+i+use_private_index, bip_protocol, derivation_path_protocol, 'p2wpkh');
 						console.log('verifyHDaddress Electrum Key derived_electrum: '+i+':', derived_electrum);
 
 						bip_electrum_prv.val(derived_electrum.keys_extended.privkey);

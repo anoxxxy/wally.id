@@ -2523,6 +2523,17 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
   wally_fn.api.coingecko.supportedMarketData = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,bitbay,potcoin,reddcoin,lynx,artbyte,infiniloop&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d,30d,1y&locale=en';
   */
   
+/**
+ * Counts the number of words in a given string.
+ *
+ * @param {string} str - The input string to count words in.
+ * @returns {number} The count of words in the input string.
+ */
+wally_fn.wordCount = function(str) { 
+  return str.split(" ").length;
+}
+
+
 
 })();
 
