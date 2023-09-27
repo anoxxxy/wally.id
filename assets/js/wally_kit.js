@@ -1451,6 +1451,7 @@ https://electrum-status.dragonhound.info/api/v1/electrums_status
   }
 
 
+
 /*
  @ Handles the navigation to the selected page
  use transition, animation, scroll etc...
@@ -1611,6 +1612,35 @@ $(document).ready(function() {
   };
 })();
 
+
+/*@ Copy text to clipboard */
+wally_kit.copyContent = $('[data-copy-content]');
+
+wally_kit.copyContent.click(function(e){
+  console.log('===wally_kit.copyContent===');
+  var contentToCopy = $(this).attr('data-copy-content');
+
+  navigator.clipboard.writeText(`${contentToCopy}`);
+  //$(this).attr('title', 'Copied');
+
+  //change tooltip to copied, if tooltip target exists!
+  var tooltipTarget = $(this).attr('data-tooltip-id');
+
+  console.log('tooltipTarget: ', tooltipTarget);
+  if (tooltipTarget) {
+
+    var tooltipBox = $('#'+tooltipTarget + ' .jBox-content')
+    var tooltipBoxOriginalContent = tooltipBox.text();
+    tooltipBox.text('Copied!');
+
+    //set back the default content for the tooltip
+    setTimeout(() => {
+      
+      tooltipBox.text(tooltipBoxOriginalContent);
+    }, 2000);
+  }
+
+});
 
 
 /*<<< START PROMISE FUNCTION*/

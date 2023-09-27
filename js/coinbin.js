@@ -67,7 +67,7 @@ $(document).ready(function() {
   //BIP Verify Script
   coinbinf.verifyScript = $("#verifyScript");
 
-  coinbinf.bipAddressSemantics = '';	//added for electrum address derivation
+  coinbinf.bipAddressSemantics = 'p2wpkh';	//added for electrum address derivation
 
 
 	/* open wallet code */
@@ -1102,9 +1102,8 @@ profile_data = {
         }
 
         //return if seed words doesnt equal 12 words!
-        if (isElectrumProtocol)
-			if (wally_fn.wordCount(s) !== 12)
-				success = false;
+        if (isElectrumProtocol && wally_fn.wordCount(s) !== 12)
+			success = false;
 
         if (!success) {
         	coinbinf.newMnemonicPubInput.val("");
@@ -1117,13 +1116,13 @@ profile_data = {
 
         }
         //all good proceed!
-        if ($("#newMnemonicWords").hasClass("border-danger")) {
+        //if ($("#newMnemonicWords").hasClass("border-danger")) {
 	        $("#newMnemonicWords").removeClass("border-danger");
 			$("#newMnemonicWords").parent().removeClass("border-danger").removeAttr('title');
 
 			$("#newMnemonicWords .tooltip").remove();
 			$('#newMnemonicAddress .deriveSeedbtn').prop('disabled',false);
-		}
+		//}
     	//$("#walletSpendTo .addressRemove").find(".tooltip").remove().unbind("");
 		
 
@@ -3408,7 +3407,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 		//var hd = coinjs.hd($("#verifyHDaddress .hdKey").text());
 		var hd = decoded;
-		console.log('hdKey: ', hd);
+		//console.log('hdKey: ', hd);
 		var index_start = $("#bipDerivationIndexStart").val();
 		if ((index_start.length > 1) && (index_start[index_start.length - 1] == '\'')) {
 			var use_private_index = '\'';
@@ -3421,6 +3420,13 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		$("#bipDerivationIndexEnd").val(index_end + use_private_index);
 		var html = '';
 		$("#verifyHDaddress .derived_data table tbody").html("");
+
+		if (coinbinf.bip32Client.find('option:selected').text() === 'Electrum' || coinbinf.bipMnemonicClientProtocol.is(':checked')) 
+			coinbinf.bipAddressSemantics = 'p2wpkh';
+		else
+			coinbinf.bipAddressSemantics = '';
+
+		
 		for(var i=index_start;i<=index_end;i++){
 			//if($("#hdpathtype option:selected").val()=='simple'){
 				//var derived = hd.derive(i);
@@ -3433,17 +3439,22 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				var derivation_path = (bip_path.replace(/\/+$/, ""));
 				var derivation_path_protocol = extractBIPProtocol(derivation_path);
 
+				/*
 				console.log('===coinjs.deriveHDaddress=== extraced BIP: ' + bip_protocol);
 				console.log('===coinjs.deriveHDaddress=== derivation_path: ' + derivation_path_protocol);
 				console.log('===coinjs.deriveHDaddress=== derivation_path electrum: ' + derivation_path+'/'+i+use_private_index);
+				*/
 				
+				
+
 				var derived = hd.derive_path(derivation_path+'/'+i+use_private_index, bip_protocol, derivation_path_protocol, coinbinf.bipAddressSemantics);
 				
 				//check if electrum master key should be generated
 				if (coinbinf.bip32Client.find('option:selected').text() === 'Electrum') {
 					if (i == index_start) {
-						var derived_electrum = hd.derive_electrum_path(derivation_path+'/'+i+use_private_index, bip_protocol, derivation_path_protocol, 'p2wpkh');
-						console.log('verifyHDaddress Electrum Key derived_electrum: '+i+':', derived_electrum);
+						
+						var derived_electrum = hd.derive_electrum_path(derivation_path+'/'+i+use_private_index, bip_protocol, derivation_path_protocol, coinbinf.bipAddressSemantics);
+						//console.log('verifyHDaddress Electrum Key derived_electrum: '+i+':', derived_electrum);
 
 						bip_electrum_prv.val(derived_electrum.keys_extended.privkey);
 						bip_electrum_pub.val(derived_electrum.keys_extended.pubkey);
@@ -3458,12 +3469,12 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 				//get the Electrum Master Key
 				//if(i == index_start ) {
-					console.log('verifyHDaddress Electrum Key '+i+': ', derived);
-					console.log('verifyHDaddress Electrum Key '+i+':', derived.bip_electrum);
+					//console.log('verifyHDaddress Electrum Key '+i+': ', derived);
+					//console.log('verifyHDaddress Electrum Key '+i+':', derived.bip_electrum);
 					
 				//}
 			//}
-			console.log('derived: ', derived);
+			//console.log('derived: ', derived);
 			html += '<tr>';
 			html += '<td>'+i+'</td>';
 
@@ -4842,14 +4853,18 @@ $(".blockie_wrapper_with_title").attr('title', 'Address: ' + address);
 
 		  var _this_ = $(this);
 
-
+		  //set a unique id for the tooltip/jbox
+		  var tooltip_id = 'jBoxTooltip-'+Math.floor(Math.random() * 999)+'_'+wally_fn.generatePassword(16, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
+		  
+		  _this_.attr('data-tooltip-id', tooltip_id);
+		  
 		  if(_this_.attr("data-content")) {
 		  	console.log('jbox tooltip content is empty: ', _this_.attr("data-content"));
 		  	if(_this_.attr("data-content") == '')
 		  		return;
 
 		  	new jBox("Tooltip", {
-			    //id: "jBoxTooltip_" + $(this).attr("id"),
+			    id: tooltip_id,
 			    attach: $(this),
 			    //content: $(this).attr("data-jbox-content"),
 			    getTitle: 'title',
@@ -4860,7 +4875,19 @@ $(".blockie_wrapper_with_title").attr('title', 'Address: ' + address);
 		  } else {
 		  	if(_this_.attr("title") == '')
 		  		return;
+
+		  	/*
+		  	var defaultPlacement = 'center';
+		  	var jBoxPlacement = _this_.attr('data-placement');
+
+		  	if (jBoxPlacement)
+		  		defaultPlacement = jBoxPlacement;
+		  	*/
+
+
+
 		  	new jBox("Tooltip", {
+		  		id: tooltip_id,
 			    theme: "TooltipDark",
 			    attach: $(this),
 			    //getTitle: 'title',

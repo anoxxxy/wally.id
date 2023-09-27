@@ -101,6 +101,14 @@ div.zeynep.opened.submenu-opened.current ul > li small {
   overflow:hidden;
 }
 
+.zeynep.submenu-opened .has-submenu{
+  overflow: hidden;
+  display: none;
+}
+.zeynep.submenu-opened .has-submenu.opened{
+  display: block;
+}
+
 /*
   .zeynep .submenu-opened.opened ul > label {
     display: none;

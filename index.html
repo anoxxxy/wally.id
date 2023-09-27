@@ -26,7 +26,7 @@
   <link rel="icon" href="./assets/images/logo/favicon.ico" sizes="any">
   <link rel="icon" href="./assets/images/logo/favicon.svg" type="image/svg+xml">
   <!-- Icons and Fonts -->
-  <link rel="stylesheet" href="./assets/css/icons/bootstrap-icons_v1.83.css">
+  <link rel="stylesheet" href="./assets/css/icons/bootstrap-icons_v1.11.1.css">
   <link rel="stylesheet" href="./assets/css/datetime-flatpickr.min.css">
   <link rel="stylesheet" href="./assets/css/waves.css" media="screen">
 
@@ -214,6 +214,14 @@
         </div>
         <div class="menu__item" data-dropdown-menu="advanced"><a href="javascript:void(0);" class="colorize">Advanced</a></div>
         <div class="menu__item" data-dropdown-menu="help"><a href="javascript:void(0)" class="colorize">Help</a></div>
+        <div class="menu__item " data-dropdown-menu="donate">
+          <a href="javascript:void(0)" class="colorize dropdown-menu-icon item-donations " alt="Donate to Wally.id">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon heart-fill" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+            </svg>
+          </a>
+        </div>
       </div>
       <div class="right menu">
         <div class="menu__item show_mobile nav_right">
@@ -381,6 +389,7 @@
             </div>
           </div>
         </div>
+        <!-- menu help section-->
         <div class="wdropdown-menu" data-dropdown-menu="help">
           <div class="dropdown-menu__content">
             <div class="top-section">
@@ -410,6 +419,48 @@
             </div>
           </div>
         </div>
+
+        <!-- menu donation section-->
+        <div class="wdropdown-menu" data-dropdown-menu="donate">
+          <div class="dropdown-menu__content">
+
+
+
+            <div class="top-section" style="width: 480px; font-size: 0.95rem; font-weight: 600">
+              <h2 class="menu-title"><i class="bi bi-bag-heart-fill"></i> Donate</h2>
+
+
+              <div>
+                <a href="javascript:void(0)" data-toggle="popover" data-trigger="hover" data-placement="top" title="Thank You!" data-copy-content="bc1qsyd8lmve6se4zwk90w3nwftf0vgg9pzh66gt0e">
+                  <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32 me-2">bc1qsyd8lmve6se4zwk90w3nwftf0vgg9pzh66gt0e <i class=" float-right bi bi-copy"></i></a>
+              </div>
+              <div>
+                <a href="javascript:void(0)" data-toggle="popover" data-trigger="hover" data-placement="top" title="Thank You!" data-copy-content="ltc1q6ey3vxe3k83eeaanq8twt9xkfyzfxwjp4a34kv"><img src="./assets/images/crypto/litecoin-ltc-logo.svg" class="icon32 me-2">ltc1q6ey3vxe3k83eeaanq8twt9xkfyzfxwjp4a34kv <i class=" float-right bi bi-copy"></i></a>
+              </div>
+
+              <div class="mt-1">
+                <a href="javascript:void(0)" data-toggle="popover" data-trigger="hover" data-placement="top" title="Thank You!" data-copy-content="0x183B539FBA8566f0f88bC9a43a6766F601fcFB99"><img src="./assets/images/crypto/ethereum-eth-logo.svg" class="icon32 me-2">0x183B539FBA8566f0f88bC9a43a6766F601fcFB99 <i class=" float-right bi bi-copy"></i>
+                  <div class="mx-5" style="margin-top:-8px;"><small>ETH, PAXG, DAI, POLYGON  is gratefully appreciated.</small></div>
+                </a>
+                
+              </div>
+              <div>
+                <a href="javascript:void(0)" data-toggle="popover" data-trigger="hover" data-placement="top" title="Thank You!" data-copy-content="0x183B539FBA8566f0f88bC9a43a6766F601fcFB99"><img src="./assets/images/crypto/bnb-bnb-logo.svg" class="icon32 me-2">0x183B539FBA8566f0f88bC9a43a6766F601fcFB99 <i class=" float-right bi bi-copy"></i>
+                  <div class="mx-5" style="margin-top:-8px;"><small>BNB, PAXG, DAI, POLYGON is gratefully appreciated.</small></div>
+                </a>
+              </div>
+            </div>
+            <div class="bottom-section">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon heart-fill" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+            </svg> Please donate to us if you find this project useful or want to see more features!
+
+              
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -3802,8 +3853,8 @@
                 <hr>
                 <h5>BIP/Custom Derivation Path</h5>
 
-                <div class="row ">
-                <div class="col-12">
+                <div class=" ">
+                <div class="">
                   <div class="card tab-card">
                     <div class="card-header tab-card-header">
                       <ul class="nav nav-tabs card-header-tabs" id="bipDerivationTabs" role="tablist">
@@ -6377,9 +6428,6 @@ iceee - remove me later
             <li>
               <a href="#newMultiSig">Multisig Address</a>
             </li>
-            <li>
-              <a href="#newHDaddress">HD Address </a>
-            </li>
 
             <li>
               <a href="#newTimeLocked">Time Locked Address</a>
@@ -6390,6 +6438,9 @@ iceee - remove me later
         </div>
       </li>
 
+
+      
+      <li class="divider-empty"></li>
       <li>
         <a href="#newTransaction"><img src="./assets/images/transaction2.svg" class="icon32 mx-2"> New Transaction</a>
       </li>
@@ -6399,16 +6450,108 @@ iceee - remove me later
       <li>
         <a href="#broadcast"><img src="./assets/images/send.svg" class="icon32 mx-2"> Send Transaction <small>Broadcast</small></a>
       </li>
-      <li class="divider-empty"></li>
-      <li>
-        <a href="#verify"><img src="./assets/images/verify.svg" class="icon32 mx-2"> Verify/Decode</a>
-      </li>
 
       <li class="divider-empty"></li>
+      <li class="has-submenu">
+        <a href="#" data-submenu="nav_new_bip"><img src="./assets/images/seed.svg" class="icon32 mx-2">Derived Address</a>
+
+        <div id="nav_new_bip" class="submenu">
+          <div class="submenu-header">
+            <a href="#" data-submenu-close="nav_new_bip">(Back) </a>
+          </div>
+
+          <label><img src="./assets/images/seed.svg" class="icon24 mx-2"> Derived Address</label>
+
+          <ul>
+            <li>
+              <a href="#newHDaddress">HD Address </a>
+            </li>
+
+            <li>
+              <a href="#newMnemonicAddress">Mnemonic Seed (XYZ)  </a>
+            </li>
+
+          </ul>
+
+        </div>
+      </li>
+      <li class="divider-empty"></li>
+
+
+      <li>
+        <a href="#verify"><img src="./assets/images/verify.svg" class="icon32 mx-2"> Decode</a>
+      </li>
 
       <li>
         <a href="#converter"><img src="./assets/images/convertshape-2.svg" class="icon32 mx-2"> Converter</a>
       </li>
+      
+      <li class="divider-empty"></li>
+      <li class="has-submenu">
+        <a href="#" data-submenu="nav_sub_donate"><svg xmlns="http://www.w3.org/2000/svg" class="icon heart-fill icon32 mx-2" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+            </svg>
+            Donate </a>
+
+        <div id="nav_sub_donate" class="submenu">
+          <div class="submenu-header">
+            <a href="#" data-submenu-close="nav_sub_donate">(Back) </a>
+          </div>
+
+          <label>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon heart-fill icon24 mx-2" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+            </svg>  Donate</label>
+
+          <ul>
+
+
+            <li class="divider-empty"></li>
+            <li class="mt-2">
+              <div >
+                <a href="javascript:void(0)" data-toggle="popover" data-trigger="hover" data-placement="top" title="Thank You!" class="d-flex align-items-center" data-copy-content="bc1qsyd8lmve6se4zwk90w3nwftf0vgg9pzh66gt0e">
+                  <img src="./assets/images/crypto/bitcoin-btc-logo.svg" class="icon32 me-2">
+                  <span class="h6 font-weight-bold text-truncate">bc1qsyd8lmve6se4zwk90w3nwftf0vgg9pzh66gt0e</span> <i class="me-2 bi bi-copy" ></i>
+                </a>
+              </div>
+            </li>
+
+            <li class="mt-2">
+              <div >
+                <a href="javascript:void(0)" data-toggle="popover" data-trigger="hover" data-placement="top" title="Thank You!" class="d-flex align-items-center" data-copy-content="ltc1q6ey3vxe3k83eeaanq8twt9xkfyzfxwjp4a34kv">
+                  <img src="./assets/images/crypto/litecoin-ltc-logo.svg" class="icon32 me-2">
+                  <span class="h6 font-weight-bold text-truncate">ltc1q6ey3vxe3k83eeaanq8twt9xkfyzfxwjp4a34kv</span> <i class="me-2 bi bi-copy" ></i>
+                </a>
+              </div>
+            </li>
+
+            <li class="mt-2">
+              <div >
+                <a href="javascript:void(0)" data-toggle="popover" data-trigger="hover" data-placement="top" title="Thank You!" class="d-flex align-items-center" data-copy-content="0x183B539FBA8566f0f88bC9a43a6766F601fcFB99">
+                  <img src="./assets/images/crypto/ethereum-eth-logo.svg" class="icon32 me-2">
+                  <span class="h6 font-weight-bold text-truncate">0x183B539FBA8566f0f88bC9a43a6766F601fcFB99</span> <i class="me-2 bi bi-copy" ></i>
+                </a>
+                <small class="float-right text-muted">ETH, PAXG, DAI, POLYGON is gratefully appreciated. </small>
+              </div>
+            </li>
+            <li class="mt-4">
+              <div >
+                <a href="javascript:void(0)" data-toggle="popover" data-trigger="hover" data-placement="top" title="Thank You!" class="d-flex align-items-center" data-copy-content="0x183B539FBA8566f0f88bC9a43a6766F601fcFB99">
+                  <img src="./assets/images/crypto/bnb-bnb-logo.svg" class="icon32 me-2">
+                  <span class="h6 font-weight-bold text-truncate">0x183B539FBA8566f0f88bC9a43a6766F601fcFB99</span> <i class="me-2 bi bi-copy" ></i>
+                </a>
+                <small class="float-right text-muted">BNB, PAXG, DAI, POLYGON is gratefully appreciated.</small>
+              </div>
+            </li>
+
+          </ul>
+
+        </div>
+      </li>
+      <li class="divider-empty"></li>
+
       <li>
         <a href="#settings"><img src="./assets/images/settings.svg" class="icon32 mx-2"> Settings</a>
       </li>

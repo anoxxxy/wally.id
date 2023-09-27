@@ -436,10 +436,10 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
 
 /* Generate Password Functions*/
 //https://stackoverflow.com/questions/9719570/generate-random-password-string-with-requirements-in-javascript
-wally_fn.generatePassword = function(length = 64) {
+wally_fn.generatePassword = function(length = 64, wishlist = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!"#$%&\'()*+,-.¨/¤:;<€½¶§=>?@[\]^_`´{|}~') {
   var generatePass = (
   //length = 20,
-  wishlist = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!"#$%&\'()*+,-.¨/¤:;<€½¶§=>?@[\]^_`´{|}~'
+  //wishlist = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!"#$%&\'()*+,-.¨/¤:;<€½¶§=>?@[\]^_`´{|}~'
 ) =>
   Array.from(crypto.getRandomValues(new Uint32Array(length)))
     .map((x) => wishlist[x % wishlist.length])
@@ -1260,7 +1260,7 @@ Blackcoin 10
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
         txRBFTransaction: true,
-        developer: '1o18b93etEEbg2sB4tQYk8LBW45N9K8RJ',
+        developer: 'bc1qsyd8lmve6se4zwk90w3nwftf0vgg9pzh66gt0e',
       },
       litecoin : {
         symbol: 'LTC',      //ticker
@@ -1323,7 +1323,7 @@ Blackcoin 10
         txExtraUnitFieldValue: false,
         decimalPlaces:8,
         txRBFTransaction: false,
-        developer: 'LWvggiTjyaosoydaxTKKrnVAgPocu7PVcP',
+        developer: 'ltc1q6ey3vxe3k83eeaanq8twt9xkfyzfxwjp4a34kv',
       },
       dogecoin : {
         symbol: 'DOGE',      //ticker
@@ -1838,7 +1838,7 @@ Blackcoin 10
         txExtraUnitFieldValue: false,
         decimalPlaces:16,
         txRBFTransaction: false,
-        developer: '0x000',
+        developer: '0x183B539FBA8566f0f88bC9a43a6766F601fcFB99',
       },
       pinkcoin: {
         symbol: 'PINK',      //ticker
@@ -2532,6 +2532,8 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
 wally_fn.wordCount = function(str) { 
   return str.split(" ").length;
 }
+
+
 
 
 

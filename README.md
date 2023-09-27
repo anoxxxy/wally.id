@@ -65,15 +65,16 @@ Discover the comprehensive features that Wally.id offers for Bitcoin and cryptoc
 
 If you find Wally.id helpful, consider supporting its development:
 
-**Bitcoin Address:** bc1qsyd8lmve6se4zwk90w3nwftf0vgg9pzh66gt0e
-**Litecoin Address:** Lb5SssKxvJz7wMuyb2UrpWs8bQiMd5QSfJ
+- **Bitcoin Address:** bc1qsyd8lmve6se4zwk90w3nwftf0vgg9pzh66gt0e
+- **Litecoin Address:** ltc1q6ey3vxe3k83eeaanq8twt9xkfyzfxwjp4a34kv
 
 
-**Ethereum Address:** 0x183B539FBA8566f0f88bC9a43a6766F601fcFB99
-- ETH, PAXG, DAI, POLYGON  is gratefully appreciated.
+- **Ethereum Address:** 0x183B539FBA8566f0f88bC9a43a6766F601fcFB99
+  - ETH, PAXG, DAI, POLYGON  is gratefully appreciated.
 
-**BNB Address:** 0x183B539FBA8566f0f88bC9a43a6766F601fcFB99
-- ETH, PAXG, DAI, POLYGON is gratefully appreciated.
+- **BNB Address:** 0x183B539FBA8566f0f88bC9a43a6766F601fcFB99
+  - BNB, PAXG, DAI, POLYGON is gratefully appreciated.
+
 
 Your contributions help us make Wally.id even better!
 

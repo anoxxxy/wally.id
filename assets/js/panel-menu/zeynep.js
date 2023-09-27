@@ -49,7 +49,7 @@
 
       // open the subMenu
       zeynep.find('.submenu.current').removeClass('current')
-      subMenuEl.addClass('opened current')
+      subMenuEl.addClass('opened current').parent().addClass('opened')
       !zeynep.hasClass('submenu-opened') && zeynep.addClass('submenu-opened')
 
       // scroll to top before submenu transition
@@ -77,7 +77,7 @@
       eventController('closing', eventDetails)
 
       // close subMenu
-      subMenuEl.removeClass('opened current')
+      subMenuEl.removeClass('opened current').parent().removeClass('opened')
       zeynep.find('.submenu.opened').last().addClass('current')
       !zeynep.find('.submenu.opened').length && zeynep.removeClass('submenu-opened')
 

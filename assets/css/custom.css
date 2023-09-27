@@ -153,8 +153,12 @@ a:hover {
 }
 
 .me-2 {
-  margin-right: .5rem !important;
+  margin-right: 0.5rem;
 }
+.me-3 {
+  margin-right: 1rem;
+}
+
 .py-md-11 {
   padding-bottom: 6rem !important;
   padding-top: 6rem !important;
@@ -2406,7 +2410,27 @@ border: 1px solid red;
 }
 
 
+/*
+.icon.heart-fill:hover {
+  color: #b91b1b;
+}
+*/
+svg.heart-fill {
 
+  fill: #fff;
+  color: #f23535;
+}
+a.item-donations {
+	padding: 0 10px !important;
+  margin: 0 5px !important;
+}
+
+
+a.item-donations:hover > svg {
+  color: #fff;
+  fill: #f23535;
+
+}
 
 .dropdown-select button:hover, .dropdown-select button:focus {
   
@@ -3494,3 +3518,9 @@ padding-left: 0.75rem;
 	font-size: 0.9rem;
 }
 
+
+
+
+#nav_sub_donate a {
+	text-decoration: none;
+}

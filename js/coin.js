@@ -742,10 +742,14 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 					r.bip_address_semantics = bip_address_semantics;
 
 
+				/*
+				//for debugging purpose, add debug variable later
+				iceeeeeeeeeee
 				console.log('coinjs.hd.parse bip: '+ bip);
 				console.log('coinjs.hd parse version: '+ r.version);
 				console.log('coinjs.hd parse bip: '+ bip);
 				console.log('coinjs.hd parse bip_address_semantics: '+ bip_address_semantics);
+				*/
 
 
 				if(r.key_bytes[0] == 0x00) {
@@ -808,7 +812,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		// @keyHex can be either pub or priv
 		r.derive_to_address = function(keyHex, bip = 'hdkey', address_semantics = '') {
 			var address;
-			console.log('===r.derive_to_address fn.bip: '+ bip);
+			//console.log('===r.derive_to_address fn.bip: '+ bip);
 			/*//bip = r.bip_derive_protocol;
 			console.log('r.derive_to_address bip: '+ bip);
 			console.log('r.derive_to_address r.bip: '+ bip);
@@ -816,7 +820,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 			console.log('r.derive_to_address this.bip_derive_protocol: '+ this.bip_derive_protocol);
 			*/
 			if(bip === 'bip49'){
-					console.log('r.derive_to_address bip49');
+					//console.log('r.derive_to_address bip49');
 					address = coinjs.segwitAddress(keyHex);
 					console.log('r.derive_to_address bip49 address: ', address)
 				} else if(bip === 'bip84'){
@@ -824,15 +828,17 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 					console.log('r.derive_to_address bip84 address: ', address);
 				} else {
 					if (address_semantics === 'p2wpkh') {
-						console.log('r.derive_to_address address_semantics electrum : ', address_semantics);
+						/*console.log('r.derive_to_address address_semantics electrum : ', address_semantics);
 						console.log('r.derive_to_address address_semantics electrum keyHex : ', keyHex);
+						*/
 						address = coinjs.bech32Address(keyHex);
 					}
 					else
 						address = coinjs.pubkey2address(keyHex)
 
-					console.log('r.derive_to_address address_semantics: ', address_semantics);
+					/*console.log('r.derive_to_address address_semantics: ', address_semantics);
 					console.log('r.derive_to_address address_semantics hdkey address: ', address);
+					*/
 
 				}
 				return address;
@@ -936,8 +942,9 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				return hdp;
 
 				//console.log('==r.derive_electrum_path i:'+i+' child_index: ', child_index);
-				console.log('==r.derive_electrum_path i:'+i+' hdp1: ', hdp);
-				console.log('==r.derive_electrum_path i:'+i+' key: ', key);
+				//console.log('==r.derive_electrum_path i:'+i+' hdp1: ', hdp);
+				//console.log('==r.derive_electrum_path i:'+i+' key: ', key);
+
 				//key.bip_derive_protocol = derivation_protocol;
 				//if (key != '')
 				//hdp = coinjs.hd(key, derivation_protocol, bip_address_semantics);
@@ -952,7 +959,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 		// derive key from index
 		r.derive = function(i, derivation_protocol, bip_address_semantics = ''){
-			console.log('===r.derive=== bip_derive_protocol: ', derivation_protocol)
+			//console.log('===r.derive=== bip_derive_protocol: ', derivation_protocol)
 			i = (i)?i:0;
 			if (i >= 0x80000000) {
 				var blob = (Crypto.util.hexToBytes("00").concat(Crypto.util.hexToBytes(this.keys.privkey)).concat(coinjs.numToBytes(i,4).reverse()));
