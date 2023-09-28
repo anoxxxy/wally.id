@@ -25,214 +25,298 @@
 
     try {
 
-      console.log('login_wizard.validateLogin: ', login_wizard.profile_data);
+      if (walletType === 'regular_wallet' || walletType === 'multisig_wallet') {
+        console.log('login_wizard.validateLogin regular_wallet or multisig_wallet: ', login_wizard.profile_data);
 
-      //error variables
-      var confirmedPassError = 0;
-      var confirmedEmailError = 0;
-      var passwordHasError = 0;
-      //***Get input fields
+        //error variables
+        var confirmedPassError = 0;
+        var confirmedEmailError = 0;
+        var passwordHasError = 0;
+        //***Get input fields
 
-      //get passwords
-      var loginPass = [];
-      var loginPassEl = document.getElementsByName("openPass");
-      for(var i = 0; i < loginPassEl.length; i++) {
-        loginPass.push((loginPassEl[i].value).trim());
-      }
-
-      console.log('loginPass: ', loginPass);
-      console.log('loginPass: ', loginPass[0]);
-
-      //get confirmed passwords 
-      var loginPassConfirm = [];
-      var loginPassConfirmEl = document.getElementsByName("openPass-confirm");
-      for(var i = 0; i < loginPassConfirmEl.length; i++) {
-        loginPassConfirm.push((loginPassConfirmEl[i].value).trim());
-      }
-      console.log('loginPassConfirm: ', loginPassConfirm);
-      console.log('loginPassConfirm: ', loginPassConfirm[0]);
-
-      //get email and confirmed email
-      var loginEmailEl = $("#openEmail");
-      var loginEmail = loginEmailEl.val().toLowerCase().trim();
-      var loginEmailConfirmEl = $("#openEmail-confirm");
-      var loginEmailConfirm = loginEmailConfirmEl.val().toLowerCase().trim();
-
-      
-
-      //***Validate the input fields
-      if(!wally_fn.validateEmail(loginEmail)) {
-        login_wizard.errorMessage += '<p>&#8226; Email is not valid!</p>';
-        $(loginEmailEl).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
-      }else
-        $(loginEmailEl).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
-
-
-      console.log('loginEmail: ', loginEmail);
-      console.log('loginEmailConfirm: ', loginEmailConfirm);
-
-      if(!wally_fn.validatePassword(loginPass[0])) {
-        
-        
-        passwordHasError = 1;
-        $(loginPassEl[0]).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
-      }else
-        $(loginPassEl[0]).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
-
-        //***Confirm Fields?
-      var confirmFields = $("#confirmPass");
-      var confirmFieldsIsChecked = confirmFields.is(":checked");
-      //check if confirm-field is not available, if hidden skip the below step
-      //if true, match the confirmed fields!
-      if(!confirmFields.hasClass('hidden')) {
-        console.log('confirmFieldsIsChecked: ' + confirmFieldsIsChecked);
-      }
-
-      //check if Confirmation (email and password) is needed for regular login
-      if(confirmFieldsIsChecked){
-
-        
-        if(!wally_fn.validateEmail(loginEmailConfirm)) {
-          login_wizard.errorMessage += '<p>&#8226; Confirmed Email is not valid!</p>';
-          confirmedEmailError = 1;
-          //$(loginEmailConfirmEl).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
+        //get passwords
+        var loginPass = [];
+        var loginPassEl = document.getElementsByName("openPass");
+        for(var i = 0; i < loginPassEl.length; i++) {
+          loginPass.push((loginPassEl[i].value).trim());
         }
 
-        if(loginEmail != loginEmailConfirm) {
-          login_wizard.errorMessage += '<p>&#8226; Email and Confirmed Email is not the same!</p>';          
-          confirmedEmailError = 1;
+        console.log('loginPass: ', loginPass);
+        console.log('loginPass: ', loginPass[0]);
+
+        //get confirmed passwords 
+        var loginPassConfirm = [];
+        var loginPassConfirmEl = document.getElementsByName("openPass-confirm");
+        for(var i = 0; i < loginPassConfirmEl.length; i++) {
+          loginPassConfirm.push((loginPassConfirmEl[i].value).trim());
         }
+        console.log('loginPassConfirm: ', loginPassConfirm);
+        console.log('loginPassConfirm: ', loginPassConfirm[0]);
 
-        if(confirmedEmailError)
-          $(loginEmailConfirmEl).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
-        else
-          $(loginEmailConfirmEl).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
-
-
+        //get email and confirmed email
+        var loginEmailEl = $("#openEmail");
+        var loginEmail = loginEmailEl.val().toLowerCase().trim();
+        var loginEmailConfirmEl = $("#openEmail-confirm");
+        var loginEmailConfirm = loginEmailConfirmEl.val().toLowerCase().trim();
 
         
-        if(!wally_fn.validatePassword(loginPassConfirm[0])) {
-          login_wizard.errorMessage += '<p>&#8226; Confirmed Password is not valid!</p>';
-          //$(loginPassConfirmEl[0]).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
-          confirmedPassError=1;
-        }
 
-        //compare password and confirmed password
-        if(loginPass[0] != loginPassConfirm[0]) {
-          login_wizard.errorMessage += '<p>&#8226; "Password" and "Confirmed Password" is not the same!</p>';
-          confirmedPassError=1;
-          //$(loginPassConfirmEl[0]).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
-        }
-
-        if(confirmedPassError)
-          $(loginPassConfirmEl[0]).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
-        else
-          $(loginPassConfirmEl[0]).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
-
-      }
-
-      //validate multisig wallet
-      if(walletType == 'multisig') {
-        
-        //Password1 & Password2 should not be the same!
-        if(loginPass[0] == loginPass[1]) {
-          login_wizard.errorMessage += '<p>&#8226; You must use different passwords!</p>';
-          $(loginPassEl[1]).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
+        //***Validate the input fields
+        if(!wally_fn.validateEmail(loginEmail)) {
+          login_wizard.errorMessage += '<p>&#8226; Email is not valid!</p>';
+          $(loginEmailEl).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
         }else
-          $(loginPassEl[1]).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
+          $(loginEmailEl).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
 
 
-        if(!wally_fn.validatePassword(loginPass[1])) {
+        console.log('loginEmail: ', loginEmail);
+        console.log('loginEmailConfirm: ', loginEmailConfirm);
+
+        if(!wally_fn.validatePassword(loginPass[0])) {
+          
+          
           passwordHasError = 1;
-          $(loginPassEl[1]).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
+          $(loginPassEl[0]).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
         }else
-          $(loginPassEl[1]).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
-        
-        
+          $(loginPassEl[0]).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
 
-        //check if Confirmation fields (email and password) is needed for multisig login
-        if(confirmFieldsIsChecked){
-          
-          if(!wally_fn.validatePassword(loginPassConfirm[1])) {
-            login_wizard.errorMessage += '<p>&#8226; Confirmed Password2 is not valid!</p>';
-            confirmedPassError=1;
-          }
-          if(loginPass[1] != loginPassConfirm[1]) {
-            login_wizard.errorMessage += '<p>&#8226; "Password2" and "Confirmed Password2" is not the same!</p>';
-            confirmedPassError=1;
-
-          }
-          if(confirmedPassError)
-            $(loginPassConfirmEl[1]).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
-          else
-            $(loginPassConfirmEl[1]).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
-        }else{
-          $(loginPassConfirmEl[1]).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
-          console.log('pass 2 is valid');
+          //***Confirm Fields?
+        var confirmFields = $("#confirmPass");
+        var confirmFieldsIsChecked = confirmFields.is(":checked");
+        //check if confirm-field is not available, if hidden skip the below step
+        //if true, match the confirmed fields!
+        if(!confirmFields.hasClass('hidden')) {
+          console.log('confirmFieldsIsChecked: ' + confirmFieldsIsChecked);
         }
 
-        profile_data.signatures = 2;  //this is a multisig account!
-        profile_data.wallet_type = "multisig";  //this is a multisig account! we might remove this field later on since we can detect the signatures from variable above!
+        //check if Confirmation (email and password) is needed for regular login
+        if(confirmFieldsIsChecked){
 
-      }
-
-      
-      //show only password validation error once for all fields
-      if(passwordHasError)
-        login_wizard.errorMessage += '<p class="mt-2">&#8226; Password must be between 16-255 chars and must include minimum:<br>1 number <br>1 uppercase letter <br>1 lowercase letter <br>1 special character from \"!#$€%&\'()*+,-./:;<=>?@[\]^_`{|}~¤¨½§ </p>';
-
-
-      //***Errror occured!
-      if(login_wizard.errorMessage)
-        throw(login_wizard.errorMessage);
-
-
-      //***No Errors! Proceed Login - with private key generation!
-      console.log('**No Errors! Proceed Login - with private key generation!');
-      //prepare values for profile data
-      login_wizard.profile_data.choosen = {"coin": "coin_name", "address" : "coin_address"};  //choosen coin to handle
-      login_wizard.profile_data.signatures = signatures;
-      login_wizard.profile_data.login_type = loginType;
-      login_wizard.profile_data.wallet_type = walletType;
-
-      login_wizard.profile_data.pubkey_sorted = false;
-      login_wizard.profile_data.private_keys = [];
-      login_wizard.profile_data.public_keys = [];
-      login_wizard.profile_data.address = [];
-      login_wizard.profile_data.hex_key = [];
-      
-      
-      login_wizard.profile_data.email = loginEmail;
-
-      //remove empty passwords from the stack
-      login_wizard.profile_data.passwords = loginPass.filter(n => n);
-
-      //hide and empty error box and message
-      $("#walletLoginStatusBox .walletLoginStatusMessage").text('').fadeOut();
-      $('#walletLoginStatusBox').velocity('fadeOut').addClass('hidden');
-      login_wizard.errorMessage ='';
-
-      //set remember me in profile_data
-      login_wizard.profile_data.remember = false;
-
-      //***Save wallet credentials so user can download it
-      var hexKey = '';
-      //login_wizard.wallet_credentials = 'email: '+loginEmail+'\n';
-      for(var i = 0; i < (login_wizard.profile_data.passwords).length; i++) {
-        login_wizard.wallet_credentials += 'password '+(i+1)+': '+login_wizard.profile_data.passwords[i]+'\n';
-        
-        //**Check if HEX-privkey is within range?
-        //if(!wally_fn.isHexKeyInRange('fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141')) //<<-- throws error since it is out of range!
-        if(!wally_fn.isHexKeyInRange(wally_fn.passwordHasher(loginEmail, login_wizard.profile_data.passwords[i])))
-          throw ('Error in generating ' + coinjs.asset.name+ ' address!');
           
-        (login_wizard.profile_data.hex_key).push(wally_fn.passwordHasher(loginEmail, login_wizard.profile_data.passwords[i]));
+          if(!wally_fn.validateEmail(loginEmailConfirm)) {
+            login_wizard.errorMessage += '<p>&#8226; Confirmed Email is not valid!</p>';
+            confirmedEmailError = 1;
+            //$(loginEmailConfirmEl).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
+          }
 
-        hexKey += 'hex '+(i+1)+': '+login_wizard.profile_data.hex_key[i]+'\n'
+          if(loginEmail != loginEmailConfirm) {
+            login_wizard.errorMessage += '<p>&#8226; Email and Confirmed Email is not the same!</p>';          
+            confirmedEmailError = 1;
+          }
+
+          if(confirmedEmailError)
+            $(loginEmailConfirmEl).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
+          else
+            $(loginEmailConfirmEl).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
+
+
+
+          
+          if(!wally_fn.validatePassword(loginPassConfirm[0])) {
+            login_wizard.errorMessage += '<p>&#8226; Confirmed Password is not valid!</p>';
+            //$(loginPassConfirmEl[0]).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
+            confirmedPassError=1;
+          }
+
+          //compare password and confirmed password
+          if(loginPass[0] != loginPassConfirm[0]) {
+            login_wizard.errorMessage += '<p>&#8226; "Password" and "Confirmed Password" is not the same!</p>';
+            confirmedPassError=1;
+            //$(loginPassConfirmEl[0]).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
+          }
+
+          if(confirmedPassError)
+            $(loginPassConfirmEl[0]).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
+          else
+            $(loginPassConfirmEl[0]).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
+
+        }
+
+        //validate multisig wallet
+        if(walletType == 'multisig') {
+          
+          //Password1 & Password2 should not be the same!
+          if(loginPass[0] == loginPass[1]) {
+            login_wizard.errorMessage += '<p>&#8226; You must use different passwords!</p>';
+            $(loginPassEl[1]).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
+          }else
+            $(loginPassEl[1]).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
+
+
+          if(!wally_fn.validatePassword(loginPass[1])) {
+            passwordHasError = 1;
+            $(loginPassEl[1]).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
+          }else
+            $(loginPassEl[1]).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
+          
+          
+
+          //check if Confirmation fields (email and password) is needed for multisig login
+          if(confirmFieldsIsChecked){
+            
+            if(!wally_fn.validatePassword(loginPassConfirm[1])) {
+              login_wizard.errorMessage += '<p>&#8226; Confirmed Password2 is not valid!</p>';
+              confirmedPassError=1;
+            }
+            if(loginPass[1] != loginPassConfirm[1]) {
+              login_wizard.errorMessage += '<p>&#8226; "Password2" and "Confirmed Password2" is not the same!</p>';
+              confirmedPassError=1;
+
+            }
+            if(confirmedPassError)
+              $(loginPassConfirmEl[1]).removeClass('is-valid').addClass('is-invalid').fadeIn().addClass('animate__shakeX');
+            else
+              $(loginPassConfirmEl[1]).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
+          }else{
+            $(loginPassConfirmEl[1]).removeClass('is-invalid').addClass('is-valid').removeClass('animate__shakeX');
+            console.log('pass 2 is valid');
+          }
+
+          profile_data.signatures = 2;  //this is a multisig account!
+          profile_data.wallet_type = "multisig";  //this is a multisig account! we might remove this field later on since we can detect the signatures from variable above!
+
+        }
+
+        
+        //show only password validation error once for all fields
+        if(passwordHasError)
+          login_wizard.errorMessage += '<p class="mt-2">&#8226; Password must be between 16-255 chars and must include minimum:<br>1 number <br>1 uppercase letter <br>1 lowercase letter <br>1 special character from \"!#$€%&\'()*+,-./:;<=>?@[\]^_`{|}~¤¨½§ </p>';
+
+
+        //***Errror occured!
+        if(login_wizard.errorMessage)
+          throw(login_wizard.errorMessage);
+
+
+        //***No Errors! Proceed Login - with private key generation!
+        console.log('**No Errors! Proceed Login - with private key generation!');
+        //prepare values for profile data
+        login_wizard.profile_data.choosen = {"coin": "coin_name", "address" : "coin_address"};  //choosen coin to handle
+        login_wizard.profile_data.signatures = signatures;
+        login_wizard.profile_data.login_type = loginType;
+        login_wizard.profile_data.wallet_type = walletType;
+
+        login_wizard.profile_data.pubkey_sorted = false;
+        login_wizard.profile_data.private_keys = [];
+        login_wizard.profile_data.public_keys = [];
+        login_wizard.profile_data.address = [];
+        login_wizard.profile_data.hex_key = [];
         
         
+        login_wizard.profile_data.email = loginEmail;
+        //set remember me in profile_data
+        login_wizard.profile_data.remember = false;
+
+        //remove empty passwords from the stack
+        login_wizard.profile_data.passwords = loginPass.filter(n => n);
+
+        //hide and empty error box and message
+        $("#walletLoginStatusBox .walletLoginStatusMessage").text('').fadeOut();
+        $('#walletLoginStatusBox').velocity('fadeOut').addClass('hidden');
+        login_wizard.errorMessage ='';
+
+        
+
+        //***Save wallet credentials so user can download it
+        var hexKey = '';
+        //login_wizard.wallet_credentials = 'email: '+loginEmail+'\n';
+        for(var i = 0; i < (login_wizard.profile_data.passwords).length; i++) {
+          login_wizard.wallet_credentials += 'password '+(i+1)+': '+login_wizard.profile_data.passwords[i]+'\n';
+          
+          //**Check if HEX-privkey is within range?
+          //if(!wally_fn.isHexKeyInRange('fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141')) //<<-- throws error since it is out of range!
+          if(!wally_fn.isHexKeyInRange(wally_fn.passwordHasher(loginEmail, login_wizard.profile_data.passwords[i])))
+            throw ('Error in generating ' + coinjs.asset.name+ ' address!');
+            
+          (login_wizard.profile_data.hex_key).push(wally_fn.passwordHasher(loginEmail, login_wizard.profile_data.passwords[i]));
+
+          hexKey += 'hex '+(i+1)+': '+login_wizard.profile_data.hex_key[i]+'\n'
+          
+          
+        }
+        //login_wizard.wallet_credentials += hexKey.trim();
+
+      } else if (walletType === 'mnemonic_wallet') {
+        console.log('login_wizard.validateLogin mnemonic_wallet: ', login_wizard.profile_data);
+
+        //generate xprv/xpub from seed
+        coinjs.compressed = true;
+        var success = false;
+        var s  = $("#openSeed").val().trim(); //seed
+
+        isElectrumProtocol = $('#openBipMnemonicClientProtocol').is(':checked');
+
+        if (isElectrumProtocol)
+          bip39.setProtocol('electrum');
+        else
+          bip39.setProtocol('bip39');
+
+        console.log('isElectrumProtocol: ', isElectrumProtocol);
+        //validate bip39 mnemonic
+        if(bip39.validate(s))
+          success = true;
+        else
+          success = false;
+
+        //return if seed words doesnt equal 12 words!
+        if (isElectrumProtocol && wally_fn.wordCount(s) !== 12)
+          success = false;
+
+        if (!success) {
+          login_wizard.errorMessage += '<p>&#8226; Wrong Seed, please try again!!</p>';
+          //***Errror occured!
+          throw(login_wizard.errorMessage);
+        }
+
+        //***No Errors! Proceed Login - with key/address derivation!
+        console.log('**No Errors! Proceed Login - with private key generation!');
+        //prepare values for profile data
+        login_wizard.profile_data.choosen = {"coin": "coin_name", "address" : "coin_address"};  //choosen coin to handle
+        login_wizard.profile_data.signatures = 1;
+        login_wizard.profile_data.login_type = loginType;
+        login_wizard.profile_data.wallet_type = walletType;
+
+        login_wizard.profile_data.pubkey_sorted = false;
+        login_wizard.profile_data.private_keys = [];
+        login_wizard.profile_data.public_keys = [];
+        login_wizard.profile_data.address = [];
+        login_wizard.profile_data.hex_key = [];
+        
+        
+        login_wizard.profile_data.email = loginEmail;
+        //set remember me in profile_data
+        login_wizard.profile_data.remember = false;
+
+        var p  = ($("#newOpenSeedBrainwalletCheck").is(":checked")) ? $("#openSeedPassword").val() : null; //user bip passphrase
+
+        var hd = coinjs.hd();
+
+        //convert default bip protocol to "hdkey" if another option is not set (for internal functionality)
+        //if (bipProtocolVal !== 'bip49' && bipProtocolVal !== 'bip84')
+        var bipProtocolVal = 'bip44';
+
+        var pair = hd.masterMnemonic(s, p, bipProtocolVal, bip39);
+
+        //Electrum Master Key generation
+        if (isElectrumProtocol) {
+          s = pair.privkey;
+          //console.log('s: ', s);
+          var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
+          //console.log('hex: ', hex);
+          var hd = coinjs.hd(s);
+
+          //console.log('hd: ', hd);
+          var derived_electrum = hd.derive_electrum_path("m/0'/0/0", 'bip84', 'hdkey', 'p2wpkh');
+          //console.log('derived_electrum: ', derived_electrum);
+          pair.pubkey = derived_electrum.keys_extended.pubkey;
+          pair.privkey = derived_electrum.keys_extended.privkey;
+        }
+
+        console.log('pair.pubkey: ' + pair.pubkey);
+        console.log('pair.privkey: ' + pair.privkey);
+
+        login_wizard.profile_data.hex_key[0] = pair.privkey;
       }
-      //login_wizard.wallet_credentials += hexKey.trim();
 
       //generate all wallet addresses, pass over the HEX key!
       login_wizard.profile_data.generated = {}; //holds all addresses, inclusive mulitisig addresses
@@ -1428,7 +1512,7 @@ add({
 add(
 {
   targets: "#js_folder-content",
-  height: [0, 280],
+  height: [0, 344],
   opacity: [0, 1],
   duration: 330/*,
   changeComplete: function() {
@@ -1554,6 +1638,7 @@ toggleFolder.on('click', function(e) {
           toggleFolder.parent().addClass('show');
           //toogleFolderBackdrop.classList.add('show');
           toogleFolderBackdrop.addClass('show');
+
 
         }
         if(showFolderContentAnimation.completed && showFolderContentAnimation.direction =='reverse' && showFolderContentAnimation.progress == 0) {
@@ -1776,8 +1861,9 @@ loginBtnNext.on("click",function() {
       //login_wizard.validateLogin('import', walletType, 'm-of-n');
     }
     if(login_wizard.openWalletType == "mnemonic_wallet"){
-      walletType = "regular";
-      //login_wizard.validateLogin('mnemonic', walletType, 1);
+      walletType = "mnemonic_wallet";
+      login_wizard.validateLogin('seed', walletType, 1);
+      console.log('mnemonic_wallet');
 
     }
     if(login_wizard.openWalletType == "hdmaster_wallet"){
@@ -1972,6 +2058,13 @@ $('#openLogin input[type="password"], #openLogin input[type="text"], #openLogin 
 
 });
 
+$("#newOpenSeedBrainwalletCheck").click(function(){
+  if($(this).is(":checked")){
+    $("#openSeedPassword").parent().removeClass('hidden').velocity('slideDown')
+  } else {
+    $("#openSeedPassword").parent().velocity('slideUp');
+  }
+});
 
   //check if user is auth
   login_wizard.openUserWallet();

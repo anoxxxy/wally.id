@@ -1095,33 +1095,32 @@ profile_data = {
 
 		console.log('isElectrumProtocol: ', isElectrumProtocol);
 		//validate bip39 mnemonic
-		if(bip39.validate(s)){
+		if(bip39.validate(s))
 			success = true;
-		} else {
-			success = false;
-        }
-
-        //return if seed words doesnt equal 12 words!
-        if (isElectrumProtocol && wally_fn.wordCount(s) !== 12)
+		else
 			success = false;
 
-        if (!success) {
-        	coinbinf.newMnemonicPubInput.val("");
+    //return if seed words doesnt equal 12 words!
+    if (isElectrumProtocol && wally_fn.wordCount(s) !== 12)
+			success = false;
+
+    if (!success) {
+	  	coinbinf.newMnemonicPubInput.val("");
 			coinbinf.newMnemonicPrvInput.val("");
-	        $("#newMnemonicWords").addClass("border-danger");
-	        $("#newMnemonicWords").parent().addClass("border-danger").attr('title', 'Incorrect BIP39 Seed').tooltip();
+      $("#newMnemonicWords").addClass("border-danger");
+      $("#newMnemonicWords").parent().addClass("border-danger").attr('title', 'Incorrect BIP39 Seed').tooltip();
 
-	        $('#newMnemonicAddress .deriveSeedbtn').prop('disabled',true);
-	        return ;
+      $('#newMnemonicAddress .deriveSeedbtn').prop('disabled',true);
+      return ;
 
-        }
-        //all good proceed!
-        //if ($("#newMnemonicWords").hasClass("border-danger")) {
-	        $("#newMnemonicWords").removeClass("border-danger");
-			$("#newMnemonicWords").parent().removeClass("border-danger").removeAttr('title');
+    }
+    //all good proceed!
+    //if ($("#newMnemonicWords").hasClass("border-danger")) {
+	   $("#newMnemonicWords").removeClass("border-danger");
+		 $("#newMnemonicWords").parent().removeClass("border-danger").removeAttr('title');
 
-			$("#newMnemonicWords .tooltip").remove();
-			$('#newMnemonicAddress .deriveSeedbtn').prop('disabled',false);
+		 $("#newMnemonicWords .tooltip").remove();
+		 $('#newMnemonicAddress .deriveSeedbtn').prop('disabled',false);
 		//}
     	//$("#walletSpendTo .addressRemove").find(".tooltip").remove().unbind("");
 		
@@ -1144,7 +1143,6 @@ profile_data = {
 		
 		//Electrum Master Key generation
 		if (isElectrumProtocol) {
-			coinjs.compressed = true;
 			s = pair.privkey;
 			//console.log('s: ', s);
 			var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
@@ -3305,7 +3303,6 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				    console.log(`checkAndProcessHDKey xPrv ${type}`);
 				    console.log('checkAndProcessHDKey hd: ', hd);
 
-				    var privkeyHex;
 				    if (hd.type === "private") {
 				    	is_privkey = true;
 				    }
@@ -3330,12 +3327,8 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				    $("#verifyHDaddress").removeClass("hidden");
 
 				    console.log(`verifyHDaddress checkAndProcessHDKey: BIP type: ${type}`);
-
-				    hd_type = type;
-
-
-			        derive_success = true;
-			        return true;
+		        derive_success = true;
+		        return true;
 			    }
 
 			    return false;
@@ -3358,40 +3351,13 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			}
 
 
-			// hd_type now contains the BIP type if a match was found
+			// type now contains the BIP type if a match was found
 			return derive_success;
 
 
 		} catch (e) {
 			return false;
 		}
-	}
-	/**
- * Extracts the BIP protocol from a given derivation path.
- *
- * @param {string} derivationPath - The derivation path to extract the BIP protocol from.
- * @returns {string|null} The extracted BIP protocol or hdkey if not found.
- *
- */
-	function extractBIPProtocol(derivationPath) {
-	  // Use a regular expression to match the BIP protocol and the first integer after "m"
-	  const match = derivationPath.match(/m\/(\d+)\/?/);
-
-	  // Check if a match was found
-	  if (match && match.length > 1) {
-	    const firstInteger = parseInt(match[1], 10);
-	    
-	    // Determine the BIP protocol based on the first integer
-	    var bipProtocol = 'hdkey';	//default to hdkey/bip32
-	    if (firstInteger === 49) {
-	      bipProtocol = 'bip49';
-	    } else if (firstInteger === 84) {
-	      bipProtocol = 'bip84';
-	    }
-	  }
-
-	  // If no match or unknown integer, return undefined
-	  return bipProtocol;
 	}
 
 
@@ -3437,7 +3403,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				coinbinf.bippath.val(bip_path);
 
 				var derivation_path = (bip_path.replace(/\/+$/, ""));
-				var derivation_path_protocol = extractBIPProtocol(derivation_path);
+				var derivation_path_protocol = wally_fn.extractBIPProtocol(derivation_path);
 
 				/*
 				console.log('===coinjs.deriveHDaddress=== extraced BIP: ' + bip_protocol);

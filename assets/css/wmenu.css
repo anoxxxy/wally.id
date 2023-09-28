@@ -450,3 +450,15 @@ header .menu__item {
 
   
 }
+
+/*
+header.main-header.dropdown-active .dropdown-holder .wdropdown-menu .dropdown-menu__content{
+  
+  border: 3px solid red;
+}
+
+header.main-header.dropdown-active .dropdown-holder .wdropdown-menu.active .dropdown-menu__content{
+  display:  block;
+  border: 3px solid blue;
+}
+*/

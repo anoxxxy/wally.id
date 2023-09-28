@@ -674,6 +674,129 @@ wally_fn.generatePassword = function(length = 64, wishlist = '0123456789ABCDEFGH
     return false;
   }
 
+/**
+ * Extracts the BIP protocol from a given derivation path.
+ *
+ * @param {string} derivationPath - The derivation path to extract the BIP protocol from.
+ * @returns {string|null} The extracted BIP protocol or hdkey if not found.
+ *
+ */
+ wally_fn.extractBIPProtocol = function(derivationPath){
+    // Use a regular expression to match the BIP protocol and the first integer after "m"
+    const match = derivationPath.match(/m\/(\d+)\/?/);
+
+    // Check if a match was found
+    if (match && match.length > 1) {
+      const firstInteger = parseInt(match[1], 10);
+      
+      // Determine the BIP protocol based on the first integer
+      var bipProtocol = 'hdkey';  //default to hdkey/bip32
+      if (firstInteger === 49) {
+        bipProtocol = 'bip49';
+      } else if (firstInteger === 84) {
+        bipProtocol = 'bip84';
+      }
+    }
+
+    // If no match or unknown integer, return undefined
+    return bipProtocol;
+  }
+
+
+
+/*@ Decode HD key (prv/pub)*/
+wally_fn.hdKeyDecode = async function(key, options = {'supports_address':['compressed', 'uncompressed'], 'show_error': true}, bip = 'bip44', address_semantics = '', ){
+console.log('===wally_fn.hdKeyDecode===');
+
+try {
+      coinjs.compressed = true;
+      var s = key;
+      var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
+      console.log('hex: ', hex);
+      var derive_success = false;
+      var is_privkey = false;
+      var hdKeyDecoded = {};
+
+      function hdKeycheckAndProcess(prv, pub, type) {
+          console.log('hdKeycheckAndProcess hd: ');
+
+        const hex_cmp_prv = Crypto.util.bytesToHex(coinjs.numToBytes(prv, 4).reverse());
+        const hex_cmp_pub = Crypto.util.bytesToHex(coinjs.numToBytes(pub, 4).reverse());
+
+        if (hex === hex_cmp_prv || hex === hex_cmp_pub) {
+
+          var hd = coinjs.hd(s);
+          console.log(`hdKeycheckAndProcess xPrv ${type}`);
+          console.log('hdKeycheckAndProcess hd: ', hd);
+
+          if (hd.type === "private") {
+            is_privkey = true;
+          }
+
+          hdKeyDecoded.s = s;
+          hdKeyDecoded.chain_code = hd.chain_code;
+          
+          hdKeyDecoded.hd_type = type;
+          hdKeyDecoded.depth = hd.depth;
+          hdKeyDecoded.version = `0x${hd.version.toString(16)}`;
+          hdKeyDecoded.child_index = hd.child_index;
+          hdKeyDecoded.hdwifkey = hd.keys.wif || '';
+          hdKeyDecoded.hdhexkey = hd.keys.hexkey || '';
+          hdKeyDecoded.hdpubkey = hd.keys.pubkey || '';
+          hdKeyDecoded.hdaddress = hd.keys.hdaddress || '';
+          hdKeyDecoded.key_type = hd.type;
+          hdKeyDecoded.key_type_text = `${hd.depth === 0 && hd.child_index === 0 ? 'Master' : 'Derived'} ${hd.type}`.toLowerCase() + `, Protocol:` + `${hd.bip}`.toUpperCase();
+
+          hdKeyDecoded.parent_fingerprint = Crypto.util.bytesToHex(hd.parent_fingerprint);
+
+          //deriveHDaddress(hd, type);
+
+
+          console.log(`verifyHDaddress hdKeycheckAndProcess: BIP type: ${type}`);
+          derive_success = true;
+          return true;
+        }
+
+        return false;
+      }
+      var isHDKey, isBip49, isBip84;
+
+      //check and process BIP derivations
+      var isHDKey = hdKeycheckAndProcess(coinjs.hdkey.prv, coinjs.hdkey.pub, 'hdkey'); //same path as bip32,bip39, bip44
+      //hdKeyDecoded = isHDKey;
+      console.log('hdKeyDecoded1: ', hdKeyDecoded);
+
+      if (!isHDKey) {
+        var isBip49 = hdKeycheckAndProcess(coinjs.hdkey.prv, coinjs.hdkey.pub, 'bip49');
+        //hdKeyDecoded = isBip49;
+      }
+      console.log('hdKeyDecoded2: ', hdKeyDecoded);
+
+      if (!isBip49) {
+        var isBip84 = hdKeycheckAndProcess(coinjs.hdkey.prv, coinjs.hdkey.pub, 'bip84');
+        //hdKeyDecoded = isBip84;
+      }
+
+      console.log('derive_success: ', derive_success);
+      console.log('hdKeyDecoded3: ', hdKeyDecoded);
+      if (isHDKey || isBip49 || isBip84) {
+        if (is_privkey)
+          hdKeyDecoded.key_type = 'prv';
+        else
+          hdKeyDecoded.key_type = 'pub';
+
+      } else
+        throw('No matching BIP key type found.');
+
+      return hdKeyDecoded;
+
+ } catch (err) {
+  console.log('===wally_fn.hdKeyDecode=== err: ', err);
+    return false;
+ }
+}
+
+
 /*
 @ Generate Wallet addresses upon Login, compressed or single keys for assets/coins
 param array: h  (hex-string for private key)
@@ -730,12 +853,21 @@ wally_fn.generateAllWalletAddresses = async function(h){
 
           for (i = 0; i< keys_length; i++) {
             genAddress = this.hexPrivKeyDecode(h[i], {'supports_address': value.asset.supports_address});
-            //console.log('genAddress.wif', genAddress);
+            console.log('genAddress.wif: ', genAddress);
+
+            //if passed key is not a privkey, then it is probably a bip master/extended key
+            //try to decode the bip key
+
+            if (!genAddress) {
+              genAddress = await this.hdKeyDecode(h[i], {'supports_address': value.asset.supports_address}, 'bip44', '');
+              console.log('genAddress.hd: ', genAddress);
+            }
+            
 
             walletAddress[ key ][i] = {}
             walletAddress[ key ][i]['name']  = value.asset.name;
             walletAddress[ key ][i]['symbol']  = value.asset.symbol;
-            walletAddress[ key ][i]['address']  = genAddress.wif.compressed.address;
+            walletAddress[ key ][i]['address']  = genAddress.wif?.compressed?.address || '';
             walletAddress[ key ][i]['addresses_supported']  = genAddress.wif;
 
             //console.log('walletAddress[ key ][i]: ', walletAddress[ key ][i]);
@@ -1828,9 +1960,13 @@ Blackcoin 10
         pub : 0,      //not used for account based chains
         priv : 0,     //not used for ....
         multisig : 0, //....
-          hdkey : {},
+          hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
+          bip49 : {'prv':0x049d7878, 'pub':0x049d7cb2}, //bip49 ypub
+          bip84 : {'prv':0x04b2430c, 'pub':0x04b24746}, // zpub
+
           bip_path: 60,
-          bech32 : {},
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'},
+
           
         txExtraTimeField: false,    //not used for ....
         txExtraTimeFieldValue: false, //....
