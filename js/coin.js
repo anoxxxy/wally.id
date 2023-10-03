@@ -770,11 +770,12 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 					}
 					*/
 
-					r.keys = {'privkey':privkeyHex,
+					r.keys = {
+						'privkey':privkeyHex,
 						'pubkey':pubkey,
 						'address':address,
 						'wif':coinjs.privkey2wif(privkeyHex),
-						'hexkey':privkeyHex};
+						};
 
 				} else if(r.key_bytes[0] == 0x02 || r.key_bytes[0] == 0x03) {
 					r.type = 'public';
@@ -821,17 +822,23 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 			*/
 			if(bip === 'bip49'){
 					//console.log('r.derive_to_address bip49');
-					address = coinjs.segwitAddress(keyHex);
-					console.log('r.derive_to_address bip49 address: ', address)
+					if (coinjs.bip49?.prv || coinjs.bip49?.pub){
+						address = coinjs.segwitAddress(keyHex);
+						//console.log('r.derive_to_address bip49 address: ', address);
+					}
 				} else if(bip === 'bip84'){
-					address = coinjs.bech32Address(keyHex);
-					console.log('r.derive_to_address bip84 address: ', address);
+					if (coinjs.bip84?.prv || coinjs.bip84?.pub){
+						address = coinjs.bech32Address(keyHex);
+						//console.log('r.derive_to_address bip84 address: ', address);
+					}
 				} else {
 					if (address_semantics === 'p2wpkh') {
 						/*console.log('r.derive_to_address address_semantics electrum : ', address_semantics);
 						console.log('r.derive_to_address address_semantics electrum keyHex : ', keyHex);
 						*/
-						address = coinjs.bech32Address(keyHex);
+						if (coinjs.bip84?.prv || coinjs.bip84?.pub){
+							address = coinjs.bech32Address(keyHex);
+						}
 					}
 					else
 						address = coinjs.pubkey2address(keyHex)
@@ -1049,7 +1056,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		}
 
 		// make a master hd xprv/xpub
-		r.masterMnemonic = function(seed, pass, bip = 'hdkey', bip39) {
+		r.masterMnemonic = function(seed, pass, bip = 'hdkey') {
 			
 			seed = seed.normalize('NFKD');
 			pass = (pass !== null) ? pass.normalize('NFKD') : pass;

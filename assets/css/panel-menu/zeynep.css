@@ -149,10 +149,16 @@ div.zeynep.opened.submenu-opened.current ul > li small {
   display: block;
 }
 
-.zeynep ul > li  small {
+.zeynep.right-panel ul > li  small {
   position: relative;
   top: -10px;
   left: 54px;
+  font-size: 0.9rem;
+}
+.zeynep.left-panel ul > li  small {
+  position: relative;
+  top: -8px;
+  left: 4px;
   font-size: 0.9rem;
 }
 .zeynep ul > li ,

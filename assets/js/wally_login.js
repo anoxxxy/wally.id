@@ -17,15 +17,156 @@
   login_wizard.error = true;
   login_wizard.errorMessage = '';
 
+  login_wizard.clientWallets = {
+    0: {
+      "client": "Bitcoin Core",
+      "slug": "bitcoin_core",
+      "path": "m/0'/0'",
+      "supports": {
+        "passphrase": false,
+        "login": {
+          "mnemonic": false,
+          "masterkey": true,
+        },
+      },
+      "derivationProtocol": "hdkey",
+      "address": {
+        "semantics": "",
+        "hardened": true,
+        "receive": "m/0'/0'",
+        "change": "m/0'/1'",
+      }
+    },
+    1: {
+      "client": "Blockchain.info",
+      "sluug": "blockchain_info",
+      "path": "m/44'/0'/0'",
+      "supports": {
+        "passphrase": true,
+        "login": {
+          "mnemonic": true,
+          "masterkey": true,
+        },
+      },
+      "derivationProtocol": "bip44",
+      "address": {
+        "semantics": "",
+        "hardened": false,
+        "receive": "m/44'/0'/0'",
+        "change": "m/44'/0'/1'",
+      }
+    },
+    5: {
+      "client": "Coinb.in",
+      "slug": "coinb_in",
+      "path": "m",
+      "supports": {
+        "passphrase": true,
+        "login": {
+          "mnemonic": true,
+          "masterkey": true,
+        },
+      },
+      "derivationProtocol": "hdkey",
+      "address": {
+        "semantics": "",
+        "hardened": false,
+        "receive": "m/0",
+        "change": "m/1",
+      }
+    },
+    3: {
+      "client": "Coinomi, Ledger",
+      "slug": "coinomi_ledger",
+      "path": "m/44'/0'/0'",
+      "supports": {
+        "passphrase": true,
+        "login": {
+          "mnemonic": true,
+          "masterkey": true,
+        },
+      },
+      "derivationProtocol": "bip44",
+      "address": {
+        "semantics": "",
+        "hardened": false,
+        "receive": "m/44'/0'/0'",
+        "change": "m/44'/0'/1'",
+      }
+    },
+    4: {
+      "client": "Electrum",
+      "slug": "electrum",
+      "path": "m/0'/0",
+      "childPath": "m/0",
+      "supports": {
+        "passphrase": true,
+        "login": {
+          "mnemonic": true,
+          "masterkey": true,
+        },
+      },
+      "passphrase": "lowercase",
+      "wordCount": 12,
+      "derivationProtocol": "bip84",
+      "address": {
+        "semantics": "p2wpkh",
+        "hardened": false,
+        "receive": "m/0",
+        "change": "m/1",
+      }
+    },
+    2: {
+      "client": "Multibit HD",
+      "slug": "multibit_hd",
+      "path": "m/0'/0",
+      "supports": {
+        "passphrase": true,
+        "login": {
+          "mnemonic": true,
+          "masterkey": true,
+        },
+      },
+      "derivationProtocol": "hdkey",
+      "address": {
+        "semantics": "",
+        "hardened": false,
+        "receive": "m/0'/0",
+        "change": "m/0'/1",
+      }
+    },
+    6: {
+      "client": "Trezor",
+      "slug": "trezor",
+      "path": "m/44'/0'/0'",
+      "supports": {
+        "passphrase": true,
+        "login": {
+          "mnemonic": true,
+          "masterkey": true,
+        },
+      },
+      "derivationProtocol": "bip44",
+      "address": {
+        "semantics": "",
+        "hardened": false,
+        "receive": "m/44'/0'/0'",
+        "change": "m/44'/0'/1'",
+      }
+    }
+  };
+
+
+  
 
 
   //***Validate Wallet login fields
   login_wizard.validateLogin = async function (loginType, walletType, signatures) {
-    console.log('===============validateLogin===============');
+    console.log('===============validateLogin===============', loginType, walletType, signatures );
 
     try {
-
-      if (walletType === 'regular_wallet' || walletType === 'multisig_wallet') {
+      login_wizard.profile_data = {};
+      if (walletType === 'regular' || walletType === 'multisig') {
         console.log('login_wizard.validateLogin regular_wallet or multisig_wallet: ', login_wizard.profile_data);
 
         //error variables
@@ -191,50 +332,69 @@
         //***No Errors! Proceed Login - with private key generation!
         console.log('**No Errors! Proceed Login - with private key generation!');
         //prepare values for profile data
-        login_wizard.profile_data.choosen = {"coin": "coin_name", "address" : "coin_address"};  //choosen coin to handle
-        login_wizard.profile_data.signatures = signatures;
+        //login_wizard.profile_data.choosen = {"coin": "coin_name", "address" : "coin_address"};  //choosen coin to handle
+        
         login_wizard.profile_data.login_type = loginType;
         login_wizard.profile_data.wallet_type = walletType;
 
-        login_wizard.profile_data.pubkey_sorted = false;
+        /*login_wizard.profile_data.pubkey_sorted = false;
         login_wizard.profile_data.private_keys = [];
         login_wizard.profile_data.public_keys = [];
         login_wizard.profile_data.address = [];
-        login_wizard.profile_data.hex_key = [];
+        */
+        login_wizard.profile_data.keys = {};
+        login_wizard.profile_data.keys.hex_key = [];
         
         
-        login_wizard.profile_data.email = loginEmail;
-        //set remember me in profile_data
-        login_wizard.profile_data.remember = false;
+        //prepare values for profile data
+        login_wizard.profile_data.login_type = loginType;
+        login_wizard.profile_data.coin = {};
+        login_wizard.profile_data.coin.name = coinjs.asset.name;
+        login_wizard.profile_data.coin.slug = coinjs.asset.slug;
+        login_wizard.profile_data.coin.symbol = coinjs.asset.symbol;
+        login_wizard.profile_data.coin.chainModel = coinjs.asset.chainModel;
+        login_wizard.profile_data.coin.network = coinjs.asset.network;
+        
 
-        //remove empty passwords from the stack
-        login_wizard.profile_data.passwords = loginPass.filter(n => n);
+        
+        //password regular/multisig
+        login_wizard.profile_data.password = {};
+        login_wizard.profile_data.password.email = loginEmail;
+        login_wizard.profile_data.password.passwords = loginPass.filter(n => n);  //remove empty passwords from the stack
+        login_wizard.profile_data.password.signatures = signatures;
+        
+
 
         //hide and empty error box and message
         $("#walletLoginStatusBox .walletLoginStatusMessage").text('').fadeOut();
         $('#walletLoginStatusBox').velocity('fadeOut').addClass('hidden');
-        login_wizard.errorMessage ='';
+        
 
         
 
         //***Save wallet credentials so user can download it
         var hexKey = '';
         //login_wizard.wallet_credentials = 'email: '+loginEmail+'\n';
-        for(var i = 0; i < (login_wizard.profile_data.passwords).length; i++) {
-          login_wizard.wallet_credentials += 'password '+(i+1)+': '+login_wizard.profile_data.passwords[i]+'\n';
+        for(var i = 0; i < (login_wizard.profile_data.password.passwords).length; i++) {
+          login_wizard.wallet_credentials += 'password '+(i+1)+': '+login_wizard.profile_data.password.passwords[i]+'\n';
           
           //**Check if HEX-privkey is within range?
           //if(!wally_fn.isHexKeyInRange('fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141')) //<<-- throws error since it is out of range!
-          if(!wally_fn.isHexKeyInRange(wally_fn.passwordHasher(loginEmail, login_wizard.profile_data.passwords[i])))
+          if(!wally_fn.isHexKeyInRange(wally_fn.passwordHasher(loginEmail, login_wizard.profile_data.password.passwords[i])))
             throw ('Error in generating ' + coinjs.asset.name+ ' address!');
             
-          (login_wizard.profile_data.hex_key).push(wally_fn.passwordHasher(loginEmail, login_wizard.profile_data.passwords[i]));
+          (login_wizard.profile_data.keys.hex_key).push(wally_fn.passwordHasher(loginEmail, login_wizard.profile_data.password.passwords[i]));
 
-          hexKey += 'hex '+(i+1)+': '+login_wizard.profile_data.hex_key[i]+'\n'
+          hexKey += 'hex '+(i+1)+': '+login_wizard.profile_data.keys.hex_key[i]+'\n'
           
-          
+
         }
         //login_wizard.wallet_credentials += hexKey.trim();
+
+        //generate all wallet addresses, pass over the HEX key!
+        login_wizard.profile_data.generated = {}; //holds all addresses, inclusive mulitisig addresses
+        login_wizard.profile_data.generated = await wally_fn.generateAllWalletAddresses(login_wizard.profile_data.keys.hex_key);
+
 
       } else if (walletType === 'mnemonic_wallet') {
         console.log('login_wizard.validateLogin mnemonic_wallet: ', login_wizard.profile_data);
@@ -243,84 +403,131 @@
         coinjs.compressed = true;
         var success = false;
         var s  = $("#openSeed").val().trim(); //seed
+        
 
-        isElectrumProtocol = $('#openBipMnemonicClientProtocol').is(':checked');
-
-        if (isElectrumProtocol)
+        var clientWalletProtocolIndex = $('#openClientWallet').val();
+          
+        console.log('clientWalletProtocolIndex: ', clientWalletProtocolIndex);
+        if (clientWalletProtocolIndex == 4) {  //isElectrumProtocol
           bip39.setProtocol('electrum');
-        else
-          bip39.setProtocol('bip39');
+          console.log('setProtocol electrum');
+        } else {
+          bip39.setProtocol('mnemonic');
+          console.log('setProtocol bip39');
+        }
 
-        console.log('isElectrumProtocol: ', isElectrumProtocol);
+
         //validate bip39 mnemonic
         if(bip39.validate(s))
           success = true;
-        else
+        else {
           success = false;
+          console.log('error in validating bip seed');
+        }
 
         //return if seed words doesnt equal 12 words!
-        if (isElectrumProtocol && wally_fn.wordCount(s) !== 12)
-          success = false;
-
+        var clientWordCount = login_wizard.clientWallets[clientWalletProtocolIndex]?.wordCount;
+        if (clientWordCount) {
+          if (wally_fn.wordCount(s) !== login_wizard.clientWallets[clientWalletProtocolIndex]?.wordCount)
+          success = false;  
+        }
+        console.log('wally_fn.wordCount(s): ', wally_fn.wordCount(s))
+        console.log('login_wizard.clientWallets[clientWalletProtocolIndex]?.wordCount ', login_wizard.clientWallets[clientWalletProtocolIndex]?.wordCount)
+        
         if (!success) {
           login_wizard.errorMessage += '<p>&#8226; Wrong Seed, please try again!!</p>';
+          $('#openSeed').addClass('border-danger');
           //***Errror occured!
           throw(login_wizard.errorMessage);
         }
+        
+        var p  = ($("#newOpenSeedBrainwalletCheck").is(":checked")) ? coinbinf.openSeedPassword.val() : null; //user bip passphrase
+
+        //if client wallet doesnt support passphrase, null it
+        if (!login_wizard.clientWallets[clientWalletProtocolIndex].supports.passphrase)
+          p = null;
 
         //***No Errors! Proceed Login - with key/address derivation!
         console.log('**No Errors! Proceed Login - with private key generation!');
+
+        //some wallet client uses lowercase passphrases
+        if (p !== null){
+          if (login_wizard.clientWallets[clientWalletProtocolIndex]?.passphrase === 'lowercase')
+            p = p.toLowerCase(); //som clients like electrum uses lower-case for passphrases
+  
+        }
+        
+        console.log('Client Wallet: ', login_wizard.clientWallets[clientWalletProtocolIndex].client);
+        
+        var protocol = login_wizard.clientWallets[clientWalletProtocolIndex].slug;
+
+
         //prepare values for profile data
-        login_wizard.profile_data.choosen = {"coin": "coin_name", "address" : "coin_address"};  //choosen coin to handle
-        login_wizard.profile_data.signatures = 1;
         login_wizard.profile_data.login_type = loginType;
         login_wizard.profile_data.wallet_type = walletType;
-
-        login_wizard.profile_data.pubkey_sorted = false;
-        login_wizard.profile_data.private_keys = [];
-        login_wizard.profile_data.public_keys = [];
-        login_wizard.profile_data.address = [];
-        login_wizard.profile_data.hex_key = [];
+        login_wizard.profile_data.coin = {};
+        login_wizard.profile_data.coin.name = coinjs.asset.name;
+        login_wizard.profile_data.coin.slug = coinjs.asset.slug;
+        login_wizard.profile_data.coin.symbol = coinjs.asset.symbol;
+        login_wizard.profile_data.coin.chainModel = coinjs.asset.chainModel;
+        login_wizard.profile_data.coin.network = coinjs.asset.network;
         
-        
-        login_wizard.profile_data.email = loginEmail;
-        //set remember me in profile_data
-        login_wizard.profile_data.remember = false;
 
-        var p  = ($("#newOpenSeedBrainwalletCheck").is(":checked")) ? $("#openSeedPassword").val() : null; //user bip passphrase
+        //mnemonic seed
+        login_wizard.profile_data.seed = {};
+        login_wizard.profile_data.seed.mnemonic = s;
+        login_wizard.profile_data.seed.passphrase = p;
+        login_wizard.profile_data.seed.protocol = protocol;
+        login_wizard.profile_data.seed.path = '';
 
-        var hd = coinjs.hd();
 
-        //convert default bip protocol to "hdkey" if another option is not set (for internal functionality)
-        //if (bipProtocolVal !== 'bip49' && bipProtocolVal !== 'bip84')
-        var bipProtocolVal = 'bip44';
+        //generate mnemonic derivation for each coin/asset
+        login_wizard.profile_data.seed.keys = await wally_fn.getMasterKeyFromMnemonic(p, s, protocol, clientWalletProtocolIndex);
+        login_wizard.profile_data.seed.addresses = await wally_fn.getMasterKeyAddresses(login_wizard.profile_data.seed.keys.privkey, clientWalletProtocolIndex);
 
-        var pair = hd.masterMnemonic(s, p, bipProtocolVal, bip39);
+        //generate receiver and change addresses relative to the choosen protocol
+        //login_wizard.profile_data.generated = await wally_fn.generateAddressesFromMasterKey(login_wizard.profile_data.seed.keys.privkey, protocol);
 
-        //Electrum Master Key generation
-        if (isElectrumProtocol) {
-          s = pair.privkey;
-          //console.log('s: ', s);
-          var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
-          //console.log('hex: ', hex);
-          var hd = coinjs.hd(s);
+/*
+profile_data:
+        {
+  "login_type": "mnemonic",
+  "coin": {
+    "name": "Bitcoin",
+    "slug": "bitcoin",
+    "symbol": "BTC",
+    "chainModel": "utxo",
+    "network": "mainnet"
+  },
+  "seed": {
+    "mnemonic": "toss install grocery peasant crane melt ranch raise afraid meat pave gown",
+    "passphrase": null,
+    "protocol": "electrum",
+    "path": "",
+    "keys": {
+      "privkey": "zprvAZxQ7JpbFGnPtkXNn3dpYSd7LEX5ECKeDgAdxhNyfwJonxZFqoBjCbh3hMkE7xuDe2ReCixmjjJEGWo3zpLcSpz3c643217xSzvtaaeNyDe",
+      "pubkey": "zpub6nwkWpMV5eLh7Ebqt5ApuaZqtGMZdf3Vau6Em5nbEGqnfktQPLVykQ1XYb8Z8Q8r8C2YgJaqWEhWnQpo6brYJAJSK3gGbt6bxkuEewydp2r"
+    }
+  },
+  "remember": false,
+  "api": {
+    "coingecko": 0,
+    "coinmarketcap": 0,
+    "assets": {}
+  }
+}
+*/
 
-          //console.log('hd: ', hd);
-          var derived_electrum = hd.derive_electrum_path("m/0'/0/0", 'bip84', 'hdkey', 'p2wpkh');
-          //console.log('derived_electrum: ', derived_electrum);
-          pair.pubkey = derived_electrum.keys_extended.pubkey;
-          pair.privkey = derived_electrum.keys_extended.privkey;
-        }
-
-        console.log('pair.pubkey: ' + pair.pubkey);
-        console.log('pair.privkey: ' + pair.privkey);
-
-        login_wizard.profile_data.hex_key[0] = pair.privkey;
       }
+      
+      $('#walletLoginStatusBox').addClass('hidden');
+      $('#openSeed').removeClass('border-danger');
 
-      //generate all wallet addresses, pass over the HEX key!
-      login_wizard.profile_data.generated = {}; //holds all addresses, inclusive mulitisig addresses
-      login_wizard.profile_data.generated = await wally_fn.generateAllWalletAddresses(login_wizard.profile_data.hex_key);
+      //empty default error message content
+      login_wizard.errorMessage ='';
+
+      //set remember me in profile_data to default false
+      login_wizard.profile_data.remember = false;
 
       /* Keep Track of API request timestamps*/
       login_wizard.profile_data.api = {
@@ -439,26 +646,31 @@ hex key should not be higher then that!
  @ Generate an object for Wallet Backup
 */
 login_wizard.generateWalletBackup = function() {
+  console.log('===login_wizard.generateWalletBackup===', login_wizard.profile_data);
 
   var tmp = login_wizard.profile_data;
   var walletBackup = {};
-  walletBackup.assets = {};
-  walletBackup.hex_key = tmp.hex_key;
+  //walletBackup.assets = {};
+  //walletBackup.hex_key = tmp.hex_key;
 
-  if (tmp.login_type == 'password') {
-    walletBackup.email = tmp.email;
-    walletBackup.passwords = tmp.passwords;  
+  if (tmp.login_type === 'password') {
+    walletBackup.email = tmp.password.email;
+    walletBackup.passwords = tmp.password.passwords;  
   }
 
-  if (tmp.login_type == 'mnemonic') {
-    walletBackup.email = tmp.email;
-    walletBackup.mnemonic = tmp.mnemonics;
+  if (tmp.login_type === 'mnemonic') {
+    console.log('login_type: mnemonic', tmp);
+    walletBackup.mnemonic = tmp.seed.mnemonic;
+    walletBackup.protocol = tmp.seed.protocol;
+    
+    if (tmp.seed.passphrase)
+      walletBackup.passphrase = tmp.seed.passphrase;
+
+    console.log('login_type: mnemonic', tmp, walletBackup);
   }
 
-  if (tmp.login_type == 'hdmaster') {
-    walletBackup.hdmaster = tmp.hdmaster;
-  }
 
+  /*
   tmp = login_wizard.profile_data.generated;
 
   var keys_length = (login_wizard.profile_data.hex_key).length;
@@ -486,13 +698,13 @@ login_wizard.generateWalletBackup = function() {
               walletBackup.assets[asset]['private_key_'+i] = value.privateKey;
             else  //for UTXO coins
               walletBackup.assets[asset]['private_key_'+i] = value.addresses_supported.compressed.key;
-            /*
+            
             //if (Object.keys(value.addresses_supported) === 1) 
-            if (value.addresses_supported.compressed.key !== undefined) //for UTXO coins
-              walletBackup.assets[asset]['private_key_'+i] = value.addresses_supported.compressed.key;
-            else  //for EVM coins (Ethereum)
-              walletBackup.assets[asset]['private_key_'+i] = value.privateKey;
-            */
+            //if (value.addresses_supported.compressed.key !== undefined) //for UTXO coins
+            //  walletBackup.assets[asset]['private_key_'+i] = value.addresses_supported.compressed.key;
+            //else  //for EVM coins (Ethereum)
+            //  walletBackup.assets[asset]['private_key_'+i] = value.privateKey;
+            
           } else
             walletBackup.assets[asset][key] = value;
           i++;
@@ -501,6 +713,7 @@ login_wizard.generateWalletBackup = function() {
     }
     
   }
+  */
   console.log('walletBackup: ', walletBackup);
 
   return walletBackup;
@@ -889,6 +1102,32 @@ login_wizard.downloadFileBlob = function (filename, text) {
 
 //DomReady.ready(function() {
   $(document).ready(function() {
+    
+    
+
+    coinbinf.openClientWallet.on("change", openClientWalletChanged);
+    function openClientWalletChanged(e) {
+      console.log('===openClientWalletChanged===', e);
+      var selectedOptionText = coinbinf.openClientWallet.find('option:selected').text();
+      var clientIndex = coinbinf.openClientWallet.val();
+
+      
+      var selectedOption = login_wizard.clientWallets[clientIndex];
+      
+      //console.log(`selectedOptionText: "${selectedOptionText}"`);
+      //console.log('selectedOption: ', selectedOption);
+
+      //hide passPhrase field if wallet client doesnt support it
+      if (selectedOption?.supports.passphrase){
+        if (coinbinf.openClientWalletPassphrase[0].style.display == 'none' || coinbinf.openClientWalletPassphrase[0].classList.contains("hidden"))
+          coinbinf.openClientWalletPassphrase.removeClass('hidden').velocity('slideDown');
+      } else {
+        if (coinbinf.openClientWalletPassphraseCheck.is(':checked'))  
+          coinbinf.openClientWalletPassphraseCheck.click();
+        coinbinf.openClientWalletPassphrase.velocity('slideUp')
+      }
+    }
+
 
   var loginBtn = document.getElementById('openBtn');
   
@@ -1862,7 +2101,7 @@ loginBtnNext.on("click",function() {
     }
     if(login_wizard.openWalletType == "mnemonic_wallet"){
       walletType = "mnemonic_wallet";
-      login_wizard.validateLogin('seed', walletType, 1);
+      login_wizard.validateLogin('mnemonic', walletType, 1);
       console.log('mnemonic_wallet');
 
     }
@@ -2058,11 +2297,13 @@ $('#openLogin input[type="password"], #openLogin input[type="text"], #openLogin 
 
 });
 
-$("#newOpenSeedBrainwalletCheck").click(function(){
+
+coinbinf.openClientWalletPassphraseCheck.on("click", function(e){
+  console.log('===login_wizard.openClientWalletPassphraseCheck===', e);
   if($(this).is(":checked")){
-    $("#openSeedPassword").parent().removeClass('hidden').velocity('slideDown')
+    coinbinf.openSeedPassword.parent().removeClass('hidden').velocity('slideDown');
   } else {
-    $("#openSeedPassword").parent().velocity('slideUp');
+    coinbinf.openSeedPassword.parent().velocity('slideUp');
   }
 });
 

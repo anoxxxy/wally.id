@@ -9,6 +9,7 @@
   var wally_kit = window.wally_kit = function () { };
 
   
+  
 
   /*
   @ Set Blockchain Network Settings
@@ -61,8 +62,8 @@
 
         //extend coinjs with the updated asset configuration
           //"remove" bip types which is not common among other coins/assets
-        coinjs.bip49 = {};  //set to empty
-        coinjs.bip84 = {};
+        delete coinjs.bip49;  //delete property
+        delete coinjs.bip84;
         $.extend(coinjs, wally_fn.networks[network_var][asset_var]);
 
         coinjs.bip32 = wally_fn.networks[network_var][asset_var].hdkey;
@@ -285,11 +286,12 @@
     var setVerifyScript = function () {
         document.getElementById('verifyScript').value = Router.urlParams.decode;
     }
+    
+    
     var loginWalletInteraction = function () {
           
           //if user is logged in navigate to wallet page
           const userIsAuth = $('body').attr('data-user');
-
           if (userIsAuth === "auth" && ((login_wizard.profile_data).hasOwnProperty('hex_key') && login_wizard.profile_data.hex_key.length)) {
             Router.navigate('wallet');
             return ;
@@ -330,19 +332,42 @@
             $('#openBtnNext').removeClass('hidden');
             $('#openBtn').addClass('hidden'); 
           }
-          if (Router.urlParams.wallet_type == 'privatekey_wallet'){
+          if (Router.urlParams.wallet_type == 'masterket_wallet'){
             $('#openBtnNext').removeClass('hidden');
             $('#openBtn').addClass('hidden'); 
+
+            coinbinf,openClientWallet.find("option[value='0']").prop("disabled", false);
             
           }
           if (Router.urlParams.wallet_type == 'import_wallet'){
             $('#openBtnNext').removeClass('hidden');
             $('#openBtn').addClass('hidden'); 
             
+
+            
           }
           if (Router.urlParams.wallet_type == 'mnemonic_wallet'){
+            
+
+
             $('#openBtnNext').removeClass('hidden');
             $('#openBtn').addClass('hidden'); 
+
+            //if (coinbinf.openClientWallet.val() == 0) {
+              //coinbinf.openClientWallet.
+              //var openClientWalletIndex = coinbinf.openClientWallet.find('option:selected').val();
+              //coinbinf.openClientWallet.find('option:contains("Electrum")').prop('disabled', true);
+              
+              
+
+              //disable bitcoin core wallet client for mnemonic login
+              coinbinf.openClientWallet.find("option[value='0']").prop("disabled", true);
+              if (coinbinf.openClientWallet.val() == 0 || coinbinf.openClientWallet.val() === null) {
+                coinbinf.openClientWallet.val(1).find("option[value='1']").prop("selected", true);
+                console.log('change');
+              }else {
+                console.log('dont change');
+              }
             
           }
           if (Router.urlParams.wallet_type == 'hdmaster_wallet'){
@@ -565,7 +590,7 @@
             $('#wallet_advanced_options_dropdown').addClass('hidden')
           }
 
-          var coininfo = login_wizard.profile_data.api.assets;
+          
           
           $('.coin_name').text(coinjs.asset.name)
           $('.coin_symbol').text(coinjs.asset.symbol)
@@ -590,9 +615,12 @@
 
           }
           
+          var coininfo = login_wizard.profile_data.api.assets;
           // API call request denied, skip rendering asset coininfo data
-          if (coininfo[assetKeyInObject].coininfos ===  undefined)
+          if (coininfo[assetKeyInObject]?.coininfos ===  undefined) {
+            console.log('Could not retrieve asset data!')
             return;
+          }
 
           $('.coin_price_change_24h').text(parseFloat(coininfo[assetKeyInObject].coininfos.price_change_24h).toFixed(8) + ' ('+parseFloat(coininfo[assetKeyInObject].coininfos.price_change_percentage_24h).toFixed(2) + '%)')
           $('.coin_price').text( '$' + parseFloat(coininfo[assetKeyInObject].coininfos.current_price).toFixed(8));
@@ -1599,6 +1627,7 @@ $(document).ready(function() {
 
 
 
+
 // Auto-upgrade Math.random with a more secure implementation only if crypto is available
 //https://github.com/mdn/sprints/issues/2510
 (function() {
@@ -1641,6 +1670,7 @@ wally_kit.copyContent.click(function(e){
   }
 
 });
+
 
 
 /*<<< START PROMISE FUNCTION*/
@@ -1852,178 +1882,11 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
   });
   */
 
-  
-
-
   //wally_fn.assetInfo.icon = './assets/images/providers_icon.svg';
   
 
 
 
 
-/*
-  https://github.com/twbs/bootstrap/issues/3722#issuecomment-26392191
-  //Generate Password Popover
-  $('.generatePasswordSettings').popover({
-    html: true,
-    //content: $("#generatePasswordSettings").html(),
-    content: function () {
-        console.log('content popover return generatePasswordSettings');
-        return $("#generatePasswordSettings").html();
-    }
-  }).on('hidden.bs.popover', function () {
-      //$(".popover.show.generatePassword").append($("#generatePasswordSettings"));
-      //$("#myPopoverContentContainer").append($("#generatePasswordSettings"));
-      //console.log('content popover append generatePasswordSettings');
-      //$("#generatePasswordSettings").append($("#generatePasswordSettings"));
-  });
-
-*/
-
 
 });
-
-/*
-https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
-
-
-var url = "http://www.example.com/folder/mypage.html?myparam1=1&myparam2=2#something";
-
-function URLParser(u){
-    var path="",query="",hash="",params;
-    if(u.indexOf("#") > 0){
-        hash = u.substr(u.indexOf("#") + 1);
-        u = u.substr(0 , u.indexOf("#"));
-    }
-    if(u.indexOf("?") > 0){
-        path = u.substr(0 , u.indexOf("?"));
-        query = u.substr(u.indexOf("?") + 1);
-        params= query.split('&');
-    }else
-        path = u;
-    return {
-        getHost: function(){
-            var hostexp = /\/\/([\w.-]*)/;
-            var match = hostexp.exec(path);
-            if (match != null && match.length > 1)
-                return match[1];
-            return "";
-        },
-        getPath: function(){
-            var pathexp = /\/\/[\w.-]*(?:\/([^?]*))/;
-            var match = pathexp.exec(path);
-            if (match != null && match.length > 1)
-                return match[1];
-            return "";
-        },
-        getHash: function(){
-            return hash;
-        },
-        getParams: function(){
-            return params
-        },
-        getQuery: function(){
-            return query;
-        },
-        setHash: function(value){
-            if(query.length > 0)
-                query = "?" + query;
-            if(value.length > 0)
-                query = query + "#" + value;
-            return path + query;
-        },
-        setParam: function(name, value){
-            if(!params){
-                params= new Array();
-            }
-            params.push(name + '=' + value);
-            for (var i = 0; i < params.length; i++) {
-                if(query.length > 0)
-                    query += "&";
-                query += params[i];
-            }
-            if(query.length > 0)
-                query = "?" + query;
-            if(hash.length > 0)
-                query = query + "#" + hash;
-            return path + query;
-        },
-        getParam: function(name){
-            if(params){
-                for (var i = 0; i < params.length; i++) {
-                    var pair = params[i].split('=');
-                    if (decodeURIComponent(pair[0]) == name)
-                        return decodeURIComponent(pair[1]);
-                }
-            }
-            console.log('Query variable %s not found', name);
-        },
-        hasParam: function(name){
-            if(params){
-                for (var i = 0; i < params.length; i++) {
-                    var pair = params[i].split('=');
-                    if (decodeURIComponent(pair[0]) == name)
-                        return true;
-                }
-            }
-            console.log('Query variable %s not found', name);
-        },
-        removeParam: function(name){
-            query = "";
-            if(params){
-                var newparams = new Array();
-                for (var i = 0;i < params.length;i++) {
-                    var pair = params[i].split('=');
-                    if (decodeURIComponent(pair[0]) != name)
-                          newparams .push(params[i]);
-                }
-                params = newparams;
-                for (var i = 0; i < params.length; i++) {
-                    if(query.length > 0)
-                        query += "&";
-                    query += params[i];
-                }
-            }
-            if(query.length > 0)
-                query = "?" + query;
-            if(hash.length > 0)
-                query = query + "#" + hash;
-            return path + query;
-        },
-    }
-}
-
-document.write("Host: " + URLParser(url).getHost() + '<br>');
-document.write("Path: " + URLParser(url).getPath() + '<br>');
-document.write("Query: " + URLParser(url).getQuery() + '<br>');
-document.write("Hash: " + URLParser(url).getHash() + '<br>');
-document.write("Params Array: " + URLParser(url).getParams() + '<br>');
-document.write("Param: " + URLParser(url).getParam('myparam1') + '<br>');
-document.write("Has Param: " + URLParser(url).hasParam('myparam1') + '<br>');
-
-document.write(url + '<br>');
-
-// Remove the first parameter
-url = URLParser(url).removeParam('myparam1');
-document.write(url + ' - Remove the first parameter<br>');
-
-// Add a third parameter
-url = URLParser(url).setParam('myparam3',3);
-document.write(url + ' - Add a third parameter<br>');
-
-// Remove the second parameter
-url = URLParser(url).removeParam('myparam2');
-document.write(url + ' - Remove the second parameter<br>');
-
-// Add a hash
-url = URLParser(url).setHash('newhash');
-document.write(url + ' - Set Hash<br>');
-
-// Remove the last parameter
-url = URLParser(url).removeParam('myparam3');
-document.write(url + ' - Remove the last parameter<br>');
-
-// Remove a parameter that doesn't exist
-url = URLParser(url).removeParam('myparam3');
-document.write(url + ' - Remove a parameter that doesn\"t exist<br>');
-*/

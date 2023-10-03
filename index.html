@@ -112,6 +112,8 @@
   
   <!-- <script type="text/javascript" src="js/sjcl-bip39.js"></script>
   <script type="text/javascript" src="js/jsbip39.js"></script>-->
+  <script type="text/javascript" src="js/web3/web3v1.8.1.min.js"></script>
+  <script type="text/javascript" src="js/web3/abi_erc20.js"></script>
   <script type="text/javascript" src="js/bip39.js"></script>
   <script type="text/javascript" src="js/coin.js"></script>
   <script type="text/javascript" src="js/coinbin.js"></script>
@@ -121,8 +123,7 @@
   <script type="text/javascript" src="js/converter/armory.js"></script>
 
 
-  <script type="text/javascript" src="js/web3/web3v1.8.1.min.js"></script>
-  <script type="text/javascript" src="js/web3/abi_erc20.js"></script>
+  
   <script type="text/javascript" src="js/converter.base.js"></script>
 
 
@@ -308,7 +309,7 @@
             <div class="bottom-section">
               <ul>
                 <li>
-                  <a href="https://github.com/anoxxxy" alt="Wally.id - Official Github repo"><img src="./assets/images/brands/github_logo.svg" class="icon32 mx-2"> Github</a>
+                  <a href="https://github.com/anoxxxy/wally.id" alt="Wally.id - Official Github repo"><img src="./assets/images/brands/github_logo.svg" class="icon32 mx-2"> Github</a>
                 </li>
                 <li>
                   <a href="https://t.me/wallyid" alt="Wally.id - Official Telegram group"><img src="./assets/images/brands/telegram_logo.svg" class="icon32 mx-2"> Telegram</a>
@@ -545,7 +546,7 @@
                       </h3>
                     <!-- Text -->
                     <p class="text-muted mb-0">
-                      We are constantly developing and adding new features to improve our product. You can find us at <a href="https://github.com/anoxxxy">github</a>.
+                      We are constantly developing and adding new features to improve our product. You can find us at <a href="https://github.com/anoxxxy/wally.id">github</a>.
                     </p>
                   </div>
                 </div>
@@ -1843,7 +1844,7 @@
                                       Mnemonic
                                     </div>
                                     <div class="folder-item__details__subname">
-                                      Login with BIP or Electrum seed!
+                                      Login with your seed phrase!
                                     </div>
                                   </div>
                                   <div class="folder-item__size">
@@ -1858,7 +1859,7 @@
                                   </div>
                                   <div class="folder-item__details">
                                     <div class="folder-item__details__name">
-                                      Regular Wallet
+                                      Custom Seed <small>Coinb.in </small>
                                     </div>
                                     <div class="folder-item__details__subname">Login with E-mail & Password!</div>
                                   </div>
@@ -1873,7 +1874,7 @@
                                   </div>
                                   <div class="folder-item__details">
                                     <div class="folder-item__details__name">
-                                      Multisig Wallet
+                                      Multisig Wallet <img src="./assets/images/auctions_and_sales.svg" class="icon24" alt="Under Construction" data-toggle="popover" data-trigger="hover" data-placement="top" title="Under Construction...">
                                     </div>
                                     <div class="folder-item__details__subname">
                                       2-of-2 Wallet Address
@@ -1890,7 +1891,7 @@
                                   </div>
                                   <div class="folder-item__details">
                                     <div class="folder-item__details__name">
-                                      Master Key
+                                      Master Key <img src="./assets/images/auctions_and_sales.svg" class="icon24" alt="Under Construction" data-toggle="popover" data-trigger="hover" data-placement="top" title="Under Construction...">
                                     </div>
                                     <div class="folder-item__details__subname">
                                       Supports public key, private key!
@@ -1907,10 +1908,10 @@
                                   </div>
                                   <div class="folder-item__details">
                                     <div class="folder-item__details__name">
-                                      Import Wallet
+                                      Import Wallet <img src="./assets/images/auctions_and_sales.svg" class="icon24" alt="Under Construction" data-toggle="popover" data-trigger="hover" data-placement="top" title="Under Construction...">
                                     </div>
                                     <div class="folder-item__details__subname">
-                                      Login with your wallet backup!
+                                      Login with your wallet backup! 
                                     </div>
                                   </div>
                                   <div class="folder-item__size">
@@ -2021,7 +2022,7 @@
                                         <div class="callout-title">
                                           Password 2
                                         </div>
-                                        <div class="callout callout-no-border p-1 form-group input-group  mb-1">
+                                        <div class="callout callout-no-border form-group input-group  m-0 p-0 mb-1">
 
                                           <div class="input-group form-password2 mt-2">
                                             <input id="openPass2" name="openPass" type="password" data-input-type="password" class="form-control animate__animated" placeholder="Password 2">
@@ -2130,18 +2131,30 @@
                                   <div class="callout-title">
                                       Mnemonic
                                     </div>
-                                    <div class="callout callout-no-border form-group  mb-0">
+                                    <div class="callout callout-no-border form-group  m-0">
                                       <div class="form-email mt-4">
                                         <textarea id="openSeed" name="openSeed" data-input-type="seed" class="form-control animate__animated" placeholder="Seed" autofocus style="height:100px"></textarea>
 
-                                        <div class="checkbox my-3">
-                                          <label>
-                                            <input type="checkbox" id="openBipMnemonicClientProtocol" class="checkbox-inline">
-                                            Electrum Seed </label>
+
+                                        <div class="row my-3">
+                                          <label for="openClientWallet" class="col-12 col-md-2 control-label pt-2">Client</label>
+                                          <div class="col-12 col-md-10">
+                                              <select id="openClientWallet" class="client form-control">
+                                                  <!-- <option value="custom">Custom derivation path</option> -->
+                                                  <!-- populated by javascript -->
+                                                  <option value="0" selected>Bitcoin Core</option>
+                                                  <option value="1">Blockchain.info</option>
+                                                  <option value="5">Coinb.in</option>
+                                                  <option value="3">Coinomi, Ledger</option>
+                                                  <option value="4">Electrum</option>
+                                                  <option value="2">MultiBit HD</option>
+                                                  <option value="6">Trezor</option>
+                                            </select>
+                                          </div>
                                         </div>
 
 
-                                        <div class="checkbox mt-2">
+                                        <div id="openSeedPasswordBox" class="checkbox mt-2 hidden">
                                           <label>
                                             <input type="checkbox" id="newOpenSeedBrainwalletCheck" class="checkbox-inline"> BIP39 Passphrase <span class="text-muted">(optional)</span></label>
 
@@ -2155,9 +2168,6 @@
                                               <span class="showKey input-group-text cursor-pointer" type="button"><i class="bi bi-eye-fill"></i></span>
                                             </div>
                                           </div>
-
-                                          
-
                                         </div>
 
                                         
@@ -2658,7 +2668,7 @@
               <p>Use the form below to generate a <a href="https://en.bitcoin.it/wiki/Seed_phrase#Two-factor_seed_phrases" target="_blank">Mnemonic seed</a> public key.</p>
 
               <p>
-                BIP Protocol: <span class="text-uppercase bipProtocolStr text-primary">BIP44</span>
+                BIP Protocol: <span class="text-uppercase bipProtocolStr badge badge-primary fs-3">BIP44</span>
               </p>
               <label><span class="bipProtocolPrv">x</span>Pub Key - Master Public Key</label>
 
@@ -3839,9 +3849,10 @@
                                             <option value="0">Bitcoin Core</option>
                                             <option value="1">Blockchain.info</option>
                                             <option value="5">Coinb.in</option>
-                                            <option value="2">MultiBit HD</option>
                                             <option value="3">Coinomi, Ledger</option>
                                             <option value="4">Electrum</option>
+                                            <option value="2">MultiBit HD</option>
+                                            <option value="6">Trezor</option>
                                       </select>
                                     </div>
                                 </div>
@@ -4277,9 +4288,11 @@
                       <tr>
                         <td><b>Index</b></td>
                         <td><b>Address</b></td>
-                        <td><b>Private Key (WIF)</b></td>
+                        <td><b>Public Key</b></td>
+                        <td><b>Private Key</b></td>
+                        <!--td><b>Private Key (WIF)</b></td>
                         <td><b>Extended xPub</b></td>
-                        <td><b>Extended xPrv</b></td>
+                        <td><b>Extended xPrv</b></td>-->
                       </tr>
                     </thead>
                     <tbody>
@@ -6180,7 +6193,16 @@
 
           <div class="mt-3">
             <label>Mnemonic length <span class="text-muted">(words)</span>:
-              <input type="number" id="bipMnemonicLength" value="24" min='12' class="form-control bipMnemonicLength" >
+              <!--<input type="number" id="bipMnemonicLength" value="24" min='12' class="form-control bipMnemonicLength" >-->
+
+              <select id="bipMnemonicLength" class="client form-control bipMnemonicLength">
+                <option value="12" selected>12 words</option>
+                <option value="15">15 words</option>
+                <option value="18">18 words</option>
+                <option value="21">21 words</option>
+                <option value="24">24 words</option>
+              </select>
+
             </label>
           </div>
 
@@ -6277,15 +6299,18 @@ iceee - remove me later
   <!-- ZeynepJS - Mobile menu - Left and Right Drawer Menu -->
   <div class="zeynep left-panel" data-menu-name="left-panel">
     <ul>
-      <label>Portfolio Type</label>
+      <label>Wallet Type</label>
       <li>
-        <a href="#login?wallet_type=regular_wallet"><img src="./assets/images/purse_wallet.svg" class="icon32 mx-2"> Regular Wallet</a>
+        <a href="#login?wallet_type=regular_wallet"><img src="./assets/images/seed.svg" class="icon32 mx-2"> Mnemonic</a>
+      </li>
+      <li>
+        <a href="#login?wallet_type=regular_wallet"><img src="./assets/images/purse_wallet.svg" class="icon32 mx-2"> Custom Seed <small>Coinb.in</small></a>
       </li>
       <li>
         <a href="#login?wallet_type=multisig_wallet"><img src="./assets/images/keys.svg" class="icon32 mx-2"> Multisig Wallet</a>
       </li>
       <li>
-        <a href="#login?wallet_type=privatekey_wallet"><img src="./assets/images/wallet_paper.svg" class="icon32 mx-2"> Private Key</a>
+        <a href="#login?wallet_type=privatekey_wallet"><img src="./assets/images/key.svg" class="icon32 mx-2"> Master Key</a>
       </li>
       <li>
         <a href="#login?wallet_type=import_wallet"><img src="./assets/images/wallet_import2.svg" class="icon32 mx-2"> Import Wallet</a>
@@ -6329,7 +6354,7 @@ iceee - remove me later
 
       <label>Support & Help</label>
       <li>
-        <a href="https://github.com/anoxxxy" class="text-decoration-none" target="_blank">
+        <a href="https://github.com/anoxxxy/wally.id" class="text-decoration-none" target="_blank">
           <img src="./assets/images/brands/github_logo.svg" class="icon32 mx-2"> Github
         </a>
       </li>

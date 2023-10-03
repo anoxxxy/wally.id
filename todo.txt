@@ -1,0 +1,37 @@
+
+*** remove moment.js and fix the dateformat!
+coinbin line:
+
+$("#verifyRsDataHodl .date").val(decode['checklocktimeverify'] >= 500000000? moment.unix(decode['checklocktimeverify']).format("MM/DD/YYYY HH:mm") : decode['checklocktimeverify']);
+
+**test transactions on all coins!
+
+----------------
+
+*add BIP44 derivation path, with custom paths  as well
+*Mnemonic seeds login
+*add Electrumx nodes for all coins (if there any)
+*add add custom nods
+*add json object for all coins social network links, website, contact person, team leader accounts, Github repo etc..
+*remove tooltip and popover after release, and replace with jBox Tooltip!
+
+*import backupfile
+*Multisig login
+
+*master key login (login with priv, pub keys as well as with multiple keys)
+*encrypt wallet backup as an option
+*add possibility for m-of-n multisig keys for signing.
+
+
+
+testing on electrum wallet
+
+near pause argue balcony real artefact hotel must culture must solve sister
+kalleBalle
+
+
+zprvAZJugUQFKPjqmWt3QvkwHzeD58CdWLUii2RRMtnGNcKkVKweSV3BgWfwNbcpTomEimihUCRqwhzoMqqwYUiC8QiEovtFBCNbf4o24sgFAWz
+zpub6nJG5yw99mJ8yzxWWxHwf8awdA37uoCa5FM2AHBsvwrjN8Gnz2MSEJzRDrC2vanGf4uQoVeJEoL4vGMYGppRETS5gj8vTwiVsbwY3d3BSc8
+
+bc1q5tkv0v8hc9qcna77zk6qdnz80udghwj6lthh52
+bc1q46uhnnch2fhsave5t8lqjdhqpg4q973rlve4fj

@@ -491,14 +491,17 @@ pre code {
 @media (min-width:576px) {
  .container,
  .container-sm {
-  max-width:540px
+  /*max-width:540px*/
+  max-width:initial;
  }
 }
 @media (min-width:768px) {
  .container,
  .container-md,
  .container-sm {
-  max-width:720px
+  /*max-width:720px*/
+  max-width:initial;
+
  }
 }
 @media (min-width:992px) {
@@ -9469,4 +9472,24 @@ a.text-dark:hover {
 
 .round {
   border-radius: .6rem;
+}
+
+
+.fs-1 {
+ font-size:1.5rem!important
+}
+.fs-2 {
+ font-size:1.25rem!important
+}
+.fs-3 {
+ font-size:1rem!important
+}
+.fs-4 {
+ font-size:.875rem!important
+}
+.fs-5 {
+ font-size:.75rem!important
+}
+.fs-6 {
+ font-size:.625rem!important
 }

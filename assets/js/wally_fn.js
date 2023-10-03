@@ -19,6 +19,9 @@
   wally_fn.provider = {utxo:'', broadcast:''};  //(manual transactions)
   wally_fn.assetInfo = {}; //has a copy of "coinjs.asset" object, not used besides dabi (data-binding)
 
+  //for mnemonic seeds and master XYZ keys 
+  wally_fn.gapLimit = 10;
+
     //not used yet
   wally_fn.wallet_settings = {
     asset: '',
@@ -39,7 +42,7 @@
     "newMnemonicAddress" : ['all'],
 
     "newTransaction" : ['utxo'],
-    "verify" : ['utxo'],
+    "verify" : ['utxo', 'account'],
     "sign" : ['utxo'],
     "broadcast" : ['utxo'],
     "login" : ['all'],
@@ -669,7 +672,7 @@ wally_fn.generatePassword = function(length = 64, wishlist = '0123456789ABCDEFGH
       //var swbech32 = coinjs.bech32Address(coin.pubkey);
       //var sw = coinjs.segwitAddress(coin.pubkey);
     } catch (err){
-      console.log('ERROR (hexPrivKeyDecode): Out of Range! Error generating Bitcoin address!: ', err)
+      console.log('ERROR (hexPrivKeyDecode): Out of Range! Error generating '+coinjs.asset.name+' address!: ', err)
     }
     return false;
   }
@@ -707,6 +710,7 @@ wally_fn.generatePassword = function(length = 64, wishlist = '0123456789ABCDEFGH
 /*@ Decode HD key (prv/pub)*/
 wally_fn.hdKeyDecode = async function(key, options = {'supports_address':['compressed', 'uncompressed'], 'show_error': true}, bip = 'bip44', address_semantics = '', ){
 console.log('===wally_fn.hdKeyDecode===');
+console.log('===wally_fn.hdKeyDecode=== coin: ', coinjs.asset.name);
 
 try {
       coinjs.compressed = true;
@@ -718,7 +722,7 @@ try {
       var hdKeyDecoded = {};
 
       function hdKeycheckAndProcess(prv, pub, type) {
-          console.log('hdKeycheckAndProcess hd: ');
+          console.log('hdKeycheckAndProcess hd: ', coinjs.asset.name, type);
 
         const hex_cmp_prv = Crypto.util.bytesToHex(coinjs.numToBytes(prv, 4).reverse());
         const hex_cmp_pub = Crypto.util.bytesToHex(coinjs.numToBytes(pub, 4).reverse());
@@ -727,7 +731,8 @@ try {
 
           var hd = coinjs.hd(s);
           console.log(`hdKeycheckAndProcess xPrv ${type}`);
-          console.log('hdKeycheckAndProcess hd: ', hd);
+          console.log('hdKeycheckAndProcess hd: ', hd. type);
+          console.log('hdKeycheckAndProcess hd type: ', coinjs[type], type, coinjs.asset.name);
 
           if (hd.type === "private") {
             is_privkey = true;
@@ -764,21 +769,23 @@ try {
       //check and process BIP derivations
       var isHDKey = hdKeycheckAndProcess(coinjs.hdkey.prv, coinjs.hdkey.pub, 'hdkey'); //same path as bip32,bip39, bip44
       //hdKeyDecoded = isHDKey;
-      console.log('hdKeyDecoded1: ', hdKeyDecoded);
+      console.log('hdKeyDecoded1: ', hdKeyDecoded, coinjs.asset.name);
 
       if (!isHDKey) {
-        var isBip49 = hdKeycheckAndProcess(coinjs.hdkey.prv, coinjs.hdkey.pub, 'bip49');
+        if (coinjs.bip49?.prv)
+          var isBip49 = hdKeycheckAndProcess(coinjs.bip49.prv, coinjs.bip49.pub, 'bip49');
         //hdKeyDecoded = isBip49;
       }
-      console.log('hdKeyDecoded2: ', hdKeyDecoded);
+      console.log('hdKeyDecoded2: ', hdKeyDecoded, coinjs.asset.name);
 
-      if (!isBip49) {
-        var isBip84 = hdKeycheckAndProcess(coinjs.hdkey.prv, coinjs.hdkey.pub, 'bip84');
+      if (!isHDKey && !isBip49) {
+        if (coinjs.bip84?.prv)
+          var isBip84 = hdKeycheckAndProcess(coinjs.bip84.prv, coinjs.bip84.pub, 'bip84');
         //hdKeyDecoded = isBip84;
       }
 
       console.log('derive_success: ', derive_success);
-      console.log('hdKeyDecoded3: ', hdKeyDecoded);
+      console.log('hdKeyDecoded3: ', hdKeyDecoded, coinjs.asset.name);
       if (isHDKey || isBip49 || isBip84) {
         if (is_privkey)
           hdKeyDecoded.key_type = 'prv';
@@ -798,11 +805,155 @@ try {
 
 
 /*
+@ Generate master keys for a coin
+param array: password (string), mnemonic (string), bip39 ('electrum' or 'bip39-standard' object) client protocol
+*/
+wally_fn.getMasterKeyFromMnemonicOld = async function (password, mnemonic, bip39, protocol = '', client_wallet_protocol_index = 0, derive_addresses = true) {
+  console.log('===wally_fn.getMasterKeyFromMnemonic===', password, mnemonic, protocol);
+  var hd = coinjs.hd();
+
+  //set default bipProtocol
+  var bipProtocol = 'bip44';
+
+  if (password !== null) {
+    if (protocol === 'electrum')
+        password= password.toLowerCase(); //electrum uses lowercase for passwords
+  }
+  var keyPair = hd.masterMnemonic(mnemonic, password, bipProtocol, bip39);
+  //console.log('keyPair: ', keyPair);
+  var s;
+
+  //Electrum Master Key generation
+  if (protocol === 'electrum') {
+    s = keyPair.privkey;
+    //var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
+    hd = coinjs.hd(s);
+    //set electrum path promptly
+    var derived_electrum = hd.derive_electrum_path("m/0'/0/0", 'bip84', 'hdkey', 'p2wpkh');
+    keyPair.pubkey = derived_electrum.keys_extended.pubkey;
+    keyPair.privkey = derived_electrum.keys_extended.privkey;
+  } else {
+     s = keyPair.privkey;
+     hd = coinjs.hd(s);
+  }
+
+  console.log('hd: ' , hd);
+  console.log('keyPair.privkey: ' + keyPair.privkey);
+  console.log('keyPair.pubkey: ' + keyPair.pubkey);
+  var derived = [];
+
+  //derive reciever and change addresses
+  if (derive_addresses) {
+    var clientWallet = login_wizard.clientWallets[client_wallet_protocol_index];
+    var derivation_path = clientWallet.path;
+    derivation_path = "m/0";
+    
+        console.log('===coinjs.getMasterKeyFromMnemonic=== extraced BIP: ' + bipProtocol);
+        console.log('===coinjs.getMasterKeyFromMnemonic=== derivationProtocol: ' + clientWallet.derivationProtocol);
+        console.log('===coinjs.getMasterKeyFromMnemonic=== addressSemantics: ' + clientWallet?.address?.semantics);
+        console.log('===coinjs.getMasterKeyFromMnemonic=== login_wizard.gapLimit: ' + login_wizard.gapLimit);
+        
+        
+        
+
+
+    for (var i=0; i < wally_fn.gapLimit; i++) {
+      console.log('===coinjs.getMasterKeyFromMnemonic=== derivation_path: ' + derivation_path+'/'+i);
+      derived.push( hd.derive_path(derivation_path+'/'+i, bipProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics) );
+    }
+    console.log('derived: ', derived);
+  }
+  return {keyPair, derived};
+
+}
+
+wally_fn.getMasterKeyFromMnemonic = async function (password, mnemonic, protocol = '') {
+  console.log('===wally_fn.getMasterKeyFromMnemonic===', password, mnemonic, protocol);
+  var hd = coinjs.hd();
+
+  //set default bipProtocol
+  var bipProtocol = 'bip44';
+
+  if (password !== null) {
+    if (protocol === 'electrum')
+        password= password.toLowerCase(); //electrum uses lowercase for passwords
+  }
+  var keyPair = hd.masterMnemonic(mnemonic, password, bipProtocol);
+  console.log('keyPair: ', keyPair);
+  var s;
+
+  //Electrum Master Key generation
+  if (protocol === 'electrum') {
+    s = keyPair.privkey;
+    var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
+    hd = coinjs.hd(s);
+    //set electrum path promptly
+    var derived_electrum = hd.derive_electrum_path("m/0'/0/0", 'bip84', 'hdkey', 'p2wpkh');
+    keyPair.pubkey = derived_electrum.keys_extended.pubkey;
+    keyPair.privkey = derived_electrum.keys_extended.privkey;
+  } else {
+    hd = coinjs.hd(s);
+  }
+  /*
+  console.log('hd: ' , hd);
+  console.log('keyPair.privkey: ' + keyPair.privkey);
+  console.log('keyPair.pubkey: ' + keyPair.pubkey);
+  */
+  
+  return keyPair;
+
+}
+
+wally_fn.getMasterKeyAddresses = async function (masterKey, client_wallet_protocol_index = 0) {
+  
+  var receive = [];
+  var change = [];
+  //set default bipProtocol
+  var bipProtocol = 'bip44';
+
+  var clientWallet = login_wizard.clientWallets[client_wallet_protocol_index];
+
+  //var derivation_path = clientWallet.path;
+
+  //if (clientWallet.slug === 'electrum')
+    //derivation_path = clientWallet.childPath;
+  /*
+  console.log('===coinjs.getMasterKeyFromMnemonic=== extraced BIP: ' + bipProtocol);
+  console.log('===coinjs.getMasterKeyFromMnemonic=== derivationProtocol: ' + clientWallet.derivationProtocol);
+  console.log('===coinjs.getMasterKeyFromMnemonic=== addressSemantics: ' + clientWallet?.address?.semantics);
+  console.log('===coinjs.getMasterKeyFromMnemonic=== login_wizard.gapLimit: ' + login_wizard.gapLimit);
+  */
+  
+  var hd = coinjs.hd(masterKey);
+  
+  var hardenedAddress = "";
+  if (clientWallet.address.hardened)
+    hardenedAddress = "'";
+
+  //generate receive addresses
+  for (var i=0; i < wally_fn.gapLimit; i++) {
+    //console.log('===coinjs.getMasterKeyFromMnemonic=== derivation_path: ' + derivation_path+'/'+i);
+    receive.push( hd.derive_path(clientWallet.address.receive+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics) );
+  }
+
+  //generate change addresses
+  for (var i=0; i < wally_fn.gapLimit; i++) {
+    //console.log('===coinjs.getMasterKeyFromMnemonic=== derivation_path: ' + derivation_path+'/'+i);
+    change.push( hd.derive_path(clientWallet.address.change+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics) );
+  }
+
+  //console.log('derived: ', derived);
+  return {receive, change};
+
+};
+
+
+/*
 @ Generate Wallet addresses upon Login, compressed or single keys for assets/coins
 param array: h  (hex-string for private key)
 */
 wally_fn.generateAllWalletAddresses = async function(h){
-  console.log('=================wally_fn.generateAllWalletAddresses=================')
+  console.log('=================wally_fn.generateAllWalletAddresses=================', h);
 
   let coinListModal = BootstrapDialog.show({
                     title: 'Generating Wallet Addresses',
@@ -838,6 +989,10 @@ wally_fn.generateAllWalletAddresses = async function(h){
   for (var [key, value] of Object.entries(wally_fn.networks[ coinjs.asset.network ])) {
     //console.log('loop for key, value: '+ key, value);
 
+    //add coin/asset to the object if not found
+    if (!walletAddress.hasOwnProperty(key))
+      walletAddress[key] = {};
+
     //UTXO coins
     if (value.asset.chainModel == 'utxo') {
       //asset supports compressed keys?
@@ -848,27 +1003,40 @@ wally_fn.generateAllWalletAddresses = async function(h){
 
         $.extend(coinjs, value);  //change asset and generate address
 
-          if (walletAddress[key] === undefined)
-            walletAddress[key] = {};
+
 
           for (i = 0; i< keys_length; i++) {
+            
+
             genAddress = this.hexPrivKeyDecode(h[i], {'supports_address': value.asset.supports_address});
-            console.log('genAddress.wif: ', genAddress);
+            console.log('genAddress.wif: ', genAddress, i);
 
             //if passed key is not a privkey, then it is probably a bip master/extended key
             //try to decode the bip key
-
+            var account_key = h[i];
+            var account_tmp;
             if (!genAddress) {
-              genAddress = await this.hdKeyDecode(h[i], {'supports_address': value.asset.supports_address}, 'bip44', '');
-              console.log('genAddress.hd: ', genAddress);
+              genAddress = await this.hdKeyDecode(account_key, {'supports_address': value.asset.supports_address}, 'bip44', '');
+              if (genAddress) {
+                console.log('genAddress.seed: ', genAddress);
+                account_tmp = genAddress;
+              }
+
+              
             }
             
 
-            walletAddress[ key ][i] = {}
+            console.log('walletAddress[ key ][i]: ', walletAddress, key, i);
+            walletAddress[ key ][i] = {};
             walletAddress[ key ][i]['name']  = value.asset.name;
             walletAddress[ key ][i]['symbol']  = value.asset.symbol;
             walletAddress[ key ][i]['address']  = genAddress.wif?.compressed?.address || '';
             walletAddress[ key ][i]['addresses_supported']  = genAddress.wif;
+            walletAddress[ key ][i]['chainModel']  = value.asset.chainModel;
+
+            if (account_tmp) {
+              walletAddress[key][i].seed = account_tmp;
+            }
 
             //console.log('walletAddress[ key ][i]: ', walletAddress[ key ][i]);
 
@@ -897,7 +1065,7 @@ wally_fn.generateAllWalletAddresses = async function(h){
 
 
     //Account based coins, like ETH
-    if (value.asset.chainModel == 'account') {
+    if (value.asset.chainModel == 'account' || value.asset.platform == 'evm') {
 
       if ( (value.asset.supports_address).includes('single') ) {
 
@@ -907,19 +1075,64 @@ wally_fn.generateAllWalletAddresses = async function(h){
         $.extend(coinjs, value);  //change asset and generate address
 
         //var key = 'web3_account';
-        if (walletAddress[key] === undefined)
-            walletAddress[key] = {};
-
         for (i = 0; i< keys_length; i++) {
 
-          walletAddress[ key ][i] = {}
+          
 
-          var wweb3 = new Web3(new Web3.providers.HttpProvider(''));
+          var account_key = h[i];
+          var account_tmp;
+
+          console.log('account_key:'+ account_key, i);
+          console.log('coinjs:', coinjs.asset);
+
+          //check if we have a bip master key
+          if(account_key.length > 64) {
+            account_tmp = await this.hdKeyDecode(account_key, {'supports_address': value.asset.supports_address}, 'bip44', '');
+            console.log('evm_account.hd: ', account_tmp);
+
+            if (account_tmp) {
+              account_key = account_tmp.hdhexkey;
+              console.log('evm_account.key: ', account_key);
+              //walletAddress[key][i].seed = account_tmp;
+            }
+          }
+
           //var evm_account = wweb3.eth.accounts.privateKeyToAccount('0d11db7762acfdf1fec7518cd5ad5517ccfed719ed4bf228f1d0c5138273a915');
-          var evm_account = wweb3.eth.accounts.privateKeyToAccount(h[i]);
+          
+          var evm_account = wweb3.eth.accounts.privateKeyToAccount(account_key);
 
+          console.log('evm_account privateKeyToAccount: ', evm_account);
+            
+          walletAddress[key][i] = {};
           walletAddress[key][i].address = evm_account.address;
           walletAddress[key][i].privateKey = evm_account.privateKey;
+          walletAddress[ key ][i]['chainModel']  = value.asset.chainModel;
+          
+          //do we have a token protocol
+          //inject network tokens to the main parent
+          /*if (value.asset.protocol.protocol_data) {
+            console.log('value.asset.name: ', value.asset.name);
+            var tokenType = value.asset.protocol.type;
+            if (!walletAddress[ key ].tokenType) {
+              walletAddress[ key ].tokenType = {}
+              walletAddress[ key ].tokenType['protocol']  = {};
+              walletAddress[ key ].tokenType['protocol'].type  = value.asset.protocol.type;
+              walletAddress[ key ].tokenType['protocol'].parent  = value.asset.protocol.protocol_data.parent;
+              walletAddress[ key ].tokenType['protocol'].contract_address  = value.asset.protocol.protocol_data.contract_address;
+            }
+          }
+          */
+          
+
+
+          if (account_tmp) {
+            account_key = account_tmp.hdhexkey;
+            console.log('evm_account.key: ', account_key);
+            walletAddress[key][i].seed = account_tmp;
+          }
+
+
+          
 
           /*
           //since all account based uses same key-pair generation, we limit it to 1 to speed up the process
@@ -936,7 +1149,8 @@ wally_fn.generateAllWalletAddresses = async function(h){
       }
 
     }
-    
+    console.log('walletAddress: ', walletAddress);
+
     //await wally_fn.nonBlockTick();
     await wally_fn.timeout(5);
 
@@ -1309,6 +1523,279 @@ Blackcoin 10
   //Summary API
   //https://chainz.cryptoid.info/explorer/api.dws?q=summary
 
+//Tokens
+wally_fn.networks_tokens = {
+  mainnet : {
+    "ethereum": {
+      "dai" : {
+        symbol: 'DAI',      //ticker
+        asset: {
+          chainModel: 'ERC20',
+          platform: 'evm',
+          name: 'DAI',
+          slug: 'dai',
+          symbol: 'dai',
+          symbols: ['dai'],
+          icon: './assets/images/crypto/multi-collateral-dai-dai-logo.svg',
+          
+          protocol: {
+            "type": "ERC20",
+            "protocol_data": {
+                "parent": "ethereum",
+                "contract_address": "0x6b175474e89094c44da98b954eedeac495271d0f"
+            }
+          },
+        },
+        decimalPlaces:16,
+      },
+      "paxg" : {
+        symbol: 'PAXG',      //ticker
+        asset: {
+          chainModel: 'ERC20',
+          platform: 'evm',
+          name: 'PAXG',
+          slug: 'paxg',
+          symbol: 'paxg',
+          symbols: ['paxg'],
+          icon: './assets/images/crypto/pax-gold-paxg-logo.svg',
+          
+          protocol: {
+            "type": "ERC20",
+            "protocol_data": {
+                "parent": "ethereum",
+                "contract_address": "0x45804880de22913dafe09f4980848ece6ecbaf78"
+            }
+          },
+        },
+        decimalPlaces:16,
+      },
+      "matic" : {
+        symbol: 'MATIC',      //ticker
+        asset: {
+          chainModel: 'ERC20',
+          platform: 'evm',
+          name: 'Polygon',
+          slug: 'matic',
+          symbol: 'matic',
+          symbols: ['matic', 'polygon'],
+          icon: './assets/images/crypto/polygon-matic-logo.svg',
+          
+          protocol: {
+            "type": "ERC20",
+            "protocol_data": {
+                "parent": "ethereum",
+                "contract_address": "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0"
+            }
+          },
+        },
+        decimalPlaces:16,
+      },
+      "usdt" : {
+        symbol: 'USDT',      //ticker
+        asset: {
+          chainModel: 'ERC20',
+          platform: 'evm',
+          name: 'USDT',
+          slug: 'usdt',
+          symbol: 'usdt',
+          symbols: ['usdt'],
+          icon: './assets/images/crypto/tether-usdt-logo.svg',
+          
+          protocol: {
+            "type": "ERC20",
+            "protocol_data": {
+                "parent": "ethereum",
+                "contract_address": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+            }
+          },
+        },
+        decimalPlaces:16,
+      },
+    },
+    "bnb": {
+      "dai" : {
+        symbol: 'DAI',      //ticker
+        asset: {
+          chainModel: 'ERC20',
+          platform: 'evm',
+          name: 'DAI',
+          slug: 'dai',
+          symbol: 'dai',
+          symbols: ['dai'],
+          icon: './assets/images/crypto/multi-collateral-dai-dai-logo.svg',
+          
+          protocol: {
+            "type": "ERC20",
+            "protocol_data": {
+                "parent": "matic",
+                "contract_address": "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3"
+            }
+          },
+        },
+        decimalPlaces:16,
+      },
+      "paxg" : {
+        symbol: 'DAI',      //ticker
+        asset: {
+          chainModel: 'ERC20',
+          platform: 'evm',
+          name: 'PAXG',
+          slug: 'paxg',
+          symbol: 'paxg',
+          symbols: ['paxg'],
+          icon: './assets/images/crypto/pax-gold-paxg-logo.svg',
+          
+          protocol: {
+            "type": "ERC20",
+            "protocol_data": {
+                "parent": "bnb",
+                "contract_address": "0x7950865a9140cb519342433146ed5b40c6f210f7"
+            }
+          },
+        },
+        decimalPlaces:16,
+      },
+      "matic" : {
+        symbol: 'MATIC',      //ticker
+        asset: {
+          chainModel: 'ERC20',
+          platform: 'evm',
+          name: 'Polygon',
+          slug: 'matic',
+          symbol: 'matic',
+          symbols: ['matic', 'polygon'],
+          icon: './assets/images/crypto/polygon-matic-logo.svg',
+          
+          protocol: {
+            "type": "ERC20",
+            "protocol_data": {
+                "parent": "bnb",
+                "contract_address": "0xcc42724c6683b7e57334c4e856f4c9965ed682bd"
+            }
+          },
+        },
+        decimalPlaces:16,
+      },
+      "usdt" : {
+        symbol: 'USDT',      //ticker
+        asset: {
+          chainModel: 'ERC20',
+          platform: 'evm',
+          name: 'USDT',
+          slug: 'usdt',
+          symbol: 'usdt',
+          symbols: ['usdt'],
+          icon: './assets/images/crypto/tether-usdt-logo.svg',
+          
+          protocol: {
+            "type": "ERC20",
+            "protocol_data": {
+                "parent": "ethereum",
+                "contract_address": "0x55d398326f99059ff775485246999027b3197955"
+            }
+          },
+        },
+        decimalPlaces:16,
+      },
+    },
+    "matic": {
+      "dai" : {
+        symbol: 'DAI',      //ticker
+        asset: {
+          chainModel: 'ERC20',
+          platform: 'evm',
+          name: 'DAI',
+          slug: 'dai',
+          symbol: 'dai',
+          symbols: ['dai'],
+          icon: './assets/images/crypto/multi-collateral-dai-dai-logo.svg',
+          
+          protocol: {
+            "type": "ERC20",
+            "protocol_data": {
+                "parent": "matic",
+                "contract_address": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063"
+            }
+          },
+        },
+        decimalPlaces:16,
+      },
+      "usdt" : {
+        symbol: 'USDT',      //ticker
+        asset: {
+          chainModel: 'ERC20',
+          platform: 'evm',
+          name: 'USDT',
+          slug: 'usdt',
+          symbol: 'usdt',
+          symbols: ['usdt'],
+          icon: './assets/images/crypto/tether-usdt-logo.svg',
+          
+          protocol: {
+            "type": "ERC20",
+            "protocol_data": {
+                "parent": "matic",
+                "contract_address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
+            }
+          },
+        },
+        decimalPlaces:16,
+      },
+
+    },
+    "avax": {
+      "dai" : {
+        symbol: 'DAI',      //ticker
+        asset: {
+          chainModel: 'ERC20',
+          platform: 'evm',
+          name: 'DAI',
+          slug: 'dai',
+          symbol: 'dai',
+          symbols: ['dai'],
+          icon: './assets/images/crypto/multi-collateral-dai-dai-logo.svg',
+          
+          protocol: {
+            "type": "ERC20",
+            "protocol_data": {
+                "parent": "avax",
+                "contract_address": "0xd586e7f844cea2f87f50152665bcbc2c279d8d70"
+            }
+          },
+        },
+        decimalPlaces:16,
+      },
+      "usdt" : {
+        symbol: 'USDT',      //ticker
+        asset: {
+          chainModel: 'ERC20',
+          platform: 'evm',
+          name: 'USDT',
+          slug: 'usdt',
+          symbol: 'usdt',
+          symbols: ['usdt'],
+          icon: './assets/images/crypto/tether-usdt-logo.svg',
+          
+          protocol: {
+            "type": "ERC20",
+            "protocol_data": {
+                "parent": "matic",
+                "contract_address": "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7"
+            }
+          },
+        },
+        decimalPlaces:16,
+      },
+    },
+    
+
+  },
+  testnet : {
+  },
+};
+
+
+//Coins
   wally_fn.networks = {
     mainnet : {
       bitcoin : {
@@ -1936,6 +2423,7 @@ Blackcoin 10
         symbol: 'ETH',      //ticker
         asset: {
           chainModel: 'account',
+          platform: 'evm',
           name: 'Ethereum',
           slug: 'ethereum',
           symbol: 'ETH',
@@ -1965,7 +2453,142 @@ Blackcoin 10
           bip84 : {'prv':0x04b2430c, 'pub':0x04b24746}, // zpub
 
           bip_path: 60,
-          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'},
+          bech32 : {},
+
+          
+        txExtraTimeField: false,    //not used for ....
+        txExtraTimeFieldValue: false, //....
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:16,
+        txRBFTransaction: false,
+        developer: '0x183B539FBA8566f0f88bC9a43a6766F601fcFB99',
+      },
+      bnb : {
+        symbol: 'BNB',      //ticker
+        asset: {
+          chainModel: 'account',
+          platform: 'evm',
+          name: 'BNB',
+          slug: 'bnb',
+          symbol: 'BNB',
+          symbols: ['bnb', 'building and building', 'binance coin'],
+          icon: './assets/images/crypto/bnb-bnb-logo.svg',
+          network: 'mainnet',
+          supports_address : ['single'],
+          api : {
+            unspent_outputs: {
+              '': '',
+            },
+            broadcast: {
+              '': '',
+            }
+          },
+          protocol: {
+            "type": "account",  //has no parent
+          },
+          
+
+        },
+        pub : 0,      //not used for account based chains
+        priv : 0,     //not used for ....
+        multisig : 0, //....
+          hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
+          bip49 : {'prv':0x049d7878, 'pub':0x049d7cb2}, //bip49 ypub
+          bip84 : {'prv':0x04b2430c, 'pub':0x04b24746}, // zpub
+
+          bip_path: 714,
+          bech32 : {},
+
+          
+        txExtraTimeField: false,    //not used for ....
+        txExtraTimeFieldValue: false, //....
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:16,
+        txRBFTransaction: false,
+        developer: '0x183B539FBA8566f0f88bC9a43a6766F601fcFB99',
+      },
+      avax : {
+        symbol: 'AVAX',      //ticker
+        asset: {
+          chainModel: 'account',
+          platform: 'evm',
+          name: 'Avalanche',
+          slug: 'avax',
+          symbol: 'AVAX',
+          symbols: ['avax', 'avalanche'],
+          icon: './assets/images/crypto/avalanche-avax-logo.svg',
+          network: 'mainnet',
+          supports_address : ['single'],
+          api : {
+            unspent_outputs: {
+              '': '',
+            },
+            broadcast: {
+              '': '',
+            }
+          },
+          protocol: {
+            "type": "account",  //has no parent
+          },
+          
+
+        },
+        pub : 0,      //not used for account based chains
+        priv : 0,     //not used for ....
+        multisig : 0, //....
+          hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
+          bip49 : {'prv':0x049d7878, 'pub':0x049d7cb2}, //bip49 ypub
+          bip84 : {'prv':0x04b2430c, 'pub':0x04b24746}, // zpub
+
+          bip_path: 9000,
+          bech32 : {},
+
+          
+        txExtraTimeField: false,    //not used for ....
+        txExtraTimeFieldValue: false, //....
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces:16,
+        txRBFTransaction: false,
+        developer: '0x183B539FBA8566f0f88bC9a43a6766F601fcFB99',
+      },
+      
+      matic : {
+        symbol: 'MATIC',      //ticker
+        asset: {
+          chainModel: 'account',
+          name: 'Polygon',
+          slug: 'matic',
+          symbol: 'MATIC',
+          symbols: ['matic', 'matic', 'polygon'],
+          icon: './assets/images/crypto/polygon-matic-logo.svg',
+          network: 'mainnet',
+          supports_address : ['single'],
+          api : {
+            unspent_outputs: {
+              '': '',
+            },
+            broadcast: {
+              '': '',
+            }
+          },
+          protocol: {
+            "type": "account",  //has no parent
+          },
+          
+
+        },
+        pub : 0,      //not used for account based chains
+        priv : 0,     //not used for ....
+        multisig : 0, //....
+          hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
+          bip49 : {'prv':0x049d7878, 'pub':0x049d7cb2}, //bip49 ypub
+          bip84 : {'prv':0x04b2430c, 'pub':0x04b24746}, // zpub
+
+          bip_path: 966,
+          bech32 : {},
 
           
         txExtraTimeField: false,    //not used for ....

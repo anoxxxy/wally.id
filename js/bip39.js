@@ -16,7 +16,7 @@ return self})()
 
 //for later electrum integration
 //CryptoJS.enc.Utf8.parse('Seed version')
-function BIP39(language, protocol='bip39') {
+function BIP39(language, protocol='mnemonic') {
   language = 'en';
   this.protocol = protocol;
   console.log('BIP39 init: this.protocol: '+ this.protocol);
@@ -25,21 +25,26 @@ function BIP39(language, protocol='bip39') {
 }
 
 BIP39.prototype.getProtocol = function() {
-	console.log('BIP39: getProtocol: ' + this.protocol);
+	//console.log('BIP39: getProtocol: ' + this.protocol);
 	return this.protocol;
 }
 BIP39.prototype.setProtocol = function(protocol) {
 	console.log('BIP39: old protocol: ' + this.protocol);
 	console.log('BIP39: set protocol: ' + protocol);
-	this.protocol = protocol;
+	if (protocol == 'electrum' || protocol == 'mnemonic')
+		this.protocol = protocol;
+	else
+		this.protocol = 'mnemonic';
+
+	console.log('BIP39: changed to protocol: ' + protocol);
 	return this.protocol;
 }
 
 BIP39.prototype.mnemonicToSeed = function(mnemonic, password) {
-  console.log('bip protocol: ' + this.protocol);
+  //console.log('bip protocol: ' + this.protocol);
   var options = {iterations: 2048, hasher: CryptoJS.algo.SHA512, keySize: 512/32};
-  console.log('mnemonic: ', mnemonic);
-  console.log('password: ', password);
+  //console.log('mnemonic: ', mnemonic);
+  //console.log('password: ', password);
   return CryptoJS.PBKDF2(mnemonic, this.salt(password), options).toString(CryptoJS.enc.Hex);
 }
 
@@ -101,7 +106,7 @@ BIP39.prototype.validate = function(mnemonic) {
   var entropyBuffer = new Buffer(entropyBytes)
 	
   var isValid = true;  
-  if (this.protocol === 'bip39' || this.protocol === undefined) {
+  if (this.protocol === 'mnemonic' || this.protocol === undefined) {
   	newChecksum = checksumBits(entropyBuffer);
   	isValid = (newChecksum === checksum);
   	console.log('BIP39: checksum validate!')
@@ -122,10 +127,9 @@ function checksumBits(entropyBuffer) {
 }
 
 BIP39.prototype.salt = function (password) {
-  var protocolType = (this.protocol === 'bip39' || this.protocol === undefined ? 'mnemonic' : 'electrum');
   console.log('protocolType this.protocol: ', this.protocol);
-  console.log('protocolType: ', protocolType);
-  return protocolType + (password || '')
+  
+  return this.protocol + (password || '')
 }
 
 //=========== helper methods from bitcoinjs-lib ========

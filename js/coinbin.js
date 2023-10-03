@@ -1,32 +1,55 @@
 var bip39 = new BIP39('en');
+var wweb3 = new Web3(new Web3.providers.HttpProvider(''));
+
 var coinbinf = window.coinbinf = function () { };
 //var coinbinjs = {}; 
 
 $(document).ready(function() {
 
-	//***Initialize/Set default Network
-  	wally_kit.initNetwork($('input[type=radio][name=radio_selectNetworkType]'));
+		console.log('coinbinf.init');
 
 
   	//Init POPUP for BIP PROTOCOLS AND CLIENTS DERIVATION
-  	new jBox('Tooltip', {
+  	var popoverBIPProtocol = new jBox('Tooltip', {
     attach: '.newMnemonicWords',
     width: 280,
     trigger: 'click',
     class: 'popover',
     closeOnClick: 'body',
-    addClass: 'JBoxPopover',
+    addClass: 'JBoxPopover hidden',
+    overlayClass: 'ice-car',
     id: 'popBIPSettingsJBox',
     //closeOnMouseleave: true,
     animation: 'zoomIn',
     content: $('#popBIPSettings').html(),
+    createOnInit: true,
+    onInit: function() { 
+    	console.log('this: ', this);
+    	//this.wrapper[0].classList.add('hidden icee');
+    	/*this.open(); 
+    	this.close(10);
+    	this.wrapper[0].classList.add('hidden');
+    	*/
+    },
     onOpen: function () {
+    	$("body").append("<div class='modal-backdrop fade show'></div>");
       //this.source.addClass('active').html('Now scroll');
+			
+			//console.log('this: ', this);
+			//console.log('this.source: ', this.source);
+			//if (this.wrapper[0].classList.contains('hidden'))
+				//this.wrapper[0].classList.remove('hidden');
+			
     },
     onClose: function () {
       //this.source.removeClass('active').html('Click me');
+      $(".modal-backdrop").hide();
     }
-  }).open().close();
+  });
+
+  $('#popBIPSettingsJBox').removeClass('hidden');
+  	//}).hide().show( function () {  });
+  //
 
   	//BIP Path to render from
   	coinbinf.bippath = $("#bip_path");
@@ -68,6 +91,18 @@ $(document).ready(function() {
   coinbinf.verifyScript = $("#verifyScript");
 
   coinbinf.bipAddressSemantics = 'p2wpkh';	//added for electrum address derivation
+
+  //Login
+  coinbinf.openClientWalletPassphrase = $('#openSeedPasswordBox');
+  coinbinf.openClientWalletPassphraseCheck = $('#newOpenSeedBrainwalletCheck');
+  coinbinf.openSeedPassword = $('#openSeedPassword')
+  coinbinf.openClientWallet = $('#openClientWallet');
+  
+
+	
+	//***Initialize/Set default Network
+  wally_kit.initNetwork($('input[type=radio][name=radio_selectNetworkType]'));
+
 
 
 	/* open wallet code */
@@ -1026,20 +1061,22 @@ profile_data = {
 			mnemonicProtocols.find('label[data-bip-option="bip84"]').addClass('active').find('input').prop('checked', true);
 			coinbinf.deriveFromBipProtocol.val('bip84').trigger('change');
 			//coinbinf.bip32Client.find('option:contains("Electrum")').prop('selected', true);
-			coinbinf.bip32Client.prop('disabled', true);
+			//coinbinf.bip32Client.prop('disabled', true);
 			//coinbinf.bippath.val("m/0'/0");
-			coinbinf.bippath.val("m/0").prop('disabled', true);
+			coinbinf.bip32Client.val('custom');//.prop('disabled', false);
+			coinbinf.bippath.val("m/0");//.prop('disabled', true);
 			//coinbinf.bip32path.val("m/0'/0").prop('readonly', true);
-			coinbinf.bip32path.val("m/0").prop('disabled', true);
+			
+			//coinbinf.bip32path.val("m/0").prop('disabled', true);
 
 			bipProtocolStr.text( bipProtocolStr.text() + ' (Electrum)' );
 		}
 		else {
 			mnemonicProtocols.find('label').not('[data-bip-option="bip84"]').removeClass('disabled');
 			mnemonicLengthEl.prop('disabled', false)
-			coinbinf.bip32Client.val('custom').prop('disabled', false);
-			coinbinf.bip32path.val("m/0'/0").prop('disabled', false);
-			coinbinf.bippath.val("m/0").prop('disabled', false);
+			coinbinf.bip32Client.val('custom');//.prop('disabled', false);
+			//coinbinf.bip32path.val("m/0'/0").prop('disabled', false);
+			coinbinf.bippath.val("m/0");//.prop('disabled', false);
 
 
 			bipProtocolStr.text( (bipProtocolStr.text()).replace(' (Electrum)', '') );
@@ -1079,6 +1116,8 @@ profile_data = {
 		coinjs.compressed = true;
 		var success = false;
 		var s  = $("#newMnemonicWords").val().trim();	//seed
+		var p  = ($("#newMnemonicBrainwalletCheck").is(":checked")) ? $("#MnemonicBrainwallet").val() : null;	//user bip passphrase
+
 		var bipProtocolVal  = coinbinf.deriveFromBipProtocol.val();	//get bip protocol
 
 		console.log('bipProtocolVal: '+ bipProtocolVal);
@@ -1087,9 +1126,11 @@ profile_data = {
 
 		if (isElectrumProtocol){
 			bip39.setProtocol('electrum');
+			if (p !== null)
+				p = p.toLowerCase(); //electrum uses lower-case for passphrases
 			//bip39 = new BIP39('en', 'electrum');
 		}else {
-			bip39.setProtocol('bip39');
+			bip39.setProtocol('mnemonic');
 			//bip39 = new BIP39('en', 'bip39');
 		}
 
@@ -1126,15 +1167,14 @@ profile_data = {
 		
 
 
-		var p  = ($("#newMnemonicBrainwalletCheck").is(":checked")) ? $("#MnemonicBrainwallet").val() : null;	//user bip passphrase
-
+		
 		var hd = coinjs.hd();
 
 		//convert default bip protocol to "hdkey" if another option is not set (for internal functionality)
 		if (bipProtocolVal !== 'bip49' && bipProtocolVal !== 'bip84')
 			bipProtocolVal = 'hdkey';
 
-		var pair = hd.masterMnemonic(s, p, bipProtocolVal, bip39);
+		var pair = hd.masterMnemonic(s, p, bipProtocolVal);
 
 		
 		//render xPub, xPrv elements
@@ -3317,7 +3357,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				    $("#verifyHDaddress .hdpubkey").val(hd.keys.pubkey || '');
 				    $("#verifyHDaddress .hdaddress").val(hd.keys.hdaddress || '');
 
-				    $("#verifyHDaddress .key_type").text(`${hd.depth === 0 && hd.child_index === 0 ? 'Master' : 'Derived'} ${hd.type}`.toLowerCase() + `, Protocol:` + `${hd.bip}`.toUpperCase() );
+				    $("#verifyHDaddress .key_type").text(`${hd.depth === 0 && hd.child_index === 0 ? 'Master' : 'Derived'} ${hd.type}` + `, Protocol:` + `${hd.bip}`.toUpperCase() );
 				    $("#verifyHDaddress .parent_fingerprint").val(Crypto.util.bytesToHex(hd.parent_fingerprint));
 				    $("#verifyHDaddress .derived_data table tbody").html("");
 				    
@@ -3392,7 +3432,9 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		else
 			coinbinf.bipAddressSemantics = '';
 
-		
+		var d_prvkey ='';
+		var d_pubkey ='';
+		var d_addr = '';
 		for(var i=index_start;i<=index_end;i++){
 			//if($("#hdpathtype option:selected").val()=='simple'){
 				//var derived = hd.derive(i);
@@ -3430,7 +3472,23 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 					bip32_custom_master_keys.addClass('hidden');
 				} 
 
-				
+				if (coinjs.asset.chainModel == 'utxo'){
+					console.log('utxo model');
+					d_prvkey = (derived.keys.wif)?derived.keys.wif:'';
+					d_pubkey = (derived.keys.pubkey)?derived.keys.pubkey:'';
+					d_addr = derived.keys.address;
+				} else if (coinjs.asset.chainModel == 'account') {
+					console.log('account model');
+					//d_prvkey = (derived.keys.privkey)? '0x'+derived.keys.privkey : '';
+					d_pubkey = (derived.keys.pubkey)? '0x'+derived.keys.pubkey : '';
+					evm_account = wweb3.eth.accounts.privateKeyToAccount(derived.keys.privkey);
+
+					d_addr = evm_account.address;
+          d_prvkey = evm_account.privateKey;
+          console.log('d_addr: ', d_addr);
+          if (!d_addr)
+          	throw('Error Deriving '+coinjs.asset.name+' address')
+				}
 				
 
 				//get the Electrum Master Key
@@ -3445,18 +3503,27 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			html += '<td>'+i+'</td>';
 
 			html += '<td>';
-			//if (derived.bip === "hdkey")
-			if (derived.keys.address.redeemscript === undefined)	//check if redeemscript is present
-				html += '<input type="text" class="form-control" value="'+derived.keys.address+'" readonly>';
-			else {
-				html += '<input type="text" class="form-control" value="'+derived.keys.address.address+'" readonly>';
-				html += '<br><input type="text" class="form-control" value="'+derived.keys.address.redeemscript+'" readonly>';
+			if (coinjs.asset.chainModel == 'utxo'){
+				if (derived.keys.address.redeemscript === undefined)	//check if redeemscript is present
+					html += '<input type="text" class="form-control" value="'+d_addr+'" readonly>';
+				else {
+					html += '<input type="text" class="form-control" value="'+d_addr.address+'" readonly>';
+					html += '<br><input type="text" class="form-control" value="'+d_addr.redeemscript+'" readonly>';
+				}
+			} else if (coinjs.asset.chainModel == 'account') {
+				html += '<input type="text" class="form-control" value="'+d_addr+'" readonly>';
 			}
+
 			html += '</td>';
 
-			html += '<td><input type="text" class="form-control" value="'+((derived.keys.wif)?derived.keys.wif:'')+'" readonly></td>';
-			html += '<td><input type="text" class="form-control" value="'+derived.keys_extended.pubkey+'" readonly></td>';
-			html += '<td><input type="text" class="form-control" value="'+((derived.keys_extended.privkey)?derived.keys_extended.privkey:'')+'" readonly></td>';
+			html += '<td><input type="text" class="form-control" value="'+d_pubkey+'" readonly></td>';
+			
+			
+
+			html += '<td><input type="text" class="form-control" value="'+d_prvkey+'" readonly></td>';
+			
+			//html += '<td><input type="text" class="form-control" value="'+derived.keys_extended.pubkey+'" readonly></td>';
+			//html += '<td><input type="text" class="form-control" value="'+((derived.keys_extended.privkey)?derived.keys_extended.privkey:'')+'" readonly></td>';
 			html += '</tr>';
 			
 		}
@@ -4351,7 +4418,6 @@ var bipTabSelected = 'bipTab32';
 
 
 const bipHardenedAddresses = $("#bip-hardened-addresses");
-const bip32path = $("#bip32-path");
 const bip32pathWally = coinbinf.bippath;
 
 
@@ -4365,7 +4431,7 @@ const bipClients = [
     {
         name: "Bitcoin Core",
         onSelect: function() {
-            bip32path.val("m/0'/0'");
+            coinbinf.bip32path.val("m/0'/0'");
             bip32pathWally.val("m/0'/0'");
             coinbinf.bipAddressSemantics = ''
             bipHardenedAddresses.prop('checked', true).trigger('change');
@@ -4374,7 +4440,7 @@ const bipClients = [
     {
         name: "Blockchain.info",
         onSelect: function() {
-            bip32path.val("m/44'/0'/0'");
+            coinbinf.bip32path.val("m/44'/0'/0'");
             bip32pathWally.val("m/44'/0'/0'");
             coinbinf.bipAddressSemantics = ''
             bipHardenedAddresses.prop('checked', false).trigger('change');
@@ -4383,7 +4449,7 @@ const bipClients = [
     {
         name: "MultiBit HD",
         onSelect: function() {
-            bip32path.val("m/0'/0");
+            coinbinf.bip32path.val("m/0'/0");
             bip32pathWally.val("m/0'/0");
             coinbinf.bipAddressSemantics = ''
             bipHardenedAddresses.prop('checked', false).trigger('change');
@@ -4392,7 +4458,7 @@ const bipClients = [
     {
         name: "Coinomi, Ledger",
         onSelect: function() {
-            bip32path.val("m/44'/"+bipTab44coin.val()+"'/0'");
+            coinbinf.bip32path.val("m/44'/"+bipTab44coin.val()+"'/0'");
             bip32pathWally.val("m/44'/"+bipTab44coin.val()+"'/0'");
             coinbinf.bipAddressSemantics = ''
             bipHardenedAddresses.prop('checked', false).trigger('change');
@@ -4401,7 +4467,7 @@ const bipClients = [
     {
         name: "Electrum",
         onSelect: function() {
-            bip32path.val("m/0'/0");
+            coinbinf.bip32path.val("m/0'/0");
             bip32pathWally.val("m/0'/0");
             coinbinf.bipAddressSemantics = 'p2wpkh';
             bipHardenedAddresses.prop('checked', false).trigger('change');
@@ -4410,8 +4476,17 @@ const bipClients = [
     {
         name: "Coinb.in",
         onSelect: function() {
-            bip32path.val("m");
+            coinbinf.bip32path.val("m");
             bip32pathWally.val("m");
+            coinbinf.bipAddressSemantics = ''
+            bipHardenedAddresses.prop('checked', false).trigger('change');
+        },
+    },
+    {
+        name: "Trezor",
+        onSelect: function() {
+            coinbinf.bip32path.val("m/44'/"+bipTab44coin.val()+"'/0'/0");
+            bip32pathWally.val("m/44'/"+bipTab44coin.val()+"'/0'/0");
             coinbinf.bipAddressSemantics = ''
             bipHardenedAddresses.prop('checked', false).trigger('change');
         },
@@ -4456,12 +4531,11 @@ bipHardenedAddresses.on("change", calcForDerivationPath);
 coinbinf.bip32Client.on("change", bip32ClientChanged);
 function bip32ClientChanged(e) {
     var clientIndex = coinbinf.bip32Client.val();
-    if (clientIndex == "custom") {	//hiden custom input in bip32 tab
-        bip32path.prop("readonly", true).parent().parent().addClass('hidden');
-        bip32path.val("m/0");
+    if (clientIndex == "custom") {	//hide custom input in bip32 tab
+        coinbinf.bip32path.val("m/0").prop("disabled", true).parent().parent().addClass('hidden');
         coinbinf.bippath.fadeOut().fadeIn();
     } else {
-        bip32path.prop("readonly", true).parent().parent().removeClass('hidden');
+        coinbinf.bip32path.prop("disabled", true).parent().parent().removeClass('hidden');
         bipClients[clientIndex].onSelect();
         bipRootKeyChanged();
     }
@@ -4527,7 +4601,7 @@ function getDerivationPath() {
 	
 
 	console.log('=getDerivationPath= bipTabSelected: '+ bipTabSelected);
-	console.log('=getDerivationPath= selectedTab: ', selectedTab);
+	//console.log('=getDerivationPath= selectedTab: ', selectedTab);
 	console.log('=getDerivationPath= bipType: '+ bipType);
 
     if (bipType === 44 || bipType === 49 || bipType === 84) {
@@ -4548,7 +4622,7 @@ function getDerivationPath() {
         path += account + "'/";
         path += change;
 
-        bipCoinPath.val(path);
+        //bipCoinPath.val(path);
 
         bip32pathWally.val(path);
 
@@ -4556,8 +4630,9 @@ function getDerivationPath() {
         console.log("Using derivation path from BIP"+bipType+" tab: " + derivationPath);
         return derivationPath;
     } else if (bipType == 32) {
-    	var path = bip32path.val();
-    	bip32pathWally.val(path);
+    	//var path = coinbinf.bip32path.val();
+    	var path = bip32pathWally.val();
+    	bip32pathWally.val(bip32pathWally.val());
         var derivationPath = path;
         console.log("Using derivation path from BIP32 tab: " + derivationPath);
         return derivationPath;
