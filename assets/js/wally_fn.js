@@ -1744,48 +1744,7 @@ wally_fn.networks_tokens = {
 
     },
     "avax": {
-      "dai" : {
-        symbol: 'DAI',      //ticker
-        asset: {
-          chainModel: 'ERC20',
-          platform: 'evm',
-          name: 'DAI',
-          slug: 'dai',
-          symbol: 'dai',
-          symbols: ['dai'],
-          icon: './assets/images/crypto/multi-collateral-dai-dai-logo.svg',
-          
-          protocol: {
-            "type": "ERC20",
-            "protocol_data": {
-                "parent": "avax",
-                "contract_address": "0xd586e7f844cea2f87f50152665bcbc2c279d8d70"
-            }
-          },
-        },
-        decimalPlaces:16,
-      },
-      "usdt" : {
-        symbol: 'USDT',      //ticker
-        asset: {
-          chainModel: 'ERC20',
-          platform: 'evm',
-          name: 'USDT',
-          slug: 'usdt',
-          symbol: 'usdt',
-          symbols: ['usdt'],
-          icon: './assets/images/crypto/tether-usdt-logo.svg',
-          
-          protocol: {
-            "type": "ERC20",
-            "protocol_data": {
-                "parent": "matic",
-                "contract_address": "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7"
-            }
-          },
-        },
-        decimalPlaces:16,
-      },
+      
     },
     
 
