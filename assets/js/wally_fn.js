@@ -2985,10 +2985,61 @@ wally_fn.networks_tokens = {
 
   }
 
+/**
+ * Sorts the keys of an object in either ascending (ASC) or descending (DESC) order.
+ * @param {Object} obj - The object to sort.
+ * @param {boolean} [descending=false] - Whether to sort in descending order (DESC). Default is false (ASC).
+ * @returns {Object} - A new object with sorted keys.
+ */
+wally_fn.sortObjectKeys = function (obj, descending = false) {
+  const sortedKeys = Object.keys(obj).sort();
+  if (descending) {
+    sortedKeys.reverse();
+  }
+  const sortedObj = {};
+  for (const key of sortedKeys) {
+    sortedObj[key] = obj[key];
+  }
+  return sortedObj;
+}
+
+
   //sorted assets in ASC order in the object
   //https://stackoverflow.com/questions/5467129/sort-javascript-object-by-key
   wally_fn.networks.mainnet = Object.fromEntries(Object.entries(wally_fn.networks.mainnet).sort());
   wally_fn.networks.testnet = Object.fromEntries(Object.entries(wally_fn.networks.testnet).sort());
+  wally_fn.networks_tokens.mainnet = Object.fromEntries(Object.entries(wally_fn.networks_tokens.mainnet).sort());
+  wally_fn.networks_tokens.testnet = Object.fromEntries(Object.entries(wally_fn.networks_tokens.testnet).sort());
+
+
+  // Sort token names within each chain in mainnet
+  wally_fn.networks_tokens.mainnet = wally_fn.sortObjectKeys(wally_fn.networks_tokens.mainnet);
+
+  // Sort token names within each chain in testnet
+  wally_fn.networks_tokens.testnet = wally_fn.sortObjectKeys(wally_fn.networks_tokens.testnet);
+
+
+/**
+ * Get tokens from a specific chain (mainnet or testnet).
+ * @param {string} chain - The chain to get tokens from (e.g., 'mainnet' or 'testnet').
+ * @param {boolean} [testnet=false] - Whether to get tokens from testnet. Default is false (mainnet).
+ * @returns {Object} - An object containing tokens for the specified chain, or an empty object if the chain is not found.
+ */
+function getTokensFromChain(chain, testnet = false) {
+  const selectedChain = testnet ? wally_fn.networks_tokens.testnet : wally_fn.networks_tokens.mainnet;
+
+  if (!selectedChain.hasOwnProperty(chain)) {
+    return {}; // Return an empty object if the chain is not found.
+  }
+
+  return selectedChain[chain];
+}
+
+// Usage examples:
+//const mainnetTokens = getTokensFromChain('ethereum'); // Get tokens from mainnet (default).
+//const testnetTokens = getTokensFromChain('nonexistentChain', true); // Get tokens from testnet, which will return an empty object.
+
+
 
 /*
 https://testnet.qtum.info/
