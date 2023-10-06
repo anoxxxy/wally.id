@@ -8,6 +8,18 @@ $(document).ready(function() {
 
 		console.log('coinbinf.init');
 
+		//custom modal
+  	coinbinf.backdropEl = $('.modal-backdrop');
+  	coinbinf.backdrop = function(open = true) {
+  		//$("body").append("<div class='modal-backdrop fade show'></div>");
+  		if(open)
+  			coinbinf.backdropEl.removeClass('hidden');
+  		else
+  			coinbinf.backdropEl.addClass('hidden');
+
+  	}
+	
+
 
   	//Init POPUP for BIP PROTOCOLS AND CLIENTS DERIVATION
   	var popoverBIPProtocol = new jBox('Tooltip', {
@@ -32,7 +44,8 @@ $(document).ready(function() {
     	*/
     },
     onOpen: function () {
-    	$("body").append("<div class='modal-backdrop fade show'></div>");
+    	//$("body").append("<div class='modal-backdrop fade show'></div>");
+    	coinbinf.backdrop();
       //this.source.addClass('active').html('Now scroll');
 			
 			//console.log('this: ', this);
@@ -43,7 +56,8 @@ $(document).ready(function() {
     },
     onClose: function () {
       //this.source.removeClass('active').html('Click me');
-      $(".modal-backdrop").hide();
+      coinbinf.backdrop(false);
+      
     }
   });
 
@@ -99,7 +113,10 @@ $(document).ready(function() {
   coinbinf.openClientWallet = $('#openClientWallet');
   
 
-	
+  //Mnemonic User related
+  coinbinf.receiveAddresses = $('#receiveAddresses');
+  coinbinf.changeAddresses = $('#changeAddresses');
+
 	//***Initialize/Set default Network
   wally_kit.initNetwork($('input[type=radio][name=radio_selectNetworkType]'));
 
@@ -193,50 +210,62 @@ profile_data = {
 			//generate public keys from the hex key
 		}
 
-		var adr_legacy = login_wizard.profile_data.generated.bitcoin[0].address;	//legacy (compressed)
-		var wif = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.key;	
-		var pubkey = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.public_key;	
+		var choosenCoin = coinjs.asset.slug;
+		var adr_legacy = login_wizard.profile_data.generated[choosenCoin][0].address;	//legacy (compressed)
+		var wif = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.compressed.key;	
+		var pubkey = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.compressed.public_key;	
+		var hexkey = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.compressed.hexkey;	
 
-		var adr_legacy_uncompressed = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.uncompressed.address;		//legacy (compressed)
-		var wif_uncompressed = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.uncompressed.key;	
-		var pubkey_uncompressed = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.uncompressed.public_key;	
+		var coinType = wally_fn.coinChainIs();
+		if (coinType === 'utxo') {
+			//disabled for mnemonic login
+			if (login_wizard.profile_data.login_type === 'password') {
+				var adr_legacy_uncompressed = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.uncompressed.address;		//legacy (compressed)
+				var wif_uncompressed = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.uncompressed.key;	
+				var pubkey_uncompressed = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.uncompressed.public_key;	
 
+				var adr_bech32 = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.compressed.bech32.address;	//bech32
+				var adr_bech32_redeem = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.compressed.bech32.redeemscript;	//segwit
 
-		
-		
-		var adr_bech32 = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.bech32.address;	//bech32
-		var adr_bech32_redeem = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.bech32.redeemscript;	//segwit
-
-		var adr_segwit = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.segwit.address;	//segwit
-		var adr_segwit_redeem = login_wizard.profile_data.generated.bitcoin[0].addresses_supported.compressed.segwit.redeemscript;	//segwit
+				var adr_segwit = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.compressed.segwit.address;	//segwit
+				var adr_segwit_redeem = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.compressed.segwit.redeemscript;	//segwit
+			}
+		}
 		
 		var address = adr_legacy;
 
 		var walletToAddress = 'Legacy <small>(Compressed)</small>';
 
-		$("#walletKeys .walletSegWitRS").addClass("hidden");
-		if($("#walletSegwit").is(":checked")){
-			if($("#walletSegwitBech32").is(":checked")){
-				address = adr_bech32;
-				address_redeem = adr_bech32_redeem
-				var walletToAddress = 'Bech32';
-			} else {
-				address = adr_segwit;
-				address_redeem = adr_segwit_redeem;
-				var walletToAddress = 'SegWit';
-			}
+		if (coinType === 'utxo') {
+			$("#walletKeys .walletSegWitRS").addClass("hidden");
+			if($("#walletSegwit").is(":checked")){
+				if($("#walletSegwitBech32").is(":checked")){
+					address = adr_bech32;
+					address_redeem = adr_bech32_redeem
+					var walletToAddress = 'Bech32';
+				} else {
+					address = adr_segwit;
+					address_redeem = adr_segwit_redeem;
+					walletToAddress = 'SegWit';
+				}
 
-			$("#walletKeys .walletSegWitRS").removeClass("hidden");
-			$("#walletKeys .walletSegWitRS input:text").val(address_redeem);
-		} else {
-			if ($('#walletLegacyUncompressed').is(':checked')) {
-				address = adr_legacy_uncompressed;
-				wif = wif_uncompressed;
-				pubkey = pubkey_uncompressed;
-				var walletToAddress = 'Legacy <small>(Uncompressed)</small>';
+				$("#walletKeys .walletSegWitRS").removeClass("hidden");
+				$("#walletKeys .walletSegWitRS input:text").val(address_redeem);
+			} else {
+				if ($('#walletLegacyUncompressed').is(':checked')) {
+					address = adr_legacy_uncompressed;
+					wif = wif_uncompressed;
+					pubkey = pubkey_uncompressed;
+					walletToAddress = 'Legacy <small>(Uncompressed)</smafll>';
+				}
 			}
+		} else if (coinType === 'evm') {
+			walletToAddress = 'EVM';
 		}
 
+		$(".walletToAddress").text(walletToAddress);
+
+		console.log('login address: ', address);
 		$("#walletAddress").val(address);
 		$(".walletAddress").text(address);
 		$("#walletHistory").attr('href',explorer_addr+address);
@@ -247,7 +276,7 @@ profile_data = {
 		qrcode.makeCode(coinjs.asset.slug+':'+address);
 
 		$("#walletKeys .privkey").val(wif);
-		$("#walletKeys .privkeyhex").val(login_wizard.profile_data.hex_key);
+		$("#walletKeys .privkeyhex").val(hexkey);
 		$("#walletKeys .pubkey").val(pubkey);
 
 		Router.navigate('wallet');
@@ -259,6 +288,10 @@ profile_data = {
 
 		//generate a list of user assets
 		wally_kit.listUserAssets();
+
+		//generate mnemonic addresses
+		wally_kit.listUserAddresses();
+
 
 		//set body to user is auth!
 		$('body').attr('data-user', 'auth');
@@ -3352,8 +3385,8 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				    $("#verifyHDaddress .depth").val(hd.depth);
 				    $("#verifyHDaddress .version").val(`0x${hd.version.toString(16)}`);
 				    $("#verifyHDaddress .child_index").val(hd.child_index);
-				    $("#verifyHDaddress .hdwifkey").val(hd.keys.wif || '');
-				    $("#verifyHDaddress .hdhexkey").val(hd.keys.hexkey || '');
+				    //$("#verifyHDaddress .hdwifkey").val(hd.keys.wif || '');
+				    $("#verifyHDaddress .hdhexkey").val(hd.keys.privkey || '');
 				    $("#verifyHDaddress .hdpubkey").val(hd.keys.pubkey || '');
 				    $("#verifyHDaddress .hdaddress").val(hd.keys.hdaddress || '');
 
@@ -4884,7 +4917,7 @@ $(".blockie_wrapper .wallet_address").html(address);
 $(".blockie_wrapper .icon").css("background-image", "url(" + makeBlockie(address) + ")");
 $(".blockie_wrapper .wallet_address").val(address);
 
-$(".blockie_wrapper_with_title").attr('title', 'Address: ' + address);
+$(".blockie_wrapper").attr('title', 'Copy Address').attr('data-copy-content', address);
 //$(".blockie_wrapper").css("background-image", "url(" + makeBlockie('0x138854708D8B603c9b7d4d6e55b6d32D40557F4D') + ")");
 
 

@@ -483,7 +483,42 @@
 
         //generate mnemonic derivation for each coin/asset
         login_wizard.profile_data.seed.keys = await wally_fn.getMasterKeyFromMnemonic(p, s, protocol, clientWalletProtocolIndex);
-        login_wizard.profile_data.seed.addresses = await wally_fn.getMasterKeyAddresses(login_wizard.profile_data.seed.keys.privkey, clientWalletProtocolIndex);
+        //login_wizard.profile_data.seed.addresses
+        var seed_addresses = await wally_fn.getMasterKeyAddresses(login_wizard.profile_data.seed.keys.privkey, clientWalletProtocolIndex);
+        
+        //extract only privkey,pubkey and address from derived data
+        var receiveAddresses = wally_fn.derivedToCompressed(seed_addresses.receive);
+        var changeAddresses = wally_fn.derivedToCompressed(seed_addresses.change);
+        
+        console.log('seed_addresses: ', seed_addresses);
+        login_wizard.profile_data.seed.path = seed_addresses.path;
+
+        console.log('receiveAddresses: ', receiveAddresses);
+        console.log('changeAddresses: ', changeAddresses);
+        console.log('wally_fn.coinChainIs(): ', wally_fn.coinChainIs());
+        var coinGenerated = {
+          'name': coinjs.asset.name,
+          'chainModel': coinjs.asset.chainModel,
+          'symbol': coinjs.asset.symbol,
+          0: {
+            'address': receiveAddresses[0].address,
+            'addresses_supported': {
+              'compressed': {
+                'address': receiveAddresses[0].address,
+                'key': ((wally_fn.coinChainIs() == 'utxo') ? receiveAddresses[0].wif: receiveAddresses[0].privkey),
+                'wif': ((wally_fn.coinChainIs() == 'utxo') ? receiveAddresses[0].wif: ''),
+                'hexkey': ((wally_fn.coinChainIs() == 'utxo') ? receiveAddresses[0].privkey : (receiveAddresses[0].privkey).slice(2)),
+                'public_key': receiveAddresses[0].pubkey,
+              },
+            },
+          },
+        };
+
+        login_wizard.profile_data.generated = {};
+        login_wizard.profile_data.generated[coinjs.asset.slug] = coinGenerated;
+        login_wizard.profile_data.generated[coinjs.asset.slug].addresses = {'receive': receiveAddresses, 'change': changeAddresses};
+        
+
 
         //generate receiver and change addresses relative to the choosen protocol
         //login_wizard.profile_data.generated = await wally_fn.generateAddressesFromMasterKey(login_wizard.profile_data.seed.keys.privkey, protocol);

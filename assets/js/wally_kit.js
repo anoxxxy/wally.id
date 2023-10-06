@@ -473,7 +473,7 @@
 
           //check nested tab within page, set to activate for navigation when back/forth
           var walletSubPage = false;
-          var walletAssetTabs = ['asset', 'send', 'receive', 'settings'];
+          var walletAssetTabs = ['asset', 'send', 'receive', 'addresses', 'settings'];
           if (walletAssetTabs.includes(data[1])) {
             $('#walletAsset [data-target="#' + data[0] + '_' + data[1] +'"]').tab('show');
             walletSubPage = data[1];
@@ -1277,13 +1277,64 @@ wally_kit.listUserAssets = function() {
 
 
 
+/*
+ @ generate a list of user wallet assets
+*/
+
+wally_kit.listUserAddresses = function() {
+  console.log('===wally_kit.listUserAddresses===');
+  var derived = login_wizard.profile_data.generated[coinjs.asset.slug].addresses;
+
+  var receive = '';
+  var addr = '';
+  for (var i=0; i < (derived.receive).length; i++) {
+
+    if (derived.receive[i].address.redeemscript === undefined)  //check if redeemscript is present
+      addr = derived.receive[i].address;
+    else
+      addr = derived.receive[i].address.address;
+
+    receive += `
+      <tr>
+        <th scope="row">${i}</th>
+        <td>${addr} <i class=" float-right bi bi-copy"></i></td>
+        <td class="text-right">0</td>
+      </tr>`;
+
+  }
+
+  var change = '';
+  for (var i=0; i < (derived.change).length; i++) {
+
+    if (derived.receive[i].address.redeemscript === undefined)  //check if redeemscript is present
+      addr = derived.change[i].address;
+    else
+      addr = derived.change[i].address.address;
+    
+    change += `
+      <tr>
+        <th scope="row">${i}</th>
+        <td>${addr} <i class=" float-right bi bi-copy"></i></td>
+        <td class="text-right">0</td>
+      </tr>`;
+
+  }
+  
+
+  //add user assets to the list
+  coinbinf.receiveAddresses.find('table tbody').html(receive);
+  coinbinf.changeAddresses.find('table tbody').html(change);
+  
+};
+
+
 /**
  * Fetches coin information from Coingecko API and updates wallet assets data.
  * @function
  */
 wally_kit.getCoinInfo = async function () {
   console.log('===wally_kit.getCoinInfo===');
-  
+  return;
   try {
     
 
@@ -1741,12 +1792,34 @@ const shootPeasPromise = (...args) => {
   //***Set default Network
   //wally_kit.initNetwork(portfolioNetworkType);
 
+  $("#coinjs_network_select").on('show.bs.dropdown', function (e) {
+    console.log('coinjs_network_select open', e);
+    /*if($(this).attr("keep-open") == "true") {
+        $(this).addClass("open");
+        $(this).removeAttr("keep-open");
+    }
+    */
+    //$("body").append("<div class='modal-backdrop fade show'></div>");
+    coinbinf.backdrop();
+  });
+  $("#coinjs_network_select").on('hidden.bs.dropdown', function (e) {
+    console.log('coinjs_network_select hidden', e);
+    /*if($(this).attr("keep-open") == "true") {
+        $(this).addClass("open");
+        $(this).removeAttr("keep-open");
+    }
+    */
+    //$(".modal-backdrop").hide();
+    coinbinf.backdrop(false);
+  });
+
+
   /*
   @ Network Settings on Change handler!
   - Changes Blockchain and lists relative Broadcast and UTXO API
   */
   portfolioNetworkType.on('change', function(e) {
-    //console.log('Network Type changed: ' , this);
+    console.log('Network Type changed: ' , this);
     //console.log('Network Type changed: ' , e);
     //console.log('Network Type to: ' , $(this).attr('data-network-type'));
     //wally_kit.settingsListAssets($(this).attr('data-network-type'));
@@ -1797,6 +1870,7 @@ const shootPeasPromise = (...args) => {
 
 /*Settings dropdown-select listener*/
 $("body").on("click", "#settings .dropdown-select li", function(e){
+  console.log('#settings .dropdown-select li');
   var _this_ = $(this);
   var getValue = _this_.html();
 

@@ -931,21 +931,122 @@ wally_fn.getMasterKeyAddresses = async function (masterKey, client_wallet_protoc
     hardenedAddress = "'";
 
   //generate receive addresses
+  var derived;
+/*
+          var evm_account = wweb3.eth.accounts.privateKeyToAccount(account_key);
+
+          console.log('evm_account privateKeyToAccount: ', evm_account);
+            
+          walletAddress[key][i] = {};
+          walletAddress[key][i].address = evm_account.address;
+          walletAddress[key][i].privateKey = evm_account.privateKey;
+          */
+  var isEVM = wally_fn.isEVM();
+
   for (var i=0; i < wally_fn.gapLimit; i++) {
     //console.log('===coinjs.getMasterKeyFromMnemonic=== derivation_path: ' + derivation_path+'/'+i);
-    receive.push( hd.derive_path(clientWallet.address.receive+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics) );
+    derived = hd.derive_path(clientWallet.address.receive+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
+
+    console.log('derived: ', derived);
+    if (isEVM) {
+      var evm_account = wally_fn.Web3PrivToAddress(derived.keys.privkey);
+
+      console.log('evm_account receive: ', evm_account);
+
+      derived.keys.address = evm_account.address;
+      derived.keys.privkey = evm_account.privkey;
+      derived.keys.pubkey = '0x'+derived.keys.pubkey;
+    }
+
+
+    receive.push( derived );
+    derived = {};
   }
 
   //generate change addresses
   for (var i=0; i < wally_fn.gapLimit; i++) {
     //console.log('===coinjs.getMasterKeyFromMnemonic=== derivation_path: ' + derivation_path+'/'+i);
-    change.push( hd.derive_path(clientWallet.address.change+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics) );
+    derived = hd.derive_path(clientWallet.address.change+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
+
+    if (isEVM) {
+      var evm_account = wally_fn.Web3PrivToAddress(derived.keys.privkey);
+
+      console.log('evm_account change: ', evm_account);
+      derived.keys.address = evm_account.address;
+      derived.keys.privkey = evm_account.privkey;
+      derived.keys.pubkey = '0x'+derived.keys.pubkey;
+    }
+
+    change.push( derived );
+
+    derived = {};
   }
+  
+  var derivePath = (clientWallet?.childPath) ? clientWallet.childPath : clientWallet.path;
+  derivePath = wally_fn.stripLastPathComponent(derivePath);
+  var path = {'receive': clientWallet.address.receive, 'change': clientWallet.address.change, 'derivePath': derivePath};
 
   //console.log('derived: ', derived);
-  return {receive, change};
+  return {receive, change, path};
 
 };
+/*
+ @ generate the EVM address from private hexkey 
+ @ param array: h  (hex-string)
+*/
+wally_fn.Web3PrivToAddress = function (privkey) {
+  var evm_account = wweb3.eth.accounts.privateKeyToAccount(privkey);
+  var address = evm_account.address;
+  var privateKey = evm_account.privateKey;
+  return {'address': address, 'privkey': privateKey};
+}
+
+wally_fn.derivedToCompressed = function (derived) {
+  var derivedCompressed = [];
+
+  for (var i = 0; i<derived.length; i++) {
+    derivedCompressed[i] = {
+      'address': derived[i].keys.address,
+      'privkey': derived[i].keys.privkey,
+      'wif': derived[i].keys.wif,
+      'pubkey': derived[i].keys.pubkey,
+      'type': derived[i].type,
+      'version': derived[i].version,
+    };
+  }
+  return derivedCompressed;
+}
+
+/*
+ @ return if coinjs is set to EVM/Web3 coin
+*/
+wally_fn.isEVM = function () {
+  var isEVM = (coinjs.asset.chainModel == 'account' || coinjs.asset.platform == 'evm') ? true : false;
+  return isEVM
+}
+
+wally_fn.coinChainIs = function () {
+  var coinType;
+  if (coinjs.asset.chainModel == 'utxo')
+    coinType = 'utxo';
+  else if (coinjs.asset.chainModel == 'account' || coinjs.asset.chainModel == 'evm')
+    coinType = 'evm';
+
+  return coinType;
+
+};
+
+
+/**
+ * Removes the last component from a given path.
+ *
+ * @param {string} path - The path to remove the last component from.
+ * @returns {string} The path with the last component removed.
+ */
+wally_fn.stripLastPathComponent = function(path) {
+  const lastSlashIndex = path.lastIndexOf('/');
+  return lastSlashIndex !== -1 ? path.substring(0, lastSlashIndex) : path;
+}
 
 
 /*
@@ -1525,221 +1626,172 @@ Blackcoin 10
 
 //Tokens
 wally_fn.networks_tokens = {
-  mainnet : {
+  "mainnet" : {
     "ethereum": {
-      "dai" : {
-        symbol: 'DAI',      //ticker
+      "dai": {
+        type: 'ERC20',
+        platform: 'evm',
+        parent: "ethereum",
+        protocol: {
+          contract_address: "0x6b175474e89094c44da98b954eedeac495271d0f",
+          decimals: 18,
+        },
         asset: {
-          chainModel: 'ERC20',
-          platform: 'evm',
           name: 'DAI',
           slug: 'dai',
-          symbol: 'dai',
+          symbol: 'DAI',
           symbols: ['dai'],
           icon: './assets/images/crypto/multi-collateral-dai-dai-logo.svg',
-          
-          protocol: {
-            "type": "ERC20",
-            "protocol_data": {
-                "parent": "ethereum",
-                "contract_address": "0x6b175474e89094c44da98b954eedeac495271d0f"
-            }
-          },
         },
-        decimalPlaces:16,
       },
       "paxg" : {
-        symbol: 'PAXG',      //ticker
+        type: 'ERC20',
+        platform: 'evm',
+        parent: "ethereum",
+        protocol: {
+          contract_address: "0x45804880de22913dafe09f4980848ece6ecbaf78",
+          decimals:18,
+        },
         asset: {
-          chainModel: 'ERC20',
-          platform: 'evm',
           name: 'PAXG',
           slug: 'paxg',
-          symbol: 'paxg',
+          symbol: 'PAXG',      //ticker
           symbols: ['paxg'],
           icon: './assets/images/crypto/pax-gold-paxg-logo.svg',
           
-          protocol: {
-            "type": "ERC20",
-            "protocol_data": {
-                "parent": "ethereum",
-                "contract_address": "0x45804880de22913dafe09f4980848ece6ecbaf78"
-            }
-          },
         },
-        decimalPlaces:16,
       },
       "matic" : {
-        symbol: 'MATIC',      //ticker
+        type: 'ERC20',
+        platform: 'evm',
+        parent: "ethereum",
+        protocol: {
+          contract_address: "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0",
+          decimals:18,
+        },
         asset: {
-          chainModel: 'ERC20',
-          platform: 'evm',
           name: 'Polygon',
           slug: 'matic',
-          symbol: 'matic',
+          symbol: 'MATIC',      //ticker
           symbols: ['matic', 'polygon'],
           icon: './assets/images/crypto/polygon-matic-logo.svg',
-          
-          protocol: {
-            "type": "ERC20",
-            "protocol_data": {
-                "parent": "ethereum",
-                "contract_address": "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0"
-            }
-          },
         },
-        decimalPlaces:16,
       },
       "usdt" : {
-        symbol: 'USDT',      //ticker
+        type: 'ERC20',
+        platform: 'evm',
+        parent: "ethereum",
+        protocol: {
+          contract_address: "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          decimals:18,
+        },
         asset: {
-          chainModel: 'ERC20',
-          platform: 'evm',
           name: 'USDT',
           slug: 'usdt',
-          symbol: 'usdt',
+          symbol: 'USDT',      //ticker
           symbols: ['usdt'],
           icon: './assets/images/crypto/tether-usdt-logo.svg',
-          
-          protocol: {
-            "type": "ERC20",
-            "protocol_data": {
-                "parent": "ethereum",
-                "contract_address": "0xdac17f958d2ee523a2206206994597c13d831ec7"
-            }
-          },
         },
-        decimalPlaces:16,
       },
     },
     "bnb": {
       "dai" : {
-        symbol: 'DAI',      //ticker
+        type: 'ERC20',
+        platform: 'evm',
+        parent: "bnb",
+        protocol: {
+          contract_address: "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3",
+          decimals:18,
+        },
         asset: {
-          chainModel: 'ERC20',
-          platform: 'evm',
           name: 'DAI',
           slug: 'dai',
-          symbol: 'dai',
+          symbol: 'DAI',      //ticker
           symbols: ['dai'],
           icon: './assets/images/crypto/multi-collateral-dai-dai-logo.svg',
-          
-          protocol: {
-            "type": "ERC20",
-            "protocol_data": {
-                "parent": "matic",
-                "contract_address": "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3"
-            }
-          },
         },
-        decimalPlaces:16,
       },
       "paxg" : {
-        symbol: 'DAI',      //ticker
+        type: 'ERC20',
+        platform: 'evm',
+        parent: "bnb",
+        protocol: {
+          contract_address: "0x7950865a9140cb519342433146ed5b40c6f210f7",
+          decimals:18,
+        },
         asset: {
-          chainModel: 'ERC20',
-          platform: 'evm',
           name: 'PAXG',
           slug: 'paxg',
-          symbol: 'paxg',
+          symbol: 'DAI',      //ticker
           symbols: ['paxg'],
           icon: './assets/images/crypto/pax-gold-paxg-logo.svg',
-          
-          protocol: {
-            "type": "ERC20",
-            "protocol_data": {
-                "parent": "bnb",
-                "contract_address": "0x7950865a9140cb519342433146ed5b40c6f210f7"
-            }
-          },
         },
-        decimalPlaces:16,
       },
       "matic" : {
-        symbol: 'MATIC',      //ticker
+        type: 'ERC20',
+        platform: 'evm',
+        parent: "bnb",
+        protocol: {
+          contract_address: "0xcc42724c6683b7e57334c4e856f4c9965ed682bd",
+          decimals:18,
+        },
         asset: {
-          chainModel: 'ERC20',
-          platform: 'evm',
           name: 'Polygon',
           slug: 'matic',
-          symbol: 'matic',
+          symbol: 'MATIC',      //ticker
           symbols: ['matic', 'polygon'],
           icon: './assets/images/crypto/polygon-matic-logo.svg',
-          
-          protocol: {
-            "type": "ERC20",
-            "protocol_data": {
-                "parent": "bnb",
-                "contract_address": "0xcc42724c6683b7e57334c4e856f4c9965ed682bd"
-            }
-          },
         },
-        decimalPlaces:16,
       },
       "usdt" : {
-        symbol: 'USDT',      //ticker
+        type: 'ERC20',
+        platform: 'evm',
+        parent: "ethereum",
+        protocol: {
+          contract_address: "0x55d398326f99059ff775485246999027b3197955",
+          decimals:18,
+        },
         asset: {
-          chainModel: 'ERC20',
-          platform: 'evm',
           name: 'USDT',
           slug: 'usdt',
-          symbol: 'usdt',
+          symbol: 'USDT',      //ticker
           symbols: ['usdt'],
           icon: './assets/images/crypto/tether-usdt-logo.svg',
-          
-          protocol: {
-            "type": "ERC20",
-            "protocol_data": {
-                "parent": "ethereum",
-                "contract_address": "0x55d398326f99059ff775485246999027b3197955"
-            }
-          },
         },
-        decimalPlaces:16,
       },
     },
     "matic": {
       "dai" : {
-        symbol: 'DAI',      //ticker
+        type: 'ERC20',
+        platform: 'evm',
+        parent: "matic",
+        protocol: {
+          contract_address: "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
+          decimals:18,
+        },
         asset: {
-          chainModel: 'ERC20',
-          platform: 'evm',
           name: 'DAI',
           slug: 'dai',
-          symbol: 'dai',
+          symbol: 'DAI',      //ticker
           symbols: ['dai'],
           icon: './assets/images/crypto/multi-collateral-dai-dai-logo.svg',
-          
-          protocol: {
-            "type": "ERC20",
-            "protocol_data": {
-                "parent": "matic",
-                "contract_address": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063"
-            }
-          },
         },
-        decimalPlaces:16,
       },
       "usdt" : {
-        symbol: 'USDT',      //ticker
+        type: 'ERC20',
+        platform: 'evm',
+        parent: "matic",
+        protocol: {
+          contract_address: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+          decimals:18,
+        },
         asset: {
-          chainModel: 'ERC20',
-          platform: 'evm',
           name: 'USDT',
           slug: 'usdt',
-          symbol: 'usdt',
+          symbol: 'USDT',      //ticker
           symbols: ['usdt'],
           icon: './assets/images/crypto/tether-usdt-logo.svg',
-          
-          protocol: {
-            "type": "ERC20",
-            "protocol_data": {
-                "parent": "matic",
-                "contract_address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
-            }
-          },
         },
-        decimalPlaces:16,
       },
 
     },
@@ -1749,7 +1801,7 @@ wally_fn.networks_tokens = {
     
 
   },
-  testnet : {
+  "testnet" : {
   },
 };
 
@@ -2419,7 +2471,7 @@ wally_fn.networks_tokens = {
         txExtraTimeFieldValue: false, //....
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
-        decimalPlaces:16,
+        decimalPlaces:18,
         txRBFTransaction: false,
         developer: '0x183B539FBA8566f0f88bC9a43a6766F601fcFB99',
       },
@@ -2464,7 +2516,7 @@ wally_fn.networks_tokens = {
         txExtraTimeFieldValue: false, //....
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
-        decimalPlaces:16,
+        decimalPlaces:18,
         txRBFTransaction: false,
         developer: '0x183B539FBA8566f0f88bC9a43a6766F601fcFB99',
       },
@@ -2509,7 +2561,7 @@ wally_fn.networks_tokens = {
         txExtraTimeFieldValue: false, //....
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
-        decimalPlaces:16,
+        decimalPlaces:18,
         txRBFTransaction: false,
         developer: '0x183B539FBA8566f0f88bC9a43a6766F601fcFB99',
       },
@@ -2554,7 +2606,7 @@ wally_fn.networks_tokens = {
         txExtraTimeFieldValue: false, //....
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
-        decimalPlaces:16,
+        decimalPlaces:18,
         txRBFTransaction: false,
         developer: '0x183B539FBA8566f0f88bC9a43a6766F601fcFB99',
       },
@@ -2729,7 +2781,7 @@ wally_fn.networks_tokens = {
           name: 'Ethereum-Goerli',
           slug: 'ethereum-goerli-erc20',
           symbol: 'ETH-Goerli',
-          symbols: ['eth-goerli', 'ethereum-goerli', 'goerli'],
+          symbols: ['eth-goerli', 'ethereum-goerli', 'goerli', 'eth'],
           icon: './assets/images/crypto/ethereum-eth-logo.svg',
           network: 'testnet',
           supports_address : ['single'],
@@ -2758,7 +2810,7 @@ wally_fn.networks_tokens = {
         txExtraTimeFieldValue: false, //....
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
-        decimalPlaces:16,
+        decimalPlaces:18,
         txRBFTransaction: false,
         developer: '0x000',
       },
@@ -2932,7 +2984,7 @@ wally_fn.networks_tokens = {
         txExtraTimeFieldValue: false, //....
         txExtraUnitField: false,
         txExtraUnitFieldValue: false,
-        decimalPlaces:16,
+        decimalPlaces:18,
         txRBFTransaction: false,
         developer: '0x000',
       },
@@ -3028,10 +3080,9 @@ wally_fn.sortObjectKeys = function (obj, descending = false) {
 function getTokensFromChain(chain, testnet = false) {
   const selectedChain = testnet ? wally_fn.networks_tokens.testnet : wally_fn.networks_tokens.mainnet;
 
-  if (!selectedChain.hasOwnProperty(chain)) {
+  if (!selectedChain.hasOwnProperty(chain))
     return {}; // Return an empty object if the chain is not found.
-  }
-
+  
   return selectedChain[chain];
 }
 

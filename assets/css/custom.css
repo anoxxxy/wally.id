@@ -2479,7 +2479,11 @@ a.item-donations:hover > svg {
   border-radius: 10px;
   
 }
-
+#coinjs_broadcast_api_select.dropdown-select.show,
+#coinjs_utxo_api_select.dropdown-select.show,
+#coinjs_network_select.dropdown-select.show {
+	z-index: 1099;
+}
 #coinjs_network_select.dropdown-select .dropdown-menu li {
 display: flex;
 line-height: 1;
@@ -2489,7 +2493,9 @@ height: 50px;
 .dropdown-select button > img{
   margin-right: .5rem !important;
 }
-
+#coinjs_network_select button .chain_model {
+	float: right;
+}
 
 .dropdown-select .dropdown-menu li:hover {
   background-color: #f4f3fd;
@@ -3530,4 +3536,91 @@ padding-left: 0.75rem;
 
 #openSeedPasswordBox {
 
+}
+
+/*modal content tabs*/
+
+/*
+.w-content-tabs .card-header {
+  padding: 0;
+  background: unset;
+}
+.w-content-tabs .nav-tabs {
+  display: block;
+  padding: 0px;
+  margin: 0px;
+  height: 48px;
+  overflow: hidden;
+  
+  
+  
+}
+.w-content-tabs .nav-tabs li {
+  display: inline-block; 
+}
+.w-content-tabs .nav-tabs li a {
+  background: transparent;
+  text-align: center;
+  transform: translate(0px, 20px);
+  display: block;
+  position: relative;
+  text-decoration: none;
+  padding: 0px 20px 20px 20px;
+  transition: all 0.4s ease-out;
+  border: 0;
+}
+.w-content-tabs .nav-tabs li a .icon {
+  display: block;
+  margin-bottom: 15px;
+  color: #7367f0;
+  font-size: 20px;
+  position:relative;
+  top: -6px;
+}
+.w-content-tabs .nav-tabs li a span {
+  display: block;
+  position: relative;
+  color: #7367f0;
+  font-size: 15px;
+  font-weight: 600;
+  bottom: 0px;
+  
+}
+.w-content-tabs .nav-tabs li a span:before {
+  content: "";
+  position: absolute;
+  background: #7367f0;
+  bottom: -4px;
+  right: 0;
+  left: 0;
+  margin: 0px auto;
+  border-radius: 100px;
+  height: 3px;
+  width: 3px;
+  transition: all 0.4s ease-out;
+}
+.w-content-tabs .nav-tabs li:hover a {
+  transform: translate(0px, -30px);
+  border: 0;
+}
+.w-content-tabs .nav-tabs li a.active {
+  transform: translate(0px, -30px);
+  border: 0;
+}
+.w-content-tabs .nav-tabs li a.active span:before {
+  height: 3px;
+  width: 48px;
+  
+}
+*/
+.w-content-tabs .nav-tabs a.nav-link {
+	font-weight: 500;
+}
+.w-content-tabs .nav-tabs .nav-link{
+	border: 0;
+}
+
+.w-content-tabs .nav-tabs .nav-item.show .nav-link, 
+.w-content-tabs .nav-tabs .nav-link.active {
+	border: 0;
 }

@@ -183,7 +183,8 @@ border: 0px solid #dfe3ea ;
   display: flex;
   min-height: calc(100% - 1rem);
   justify-content: flex-start;
-  top: 50px;
+  top: 0;
+  padding-top: 50px;
 }
 
 

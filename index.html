@@ -412,6 +412,50 @@
         <div class="tab-pane tab-content active" id="home">
           <!-- FEATURES -->
           <div class="tab-body">
+
+            <!--
+            <section class="py-1 py-md-11">
+              <div class="row">
+                <div class="col-12 w-content-tabs">
+                  <div class=" mt-3 tab-card">
+                    <div class="card-header tab-card-header">
+                      <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link " id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="One" aria-selected="true"><i class="icon bi bi-search"></i> <span>Chains</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Two" aria-selected="false"><i class="icon bi bi-globe"></i> <span>Tokens</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " id="three-tab" data-toggle="tab" href="#three" role="tab" aria-controls="Three" aria-selected="false"><i class="icon bi bi-gear"></i> <span>Settings</span></a>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div class="tab-content" id="myTabContent">
+                      <div class="tab-pane fade show active p-3" id="one" role="tabpanel" aria-labelledby="one-tab">
+                        <h5 class="card-title">Tab Card One</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>              
+                      </div>
+                      <div class="tab-pane fade p-3" id="two" role="tabpanel" aria-labelledby="two-tab">
+                        <h5 class="card-title">Tab Card Two</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>              
+                      </div>
+                      <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
+                        <h5 class="card-title">Tab Card Three</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>              
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          -->
+
             <section class="py-1 py-md-11">
               <div class="col-12  py-3 mt-6">
                 <div class="row no-gutters">
@@ -1126,7 +1170,7 @@
                                   <div class="icon"></div>
                                   <span class="wallet_address text-primary font-weight-bold"></span>
                                 </div>
-                                <img src="./assets/images/copy.svg" class="icon24 ml-2" data-content="Copy Address">
+                                <img src="./assets/images/copy.svg" class="icon24 ml-2">
                               </div>
 
                             </div>
@@ -1170,6 +1214,11 @@
                             <li class="nav-item">
                               <a class="nav-link" id="receive-tab" data-toggle="tab" href="#wallet/receive/bitcoin" data-target="#wallet_receive" data-asset="" role="tab">
                                 <img src="./assets/images/receive.svg" class="icon24"> Receive
+                              </a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="addresses-tab" data-toggle="tab" href="#wallet/addresses/bitcoin" data-target="#wallet_addresses" data-asset="" role="tab">
+                                <img src="./assets/images/wallet-1.svg" class="icon24"> Addresses
                               </a>
                             </li>
                             <li class="nav-item">
@@ -1496,6 +1545,125 @@
 
                             </div>
 
+                            <!-- Addresses -->
+                            <!-- Send Tab-->
+                            <div class="tab-pane fade" id="wallet_addresses" role="tabpanel" aria-labelledby="addresses-tab">
+
+                              <div class="">
+                                <div id="" class="walletAddresses ">
+
+
+                                  <div >
+
+                                    <!-- Receive Addresses -->
+                                    <div class="callout m-0 py-2" id="receiveAddresses">
+                                      <div>
+                                        <div class="input-group-callout">
+                                          <div class="callout-title text-muted text-primary">Receive Address</div>
+                                        </div>
+
+                                      </div>
+                                      
+                                      <table class="table table-striped">
+                                        <thead>
+                                          <tr>
+                                            <th class="text-muted">Path</th>
+                                            <th>Address</th>
+                                            <th class="text-right">Balance</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <th scope="row">1</th>
+                                            <td>abcd1234 <i class=" float-right bi bi-copy"></i></td>
+                                            <td class="text-right">0</td>
+                                          </tr>
+
+                                        </tbody>
+                                      </table>
+
+                                    </div>
+
+
+                                    <!-- Change Addresses -->
+                                    <div class="callout m-0 mt-3 py-2" id="changeAddresses">
+                                      <div>
+                                        <div class="input-group-callout">
+                                          <div class="callout-title text-muted text-primary">Change Address</div>
+                                        </div>
+
+                                      </div>
+                                      
+                                      <table class="table table-striped">
+                                        <thead>
+                                          <tr>
+                                            <th class="text-muted">Path</th>
+                                            <th>Address</th>
+                                            <th class="text-right">Balance</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <th scope="row">1</th>
+                                            <td>abcd1234 <i class=" float-right bi bi-copy"></i></td>
+                                            <td class="text-right">0</td>
+                                          </tr>
+                                          
+                                        </tbody>
+                                      </table>
+
+                                    </div>
+
+
+                                  </div>
+
+                                  <div class="row py-3">
+                                    <div class="col-12">
+                                      <div  class="alert alert-danger mt-3 mb-3 hidden"></div>
+                                    </div>
+
+                                    <div class="col-6 ">
+                                    </div>
+                                    <div class="col-6">
+                                      <a  href="javascript:;" class="btn btn-block btn-flat-primary addressAdd">
+                                        <i class="bi bi-plus"></i> Add a recipient
+                                      </a>
+                                    </div>
+                                  </div>
+
+
+                                  <div class="row py-3" >
+
+                                    <div class="col-12 m-0 p-0">
+                                      <div class="form-horizontal output callout">
+                                        <div class="col-6">
+                                          <label class="text-muted"><abbr title="Amount to pay in network fee">Transaction Fee</abbr>&nbsp;&nbsp;
+                                            <a href="javascript:;" ></a>
+                                          </label>
+                                          <input type="text" class="form-control" value="0.00001000" placeholder="0.00000000" >
+                                        </div>
+                                        <div class="col-6">
+                                          <label class="text-muted"><abbr title="Amount to donate to Wally.id">Donation</abbr></label>
+                                          <input type="text" class="form-control" value="0.001" placeholder="0.00000000" >
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+
+                                  <div class="row">
+                                    <div class="col-12 d-flex justify-content-end">
+
+                                      <button class="btn btn-sm btn-flat-warning " type="button" ><img src="./assets/images/reset.svg" class="icon28"> Reset</button>
+                                      <button class="btn btn-sm btn-flat-primary ml-2" type="button" ><img src="./assets/images/send.svg" class="icon28"> Send</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <!-- Settings -->
                             <div class="tab-pane fade" id="wallet_settings" role="tabpanel" aria-labelledby="settings-tab">
                               Settings
                               <br>
@@ -3779,10 +3947,11 @@
                       <div><input type="text" class="form-control hdpubkey" value="" readonly></div>
                     </div>
 
-                    <div class="col-12">
+                    <!-- <div class="col-12">
                       <b>Private Key(WIF) </b>
                       <div><input type="text" class="form-control hdwifkey" value="" readonly></div>
                     </div>
+                    -->
                     <div class="col-12 ">
                       <b>Private Key(HEX) </b>
                       <div><input type="text" class="form-control hdhexkey" value="" readonly></div>
@@ -6022,6 +6191,23 @@
         <div class="modal-body">
           <div class="bootstrap-dialog-body">
 
+            <div class="col-12 w-content-tabs">
+                  <div class="mt-0 tab-card">
+                    <div class="card-header tab-card-header">
+                      <ul class="nav nav-tabs card-header-tabs" id="myTab3" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link " id="one-tab" data-toggle="tab" href="#one1" role="tab" aria-controls="One" aria-selected="true"><img src="./assets/images/chain.svg" class="icon icon24"> <span>Chains</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " id="two-tab" data-toggle="tab" href="#two2" role="tab" aria-controls="Two" aria-selected="false"><img src="./assets/images/coin.svg" class="icon icon24"> <span>Tokens</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " id="three-tab" data-toggle="tab" href="#three3" role="tab" aria-controls="Three" aria-selected="false"><img src="./assets/images/settings.svg" class="icon icon24"> <span>Settings</span></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
             <div class="col-12 py-2 mb-3 p-3">
 
 
@@ -6034,6 +6220,36 @@
             </div>
 
             <div class="bootstrap-dialog-message">
+
+
+              <section class="py-1 py-md-11">
+              <div class="row">
+                <div class="col-12 w-content-tabs">
+                  <div class=" mt-0 tab-card">
+                    
+
+                    <div class="tab-content hidden" id="myTabContent">
+                      <div class="tab-pane fade show active p-3" id="one1" role="tabpanel" aria-labelledby="one-tab">
+                        <h5 class="card-title">Tab Card One</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>              
+                      </div>
+                      <div class="tab-pane fade p-3" id="two2" role="tabpanel" aria-labelledby="two-tab">
+                        <h5 class="card-title">Tab Card Two</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>              
+                      </div>
+                      <div class="tab-pane fade p-3" id="three3" role="tabpanel" aria-labelledby="three-tab">
+                        <h5 class="card-title">Tab Card Three</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>              
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
 
 
               <table class="table table-hover custom-table">
@@ -6674,7 +6890,8 @@ iceee - remove me later
 
       console.log('modal-backdrop.show');
       if(bodyZeynep.hasClass('zeynep-opened')) {
-        $(".modal-backdrop").hide();
+        //$(".modal-backdrop").hide();
+        coinbinf.backdrop(false);
         console.log('remove modal-backdrop.show');
 
         leftPanel.close();
@@ -6688,7 +6905,8 @@ iceee - remove me later
       //$('.zeynep.left-panel').data('zeynep').open();
       leftPanel.open();
 
-      $("body").append("<div class='modal-backdrop fade show'></div>");
+      //$("body").append("<div class='modal-backdrop fade show'></div>");
+      coinbinf.backdrop();
 
     });
 
@@ -6696,7 +6914,8 @@ iceee - remove me later
     $('.panel_drawer.right-panel').on('click', function() {
       //$('.zeynep.right-panel').data('zeynep').open();
       rightPanel.open();
-      $("body").append("<div class='modal-backdrop fade show'></div>");
+      //$("body").append("<div class='modal-backdrop fade show'></div>");
+      coinbinf.backdrop();
     });
 
     /*
@@ -6726,7 +6945,8 @@ iceee - remove me later
         console.log('rightPanel: ', rightPanel);
         leftPanel.close();
         rightPanel.close();
-        $(".modal-backdrop").hide();
+        //$(".modal-backdrop").hide();
+        coinbinf.backdrop(false);
       }
     });
 
@@ -7142,7 +7362,7 @@ iceee - remove me later
     */
   </script>
 
-
+<div class="modal-backdrop fade show hidden"></div>
 </body>
 
 </html>
