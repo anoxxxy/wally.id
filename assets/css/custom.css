@@ -421,6 +421,15 @@ border-bottom:1px solid #F0F2F4;
   border-radius: 10px;
   -webkit-box-shadow: 0 7px 14px 0 rgba(65,69,88,.1),0 3px 6px 0 rgba(0,0,0,.07);
   box-shadow: 0 7px 14px 0 rgba(65,69,88,.1),0 3px 6px 0 rgba(0,0,0,.07);
+  /*
+  animation-duration: .3s;
+  animation-fill-mode: both;
+  */
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transition: margin 0.4s ease-in-out;
+  margin-top:8px;
 }
 .dropdown.show:before {	/*dropdown backdrop*/
     position: fixed;
@@ -432,12 +441,27 @@ border-bottom:1px solid #F0F2F4;
     background: rgba(100,100,100,0.5);
     content: '';
     z-index: 1;
+    
 }
+.dropdown-menu.show {
+  
+  visibility: visible;
+  margin-top:1px;
+  opacity: 1;
+}
+  
 
+
+
+/*
+.dropdown.show {
+	transition:.3s ease all;
+}
+*/
 /*dropdown animation*/
 /*
-.dropdown-menu {display: block;visibility: hidden;opacity:0;transform: translateX(50px);transition:.5s ease all;}
-.dropdown-menu.show {display: block;visibility: visible;opacity:1;transform: translateX(0px);transition:.5s ease all;}
+.dropdown-menu {display: block;visibility: hidden;opacity:0;transform: translateY(-1px); margin-top: 0px; transition:.5s ease all;}
+.dropdown-menu.show {display: block;visibility: visible;opacity:1; transform: translateY(8px);margin-top: 8px;transition:.5s ease all;}
 */
 
 
@@ -3504,6 +3528,9 @@ padding-left: 0.75rem;
 .jBox-wrapper {
 	max-width: 280px;
 }
+.jBox-wrapper.jBox-notice-content-loader {
+	max-width: 280px;	
+}
 .jBox-wrapper.jBox-TooltipDark .jBox-container {
 	width: auto;
   
@@ -3518,6 +3545,31 @@ padding-left: 0.75rem;
   opacity: 0.95;
 }
 */
+
+.jBox-Notice.jBox-notice-content-loader {
+  position: fixed !important;
+  display: flex;
+  
+}
+
+.inception-overlay {
+  background-color: rgba(0, 0, 0, .35);
+}
+
+.inception-modal button {
+  cursor: pointer;
+  border: 0;
+  margin: 0;
+  display: block;
+  width: 100%;
+  color: #fff;
+  background: #000;
+  height: 40px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+
 
 #walletAddress {
 	font-size: 0.92rem;
@@ -3623,4 +3675,30 @@ padding-left: 0.75rem;
 .w-content-tabs .nav-tabs .nav-item.show .nav-link, 
 .w-content-tabs .nav-tabs .nav-link.active {
 	border: 0;
+}
+
+
+
+
+.gx {background-size:contain; padding:10% 0; text-align:center; width:100%; height:auto;}
+
+.gx-logo {animation:tronFilter 12s infinite; 
+    fill:#000000; stroke:#666; stroke-width:2; stroke-linecap:round; stroke-linejoin:bevel;}
+
+@keyframes tronFilter {
+    0% {-webkit-filter: drop-shadow( -.75px 0px 2px #31eefd );
+                filter: drop-shadow( -.75px 0px 2px #31eefd ); stroke:#31eefd;} 
+   22% {-webkit-filter: drop-shadow( -.75px 0px 2px #1d85bb );
+                filter: drop-shadow( -.75px 0px 2px #1d85bb ); stroke:#1d85bb;} /* end blue */  
+    
+   42% {-webkit-filter: drop-shadow( -.75px 0px 2px #884173 );
+                filter: drop-shadow( -.75px 0px 2px #884173 ); stroke:#884173;}
+   62% {-webkit-filter: drop-shadow( -.75px 0px 2px #ff0071 );
+                filter: drop-shadow( -.75px 0px 2px #ff0071 ); stroke:#ff0071;} /* end magenta */  
+   82% {-webkit-filter: drop-shadow( -.75px 0px 2px #009997 );
+                filter: drop-shadow( -.75px 0px 2px #009997 ); stroke:#009997;}
+   92% {-webkit-filter: drop-shadow( -.75px 0px 2px #92ffd7 );
+                filter: drop-shadow( -.75px 0px 2px #92ffd7 ); stroke:#92ffd7;} /* end green */      
+  100% {-webkit-filter: drop-shadow( -.75px 0px 2px #31eefd );
+                filter: drop-shadow( -.75px 0px 2px #31eefd ); stroke:#31eefd;} 
 }

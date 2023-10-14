@@ -20,7 +20,15 @@
   wally_fn.assetInfo = {}; //has a copy of "coinjs.asset" object, not used besides dabi (data-binding)
 
   //for mnemonic seeds and master XYZ keys 
-  wally_fn.gapLimit = 10;
+  wally_fn.gap = {
+    'limit': 5, //total receive/change addresses to generate initially
+    'receive': 5, //total receive addresses to generate uponclick  load more button
+    'change': 5, //total change addresses to generate upon click load more button
+    'receivePage': 0, //page 2 -> shows 2*'receive' addresses
+    'changePage': 0,
+    'timeout': 30000, //timeout for loading more addresses, in ms
+  };
+
 
     //not used yet
   wally_fn.wallet_settings = {
@@ -694,7 +702,9 @@ wally_fn.generatePassword = function(length = 64, wishlist = '0123456789ABCDEFGH
       
       // Determine the BIP protocol based on the first integer
       var bipProtocol = 'hdkey';  //default to hdkey/bip32
-      if (firstInteger === 49) {
+      if (firstInteger === 44) {
+        bipProtocol = 'bip44';
+      }else if (firstInteger === 49) {
         bipProtocol = 'bip49';
       } else if (firstInteger === 84) {
         bipProtocol = 'bip84';
@@ -857,7 +867,7 @@ wally_fn.getMasterKeyFromMnemonicOld = async function (password, mnemonic, bip39
         
 
 
-    for (var i=0; i < wally_fn.gapLimit; i++) {
+    for (var i=0; i < wally_fn.gap.limit; i++) {
       console.log('===coinjs.getMasterKeyFromMnemonic=== derivation_path: ' + derivation_path+'/'+i);
       derived.push( hd.derive_path(derivation_path+'/'+i, bipProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics) );
     }
@@ -904,7 +914,121 @@ wally_fn.getMasterKeyFromMnemonic = async function (password, mnemonic, protocol
 
 }
 
-wally_fn.getMasterKeyAddresses = async function (masterKey, client_wallet_protocol_index = 0) {
+/*
+ @ Load more Addresses from Master key
+ addressType (string), 'both', 'change', 'receive'
+*/
+wally_fn.loadWalletSeedAddresses = async function(addressType = 'both'){
+  console.log('==wally_fn.loadWalletSeedAddresses==');
+
+  coinbinf.NoticeLoader.setTitle(`<img src="${coinjs.asset.icon}" class="coin-icon icon24"> Loading Addresses...`);
+  coinbinf.NoticeLoader.open();
+  
+  var masterKey = login_wizard.profile_data.seed.keys.privkey;
+
+  var hd = coinjs.hd(masterKey);
+  var isEVM = wally_fn.isEVM();
+  var client_wallet_protocol_index = login_wizard.profile_data.seed.protocol.index;
+
+  var clientWallet = login_wizard.clientWallets[client_wallet_protocol_index];
+
+  var hardenedAddress = "";
+  if (clientWallet.address.hardened)
+    hardenedAddress = "'";
+
+  //generate receive addresses
+  var derived = {};
+  var receive = [];
+  var change = [];
+  var tmp = {};   //for tmp storing derived addresses
+
+
+  var addressesLength = 0;  //counts the total addresses for the user
+
+  if (addressType === 'receive' || addressType === 'both') {
+     addressesLength = (login_wizard.profile_data.generated[ coinjs.asset.slug ].addresses.receive).length;
+     var nextGapLimit = addressesLength + wally_fn.gap.receive;
+
+     for (var i=addressesLength; i < nextGapLimit; i++) {
+      derived = hd.derive_path(clientWallet.address.receive+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
+
+      
+      coinbinf.NoticeLoader.setContent(`<span class="text-primary">Receive Addresses: <strong>${i+1}</strong>/${nextGapLimit}</span>`);
+      await wally_fn.timeout(5);
+      //console.log('derived: ', derived);
+      if (isEVM) {
+        var evm_account = wally_fn.Web3PrivToAddress(derived.keys.privkey);
+
+        derived.keys.address = evm_account.address;
+        derived.keys.privkey = evm_account.privkey;
+        derived.keys.pubkey = '0x'+derived.keys.pubkey;
+      }
+
+      //console.log('derived: ', derived);
+      tmp = {
+        'address': derived.keys.address,
+        'privkey': derived.keys.privkey,
+        'pubkey': derived.keys.pubkey,
+        'type': derived.type,
+        'version': derived.version,
+        'wif': derived.keys.wif,  
+      };
+
+      (login_wizard.profile_data.generated[ coinjs.asset.slug ].addresses.receive).push( tmp );
+      
+      receive = derived;
+      derived = {};
+    }
+  }
+
+  if (addressType === 'change' || addressType === 'both') {
+     addressesLength = (login_wizard.profile_data.generated[ coinjs.asset.slug ].addresses.change).length;
+     var nextGapLimit = addressesLength + wally_fn.gap.change;
+
+     for (var i=addressesLength; i < nextGapLimit; i++) {
+      derived = hd.derive_path(clientWallet.address.change+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
+
+      
+      coinbinf.NoticeLoader.setContent(`<span class="text-primary">Change Addresses: <strong>${i+1}</strong>/${nextGapLimit}</span>`);
+      await wally_fn.timeout(5);
+      //console.log('derived: ', derived);
+      if (isEVM) {
+        var evm_account = wally_fn.Web3PrivToAddress(derived.keys.privkey);
+
+        derived.keys.address = evm_account.address;
+        derived.keys.privkey = evm_account.privkey;
+        derived.keys.pubkey = '0x'+derived.keys.pubkey;
+      }
+
+      //console.log('derived: ', derived);
+      tmp = {
+        'address': derived.keys.address,
+        'privkey': derived.keys.privkey,
+        'pubkey': derived.keys.pubkey,
+        'type': derived.type,
+        'version': derived.version,
+        'wif': derived.keys.wif,  
+      };
+      (login_wizard.profile_data.generated[ coinjs.asset.slug ].addresses.change).push( tmp );
+      
+      change = derived;
+      derived = {};
+    }
+  }
+
+  coinbinf.NoticeLoader.close();
+  return {receive, change};
+}
+
+
+/*
+ @ Generate Addresses from Master key
+ derive is an object, including
+*/
+wally_fn.getMasterKeyAddresses = async function (masterKey, client_wallet_protocol_index = 0, receive_addresses = true, change_addresses = true) {
+  
+  coinbinf.NoticeLoader.setTitle(`<img src="${coinjs.asset.icon}" class="coin-icon icon24"> Loading Addresses...`);
+  coinbinf.NoticeLoader.open();
   
   var receive = [];
   var change = [];
@@ -943,48 +1067,60 @@ wally_fn.getMasterKeyAddresses = async function (masterKey, client_wallet_protoc
           */
   var isEVM = wally_fn.isEVM();
 
-  for (var i=0; i < wally_fn.gapLimit; i++) {
-    //console.log('===coinjs.getMasterKeyFromMnemonic=== derivation_path: ' + derivation_path+'/'+i);
-    derived = hd.derive_path(clientWallet.address.receive+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
+  if (receive_addresses) {
+    for (var i=0; i < wally_fn.gap.limit; i++) {
+      //console.log('===coinjs.getMasterKeyFromMnemonic=== derivation_path: ' + derivation_path+'/'+i);
+      derived = hd.derive_path(clientWallet.address.receive+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
 
-    console.log('derived: ', derived);
-    if (isEVM) {
-      var evm_account = wally_fn.Web3PrivToAddress(derived.keys.privkey);
+      
+      coinbinf.NoticeLoader.setContent(`<span class="text-primary">Receive Addresses: <strong>${i+1}</strong>/${wally_fn.gap.limit}</span>`);
+      await wally_fn.timeout(5);
+      //console.log('derived: ', derived);
+      if (isEVM) {
+        var evm_account = wally_fn.Web3PrivToAddress(derived.keys.privkey);
 
-      console.log('evm_account receive: ', evm_account);
+        console.log('evm_account receive: ', evm_account);
 
-      derived.keys.address = evm_account.address;
-      derived.keys.privkey = evm_account.privkey;
-      derived.keys.pubkey = '0x'+derived.keys.pubkey;
+        derived.keys.address = evm_account.address;
+        derived.keys.privkey = evm_account.privkey;
+        derived.keys.pubkey = '0x'+derived.keys.pubkey;
+      }
+
+
+      receive.push( derived );
+      derived = {};
     }
-
-
-    receive.push( derived );
-    derived = {};
   }
 
   //generate change addresses
-  for (var i=0; i < wally_fn.gapLimit; i++) {
-    //console.log('===coinjs.getMasterKeyFromMnemonic=== derivation_path: ' + derivation_path+'/'+i);
-    derived = hd.derive_path(clientWallet.address.change+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
+  if (change_addresses) {
+    for (var i=0; i < wally_fn.gap.limit; i++) {
+      //console.log('===coinjs.getMasterKeyFromMnemonic=== derivation_path: ' + derivation_path+'/'+i);
+      derived = hd.derive_path(clientWallet.address.change+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
 
-    if (isEVM) {
-      var evm_account = wally_fn.Web3PrivToAddress(derived.keys.privkey);
+      coinbinf.NoticeLoader.setContent(`<span class="text-primary">Change Addresses:  <strong>${i+1}</strong>/${wally_fn.gap.limit}</span>`);
+      await wally_fn.timeout(5);
+      if (isEVM) {
+        var evm_account = wally_fn.Web3PrivToAddress(derived.keys.privkey);
 
-      console.log('evm_account change: ', evm_account);
-      derived.keys.address = evm_account.address;
-      derived.keys.privkey = evm_account.privkey;
-      derived.keys.pubkey = '0x'+derived.keys.pubkey;
+        console.log('evm_account change: ', evm_account);
+        derived.keys.address = evm_account.address;
+        derived.keys.privkey = evm_account.privkey;
+        derived.keys.pubkey = '0x'+derived.keys.pubkey;
+      }
+
+      change.push( derived );
+
+      derived = {};
     }
-
-    change.push( derived );
-
-    derived = {};
   }
   
   var derivePath = (clientWallet?.childPath) ? clientWallet.childPath : clientWallet.path;
   derivePath = wally_fn.stripLastPathComponent(derivePath);
   var path = {'receive': clientWallet.address.receive, 'change': clientWallet.address.change, 'derivePath': derivePath};
+
+  
+  coinbinf.NoticeLoader.close();
 
   //console.log('derived: ', derived);
   return {receive, change, path};
@@ -1049,6 +1185,94 @@ wally_fn.stripLastPathComponent = function(path) {
 }
 
 
+
+/*
+@ Generate Wallet addresses for a coin
+param array: s  (seed or master key)
+*/
+wally_fn.generateWalletMnemonicAddresses = async function(p, s, protocol, clientProtocolIndex){
+  console.log('=================wally_fn.generateWalletMnemonicAddresses=================', p, s, protocol, clientProtocolIndex);
+  var isEVM = wally_fn.isEVM();
+
+  var deriveReceiveAddresses = true;
+  var deriveChangeAddresses = true;
+  if (isEVM) {
+    deriveChangeAddresses = false;
+  }
+
+  //generate mnemonic derivation for each coin/asset
+        login_wizard.profile_data.seed.keys = await wally_fn.getMasterKeyFromMnemonic(p, s, protocol, clientProtocolIndex);
+        //login_wizard.profile_data.seed.addresses
+        var seed_addresses = await wally_fn.getMasterKeyAddresses(login_wizard.profile_data.seed.keys.privkey, clientProtocolIndex, deriveReceiveAddresses, deriveChangeAddresses);
+        
+        //extract only privkey,pubkey and address from derived data
+        var receiveAddresses = wally_fn.derivedToCompressed(seed_addresses.receive);
+        var changeAddresses = wally_fn.derivedToCompressed(seed_addresses.change);
+        
+        console.log('seed_addresses: ', seed_addresses);
+        login_wizard.profile_data.seed.path = seed_addresses.path;
+
+        console.log('receiveAddresses: ', receiveAddresses);
+        console.log('changeAddresses: ', changeAddresses);
+        console.log('wally_fn.coinChainIs(): ', wally_fn.coinChainIs());
+        var coinGenerated = {
+          //'name': coinjs.asset.name,
+          //'symbol': coinjs.asset.symbol,
+          'chainModel': coinjs.asset.chainModel,
+          'seed': {
+            'keys': login_wizard.profile_data.seed.keys,
+            'protocol': protocol,
+            'protocolIndex': clientProtocolIndex,
+            'path': seed_addresses.path,
+          },
+          0: {
+            'address': receiveAddresses[0].address,
+            'addresses_supported': {
+              'compressed': {
+                'address': receiveAddresses[0].address,
+                'key': ((wally_fn.coinChainIs() == 'utxo') ? receiveAddresses[0].wif: receiveAddresses[0].privkey),
+                'wif': ((wally_fn.coinChainIs() == 'utxo') ? receiveAddresses[0].wif: ''),
+                'hexkey': ((wally_fn.coinChainIs() == 'utxo') ? receiveAddresses[0].privkey : (receiveAddresses[0].privkey).slice(2)),
+                'public_key': receiveAddresses[0].pubkey,
+              },
+            },
+          },
+        };
+      
+        login_wizard.profile_data.generated[coinjs.asset.slug] = coinGenerated;
+        //login_wizard.profile_data.generated[coinjs.asset.slug].name = coinjs.asset.name;
+        //login_wizard.profile_data.generated[coinjs.asset.slug].symbol = coinjs.asset.symbol;
+
+        login_wizard.profile_data.generated[coinjs.asset.slug].addresses = {'receive': receiveAddresses, 'change': changeAddresses};
+
+        //if the coin is EVM, apply receive and change addresses to all EVM chains since they use same addresses
+        
+        if (isEVM) {
+          //loop through the coins, and if evm chains is found add receive addresses to them all
+          for (var [key, value] of Object.entries(wally_fn.networks[ coinjs.asset.network ])) {
+            if (value.asset.platform === 'evm') {
+              console.log('value.asset.name: ', value.asset.name);
+              console.log('value.asset.symbol: ', value.asset.symbol);
+              console.log('value.asset.slug: ', value.asset.slug);
+              //coinGenerated['name'] = value.asset.name;
+              //coinGenerated['symbol'] = value.asset.symbol;
+              login_wizard.profile_data.generated[value.asset.slug] = coinGenerated;
+              //login_wizard.profile_data.generated[value.asset.slug].name = value.asset.name;
+              //login_wizard.profile_data.generated[value.asset.slug].symbol = value.asset.symbol;
+
+              //console.log('icee name: ', login_wizard.profile_data.generated[value.asset.slug].name)
+              //console.log('icee symbol: ', login_wizard.profile_data.generated[value.asset.slug].symbol)
+            }
+          }
+        }
+        //set back the original object properties
+        //coinGenerated.name = coinjs.asset.name;
+        //coinGenerated.symbol = coinjs.asset.symbol;
+
+        return {coinGenerated, 'addresses': {'receive': receiveAddresses, 'change': changeAddresses}};
+
+}
+
 /*
 @ Generate Wallet addresses upon Login, compressed or single keys for assets/coins
 param array: h  (hex-string for private key)
@@ -1084,6 +1308,8 @@ wally_fn.generateAllWalletAddresses = async function(h){
   var walletAddress = {};  //used for regular address generation
   var keys_combined = []; //used for multisig address generation
   var keys_length = h.length;
+  
+  
 
   console.log('h: ', h);
   console.log('keys_length: '+ keys_length);
@@ -1099,8 +1325,7 @@ wally_fn.generateAllWalletAddresses = async function(h){
       //asset supports compressed keys?
       if ( (value.asset.supports_address).includes( 'compressed') ) {
 
-        //UI rendering
-        login_wizard.initCoinList(coinListModal);
+        
 
         $.extend(coinjs, value);  //change asset and generate address
 
@@ -1134,6 +1359,11 @@ wally_fn.generateAllWalletAddresses = async function(h){
             walletAddress[ key ][i]['address']  = genAddress.wif?.compressed?.address || '';
             walletAddress[ key ][i]['addresses_supported']  = genAddress.wif;
             walletAddress[ key ][i]['chainModel']  = value.asset.chainModel;
+
+
+            //UI rendering
+            //login_wizard.initCoinList(coinListModal, {'addresses': genAddress.wif, 'chainModel': value.asset.chainModel});
+            login_wizard.initCoinList(coinListModal);
 
             if (account_tmp) {
               walletAddress[key][i].seed = account_tmp;
@@ -1170,8 +1400,7 @@ wally_fn.generateAllWalletAddresses = async function(h){
 
       if ( (value.asset.supports_address).includes('single') ) {
 
-        //UI rendering
-        login_wizard.initCoinList(coinListModal);
+        
 
         $.extend(coinjs, value);  //change asset and generate address
 
@@ -1201,12 +1430,13 @@ wally_fn.generateAllWalletAddresses = async function(h){
           //var evm_account = wweb3.eth.accounts.privateKeyToAccount('0d11db7762acfdf1fec7518cd5ad5517ccfed719ed4bf228f1d0c5138273a915');
           
           var evm_account = wweb3.eth.accounts.privateKeyToAccount(account_key);
-
+          evm_account.publicKey = '0x'+coinjs.privkey2pubkey(h[i], true)['pubkey'];
           console.log('evm_account privateKeyToAccount: ', evm_account);
             
           walletAddress[key][i] = {};
           walletAddress[key][i].address = evm_account.address;
           walletAddress[key][i].privateKey = evm_account.privateKey;
+          walletAddress[key][i].publicKey = evm_account.publicKey;
           walletAddress[ key ][i]['chainModel']  = value.asset.chainModel;
           
           //do we have a token protocol
@@ -1232,7 +1462,9 @@ wally_fn.generateAllWalletAddresses = async function(h){
             walletAddress[key][i].seed = account_tmp;
           }
 
-
+          //UI rendering
+          //login_wizard.initCoinList(coinListModal);
+          //login_wizard.initCoinList(coinListModal, {'addresses': evm_account, 'chainModel': value.asset.chainModel});
           
 
           /*
@@ -2886,7 +3118,7 @@ wally_fn.networks_tokens = {
           //bip84/p2wpkh - Derives segwit + bech32 addresses from seed, zprv/zpub and vprv/vpub in javascript
           bip84 : {'prv':0x04358394, 'pub':0x043587cf}, // zpub
           bip_path: 1,
-          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, /*'hrp':'dogecointestnet'*/},
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'dogecointestnet'},
           
           
         txExtraTimeField: false,    //Set to true for PoS coins

@@ -117,6 +117,12 @@ $(document).ready(function() {
   coinbinf.receiveAddresses = $('#receiveAddresses');
   coinbinf.changeAddresses = $('#changeAddresses');
 
+  	//buttons for loading more seed addresses
+  coinbinf.loadReceiveAddresses = $('#loadReceiveAddresses');
+  coinbinf.loadChangeAddresses = $('#loadChangeAddresses');
+  
+
+
 	//***Initialize/Set default Network
   wally_kit.initNetwork($('input[type=radio][name=radio_selectNetworkType]'));
 
@@ -173,7 +179,7 @@ profile_data = {
 
 
 
-	$("#openBtn").click(function(){
+	$("#openBtn").click( async function(){
 
 		console.log('openBtn clicked');
 
@@ -214,7 +220,7 @@ profile_data = {
 		var adr_legacy = login_wizard.profile_data.generated[choosenCoin][0].address;	//legacy (compressed)
 		var wif = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.compressed.key;	
 		var pubkey = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.compressed.public_key;	
-		var hexkey = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.compressed.hexkey;	
+		var hexkey = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.compressed.hexkey || '';	
 
 		var coinType = wally_fn.coinChainIs();
 		if (coinType === 'utxo') {
@@ -229,6 +235,10 @@ profile_data = {
 
 				var adr_segwit = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.compressed.segwit.address;	//segwit
 				var adr_segwit_redeem = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.compressed.segwit.redeemscript;	//segwit
+
+				console.log('hexkey: ', hexkey);
+				if (hexkey == '' || !hexkey)
+					hexkey = login_wizard.profile_data.password.keys.hex_key;
 			}
 		}
 		
@@ -287,10 +297,16 @@ profile_data = {
 		//walletBalance();
 
 		//generate a list of user assets
-		wally_kit.listUserAssets();
+		wally_kit.walletListAssets();
+
+
+		//generate key addresses
+		//if (login_wizard.profile_data.login_type === 'password')
+		//wally_kit.walletlistKeyAddresses();
 
 		//generate mnemonic addresses
-		wally_kit.listUserAddresses();
+		//if (login_wizard.profile_data.login_type === 'mnemonic' || login_wizard.profile_data.login_type === 'seed')
+			//await wally_kit.walletListSeedAddresses();
 
 
 		//set body to user is auth!
@@ -3370,7 +3386,10 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			    const hex_cmp_prv = Crypto.util.bytesToHex(coinjs.numToBytes(prv, 4).reverse());
 			    const hex_cmp_pub = Crypto.util.bytesToHex(coinjs.numToBytes(pub, 4).reverse());
 
-			    if (hex === hex_cmp_prv || hex === hex_cmp_pub) {
+			    console.log(`type ${type}  hex_cmp_prv:  ${hex_cmp_prv}`);
+			    console.log(`type ${type}  hex_cmp_prv:  ${hex_cmp_pub}`);
+			    
+			    if (hex == hex_cmp_prv || hex == hex_cmp_pub) {
 
 				    var hd = coinjs.hd(s);
 				    console.log(`checkAndProcessHDKey xPrv ${type}`);
@@ -3399,7 +3418,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 				    $("#verifyHDaddress").removeClass("hidden");
 
-				    console.log(`verifyHDaddress checkAndProcessHDKey: BIP type: ${type}`);
+				    //console.log(`verifyHDaddress checkAndProcessHDKey: BIP type: ${type}`);
 		        derive_success = true;
 		        return true;
 			    }
@@ -3410,8 +3429,8 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			//check and process BIP derivations
 			if (
 			    checkAndProcessHDKey(coinjs.hdkey.prv, coinjs.hdkey.pub, 'hdkey') ||
-			    checkAndProcessHDKey(coinjs.bip49.prv, coinjs.bip49.pub, 'bip49') ||
-			    checkAndProcessHDKey(coinjs.bip84.prv, coinjs.bip84.pub, 'bip84')
+			    checkAndProcessHDKey(coinjs.bip49?.prv, coinjs.bip49?.pub, 'bip49') ||
+			    checkAndProcessHDKey(coinjs.bip84?.prv, coinjs.bip84?.pub, 'bip84')
 			) {
 				if (is_privkey)
 			    	$('#verifyHDaddress .verifyLinkGroup').addClass('hidden');
@@ -3429,6 +3448,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 
 		} catch (e) {
+			console.log('===coinjs.decodeHDaddress=== ERROR:', e);
 			return false;
 		}
 	}
@@ -3468,6 +3488,8 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		var d_prvkey ='';
 		var d_pubkey ='';
 		var d_addr = '';
+
+		//console.log(`index_start: ${index_end}, index_end: ${index_end}`)
 		for(var i=index_start;i<=index_end;i++){
 			//if($("#hdpathtype option:selected").val()=='simple'){
 				//var derived = hd.derive(i);
@@ -3480,17 +3502,23 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				var derivation_path = (bip_path.replace(/\/+$/, ""));
 				var derivation_path_protocol = wally_fn.extractBIPProtocol(derivation_path);
 
-				/*
-				console.log('===coinjs.deriveHDaddress=== extraced BIP: ' + bip_protocol);
+				
+				/*console.log('===coinjs.deriveHDaddress=== extraced BIP: ' + bip_protocol);
 				console.log('===coinjs.deriveHDaddress=== derivation_path: ' + derivation_path_protocol);
 				console.log('===coinjs.deriveHDaddress=== derivation_path electrum: ' + derivation_path+'/'+i+use_private_index);
+				console.log('===coinjs.deriveHDaddress=== derivation_path derivation_path: ' + derivation_path);
 				*/
+				
+				//if (derivation_path == 44)
+					//bip_protocol = 'bip44';
 				
 				
 
 				var derived = hd.derive_path(derivation_path+'/'+i+use_private_index, bip_protocol, derivation_path_protocol, coinbinf.bipAddressSemantics);
 				
+				//console.log('===coinjs.deriveHDaddress=== derived: ', derived)
 				//check if electrum master key should be generated
+				//do it only once!	
 				if (coinbinf.bip32Client.find('option:selected').text() === 'Electrum') {
 					if (i == index_start) {
 						
@@ -3506,7 +3534,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				} 
 
 				if (coinjs.asset.chainModel == 'utxo'){
-					console.log('utxo model');
+					//console.log('utxo model');
 					d_prvkey = (derived.keys.wif)?derived.keys.wif:'';
 					d_pubkey = (derived.keys.pubkey)?derived.keys.pubkey:'';
 					d_addr = derived.keys.address;
@@ -4921,6 +4949,36 @@ $(".blockie_wrapper").attr('title', 'Copy Address').attr('data-copy-content', ad
 //$(".blockie_wrapper").css("background-image", "url(" + makeBlockie('0x138854708D8B603c9b7d4d6e55b6d32D40557F4D') + ")");
 
 
+//jbox content loader
+var jbox_loader_id = 'jBoxTooltip-'+Math.floor(Math.random() * 999)+'_'+wally_fn.generatePassword(16, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
+coinbinf.NoticeLoader = new jBox('Notice', {
+	id: jbox_loader_id,
+	title: '<span class="text-muted">Loading...</span>',
+  content: '',
+  color: 'black',
+  autoClose: false,
+  addClass: 'jBox-notice-content-loader',
+  
+  blockScroll: true,
+  overlay: true,
+  //overlayClass: 'inception-overlay',
+  overlayClass: 'modal-backdrop',
+  
+  // Notices have a fixed position
+  // That's why you need to change the attribute option to move them
+  attributes: {
+    x: 'center',
+    y: 'center'
+  },
+  onClose: function() {
+    this.setTitle('');
+    this.setContent('');
+  }
+});
+//coinbinf.NoticeLoader.open();
+
+//coinbinf.NoticeLoader.setTitle();
+//coinbinf.NoticeLoader.setContent();
 
 //remove tooltip and popover after release, and replace with jBox Tooltip!
 	$('[title], [data-content]').each(function(index, value) {

@@ -323,10 +323,8 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 	coinjs.privkey2wif = function(h){
 		var r = Crypto.util.hexToBytes(h);
 
-		
 		if(coinjs.compressed==true){
 			r.push(0x01);
-			h = (h.toString()).padStart(64, '0');
 		}
 
 		r.unshift(coinjs.priv);
@@ -790,7 +788,6 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 						'privkey':privkeyHex,
 						'pubkey':pubkey,
 						'address':address,
-						//'address':coinjs.pubkey2address(pubkey),
 						'wif':coinjs.privkey2wif(privkeyHex),
 						};
 
@@ -813,14 +810,12 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 					*/
 
 					r.keys = {'pubkey': pubkeyHex,
-						
-						'address':address};
-						//'address':coinjs.pubkey2address(pubkeyHex)};
+						'address':coinjs.pubkey2address(pubkeyHex)};
 				} else {
 					r.type = 'invalid';
 				}
 
-				r.keys_extended = r.extend();
+				r.keys_extended = r.extend(bip);
 				r.bip_master_key = data;
 
 				coinjs.compressed = c; // reset to default
@@ -913,14 +908,12 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 					child_index += 0x80000000;
 
 				//hdp.bip_derive_protocol = derivation_protocol;
-
-				//console.log(`==derive_path=== hdp child_index: ${child_index}, bip: ${bip}, derivation_protocol: ${derivation_protocol}, ${bip_address_semantics}`)
 				hdp = hdp.derive(child_index, derivation_protocol, bip_address_semantics);
-				//if(!hdp)
-					//return;
-				//console.log('==derive_path=== hdp: ', hdp);
+				if(!hdp)
+					return;
+				console.log('==derive_path=== hdp: ', hdp);
 				var key = ((hdp.keys_extended.privkey) && hdp.keys_extended.privkey!='') ? hdp.keys_extended.privkey : hdp.keys_extended.pubkey;
-				//console.log('==derive_path=== hdp key: ', key);
+				
 				//if (i === 1)
 					hdp.bip_master_key = key;
 					//this.bip_electrum = key;
@@ -931,7 +924,6 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				//key.bip_derive_protocol = derivation_protocol;
 				//if (key != '')
 				hdp = coinjs.hd(key, derivation_protocol, bip_address_semantics);
-				//console.log('==derive_path=== hdp coinjs.hd hdp: ', hdp);
 				//console.log('==r.derive_path i:'+i+' hdp2: ', hdp);
 				//hdp.bip_derive_protocol = derivation_protocol;
 				
@@ -993,92 +985,18 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 		// derive key from index
 		r.derive = function(i, derivation_protocol, bip_address_semantics = ''){
-			//console.log('===r.derive=== bip_derive_protocol i: ', i, derivation_protocol, bip_address_semantics);
-
-			//if (!this.keys)	//WTF, no object? return!
-				//return;
+			
+			if (!this.keys)	//WTF, no object? return!
+				return;
 
 			//console.log('===r.derive=== bip_derive_protocol: ', this.keys);
 			//console.log('===r.derive=== bip_derive_protocol this.keys.privkey: ', this.keys.privkey);
 			i = (i)?i:0;
-			//http://aaronjaramillo.org/bip-44-hierarchical-deterministic-wallets
-			//m / 0x8000002C / 0x80000000 / 0x80000000 / 0x00 / 0x01
-			/*
-			The first three levels of a BIP 44 key structure are derived via hardened derivation 
-			which is signaled by setting the highest order bit of the index to 1. 
-			Levels with hardened derivation are denoted with the “prime” symbol (x’).
-
-				m / purpose' / coin_type' / account' / change / address_index
-				m / 44' / 0' / 0' / 0 / 1
-
-				This key path, with the highest bit set, would be derived from the following indices in hexadecimal.
-				m / 0x8000002C / 0x80000000 / 0x80000000 / 0x00 / 0x01
-
-			BIP 44 defines six generations of child keys derived by using an index specific to the keys use case. 
-			This allows the user to store the mnemonic of the seed and be able to generate keys based on their purpose.
-			*/
-
-			//this works with coinomi ledger, seed: xprv9s21ZrQH143K43m2VZ51HrLrMZuv4D4E7Yv58qw1KVSejmRUUmm1PRgLS19GPXVdbMz6Ge9qZN75CaLMkTSCCPLaDMTV9kiZYgrvXSkfrZ8
-
-			if (derivation_protocol === 'bip44') {
-				//console.log('===r.derive=== bip_derive_protocol bip44 ');
-				//console.log('===r.derive=== bip_derive_protocol i: ', i);
-				if (i == 0x00) {
-					//console.log('===r.derive=== bip_derive_protocol 0x00 i: ', i);
-					var blob = (Crypto.util.hexToBytes(this.keys.pubkey)).concat(coinjs.numToBytes(i,4).reverse());
-				} else if (i <= 0x01) {
-					//console.log('===r.derive=== bip_derive_protocol 0x01 i: ', i);
-					var blob = (Crypto.util.hexToBytes(this.keys.pubkey)).concat(coinjs.numToBytes(i,4).reverse());
-				} else if (i < 0x80000000) {
-					//console.log('===r.derive=== bip_derive_protocol 0x80000000 i: ', i);
-					var blob = (Crypto.util.hexToBytes(this.keys.pubkey)).concat(coinjs.numToBytes(i,4).reverse());
-					//var blob = (Crypto.util.hexToBytes("00").concat(Crypto.util.hexToBytes(this.keys.privkey)).concat(coinjs.numToBytes(i,4).reverse()));
-				} else if (i <= 0x8000002c) {
-					//console.log('===r.derive=== bip_derive_protocol 0x8000002c i: ', i);
-					//var blob = (Crypto.util.hexToBytes("00").concat(Crypto.util.hexToBytes(this.keys.privkey)).concat(coinjs.numToBytes(i,4).reverse()));
-					var blob = (Crypto.util.hexToBytes("00").concat(Crypto.util.hexToBytes(this.keys.privkey)).concat(coinjs.numToBytes(i,4).reverse()));
-				} else {
-					//console.log('===r.derive=== bip_derive_protocol else i: ', i);
-					//var blob = (Crypto.util.hexToBytes(this.keys.pubkey)).concat(coinjs.numToBytes(i,4).reverse());
-					var blob = (Crypto.util.hexToBytes("00").concat(Crypto.util.hexToBytes(this.keys.privkey)).concat(coinjs.numToBytes(i,4).reverse()));
-					//var blob = (Crypto.util.hexToBytes(this.keys.pubkey)).concat(coinjs.numToBytes(i,4).reverse());
-				}
-
+			if (i >= 0x80000000) {
+				var blob = (Crypto.util.hexToBytes("00").concat(Crypto.util.hexToBytes(this.keys.privkey)).concat(coinjs.numToBytes(i,4).reverse()));
 			} else {
-				/*console.log('===r.derive=== bip_derive_protocol ELSE: ', i);
-				if (i == 0x00) {
-					console.log('===r.derive=== bip_derive_protocol ELSE 0x00 i: ', i);
-					var blob = (Crypto.util.hexToBytes(this.keys.pubkey)).concat(coinjs.numToBytes(i,4).reverse());
-				} else if (i <= 0x01) {
-					console.log('===r.derive=== bip_derive_protocol ELSE 0x01 i: ', i);
-					var blob = (Crypto.util.hexToBytes(this.keys.pubkey)).concat(coinjs.numToBytes(i,4).reverse());
-				} else if (i >= 0x80000000) {
-					console.log('===r.derive=== bip_derive_protocol ELSE 0x80000000 i: ', i);
-					var blob = (Crypto.util.hexToBytes("00").concat(Crypto.util.hexToBytes(this.keys.privkey)).concat(coinjs.numToBytes(i,4).reverse()));
-				} else {
-					console.log('===r.derive=== bip_derive_protocol ELSE ELSE i: ', i);
-					//var blob = (Crypto.util.hexToBytes(this.keys.pubkey)).concat(coinjs.numToBytes(i,4).reverse());
-					var blob = (Crypto.util.hexToBytes("00").concat(Crypto.util.hexToBytes(this.keys.privkey)).concat(coinjs.numToBytes(i,4).reverse()));
-
-				}
-				*/
-
-				if (i >= 0x80000000) {
-					var blob = (Crypto.util.hexToBytes("00").concat(Crypto.util.hexToBytes(this.keys.privkey)).concat(coinjs.numToBytes(i,4).reverse()));
-				} else {
-					var blob = (Crypto.util.hexToBytes(this.keys.pubkey)).concat(coinjs.numToBytes(i,4).reverse());
-				}
-
-				/*
-				if (i >= 0x80000000) {
-					var blob = (Crypto.util.hexToBytes("00").concat(Crypto.util.hexToBytes(this.keys.privkey)).concat(coinjs.numToBytes(i,4).reverse()));
-				} else {
-					var blob = (Crypto.util.hexToBytes(this.keys.pubkey)).concat(coinjs.numToBytes(i,4).reverse());
-				}
-				*/
-				//var blob = (Crypto.util.hexToBytes(this.keys.pubkey)).concat(coinjs.numToBytes(i,4).reverse());
+				var blob = (Crypto.util.hexToBytes(this.keys.pubkey)).concat(coinjs.numToBytes(i,4).reverse());
 			}
-			
 
 			var j = new jsSHA(Crypto.util.bytesToHex(blob), 'HEX');
  			var hash = j.getHMAC(Crypto.util.bytesToHex(r.chain_code), "HEX", "SHA-512", "HEX");
@@ -1095,26 +1013,20 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 			o.chain_code = ir;
 			o.child_index = i;
 
-			var address;
-
 			if(this.type=='private'){
 				// derive key pair from from a xprv key
 				k = il.add(new BigInteger([0].concat(Crypto.util.hexToBytes(this.keys.privkey)))).mod(ecparams.getN());
 				key = Crypto.util.bytesToHex(k.toByteArrayUnsigned());
 
-				key = (key.toString()).padStart(64, '0');
-
 				pubkey = coinjs.newPubkey(key);
 
+				var address;
 				//address = r.derive_to_address(key, derivation_protocol, bip_address_semantics);
 				//ice check if this is necessary later
-				//coinjs.privkey2wif('0x8dbe5faa0e6c1404a2ad6c5f8fa6f0c6b82ce567e17c99b3506a0fabbe04da')
-				//8dbe5faa0e6c1404a2ad6c5f8fa6f0c6b82ce567e17c99b3506a0fabbe04da01
-				//8dbe5faa0e6c1404a2ad6c5f8fa6f0c6b82ce567e17c99b3506a0fabbe04da
 
 				o.keys = {'privkey':key,
 					'pubkey':pubkey,
-					'wif': coinjs.privkey2wif(key),	//fix since "8dbe5faa0e6c1404a2ad6c5f8fa6f0c6b82ce567e17c99b3506a0fabbe04da" gives wifkey: 5JtiETBX35EUBRkjESwQWxMjeafrhopn6AzyzSo4NtdE5bcP35X, when it should generate "KwEncJtsqdtGDA7hEtmoQi1xU3hLo4P1Xv6cpucsAPUsdHSmDb5i"
+					'wif':coinjs.privkey2wif(key),
 					//'address':address};
 					'address':coinjs.pubkey2address(pubkey)};
 
@@ -1134,19 +1046,17 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 				}
 				//pubkey = Crypto.util.bytesToHex(publicKeyBytesCompressed);
 
-				address = r.derive_to_address(pubkey, derivation_protocol, bip_address_semantics);
+				var address;
+				//address = r.derive_to_address(pubkey, derivation_protocol, bip_address_semantics);
 				//ice check if this is necessary later
 
 
 				o.keys = {'pubkey':pubkey,
-					//'address':address};
-					'address':coinjs.pubkey2address(pubkey)};
+					//'address':coinjs.pubkey2address(pubkey)}
+					'address':coinjs.pubkey2address(pubkey)}
 			} else {
 				// fail
 			}
-			//console.log('===r.derive=== bip_derive_protocol ELSE ELSE address: ', address, pubkey, o.keys);
-			//console.log('===r.derive=== bip_derive_protocol ELSE ELSE key: ', key);
-			//console.log('===r.derive=== bip_derive_protocol ELSE ELSE coinjs.privkey2wif(key): ', coinjs.privkey2wif(key));
 
 			o.parent_fingerprint = (ripemd160(Crypto.SHA256(Crypto.util.hexToBytes(r.keys.pubkey),{asBytes:true}),{asBytes:true})).slice(0,4);
 			o.keys_extended = o.extend();

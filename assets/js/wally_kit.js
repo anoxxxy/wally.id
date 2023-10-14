@@ -455,7 +455,7 @@
 
         })
 
-        .add(/(\bwallet\b|(?<=\bwallet\/.*)[^\/?]+|(?<=\bwallet\?.*)(?<=\?).*)/g, function(data){
+        .add(/(\bwallet\b|(?<=\bwallet\/.*)[^\/?]+|(?<=\bwallet\?.*)(?<=\?).*)/g, async function(data){
         //https://stackoverflow.com/questions/4419000/regex-match-everything-after-question-mark
         //.add(/(wallet|(?<=wallet\/.*)[^/?]+|(?<=\?).*)/g, function(data){  //https://regex101.com/r/2RtRfv/6/codegen?language=javascript
           console.log('**wallet page**')
@@ -483,11 +483,12 @@
 
           //get asset name
           const choosenAsset = data[data.length-1];
+          console.log('walletSubPage choosenAsset: ' + choosenAsset);
 
           //does asset exist?
           var isAssetFound = false;
           var assetKeyInObject = '';
-          if (choosenAsset) {
+          if (choosenAsset != 'wallet') {
             //console.log('if 1 okey');
             //console.log('Router.urlParams._params_.asset: '+ Router.urlParams._params_.asset);
 
@@ -505,8 +506,13 @@
                 
                 //update coinjs.asset info
 
-                $.extend(coinjs, value);  //change asset and generate address
+                //change asset to the choosen one
+                wally_kit.setNetwork('mainnet', assetKeyInObject, {saveSettings: true, showMessage: false, renderFields: true});
 
+                //$.extend(coinjs, value);  //change asset and generate address
+
+
+                //break the loop
                 break;
 
               }
@@ -529,6 +535,44 @@
 
           if (!coinjs.asset || !isAssetFound)
             return;
+
+
+          
+          //render password addresses / generate and render mnemonic addresses if they are not present
+          if (login_wizard.profile_data.login_type === 'password') {
+            var addrObj = {'addresses': login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses_supported, 'chainModel': coinjs.asset.chainModel};
+            //render the addresses
+            wally_kit.walletRenderAddresses(addrObj);
+          }else if (login_wizard.profile_data.login_type === 'mnemonic') {
+
+          //check if addresses for a mnemonic/ seed /master has been generated
+          
+            //has the addresses been generated, if not generate them for the choosen coin/asset!
+            if (!login_wizard.profile_data.generated[coinjs.asset.slug]) {
+              //init master key generation of keys for mnemonic and first gapLimit addresses
+              var p =  login_wizard.profile_data.seed.passphrase;
+              var s =  login_wizard.profile_data.seed.mnemonic;
+              var protocol =  login_wizard.profile_data.seed.protocol;
+              var clientWalletProtocolIndex =  login_wizard.profile_data.seed.protocolIndex;
+
+              await wally_fn.generateWalletMnemonicAddresses(p, s, protocol, clientWalletProtocolIndex);
+
+            }
+            console.log('mnemonic -> walletRenderSeedAddresses');
+            wally_kit.walletRenderSeedAddresses();
+
+            
+            /*
+            var getSumPromise = wally_fn.myPromisify(wally_fn.decodeHexPrivKey);
+            getSumPromise('3ö').then((data) => {
+              console.log('====***wally_fn.myPromisify SUCCESS: ', data);
+            }).catch((error) => {
+              console.log('====***wally_fn.myPromisify ERROR: ', error);
+            });
+            */
+
+
+          }
 
 
           //update tabs and their links relative to the choosen asset
@@ -614,8 +658,11 @@
             }
 
           }
-          
-          var coininfo = login_wizard.profile_data.api.assets;
+          //if no data is present, exit
+          if (!login_wizard.profile_data?.api)
+            return;
+
+          var coininfo = login_wizard.profile_data.api?.assets;
           // API call request denied, skip rendering asset coininfo data
           if (coininfo[assetKeyInObject]?.coininfos ===  undefined) {
             console.log('Could not retrieve asset data!')
@@ -1223,8 +1270,8 @@
  @ generate a list of user wallet assets
 */
 
-wally_kit.listUserAssets = function() {
-  console.log('===wally_kit.listUserAssets===');
+wally_kit.walletListAssets = function() {
+  console.log('===wally_kit.walletListAssets===');
   let userAssetList = '';
   for (var [key, value] of Object.entries(wally_fn.networks[ coinjs.asset.network ])) {
 
@@ -1276,56 +1323,166 @@ wally_kit.listUserAssets = function() {
 };
 
 
-
 /*
- @ generate a list of user wallet assets
+ @ generate a list of wallet addresses from an object, 'addresses' and 'chainModel' in the object
 */
+wally_kit.walletRenderAddresses = function(addrObj) {
+  console.log('===wally_kit.walletlistKeyAddresses===');
 
-wally_kit.listUserAddresses = function() {
-  console.log('===wally_kit.listUserAddresses===');
-  var derived = login_wizard.profile_data.generated[coinjs.asset.slug].addresses;
+  //var addr = login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses_supported;
+  
+  var addr = addrObj.addresses;
+  var chain = addrObj.chainModel;
 
   var receive = '';
-  var addr = '';
-  for (var i=0; i < (derived.receive).length; i++) {
 
-    if (derived.receive[i].address.redeemscript === undefined)  //check if redeemscript is present
-      addr = derived.receive[i].address;
-    else
-      addr = derived.receive[i].address.address;
+  if (chain === 'utxo') {
+    if (addr.compressed) {
+
+      // Legacy Address
+      //addr.compressed.key
+      //addr.compressed.public_key
+      //addr.compressed.address
+      
+
+      receive = `
+        <tr>
+          <th scope="row">Compressed Legacy</th>
+          <td>${addr.compressed.address} <i class=" float-right bi bi-copy"></i></td>
+          <td class="text-right">0</td>
+        </tr>`;
+
+      // Bech32 Address (p2wpkh)
+      if (addr.compressed?.bech32) {
+        //addr.compressed.bech32.address
+        //addr.compressed.bech32.redeemscript
+        
+        receive += `
+        <tr>
+          <th scope="row">Compressed Segwit</th>
+          <td>${addr.compressed.bech32.address} <i class=" float-right bi bi-copy"></i></td>
+          <td class="text-right">0</td>
+        </tr>`;
+
+      }
+
+
+
+      ///P2SH Segwit Address
+      if (addr.compressed?.segwit) {
+        //addr.compressed.bech32.address
+        //addr.compressed.bech32.redeemscript
+
+        receive += `
+        <tr>
+          <th scope="row">Compressed Bech32</th>
+          <td>${addr.compressed.segwit.address} <i class=" float-right bi bi-copy"></i></td>
+          <td class="text-right">0</td>
+        </tr>`;
+      }
+      
+
+    }
+
+
+    if (addr.uncompressed) {
+      //addr.uncompressed.key
+      //addr.uncompressed.public_key
+      //addr.uncompressed.address
+
+      receive += `
+        <tr>
+          <th scope="row">Uncompressed Legacy</th>
+          <td>${addr.uncompressed.address} <i class=" float-right bi bi-copy"></i></td>
+          <td class="text-right">0</td>
+        </tr>`;
+    }
+  } else if (chain === 'account') {
+    addr.privateKey
+    addr.publicKey
+    addr.address
+    
 
     receive += `
-      <tr>
-        <th scope="row">${i}</th>
-        <td>${addr} <i class=" float-right bi bi-copy"></i></td>
-        <td class="text-right">0</td>
-      </tr>`;
-
+        <tr>
+          <th scope="row">EVM</th>
+          <td>${addr.address} <i class=" float-right bi bi-copy"></i></td>
+          <td class="text-right">0</td>
+        </tr>`;
   }
 
-  var change = '';
-  for (var i=0; i < (derived.change).length; i++) {
 
-    if (derived.receive[i].address.redeemscript === undefined)  //check if redeemscript is present
-      addr = derived.change[i].address;
-    else
-      addr = derived.change[i].address.address;
-    
-    change += `
-      <tr>
-        <th scope="row">${i}</th>
-        <td>${addr} <i class=" float-right bi bi-copy"></i></td>
-        <td class="text-right">0</td>
-      </tr>`;
-
-  }
-  
-
-  //add user assets to the list
   coinbinf.receiveAddresses.find('table tbody').html(receive);
-  coinbinf.changeAddresses.find('table tbody').html(change);
+
+
+}
+
+
+/*
+ @ generate a list of wallet addresses for a seed
+*/
+wally_kit.walletRenderSeedAddresses = function(addressType = 'both') {
+  console.log('===wally_kit.walletRenderSeedAddresses===');
+  try {
+    var derived = login_wizard.profile_data.generated[coinjs.asset.slug].addresses;
+
+    var receive = '';
+    var change = '';
+    var addr = '';
+
+    if (addressType === 'both' || addressType === 'receive') {
+      for (var i=0; i < (derived.receive).length; i++) {
+
+        if (derived.receive[i].address.redeemscript === undefined)  //check if redeemscript is present
+          addr = derived.receive[i].address;
+        else
+          addr = derived.receive[i].address.address;
+
+        receive += `
+          <tr>
+            <th scope="row">${i}</th>
+            <td>${addr} <i class=" float-right bi bi-copy"></i></td>
+            <td class="text-right">0</td>
+          </tr>`;
+
+      }
+    }
+
+    
+    if (addressType === 'both' || addressType === 'receive') {
+      for (var i=0; i < (derived.change).length; i++) {
+
+        if (derived.receive[i].address.redeemscript === undefined)  //check if redeemscript is present
+          addr = derived.change[i].address;
+        else
+          addr = derived.change[i].address.address;
+
+        change += `
+          <tr>
+            <th scope="row">${i}</th>
+            <td>${addr} <i class=" float-right bi bi-copy"></i></td>
+            <td class="text-right">0</td>
+          </tr>`;
+      }
+    }
+    
+
+    //add user assets to the list
+    if (receive)
+      coinbinf.receiveAddresses.removeClass('hidden').find('table tbody').html(receive);
+    else
+      coinbinf.receiveAddresses.addClass('hidden');
+
+    if (change)
+      coinbinf.changeAddresses.removeClass('hidden').find('table tbody').html(change);
+    else
+      coinbinf.changeAddresses.addClass('hidden');
+
+  } catch (e) {
+    console.log('===wally_kit.walletRenderSeedAddresses=== ERROR: ', e);
+  }
   
-};
+}
 
 
 /**
@@ -1423,7 +1580,7 @@ wally_kit.getCoinInfo = async function () {
     console.log('wally_kit.getCoinInfo ERROR: ', e);
     Router.navigate('logout');
   }
-};
+}
 
 /*
 get electrumx active nodes:
@@ -1912,6 +2069,49 @@ $("body").on("click", "#settings .dropdown-select li", function(e){
 });
   
 
+//load more receive and change addresses
+
+coinbinf.loadReceiveAddresses.on('click', async function(e) {
+  console.log('==coinbinf.loadReceiveAddresses==');
+
+  $(this).prop('disabled', true);
+  var spinner = coinbinf.loadReceiveAddresses.find('.spinner-border');
+
+  spinner.removeClass('hidden');
+
+  await wally_fn.loadWalletSeedAddresses('receive');
+  wally_kit.walletRenderSeedAddresses();
+
+  spinner.addClass('hidden');
+
+
+  await wally_fn.timeout(wally_fn.gap.timeout);
+  $(this).prop('disabled', false);
+  
+
+});
+coinbinf.loadChangeAddresses.on('click', async function(e) {
+  console.log('==coinbinf.loadChangeAddresses==');
+
+  $(this).prop('disabled', true);
+  var spinner = coinbinf.loadReceiveAddresses.find('.spinner-border');
+
+  spinner.removeClass('hidden');
+
+  await wally_fn.loadWalletSeedAddresses('change');
+  wally_kit.walletRenderSeedAddresses();
+  
+  spinner.addClass('hidden');
+  
+  //add timeout, user can only load addresses once per gapTimeout
+  await wally_fn.timeout(wally_fn.gap.timeout);
+  $(this).prop('disabled', false);
+  
+
+
+});
+
+//coinbinf.loadChangeAddresses
 /*
     BootstrapDialog.show({
             title: 'Manipulating Buttons',

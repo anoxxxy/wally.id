@@ -39,7 +39,7 @@
     },
     1: {
       "client": "Blockchain.info",
-      "sluug": "blockchain_info",
+      "slug": "blockchain_info",
       "path": "m/44'/0'/0'",
       "supports": {
         "passphrase": true,
@@ -111,6 +111,28 @@
       "derivationProtocol": "bip84",
       "address": {
         "semantics": "p2wpkh",
+        "hardened": false,
+        "receive": "m/0",
+        "change": "m/1",
+      }
+    },
+    7: {
+      "client": "Electrum (Old)",
+      "slug": "electrum_old",
+      "path": "m/0",
+      "childPath": "m/0",
+      "supports": {
+        "passphrase": true,
+        "login": {
+          "mnemonic": true,
+          "masterkey": true,
+        },
+      },
+      "passphrase": "lowercase",
+      "wordCount": 12,
+      "derivationProtocol": "hdkey",
+      "address": {
+        "semantics": "",
         "hardened": false,
         "receive": "m/0",
         "change": "m/1",
@@ -342,8 +364,7 @@
         login_wizard.profile_data.public_keys = [];
         login_wizard.profile_data.address = [];
         */
-        login_wizard.profile_data.keys = {};
-        login_wizard.profile_data.keys.hex_key = [];
+        
         
         
         //prepare values for profile data
@@ -362,7 +383,9 @@
         login_wizard.profile_data.password.email = loginEmail;
         login_wizard.profile_data.password.passwords = loginPass.filter(n => n);  //remove empty passwords from the stack
         login_wizard.profile_data.password.signatures = signatures;
-        
+          
+        login_wizard.profile_data.password.keys = {};
+        login_wizard.profile_data.password.keys.hex_key = [];
 
 
         //hide and empty error box and message
@@ -383,9 +406,9 @@
           if(!wally_fn.isHexKeyInRange(wally_fn.passwordHasher(loginEmail, login_wizard.profile_data.password.passwords[i])))
             throw ('Error in generating ' + coinjs.asset.name+ ' address!');
             
-          (login_wizard.profile_data.keys.hex_key).push(wally_fn.passwordHasher(loginEmail, login_wizard.profile_data.password.passwords[i]));
+          (login_wizard.profile_data.password.keys.hex_key).push(wally_fn.passwordHasher(loginEmail, login_wizard.profile_data.password.passwords[i]));
 
-          hexKey += 'hex '+(i+1)+': '+login_wizard.profile_data.keys.hex_key[i]+'\n'
+          hexKey += 'hex '+(i+1)+': '+login_wizard.profile_data.password.keys.hex_key[i]+'\n'
           
 
         }
@@ -393,7 +416,7 @@
 
         //generate all wallet addresses, pass over the HEX key!
         login_wizard.profile_data.generated = {}; //holds all addresses, inclusive mulitisig addresses
-        login_wizard.profile_data.generated = await wally_fn.generateAllWalletAddresses(login_wizard.profile_data.keys.hex_key);
+        login_wizard.profile_data.generated = await wally_fn.generateAllWalletAddresses(login_wizard.profile_data.password.keys.hex_key);
 
 
       } else if (walletType === 'mnemonic_wallet') {
@@ -408,7 +431,7 @@
         var clientWalletProtocolIndex = $('#openClientWallet').val();
           
         console.log('clientWalletProtocolIndex: ', clientWalletProtocolIndex);
-        if (clientWalletProtocolIndex == 4) {  //isElectrumProtocol
+        if (clientWalletProtocolIndex == 4 || clientWalletProtocolIndex == 7) {  //isElectrumProtocol
           bip39.setProtocol('electrum');
           console.log('setProtocol electrum');
         } else {
@@ -473,14 +496,24 @@
         login_wizard.profile_data.coin.network = coinjs.asset.network;
         
 
+        login_wizard.profile_data.generated = {}; //holds all addresses, inclusive mulitisig addresses
+        
         //mnemonic seed
         login_wizard.profile_data.seed = {};
         login_wizard.profile_data.seed.mnemonic = s;
         login_wizard.profile_data.seed.passphrase = p;
-        login_wizard.profile_data.seed.protocol = protocol;
+        login_wizard.profile_data.seed.protocol = {};
+        login_wizard.profile_data.seed.protocol.name = protocol;
+        login_wizard.profile_data.seed.protocol.index = clientWalletProtocolIndex;
+
         login_wizard.profile_data.seed.path = '';
 
+        
 
+        //init master key generation of keys for mnemonic and first gapLimit addresses
+        await wally_fn.generateWalletMnemonicAddresses(p, s, protocol, clientWalletProtocolIndex);
+
+        /*
         //generate mnemonic derivation for each coin/asset
         login_wizard.profile_data.seed.keys = await wally_fn.getMasterKeyFromMnemonic(p, s, protocol, clientWalletProtocolIndex);
         //login_wizard.profile_data.seed.addresses
@@ -500,6 +533,12 @@
           'name': coinjs.asset.name,
           'chainModel': coinjs.asset.chainModel,
           'symbol': coinjs.asset.symbol,
+          'seed': {
+            'keys': login_wizard.profile_data.seed.keys,
+            'protocol': protocol,
+            'protocolIndex': clientWalletProtocolIndex,
+            'path': seed_addresses.path,
+          },
           0: {
             'address': receiveAddresses[0].address,
             'addresses_supported': {
@@ -517,6 +556,7 @@
         login_wizard.profile_data.generated = {};
         login_wizard.profile_data.generated[coinjs.asset.slug] = coinGenerated;
         login_wizard.profile_data.generated[coinjs.asset.slug].addresses = {'receive': receiveAddresses, 'change': changeAddresses};
+        */
         
 
 
@@ -759,11 +799,18 @@ login_wizard.generateWalletBackup = function() {
 
 /**
  *
- * @ Coin address rendering upon login
+ * @ Coin address rendering upon login, 
+ * params: object modal, addr object with 'chainModel' and 'addresses' (compressed and uncompressed addresses)
  *  
  **/
-login_wizard.initCoinList = function(coinListModal) {
+login_wizard.initCoinList = function(coinListModal, addrObj) {
+  //addresses tab when logged in
+  //wally_kit.walletRenderAddresses(addrObj);
+
+  //for modal UI
   coinListModal.getModalBody().find('.initCoinList').html(`<li class="list-group-item"><img src="${coinjs.asset.icon}" class="coin-icon icon32"> Generating <span class="text-muted font-weight-bold">${coinjs.asset.name}</span> address</li>`);
+
+
 }
 
 
