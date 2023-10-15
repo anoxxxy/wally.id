@@ -69,7 +69,8 @@
         coinjs.bip32 = wally_fn.networks[network_var][asset_var].hdkey;
         coinjs.bip44 = wally_fn.networks[network_var][asset_var].hdkey;
 
-        //render BIP types on UI
+
+        //render BIP types on UI, ( Protocol Options ) popover
         var bip, bip_name, bip_options='';;
         for (i=0; i< coinjs.biptypes.length;i++){
           //compare if version matches bip-type prv or pub 

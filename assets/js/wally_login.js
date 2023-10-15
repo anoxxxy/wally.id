@@ -132,7 +132,7 @@
       "wordCount": 12,
       "derivationProtocol": "hdkey",
       "address": {
-        "semantics": "",
+        "semantics": "p2pkh",
         "hardened": false,
         "receive": "m/0",
         "change": "m/1",

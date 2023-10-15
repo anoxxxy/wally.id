@@ -829,19 +829,21 @@ wally_fn.getMasterKeyFromMnemonicOld = async function (password, mnemonic, bip39
     if (protocol === 'electrum')
         password= password.toLowerCase(); //electrum uses lowercase for passwords
   }
+  
   var keyPair = hd.masterMnemonic(mnemonic, password, bipProtocol, bip39);
-  //console.log('keyPair: ', keyPair);
+  console.log('keyPair: ', keyPair);
   var s;
 
   //Electrum Master Key generation
   if (protocol === 'electrum') {
-    s = keyPair.privkey;
-    //var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
-    hd = coinjs.hd(s);
-    //set electrum path promptly
-    var derived_electrum = hd.derive_electrum_path("m/0'/0/0", 'bip84', 'hdkey', 'p2wpkh');
-    keyPair.pubkey = derived_electrum.keys_extended.pubkey;
-    keyPair.privkey = derived_electrum.keys_extended.privkey;
+    
+      s = keyPair.privkey;
+      //var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
+      hd = coinjs.hd(s);
+      //set electrum path promptly
+      var derived_electrum = hd.derive_electrum_path("m/0'/0/0", 'bip84', 'hdkey', 'p2wpkh');
+      keyPair.pubkey = derived_electrum.keys_extended.pubkey;
+      keyPair.privkey = derived_electrum.keys_extended.privkey;
   } else {
      s = keyPair.privkey;
      hd = coinjs.hd(s);
@@ -877,7 +879,7 @@ wally_fn.getMasterKeyFromMnemonicOld = async function (password, mnemonic, bip39
 
 }
 
-wally_fn.getMasterKeyFromMnemonic = async function (password, mnemonic, protocol = '') {
+wally_fn.getMasterKeyFromMnemonic = async function (password, mnemonic, protocol = '', clientProtocolIndex = 0) {
   console.log('===wally_fn.getMasterKeyFromMnemonic===', password, mnemonic, protocol);
   var hd = coinjs.hd();
 
@@ -888,27 +890,39 @@ wally_fn.getMasterKeyFromMnemonic = async function (password, mnemonic, protocol
     if (protocol === 'electrum')
         password= password.toLowerCase(); //electrum uses lowercase for passwords
   }
+  //check if we have an old electrum seed, if so set 
+  if (protocol === 'electrum') {
+    var electrumSeedVersion = wally_fn.seedVersion(mnemonic, 'electrum');
+    if (electrumSeedVersion === 'p2pkh') {
+      bipProtocol = 'hdkey';
+    }
+
+  }
+
   var keyPair = hd.masterMnemonic(mnemonic, password, bipProtocol);
-  console.log('keyPair: ', keyPair);
+  //console.log('getMasterKeyFromMnemonic keyPair: ', keyPair);
   var s;
 
   //Electrum Master Key generation
   if (protocol === 'electrum') {
-    s = keyPair.privkey;
-    var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
-    hd = coinjs.hd(s);
-    //set electrum path promptly
-    var derived_electrum = hd.derive_electrum_path("m/0'/0/0", 'bip84', 'hdkey', 'p2wpkh');
-    keyPair.pubkey = derived_electrum.keys_extended.pubkey;
-    keyPair.privkey = derived_electrum.keys_extended.privkey;
-  } else {
-    hd = coinjs.hd(s);
+    if (electrumSeedVersion === 'p2wpkh') {
+      s = keyPair.privkey;
+      var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
+      hd = coinjs.hd(s);
+      //set electrum path promptly
+      var derived_electrum = hd.derive_electrum_path("m/0'/0/0", 'bip84', 'hdkey', 'p2wpkh'); //derive from hdkey, a bip84 key, in p2wpkh format :) lol :)
+      keyPair.pubkey = derived_electrum.keys_extended.pubkey;
+      keyPair.privkey = derived_electrum.keys_extended.privkey;
+    }
+  }/* else {
+    //hd = coinjs.hd(s);
   }
-  /*
-  console.log('hd: ' , hd);
-  console.log('keyPair.privkey: ' + keyPair.privkey);
-  console.log('keyPair.pubkey: ' + keyPair.pubkey);
+  
+  console.log('getMasterKeyFromMnemonic hd: ' , hd);
+  console.log('getMasterKeyFromMnemonic keyPair.privkey: ' + keyPair.privkey);
+  console.log('getMasterKeyFromMnemonic keyPair.pubkey: ' + keyPair.pubkey);
   */
+  
   
   return keyPair;
 
@@ -1026,7 +1040,7 @@ wally_fn.loadWalletSeedAddresses = async function(addressType = 'both'){
  derive is an object, including
 */
 wally_fn.getMasterKeyAddresses = async function (masterKey, client_wallet_protocol_index = 0, receive_addresses = true, change_addresses = true) {
-  
+  console.log('==wally_fn.getMasterKeyAddresses==', masterKey);
   coinbinf.NoticeLoader.setTitle(`<img src="${coinjs.asset.icon}" class="coin-icon icon24"> Loading Addresses...`);
   coinbinf.NoticeLoader.open();
   
@@ -1037,6 +1051,7 @@ wally_fn.getMasterKeyAddresses = async function (masterKey, client_wallet_protoc
 
   var clientWallet = login_wizard.clientWallets[client_wallet_protocol_index];
 
+  
   //var derivation_path = clientWallet.path;
 
   //if (clientWallet.slug === 'electrum')
@@ -1200,9 +1215,21 @@ wally_fn.generateWalletMnemonicAddresses = async function(p, s, protocol, client
     deriveChangeAddresses = false;
   }
 
+  //switch client to electrum old seed generation if new seedVersion is not met!
+  var electrumSeedVersion = wally_fn.seedVersion(s, 'electrum');
+  if (electrumSeedVersion === 'p2pkh') {
+    clientProtocolIndex = 7;
+    login_wizard.profile_data.seed.protocol.name = 'electrum_old';
+    login_wizard.profile_data.seed.protocol.index = 7;
+  }
+
   //generate mnemonic derivation for each coin/asset
         login_wizard.profile_data.seed.keys = await wally_fn.getMasterKeyFromMnemonic(p, s, protocol, clientProtocolIndex);
         //login_wizard.profile_data.seed.addresses
+        
+        
+
+
         var seed_addresses = await wally_fn.getMasterKeyAddresses(login_wizard.profile_data.seed.keys.privkey, clientProtocolIndex, deriveReceiveAddresses, deriveChangeAddresses);
         
         //extract only privkey,pubkey and address from derived data
@@ -3567,7 +3594,56 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
     */
   };
 
+/**
+ * Calculates SHA-512 hash and HMAC with SHA-512 for a given seed.
+ * 
+ * @param {string} seed - The seed string for which to calculate the hash and HMAC.
+ * @param {string} [client='electrum'] - The client name (optional, default is 'electrum').
+ * @returns {boolean} - Returns true if the calculation was successful, false if there was an error.
+ */
+wally_fn.seedVersion = function (seed, client = 'electrum') {
+    if (!seed) {
+        console.error("Seed is not set.");
+        return false;
+    }
+    var hmac = false;
+    try {
+      seedText = 'Bitcoin seed';
+      if (client === 'electrum')
+        seedText = 'Seed version';
 
+      var sha = new jsSHA(seed, "TEXT");
+      var hash = sha.getHash("SHA-512", "HEX");
+      //console.log("SHA-512 hash:", hash);
+
+      hmac = sha.getHMAC(seedText, "TEXT", "SHA-512", "HEX");
+
+      if (client === 'electrum') {
+        // Extract the first 3 characters from the HMAC string
+        const [char0, char1, char2] = hmac;
+        if (char0 === '0' && char1 === '1') {
+            return 'p2pkh'; // Standard wallet, m/0 path, xprv, p2pkh
+        } else if (char0 === '1' && char1 === '0') {
+            return (char2 === '0') ? 'p2wpkh' : false; // Segwit or unsupported two-factor authenticated wallets
+        }
+        return false;
+      }
+      //console.log("HMAC with SHA-512:", hmac);
+    } catch (error) {
+        console.error("===wally_fn.seedVersion=== ERROR::", error);
+    }
+    return hmac;
+}
+
+// Usage with the seed and an optional client argument
+/*const result = wally_fn.seedVersion('enough tourist luggage comfort view garment picture assume dish void tide shed');
+if (result) {
+    // The seed was processed successfully
+} else {
+    // There was an error
+}
+*/
+  
   /*
   wally_fn.api = {};
   wally_fn.api.coingecko.balance = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,bitbay,potcoin,reddcoin,lynx,artbyte,infiniloop&vs_currencies=btc&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true';

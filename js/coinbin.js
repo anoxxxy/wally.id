@@ -1066,14 +1066,14 @@ profile_data = {
 		
 		//list of supported bip-types, bip44 is added here for registered coin types/slip support 
 		//https://github.com/satoshilabs/slips/blob/master/slip-0044.md
-		var bipTypes = ['hdkey', 'bip44', 'bip49', 'bip84'];
+		var bipTypes = ['bip32', 'bip44', 'bip49', 'bip84'];
 		
 		//check bip type, hdkey/bip32, bip44, bip49, bip84
 		if (bipTypes.includes(bipProtocolVal)) {
 			console.log('bip supported: '+ bipProtocolVal);
 		} else {
 			console.log('bip NOT supported: ' + bipProtocolVal);
-			bipProtocolVal = 'hdkey';	//Default BIP (=bip32) if no BIP type is choosen
+			bipProtocolVal = 'bip32';	//Default BIP (=bip32) if no BIP type is choosen
 		}
 
 		coinbinf.deriveFromBipProtocol.val(bipProtocolVal).trigger('change');
@@ -1105,10 +1105,13 @@ profile_data = {
 
 		//for electrum maximum 12 words is used
 		if (useClientProtocol) {
-			mnemonicProtocols.find('label').not('[data-bip-option="bip84"]').addClass('disabled').removeClass('active');
+			//mnemonicProtocols.find('label').not('[data-bip-option="bip84"]').addClass('disabled').removeClass('active');
+			mnemonicProtocols.find('label').addClass('disabled');//.removeClass('active');
 			mnemonicLengthEl.val(12).prop('disabled', true);
-			mnemonicProtocols.find('label[data-bip-option="bip84"]').addClass('active').find('input').prop('checked', true);
-			coinbinf.deriveFromBipProtocol.val('bip84').trigger('change');
+			//mnemonicProtocols.find('label[data-bip-option="bip84"]').addClass('active').find('input').prop('checked', true);
+			
+			//coinbinf.deriveFromBipProtocol.val('bip84').trigger('change');
+			
 			//coinbinf.bip32Client.find('option:contains("Electrum")').prop('selected', true);
 			//coinbinf.bip32Client.prop('disabled', true);
 			//coinbinf.bippath.val("m/0'/0");
@@ -1118,17 +1121,21 @@ profile_data = {
 			
 			//coinbinf.bip32path.val("m/0").prop('disabled', true);
 
-			bipProtocolStr.text( bipProtocolStr.text() + ' (Electrum)' );
+			//render UI path
+			bipProtocolStr.text( 'Electrum Path' );
 		}
 		else {
-			mnemonicProtocols.find('label').not('[data-bip-option="bip84"]').removeClass('disabled');
+			//mnemonicProtocols.find('label').not('[data-bip-option="bip84"]').removeClass('disabled');
+			mnemonicProtocols.find('label').removeClass('disabled');//.removeClass('active');
+			mnemonicProtocols.find('label.active').text();
+
 			mnemonicLengthEl.prop('disabled', false)
 			coinbinf.bip32Client.val('custom');//.prop('disabled', false);
 			//coinbinf.bip32path.val("m/0'/0").prop('disabled', false);
 			coinbinf.bippath.val("m/0");//.prop('disabled', false);
 
-
-			bipProtocolStr.text( (bipProtocolStr.text()).replace(' (Electrum)', '') );
+			//render UI path
+			bipProtocolStr.text(mnemonicProtocols.find('label.active').text() );
 		}
 	});
 
@@ -1171,6 +1178,10 @@ profile_data = {
 
 		console.log('bipProtocolVal: '+ bipProtocolVal);
 
+				//convert default bip protocol to "hdkey" if another option is not set (for internal functionality)
+		if (bipProtocolVal !== 'bip49' && bipProtocolVal !== 'bip84')
+			bipProtocolVal = 'hdkey';
+
 		isElectrumProtocol = coinbinf.bipMnemonicClientProtocol.is(':checked');
 
 		if (isElectrumProtocol){
@@ -1178,6 +1189,17 @@ profile_data = {
 			if (p !== null)
 				p = p.toLowerCase(); //electrum uses lower-case for passphrases
 			//bip39 = new BIP39('en', 'electrum');
+
+			var electrumSeedVersion = wally_fn.seedVersion(s, 'electrum');
+			if (electrumSeedVersion === 'p2pkh') {
+				//var derived_electrum = hd.derive_electrum_path("m/0", 'hdkey', 'hdkey', '');
+				bipProtocolVal = 'hdkey';
+				coinbinf.bipAddressSemantics = ''
+			} else if (electrumSeedVersion === 'p2wpkh') {
+				//var derived_electrum = hd.derive_electrum_path("m/0'/0/0", 'bip84', 'hdkey', 'p2wpkh');
+				bipProtocolVal = 'bip84';
+				coinbinf.bipAddressSemantics = 'p2wpkh'
+			}
 		}else {
 			bip39.setProtocol('mnemonic');
 			//bip39 = new BIP39('en', 'bip39');
@@ -1219,12 +1241,13 @@ profile_data = {
 		
 		var hd = coinjs.hd();
 
-		//convert default bip protocol to "hdkey" if another option is not set (for internal functionality)
-		if (bipProtocolVal !== 'bip49' && bipProtocolVal !== 'bip84')
-			bipProtocolVal = 'hdkey';
+
 
 		var pair = hd.masterMnemonic(s, p, bipProtocolVal);
-
+		/*console.log('hd.masterMnemonic pair: ', pair);
+		console.log('hd.masterMnemonic pair.privkey: ', pair.privkey);
+		console.log('hd.masterMnemonic pair.pubkey: ', pair.pubkey);
+		*/
 		
 		//render xPub, xPrv elements
 		bipProtocolPrvEl = $('.bipProtocolPrv').text( (pair.privkey).charAt(0) );
@@ -1232,17 +1255,30 @@ profile_data = {
 		
 		//Electrum Master Key generation
 		if (isElectrumProtocol) {
-			s = pair.privkey;
-			//console.log('s: ', s);
-			var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
-			//console.log('hex: ', hex);
-			var hd = coinjs.hd(s);
+			
+			
+			console.log('electrumSeedVersion: ', electrumSeedVersion);
+
 
 			//console.log('hd: ', hd);
-			var derived_electrum = hd.derive_electrum_path("m/0'/0/0", 'bip84', 'hdkey', 'p2wpkh');
-			//console.log('derived_electrum: ', derived_electrum);
-			pair.pubkey = derived_electrum.keys_extended.pubkey;
-			pair.privkey = derived_electrum.keys_extended.privkey;
+			var derived_electrum;
+			if (electrumSeedVersion === 'p2wpkh') {
+
+				s = pair.privkey;
+				console.log('s: ', s);
+				var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
+				console.log('hex: ', hex);
+				var hd = coinjs.hd(s);
+
+				derived_electrum = hd.derive_electrum_path("m/0'/0/0", 'bip84', 'hdkey', 'p2wpkh');
+				//console.log('derived_electrum: ', derived_electrum);
+				pair.pubkey = derived_electrum.keys_extended.pubkey;
+				pair.privkey = derived_electrum.keys_extended.privkey;
+
+			} else {
+				//return;	//we do not accept electrum 2fa join accounts sorry!
+			}
+			
 		}
 
 		coinbinf.newMnemonicPubInput.val(pair.pubkey).fadeIn();
@@ -3480,10 +3516,11 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		var html = '';
 		$("#verifyHDaddress .derived_data table tbody").html("");
 
-		if (coinbinf.bip32Client.find('option:selected').text() === 'Electrum' || coinbinf.bipMnemonicClientProtocol.is(':checked')) 
-			coinbinf.bipAddressSemantics = 'p2wpkh';
-		else
+		if (coinbinf.bip32Client.find('option:selected').text() === 'Electrum' || coinbinf.bipMnemonicClientProtocol.is(':checked')) {
+			
+		}else
 			coinbinf.bipAddressSemantics = '';
+		
 
 		var d_prvkey ='';
 		var d_pubkey ='';
@@ -5064,6 +5101,5 @@ coinbinf.NoticeLoader = new jBox('Notice', {
 		  })//.attach();
 		});
 	  */
-
 
 });
