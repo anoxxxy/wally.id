@@ -1880,10 +1880,11 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 			var shType = sigHashType || 1;
 			//var hash = txhash || Crypto.util.hexToBytes(this.transactionHash(index, shType, rawTx));
 			var hash = txhash || this.transactionHash(index, shType);
+
 			
 
 
-			
+				//RDD & POT requires special transaction txinputs
 				if (coinjs.asset?.chainFamily === 'rdd') {
 					if (coinjs.txExtraTimeField) {
 						//hash = Crypto.SHA256(Crypto.SHA256())
@@ -1892,8 +1893,6 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 						//console.log('3: ', Crypto.util.bytesToHex(Crypto.SHA256(Crypto.SHA256(hash, {asBytes: false}), {asBytes: true}) ));
 						//console.log('4: ', (Crypto.SHA256(Crypto.SHA256(hash, {asBytes: false}), {asBytes: false}) ));
 						//hash = Crypto.SHA256(Crypto.SHA256(hash));
-						
-
 
 						//var scriptPOSv_timestamp = this.rawTxSerialized.slice(-8);	//get the timestamp
 						this.rawTxSerialized = this.rawTxSerialized.slice(0, -8) + '01000000';	//for POSv coins, remove timestamp, needs to be done before signing
@@ -1902,13 +1901,15 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 						var hashPOT= Crypto.util.bytesToHex(Crypto.SHA256(coinjs.hexToString(this.rawTxSerialized),  {asBytes: true}));
 						hash = Crypto.util.bytesToHex(Crypto.SHA256(coinjs.hexToString(hashPOT),  {asBytes: true}));
-						//console.log('hash POT: ',hash);						
-
+						console.log('hash RDD/POT: ',hash);
+						hash = Crypto.util.hexToBytes(hash);
 					}
-				} 
+				}else 
+					hash = txhash || Crypto.util.hexToBytes(this.transactionHash(index, shType));
 
-			//console.log('hash: ', hash);
-			hash = Crypto.util.hexToBytes(hash);
+			//console.log('hash before: ', hash);
+			//hash = Crypto.util.hexToBytes(hash);
+			//console.log('hash after: ', hash);
 
 			// Generate a low-S ECDSA signature
 			if(hash){
