@@ -963,6 +963,13 @@ wally_fn.loadWalletSeedAddresses = async function(addressType = 'both'){
      addressesLength = (login_wizard.profile_data.generated[ coinjs.asset.slug ].addresses.receive).length;
      var nextGapLimit = addressesLength + wally_fn.gap.receive;
 
+      //limit receive addresses depending on its chain
+     var coinChain = wally_fn.coinChainIs();
+     var maxReceiveAddresses = wally_fn.chains.config[coinChain].seed.address.receive.max;
+     
+     if (nextGapLimit > maxReceiveAddresses)
+      nextGapLimit = maxReceiveAddresses;
+
      for (var i=addressesLength; i < nextGapLimit; i++) {
       derived = hd.derive_path(clientWallet.address.receive+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
 
@@ -998,6 +1005,15 @@ wally_fn.loadWalletSeedAddresses = async function(addressType = 'both'){
   if (addressType === 'change' || addressType === 'both') {
      addressesLength = (login_wizard.profile_data.generated[ coinjs.asset.slug ].addresses.change).length;
      var nextGapLimit = addressesLength + wally_fn.gap.change;
+
+      //limit receive addresses depending on its chain
+     var coinChain = wally_fn.coinChainIs();
+     var maxChangeAddresses = wally_fn.chains.config[coinChain].seed.address.change.max;
+
+     //limit receive addresses depending on its chain
+     if (nextGapLimit > maxChangeAddresses)
+      nextGapLimit = maxChangeAddresses;
+
 
      for (var i=addressesLength; i < nextGapLimit; i++) {
       derived = hd.derive_path(clientWallet.address.change+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
@@ -1083,12 +1099,21 @@ wally_fn.getMasterKeyAddresses = async function (masterKey, client_wallet_protoc
   var isEVM = wally_fn.isEVM();
 
   if (receive_addresses) {
-    for (var i=0; i < wally_fn.gap.limit; i++) {
+
+    //limit receive addresses depending on its chain
+     var coinChain = wally_fn.coinChainIs();
+     var maxReceiveAddresses = wally_fn.chains.config[coinChain].seed.address.receive.max;
+     var nextGapLimit = wally_fn.gap.limit;
+
+     if (nextGapLimit > maxReceiveAddresses)
+      nextGapLimit = maxReceiveAddresses;
+
+    for (var i=0; i < nextGapLimit; i++) {
       //console.log('===coinjs.getMasterKeyFromMnemonic=== derivation_path: ' + derivation_path+'/'+i);
       derived = hd.derive_path(clientWallet.address.receive+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
 
       
-      coinbinf.NoticeLoader.setContent(`<span class="text-primary">Receive Addresses: <strong>${i+1}</strong>/${wally_fn.gap.limit}</span>`);
+      coinbinf.NoticeLoader.setContent(`<span class="text-primary">Receive Addresses: <strong>${i+1}</strong>/${nextGapLimit}</span>`);
       await wally_fn.timeout(5);
       //console.log('derived: ', derived);
       if (isEVM) {
@@ -1109,11 +1134,19 @@ wally_fn.getMasterKeyAddresses = async function (masterKey, client_wallet_protoc
 
   //generate change addresses
   if (change_addresses) {
+
+    //limit receive addresses depending on its chain
+     var coinChain = wally_fn.coinChainIs();
+     var maxChangeAddresses = wally_fn.chains.config[coinChain].seed.address.change.max;
+
+     if (nextGapLimit > maxChangeAddresses)
+      nextGapLimit = maxChangeAddresses;
+
     for (var i=0; i < wally_fn.gap.limit; i++) {
       //console.log('===coinjs.getMasterKeyFromMnemonic=== derivation_path: ' + derivation_path+'/'+i);
       derived = hd.derive_path(clientWallet.address.change+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
 
-      coinbinf.NoticeLoader.setContent(`<span class="text-primary">Change Addresses:  <strong>${i+1}</strong>/${wally_fn.gap.limit}</span>`);
+      coinbinf.NoticeLoader.setContent(`<span class="text-primary">Change Addresses:  <strong>${i+1}</strong>/${nextGapLimit}</span>`);
       await wally_fn.timeout(5);
       if (isEVM) {
         var evm_account = wally_fn.Web3PrivToAddress(derived.keys.privkey);
@@ -1882,6 +1915,37 @@ Blackcoin 10
 
   //Summary API
   //https://chainz.cryptoid.info/explorer/api.dws?q=summary
+
+//Chain Configuration
+wally_fn.chains = {
+  //configuration for different chains
+  'config': {
+    'utxo': {
+      'seed': {
+        'address': {
+          'receive': {
+            'max': Infinity,  //no-limit of loading of receive addresses 
+          },
+          'change': {
+            'max': Infinity,  //no-limit of loading of change addresses 
+          },
+        }
+      }
+    },
+    'evm': {
+      'seed': {
+        'address': {
+          'receive': {
+            'max': 1, //dont use multiple receive addresses for evm coins
+          },
+          'change': {
+            'max': 0, //no change address for evm coins
+          },
+        }
+      }
+    },
+  }
+};
 
 //Tokens
 wally_fn.networks_tokens = {

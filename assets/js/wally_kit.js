@@ -1450,10 +1450,10 @@ wally_kit.walletRenderSeedAddresses = function(addressType = 'both') {
     }
 
     
-    if (addressType === 'both' || addressType === 'receive') {
+    if (addressType === 'both' || addressType === 'change') {
       for (var i=0; i < (derived.change).length; i++) {
-
-        if (derived.receive[i].address.redeemscript === undefined)  //check if redeemscript is present
+        
+        if (derived.change[i].address.redeemscript === undefined)  //check if redeemscript is present
           addr = derived.change[i].address;
         else
           addr = derived.change[i].address.address;
@@ -1478,6 +1478,7 @@ wally_kit.walletRenderSeedAddresses = function(addressType = 'both') {
       coinbinf.changeAddresses.removeClass('hidden').find('table tbody').html(change);
     else
       coinbinf.changeAddresses.addClass('hidden');
+    
 
   } catch (e) {
     console.log('===wally_kit.walletRenderSeedAddresses=== ERROR: ', e);
