@@ -18,7 +18,7 @@
     asset
     options (saveSettings, showMessage (about updated settings) )
   */
-  wally_kit.setNetwork = async function (network_var = 'mainnet', asset_var = 'bitcoin', options = {saveSettings: false, showMessage: false, renderFields: true, isAuth: false}) {
+  wally_kit.setNetwork = async function (network_var = 'mainnet', asset_var = 'bitcoin', options = {saveSettings: true, showMessage: false, renderFields: true, isAuth: false}) {
     console.log(' ');
     console.log('===wally_kit.setNetwork===');
 
@@ -1303,15 +1303,27 @@
 
 
 /*
- @ generate a list of user wallet assets
+ @ render supported assets
 */
 
-wally_kit.walletListAssets = function() {
-  console.log('===wally_kit.walletListAssets===');
+wally_kit.walletRenderAssets = function() {
+  console.log('===wally_kit.walletRenderAssets===');
   let userAssetList = '';
+
+  //render only if coin has support for the wallet client / bip brotocol
+  var protocol = login_wizard.profile_data.seed.protocol.bip;
+
+  //hdkey, bip32, bip44 has same address master keys
+  protocol = (protocol === "bip32" || protocol === "bip44") ? "hdkey" : protocol;
+
+
   for (var [key, value] of Object.entries(wally_fn.networks[ coinjs.asset.network ])) {
 
-    
+    //coin doesnt support bip type, skip to next coin!
+    if (!wally_fn.networks[ coinjs.asset.network ][key][protocol]) 
+      continue; // Skip the current iteration and move to the next one
+
+
     userAssetList += `
       <div class="list-border position-relative">
         <div class="list-wrapper">

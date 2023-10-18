@@ -1222,6 +1222,7 @@ wally_fn.generateWalletMnemonicAddresses = async function(p, s, protocol){
     clientProtocolIndex = 7;
     login_wizard.profile_data.seed.protocol.name = 'electrum_old';
     login_wizard.profile_data.seed.protocol.index = 7;
+    login_wizard.profile_data.seed.protocol.bip = 'bip32';
   }/* else if (electrumSeedVersion === 'p2wpkh') {
     //nothing here yet...
   }
@@ -2757,7 +2758,7 @@ wally_fn.networks_tokens = {
           bip84 : {'prv':0x04b2430c, 'pub':0x04b24746}, // zpub
 
           slip_path: 60,
-          bech32 : {},
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'},
 
           
         txExtraTimeField: false,    //not used for ....

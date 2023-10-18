@@ -297,7 +297,7 @@ profile_data = {
 		//walletBalance();
 
 		//generate a list of user assets
-		wally_kit.walletListAssets();
+		wally_kit.walletRenderAssets();
 
 
 		//generate key addresses

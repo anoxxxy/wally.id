@@ -514,6 +514,19 @@
         login_wizard.profile_data.seed.path = '';
 
         
+        //if selected asset has no support for the client wallet / bip protocol, set bitcoin as default coin
+        var protocol = login_wizard.profile_data.seed.protocol.bip;
+
+        //hdkey, bip32, bip44 has same address master keys
+        protocol = (protocol === "bip32" || protocol === "bip44") ? "hdkey" : protocol;
+
+        //coin doesnt support bip type, set bitcoin as default coin before proceeding!
+        if (!wally_fn.networks[ coinjs.asset.network ][coinjs.asset.slug][protocol]) {
+           await wally_kit.setNetwork();          
+        }
+
+
+
 
         //init master key generation of keys for mnemonic and first gapLimit addresses
         await wally_fn.generateWalletMnemonicAddresses(p, s, clientProtocol);
