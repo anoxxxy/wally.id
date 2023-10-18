@@ -18,7 +18,7 @@
     asset
     options (saveSettings, showMessage (about updated settings) )
   */
-  wally_kit.setNetwork = async function (network_var = 'mainnet', asset_var = 'bitcoin', options = {saveSettings: false, showMessage: false, renderFields: true}) {
+  wally_kit.setNetwork = async function (network_var = 'mainnet', asset_var = 'bitcoin', options = {saveSettings: false, showMessage: false, renderFields: true, isAuth: false}) {
     console.log(' ');
     console.log('===wally_kit.setNetwork===');
 
@@ -59,6 +59,23 @@
       //update coinjs settings: merge variable settings with coinjs and overwrite existing properties,
       if (options.saveSettings) {
 
+        //is user logged in? if so do:
+        //check if coin has support for the wallet client / bip brotocol
+        if (options.isAuth) {
+          //await wally_fn.timeout(200);  //lets swait until profile_data is loaded
+
+          console.log('login_wizard.profile_data.seed.protocol.bip', login_wizard.profile_data.seed.protocol.bip);
+          var protocol = login_wizard.profile_data.seed.protocol.bip;
+
+          //hdkey, bip32, bip44 has same address master keys
+          protocol = (protocol === "bip32" || protocol === "bip44") ? "hdkey" : protocol;
+
+          if (!wally_fn.networks[network_var][asset_var][protocol]) {
+            throw(asset_var.toUpperCase() + ' has no support for '+ protocol.toUpperCase());
+            alert('danger');
+            return ;
+          }
+        }
 
         //extend coinjs with the updated asset configuration
           //"remove" bip types which is not common among other coins/assets
@@ -103,14 +120,14 @@
         //Set bip44 as default
         coinbinf.deriveFromBipProtocol.val('BIP44').trigger('change');
         //set BIP coin path
-        coinbinf.bipCoinPathTabContent.val(coinjs.bip_path);
+        coinbinf.bipCoinPathTabContent.val(coinjs.slip_path);
         //set BIP cointype
         
         coinbinf.bippath.val("m/0");
         coinbinf.bip32path.val("m/0");
-        coinbinf.bip44path.val("m/44'/"+coinjs.bip_path+"'/0'/0");
-        coinbinf.bip49path.val("m/49'/"+coinjs.bip_path+"'/0'/0");
-        coinbinf.bip84path.val("m/84'/"+coinjs.bip_path+"'/0'/0");
+        coinbinf.bip44path.val("m/44'/"+coinjs.slip_path+"'/0'/0");
+        coinbinf.bip49path.val("m/49'/"+coinjs.slip_path+"'/0'/0");
+        coinbinf.bip84path.val("m/84'/"+coinjs.slip_path+"'/0'/0");
 
         //set BIP44 tab as default
         coinbinf.bip32Tab.click();
@@ -123,8 +140,8 @@
 
         //set coin slip/bip path settings
         //iceee kalle
-        //$("#verifyHDaddress #coin-bip44").val(coinjs.bip_path);
-        //$("#verifyHDaddress #bip44-path").val("m/44'/"+coinjs.bip_path+"'/0'/0");
+        //$("#verifyHDaddress #coin-bip44").val(coinjs.slip_path);
+        //$("#verifyHDaddress #bip44-path").val("m/44'/"+coinjs.slip_path+"'/0'/0");
 
         
         //disable bip49, bip84 for none bech32 coins
@@ -195,7 +212,7 @@
 
         console.log('#modalChangeAsset input[name="set-asset-group"][value="'+asset_var+'"]');
 
-        //update the selected asset in modal dialog for quick changing asset
+        //set new selected asset in modal dialog
         document.querySelector('#modalChangeAsset input[name="set-asset-group"][value="'+asset_var+'"]').checked = true;
 
 
@@ -251,14 +268,16 @@
         custom.showModal(modalTitle, modalMessage);
       }
 
+      return true;
 
 
       
     } catch (e) {
       console.log('wally_kit.setNetwork ERROR: ', e);
-      modalTitle = 'Blockchain Network: ERROR!'
-      modalMessage = 'ERROR (wally_kit.setNetwork): Change blockchain network settings failed! ' + e;
-      custom.showModal(modalTitle, modalMessage, 'danger');
+      modalTitle = 'Settings'
+      modalMessage = 'ERROR: <br>' + e;
+      custom.showModal(modalTitle, modalMessage, 'danger', {'buttons': {'cancel': false}});
+      return false;
       //console.warn("");
     }
     
@@ -507,8 +526,24 @@
                 
                 //update coinjs.asset info
 
-                //change asset to the choosen one
-                wally_kit.setNetwork('mainnet', assetKeyInObject, {saveSettings: true, showMessage: false, renderFields: true});
+                /*
+                //check if coin has support for the wallet client / bip brotocol
+                var protocol = login_wizard.profile_data.seed.protocol.bip;
+                if (!value[protocol]) {
+                  console.log('===wally_kit.renderWAlletAssetPage=== ERROR: Coin has no support for '+ protocol);
+                  alert('danger');
+                  return ;
+                }
+                */
+
+                //try change asset to the selected one
+                //if coin has no support for the bip protocol quit rendering
+                var coinSupportsProtocol = await wally_kit.setNetwork('mainnet', assetKeyInObject, {saveSettings: true, showMessage: false, renderFields: true, isAuth: true});
+                console.log('coinSupportsProtocol: ', coinSupportsProtocol);
+                if(!coinSupportsProtocol) {
+                  Router.navigate('wallet');
+                  return;
+                }
 
                 //$.extend(coinjs, value);  //change asset and generate address
 
@@ -554,9 +589,9 @@
               var p =  login_wizard.profile_data.seed.passphrase;
               var s =  login_wizard.profile_data.seed.mnemonic;
               var protocol =  login_wizard.profile_data.seed.protocol;
-              var clientWalletProtocolIndex =  login_wizard.profile_data.seed.protocolIndex;
+              
 
-              await wally_fn.generateWalletMnemonicAddresses(p, s, protocol, clientWalletProtocolIndex);
+              await wally_fn.generateWalletMnemonicAddresses(p, s, protocol);
 
             }
             console.log('mnemonic -> walletRenderSeedAddresses');
@@ -1425,8 +1460,18 @@ wally_kit.walletRenderAddresses = function(addrObj) {
 wally_kit.walletRenderSeedAddresses = function(addressType = 'both') {
   console.log('===wally_kit.walletRenderSeedAddresses===');
   try {
+    
+    /*var protocol = login_wizard.profile_data.generated[coinjs.asset.slug].seed.protocol.bip;
+
+    if (!coinjs[protocol]) {
+      throw('===wally_kit.walletRenderSeedAddresses=== ERROR: Coin has not support for '+ protocol);
+      return ;
+    }
+    */
+
     var derived = login_wizard.profile_data.generated[coinjs.asset.slug].addresses;
-    var coinPath = login_wizard.profile_data.generated[coinjs.asset.slug].seed.path.receive;
+    var coinReceivePath = login_wizard.profile_data.generated[coinjs.asset.slug].seed.path.receive;
+    var coinChangePath = login_wizard.profile_data.generated[coinjs.asset.slug].seed.path.change;
     var pathIsHardened = login_wizard.profile_data.generated[coinjs.asset.slug].seed.path.isHardened;
 
 
@@ -1444,17 +1489,17 @@ wally_kit.walletRenderSeedAddresses = function(addressType = 'both') {
     if (addressType === 'both' || addressType === 'receive') {
       for (var i=0; i < (derived.receive).length; i++) {
 
+        derivedPath = coinReceivePath + '/' + i + hardenedAddress;
+
         if (derived.receive[i].address.redeemscript === undefined)  //check if redeemscript is present
           addr = derived.receive[i].address;
         else
           addr = derived.receive[i].address.address;
 
-        derivedPath = coinPath + i + hardenedAddress;
 
-        path = 
         receive += `
           <tr>
-            <th scope="row">${derivedPath}</th>
+            <th scope="row text-muted"><small>${derivedPath}</small></th>
             <td>${addr} <i class=" float-right bi bi-copy"></i></td>
             <td class="text-right">0</td>
           </tr>`;
@@ -1462,10 +1507,11 @@ wally_kit.walletRenderSeedAddresses = function(addressType = 'both') {
       }
     }
 
-    
     if (addressType === 'both' || addressType === 'change') {
       for (var i=0; i < (derived.change).length; i++) {
         
+        derivedPath = coinChangePath + '/' + i + hardenedAddress;
+
         if (derived.change[i].address.redeemscript === undefined)  //check if redeemscript is present
           addr = derived.change[i].address;
         else
@@ -1473,13 +1519,12 @@ wally_kit.walletRenderSeedAddresses = function(addressType = 'both') {
 
         change += `
           <tr>
-            <th scope="row">${derivedPath}</th>
+            <th scope="row text-muted"><small>${derivedPath}</small></th>
             <td>${addr} <i class=" float-right bi bi-copy"></i></td>
             <td class="text-right">0</td>
           </tr>`;
       }
     }
-    
 
     //add user assets to the list
     if (receive)

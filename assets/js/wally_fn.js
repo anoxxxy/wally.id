@@ -814,11 +814,7 @@ try {
 }
 
 
-/*
-@ Generate master keys for a coin
-param array: password (string), mnemonic (string), bip39 ('electrum' or 'bip39-standard' object) client protocol
-*/
-wally_fn.getMasterKeyFromMnemonicOld = async function (password, mnemonic, bip39, protocol = '', client_wallet_protocol_index = 0, derive_addresses = true) {
+wally_fn.getMasterKeyFromMnemonic = async function (password, mnemonic, protocol = '') {
   console.log('===wally_fn.getMasterKeyFromMnemonic===', password, mnemonic, protocol);
   var hd = coinjs.hd();
 
@@ -826,72 +822,11 @@ wally_fn.getMasterKeyFromMnemonicOld = async function (password, mnemonic, bip39
   var bipProtocol = 'bip44';
 
   if (password !== null) {
-    if (protocol === 'electrum')
-        password= password.toLowerCase(); //electrum uses lowercase for passwords
-  }
-  
-  var keyPair = hd.masterMnemonic(mnemonic, password, bipProtocol, bip39);
-  console.log('keyPair: ', keyPair);
-  var s;
-
-  //Electrum Master Key generation
-  if (protocol === 'electrum') {
-    
-      s = keyPair.privkey;
-      //var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
-      hd = coinjs.hd(s);
-      //set electrum path promptly
-      var derived_electrum = hd.derive_electrum_path("m/0'/0/0", 'bip84', 'hdkey', 'p2wpkh');
-      keyPair.pubkey = derived_electrum.keys_extended.pubkey;
-      keyPair.privkey = derived_electrum.keys_extended.privkey;
-  } else {
-     s = keyPair.privkey;
-     hd = coinjs.hd(s);
-  }
-
-  console.log('hd: ' , hd);
-  console.log('keyPair.privkey: ' + keyPair.privkey);
-  console.log('keyPair.pubkey: ' + keyPair.pubkey);
-  var derived = [];
-
-  //derive reciever and change addresses
-  if (derive_addresses) {
-    var clientWallet = login_wizard.clientWallets[client_wallet_protocol_index];
-    var derivation_path = clientWallet.path;
-    derivation_path = "m/0";
-    
-        console.log('===coinjs.getMasterKeyFromMnemonic=== extraced BIP: ' + bipProtocol);
-        console.log('===coinjs.getMasterKeyFromMnemonic=== derivationProtocol: ' + clientWallet.derivationProtocol);
-        console.log('===coinjs.getMasterKeyFromMnemonic=== addressSemantics: ' + clientWallet?.address?.semantics);
-        console.log('===coinjs.getMasterKeyFromMnemonic=== login_wizard.gapLimit: ' + login_wizard.gapLimit);
-        
-        
-        
-
-
-    for (var i=0; i < wally_fn.gap.limit; i++) {
-      console.log('===coinjs.getMasterKeyFromMnemonic=== derivation_path: ' + derivation_path+'/'+i);
-      derived.push( hd.derive_path(derivation_path+'/'+i, bipProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics) );
-    }
-    console.log('derived: ', derived);
-  }
-  return {keyPair, derived};
-
-}
-
-wally_fn.getMasterKeyFromMnemonic = async function (password, mnemonic, protocol = '', clientProtocolIndex = 0) {
-  console.log('===wally_fn.getMasterKeyFromMnemonic===', password, mnemonic, protocol);
-  var hd = coinjs.hd();
-
-  //set default bipProtocol
-  var bipProtocol = 'bip44';
-
-  if (password !== null) {
-    if (protocol === 'electrum')
+    if (protocol.name.includes('electrum'))
         password= password.toLowerCase(); //electrum uses lowercase for passwords
   }
   //check if we have an old electrum seed, if so set 
-  if (protocol === 'electrum') {
+  if (protocol.name.includes('electrum')) {
     var electrumSeedVersion = wally_fn.seedVersion(mnemonic, 'electrum');
     if (electrumSeedVersion === 'p2pkh') {
       bipProtocol = 'hdkey';
@@ -904,7 +839,7 @@ wally_fn.getMasterKeyFromMnemonic = async function (password, mnemonic, protocol
   var s;
 
   //Electrum Master Key generation
-  if (protocol === 'electrum') {
+  if (protocol.name.includes('electrum')) {
     if (electrumSeedVersion === 'p2wpkh') {
       s = keyPair.privkey;
       var hex = Crypto.util.bytesToHex(coinjs.base58decode(s).slice(0, 4));
@@ -955,6 +890,7 @@ wally_fn.loadWalletSeedAddresses = async function(addressType = 'both'){
   var receive = [];
   var change = [];
   var tmp = {};   //for tmp storing derived addresses
+  var receivePath, changePath;
 
 
   var addressesLength = 0;  //counts the total addresses for the user
@@ -970,8 +906,13 @@ wally_fn.loadWalletSeedAddresses = async function(addressType = 'both'){
      if (nextGapLimit > maxReceiveAddresses)
       nextGapLimit = maxReceiveAddresses;
 
+     // adapt path to coin slip path
+     receivePath = clientWallet.address.receive;
+     receivePath = receivePath.replace('{coin}', coinjs.slip_path);
+     console.log('receivePath 1: ', receivePath);
+
      for (var i=addressesLength; i < nextGapLimit; i++) {
-      derived = hd.derive_path(clientWallet.address.receive+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
+      derived = hd.derive_path(receivePath+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
 
       
       coinbinf.NoticeLoader.setContent(`<span class="text-primary">Receive Addresses: <strong>${i+1}</strong>/${nextGapLimit}</span>`);
@@ -1014,9 +955,13 @@ wally_fn.loadWalletSeedAddresses = async function(addressType = 'both'){
      if (nextGapLimit > maxChangeAddresses)
       nextGapLimit = maxChangeAddresses;
 
+     // adapt path to coin slip path
+     changePath = clientWallet.address.change;
+     changePath = changePath.replace('{coin}', coinjs.slip_path);
+     console.log('changePath 1: ', changePath);
 
      for (var i=addressesLength; i < nextGapLimit; i++) {
-      derived = hd.derive_path(clientWallet.address.change+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
+      derived = hd.derive_path(changePath+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
 
       
       coinbinf.NoticeLoader.setContent(`<span class="text-primary">Change Addresses: <strong>${i+1}</strong>/${nextGapLimit}</span>`);
@@ -1062,11 +1007,12 @@ wally_fn.getMasterKeyAddresses = async function (masterKey, client_wallet_protoc
   
   var receive = [];
   var change = [];
+  var receivePath, changePath;
   //set default bipProtocol
   var bipProtocol = 'bip44';
 
   var clientWallet = login_wizard.clientWallets[client_wallet_protocol_index];
-
+  console.log('clientWallet: ', clientWallet);
   
   //var derivation_path = clientWallet.path;
 
@@ -1107,10 +1053,15 @@ wally_fn.getMasterKeyAddresses = async function (masterKey, client_wallet_protoc
 
      if (nextGapLimit > maxReceiveAddresses)
       nextGapLimit = maxReceiveAddresses;
+    
+    // adapt path to coin slip path
+    receivePath = clientWallet.address.receive;
+    receivePath = receivePath.replace('{coin}', coinjs.slip_path);
+    console.log('receivePath 2: ', receivePath);
 
     for (var i=0; i < nextGapLimit; i++) {
       //console.log('===coinjs.getMasterKeyFromMnemonic=== derivation_path: ' + derivation_path+'/'+i);
-      derived = hd.derive_path(clientWallet.address.receive+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
+      derived = hd.derive_path(receivePath+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
 
       
       coinbinf.NoticeLoader.setContent(`<span class="text-primary">Receive Addresses: <strong>${i+1}</strong>/${nextGapLimit}</span>`);
@@ -1142,9 +1093,14 @@ wally_fn.getMasterKeyAddresses = async function (masterKey, client_wallet_protoc
      if (nextGapLimit > maxChangeAddresses)
       nextGapLimit = maxChangeAddresses;
 
+    // adapt path to coin slip path
+    changePath = clientWallet.address.change;
+    changePath = changePath.replace('{coin}', coinjs.slip_path);
+    console.log('changePath 2: ', changePath);
+
     for (var i=0; i < wally_fn.gap.limit; i++) {
       //console.log('===coinjs.getMasterKeyFromMnemonic=== derivation_path: ' + derivation_path+'/'+i);
-      derived = hd.derive_path(clientWallet.address.change+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
+      derived = hd.derive_path(changePath+'/'+i+hardenedAddress, clientWallet.derivationProtocol, clientWallet.derivationProtocol, clientWallet?.address?.semantics);
 
       coinbinf.NoticeLoader.setContent(`<span class="text-primary">Change Addresses:  <strong>${i+1}</strong>/${nextGapLimit}</span>`);
       await wally_fn.timeout(5);
@@ -1164,8 +1120,10 @@ wally_fn.getMasterKeyAddresses = async function (masterKey, client_wallet_protoc
   }
   
   var derivePath = (clientWallet?.childPath) ? clientWallet.childPath : clientWallet.path;
+  derivePath = derivePath.replace('{coin}', coinjs.slip_path);
+
   derivePath = wally_fn.stripLastPathComponent(derivePath);
-  var path = {'receive': clientWallet.address.receive, 'change': clientWallet.address.change, 'derivePath': derivePath, isHardened: clientWallet.address.hardened};
+  var path = {'receive': receivePath, 'change': changePath, 'derivePath': derivePath, isHardened: clientWallet.address.hardened};
 
   
   coinbinf.NoticeLoader.close();
@@ -1238,8 +1196,16 @@ wally_fn.stripLastPathComponent = function(path) {
 @ Generate Wallet addresses for a coin
 param array: s  (seed or master key)
 */
-wally_fn.generateWalletMnemonicAddresses = async function(p, s, protocol, clientProtocolIndex){
-  console.log('=================wally_fn.generateWalletMnemonicAddresses=================', p, s, protocol, clientProtocolIndex);
+wally_fn.generateWalletMnemonicAddresses = async function(p, s, protocol){
+  console.log('=================wally_fn.generateWalletMnemonicAddresses=================', p, s, protocol);
+
+  //check if coin has support for the wallet client / bip brotocol
+    if (!coinjs[protocol.bip]) {
+    //if (!coinjs.bip84) {
+      console.log('===wally_fn.generateWalletMnemonicAddresses=== ERROR: Coin has not support for '+ protocol.bip);
+      return ;
+    }
+
   var isEVM = wally_fn.isEVM();
 
   var deriveReceiveAddresses = true;
@@ -1248,16 +1214,21 @@ wally_fn.generateWalletMnemonicAddresses = async function(p, s, protocol, client
     deriveChangeAddresses = false;
   }
 
-  //switch client to electrum old seed generation if new seedVersion is not met!
+  var clientProtocolIndex = protocol.index;
+
+  //switch client to "electrum old" seed generation if new seedVersion is not met!
   var electrumSeedVersion = wally_fn.seedVersion(s, 'electrum');
   if (electrumSeedVersion === 'p2pkh') {
     clientProtocolIndex = 7;
     login_wizard.profile_data.seed.protocol.name = 'electrum_old';
     login_wizard.profile_data.seed.protocol.index = 7;
+  }/* else if (electrumSeedVersion === 'p2wpkh') {
+    //nothing here yet...
   }
+  */
 
   //generate mnemonic derivation for each coin/asset
-        login_wizard.profile_data.seed.keys = await wally_fn.getMasterKeyFromMnemonic(p, s, protocol, clientProtocolIndex);
+        login_wizard.profile_data.seed.keys = await wally_fn.getMasterKeyFromMnemonic(p, s, protocol);
         //login_wizard.profile_data.seed.addresses
         
         
@@ -2200,7 +2171,7 @@ wally_fn.networks_tokens = {
           //bip84/p2wpkh - Derives segwit + bech32 addresses from seed, zprv/zpub and vprv/vpub in javascript
           bip84 : {'prv':0x04b2430c, 'pub':0x04b24746}, // zpub
           
-          bip_path: 0,  //bip path constants are used as hardened derivation.
+          slip_path: 0,  //bip path constants are used as hardened derivation.
           //electrumbip: 'bip49', 'derivation': m/0, generate "bc" /  Address (Bech32) insead of segwit
 
 
@@ -2265,7 +2236,7 @@ wally_fn.networks_tokens = {
           bip49 : {'prv':0x01b26792, 'pub':0x01b26ef6}, //bip49/p2wpkh zpub
           //bip84/p2wpkh - Derives segwit + bech32 addresses from seed, zprv/zpub and vprv/vpub in javascript
           bip84 : {'prv':0x04b2430c, 'pub':0x04b24746}, // zpub
-          bip_path: 2,
+          slip_path: 2,
 
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'},
           
@@ -2321,7 +2292,7 @@ wally_fn.networks_tokens = {
         priv : 0x9e,     //wif
         multisig : 0x16, //scriptHash
           hdkey : {'prv':0x02fac398, 'pub':0x02facafd},
-          bip_path: 3,
+          slip_path: 3,
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'doge'},
 
           
@@ -2359,7 +2330,7 @@ wally_fn.networks_tokens = {
         priv : 0x99,     //wif
         multisig : 0x55, //scriptHash
           hdkey : {'prv':0x02cfbf60, 'pub':0x02cfbede},
-          bip_path: 2125,
+          slip_path: 2125,
           bech32 : {},
           
         txExtraTimeField: true,    //Set to true for PoS coins
@@ -2394,7 +2365,7 @@ wally_fn.networks_tokens = {
         priv : 0x99,     //wif
         multisig : 0x55, //scriptHash
           hdkey : {'prv':0x02cfbf60, 'pub':0x02cfbede},
-          bip_path: 10,
+          slip_path: 10,
           bech32 : {},
 
           
@@ -2438,7 +2409,7 @@ wally_fn.networks_tokens = {
         priv : 0xad,     //wif
         multisig : 0x32, //scriptHash
           hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e}, //fix this! iceeee
-          bip_path: 191,
+          slip_path: 191,
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'ltc'},
           
         txExtraTimeField: false,    //Set to true for PoS coins
@@ -2496,7 +2467,7 @@ wally_fn.networks_tokens = {
         priv : 0xb7,     //wif
         multisig : 0x05, //scriptHash
           hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
-          bip_path: 81,
+          slip_path: 81,
           bech32 : {},
           //magic: hex('fbc0b6db'),
           
@@ -2541,7 +2512,7 @@ wally_fn.networks_tokens = {
         priv : 0xbd,     //wif
         multisig : 0x05, //scriptHash
           hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
-          bip_path: 4,
+          slip_path: 4,
           bech32 : {},
           //magic: hex('fbc0b6db'),
           
@@ -2577,7 +2548,7 @@ wally_fn.networks_tokens = {
         priv : 0x99,     //wif
         multisig : 0x55, //scriptHash
           hdkey : {'prv':0x0488ade4, 'pub':0x0488b21e},
-          bip_path: 722,
+          slip_path: 722,
           bech32 : {},
           
         txExtraTimeField: true,    //Set to true for PoS coins
@@ -2621,7 +2592,7 @@ wally_fn.networks_tokens = {
         priv : 153,     //wif
         multisig : 85, //scriptHash
           hdkey : {'prv':0x0488ade4 /*EXT_SECRET_KEY*/, 'pub':0x0488b21e /*EXT_PUBLIC_KEY*/},
-          bip_path: 720,
+          slip_path: 720,
           bech32 : {},
           
         txExtraTimeField: true,    //Set to true for PoS coins
@@ -2656,7 +2627,7 @@ wally_fn.networks_tokens = {
         priv : 153,     //wif
         multisig : 85, //scriptHash
           hdkey : {'prv':0x0488ade4 /*EXT_SECRET_KEY*/, 'pub':0x0488b21e /*EXT_PUBLIC_KEY*/},
-          bip_path: 719,
+          slip_path: 719,
           bech32 : {},
           
         txExtraTimeField: true,    //Set to true for PoS coins
@@ -2692,7 +2663,7 @@ wally_fn.networks_tokens = {
         priv : 181,     //wif, SECRET_KEY
         multisig : 30, //scriptHash, SCRIPT_ADDRESS
           hdkey : {'prv':0xe1a32b3e /*EXT_SECRET_KEY*/, 'pub':0xad1b12a4 /*EXT_PUBLIC_KEY*/},
-          bip_path: 724,
+          slip_path: 724,
           bech32 : {},
           
         txExtraTimeField: true,    //Set to true for PoS coins
@@ -2741,7 +2712,7 @@ wally_fn.networks_tokens = {
         priv : 0x88,     //wif, "wiftype": 136,
         multisig : 0x14, //scriptHash, "p2shtype": 20,
           hdkey : {'prv':0x0488ade4 /*EXT_SECRET_KEY*/, 'pub':0x0488b21e /*EXT_PUBLIC_KEY*/}, //bip32
-          bip_path: 50,
+          slip_path: 50,
           bech32 : {},
           
         txExtraTimeField: true,    //Set to true for PoS coins
@@ -2785,7 +2756,7 @@ wally_fn.networks_tokens = {
           bip49 : {'prv':0x049d7878, 'pub':0x049d7cb2}, //bip49 ypub
           bip84 : {'prv':0x04b2430c, 'pub':0x04b24746}, // zpub
 
-          bip_path: 60,
+          slip_path: 60,
           bech32 : {},
 
           
@@ -2830,8 +2801,8 @@ wally_fn.networks_tokens = {
           bip49 : {'prv':0x049d7878, 'pub':0x049d7cb2}, //bip49 ypub
           bip84 : {'prv':0x04b2430c, 'pub':0x04b24746}, // zpub
 
-          bip_path: 714,
-          bech32 : {},
+          slip_path: 714,
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'},
 
           
         txExtraTimeField: false,    //not used for ....
@@ -2875,8 +2846,8 @@ wally_fn.networks_tokens = {
           bip49 : {'prv':0x049d7878, 'pub':0x049d7cb2}, //bip49 ypub
           bip84 : {'prv':0x04b2430c, 'pub':0x04b24746}, // zpub
 
-          bip_path: 9000,
-          bech32 : {},
+          slip_path: 9000,
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'},
 
           
         txExtraTimeField: false,    //not used for ....
@@ -2920,8 +2891,8 @@ wally_fn.networks_tokens = {
           bip49 : {'prv':0x049d7878, 'pub':0x049d7cb2}, //bip49 ypub
           bip84 : {'prv':0x04b2430c, 'pub':0x04b24746}, // zpub
 
-          bip_path: 966,
-          bech32 : {},
+          slip_path: 966,
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'bc'},
 
           
         txExtraTimeField: false,    //not used for ....
@@ -2959,7 +2930,7 @@ wally_fn.networks_tokens = {
         priv : 0x83,     //wif, SECRET_KEY
         multisig : 0x1c, //scriptHash, SCRIPT_ADDRESS
           hdkey : {'prv':0x0488ade4 /*EXT_SECRET_KEY*/, 'pub':0x0488b21e /*EXT_PUBLIC_KEY*/},
-          bip_path: 117,
+          slip_path: 117,
           bech32 : {},
           
         txExtraTimeField: true,    //Set to true for PoS coins
@@ -3044,7 +3015,7 @@ wally_fn.networks_tokens = {
           
           //bip84/p2wpkh - Derives segwit + bech32 addresses from seed, zprv/zpub and vprv/vpub in javascript
           bip84 : {'prv':0x045f18bc, 'pub':0x045f1cf6}, // zpub
-          bip_path: 1,
+          slip_path: 1,
 
           
         txExtraTimeField: false,    //Set to true for PoS coins
@@ -3126,7 +3097,7 @@ wally_fn.networks_tokens = {
         multisig : 0, //....
           hdkey : {},
           bech32 : {},
-          bip_path: 1,
+          slip_path: 1,
           
         txExtraTimeField: false,    //not used for account/evm based coins ....
         txExtraTimeFieldValue: false, //....
@@ -3161,13 +3132,13 @@ wally_fn.networks_tokens = {
         priv : 0xef,     //wif
         multisig : 0xc4, //scriptHash
           hdkey : {'prv':0x04358394, 'pub':0x043587cf},
-          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'litecointestnet'},
+          bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'tltc'},
           //bip49/p2wpkhInP2sh - deriving P2WPKH-nested-in-P2SH - segwit, ypub
           bip49 : {'prv':0x04358394, 'pub':0x043587cf}, //bip49/p2wpkh zpub
           
           //bip84/p2wpkh - Derives segwit + bech32 addresses from seed, zprv/zpub and vprv/vpub in javascript
           bip84 : {'prv':0x04358394, 'pub':0x043587cf}, // zpub
-          bip_path: 1,
+          slip_path: 1,
 
           
         txExtraTimeField: false,    //Set to true for PoS coins
@@ -3207,7 +3178,7 @@ wally_fn.networks_tokens = {
           
           //bip84/p2wpkh - Derives segwit + bech32 addresses from seed, zprv/zpub and vprv/vpub in javascript
           bip84 : {'prv':0x04358394, 'pub':0x043587cf}, // zpub
-          bip_path: 1,
+          slip_path: 1,
           bech32 : {'charset':'qpzry9x8gf2tvdw0s3jn54khce6mua7l', 'version':0, 'hrp':'dogecointestnet'},
           
           
@@ -3300,7 +3271,7 @@ wally_fn.networks_tokens = {
         multisig : 0, //....
           hdkey : {},
           bech32 : {},
-          bip_path: 1,
+          slip_path: 1,
           
         txExtraTimeField: false,    //not used for ....
         txExtraTimeFieldValue: false, //....

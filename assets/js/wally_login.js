@@ -78,7 +78,8 @@
     3: {
       "client": "Coinomi, Ledger",
       "slug": "coinomi_ledger",
-      "path": "m/44'/0'/0'",
+      //"path": "m/44'/0'/0'",
+      "path": "m/44'/{coin}'/0'",
       "supports": {
         "passphrase": true,
         "login": {
@@ -90,8 +91,10 @@
       "address": {
         "semantics": "",
         "hardened": false,
-        "receive": "m/44'/0'/0'",
-        "change": "m/44'/0'/1'",
+        //"receive": "m/44'/0'/0'",
+        //"change": "m/44'/0'/1'",
+        "receive": "m/44'/{coin}'/0'",
+        "change": "m/44'/{coin}'/1'",
       }
     },
     4: {
@@ -482,8 +485,6 @@
         
         console.log('Client Wallet: ', login_wizard.clientWallets[clientWalletProtocolIndex].client);
         
-        var protocol = login_wizard.clientWallets[clientWalletProtocolIndex].slug;
-
 
         //prepare values for profile data
         login_wizard.profile_data.login_type = loginType;
@@ -502,16 +503,20 @@
         login_wizard.profile_data.seed = {};
         login_wizard.profile_data.seed.mnemonic = s;
         login_wizard.profile_data.seed.passphrase = p;
-        login_wizard.profile_data.seed.protocol = {};
-        login_wizard.profile_data.seed.protocol.name = protocol;
-        login_wizard.profile_data.seed.protocol.index = clientWalletProtocolIndex;
+        
+        var clientProtocol = {
+          'name': login_wizard.clientWallets[clientWalletProtocolIndex].slug,
+          'index': clientWalletProtocolIndex,
+          'bip': login_wizard.clientWallets[clientWalletProtocolIndex].derivationProtocol
+        };
 
+        login_wizard.profile_data.seed.protocol = clientProtocol;
         login_wizard.profile_data.seed.path = '';
 
         
 
         //init master key generation of keys for mnemonic and first gapLimit addresses
-        await wally_fn.generateWalletMnemonicAddresses(p, s, protocol, clientWalletProtocolIndex);
+        await wally_fn.generateWalletMnemonicAddresses(p, s, clientProtocol);
 
         /*
         //generate mnemonic derivation for each coin/asset
