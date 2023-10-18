@@ -1165,7 +1165,7 @@ wally_fn.getMasterKeyAddresses = async function (masterKey, client_wallet_protoc
   
   var derivePath = (clientWallet?.childPath) ? clientWallet.childPath : clientWallet.path;
   derivePath = wally_fn.stripLastPathComponent(derivePath);
-  var path = {'receive': clientWallet.address.receive, 'change': clientWallet.address.change, 'derivePath': derivePath};
+  var path = {'receive': clientWallet.address.receive, 'change': clientWallet.address.change, 'derivePath': derivePath, isHardened: clientWallet.address.hardened};
 
   
   coinbinf.NoticeLoader.close();
@@ -1282,7 +1282,6 @@ wally_fn.generateWalletMnemonicAddresses = async function(p, s, protocol, client
           'seed': {
             'keys': login_wizard.profile_data.seed.keys,
             'protocol': protocol,
-            'protocolIndex': clientProtocolIndex,
             'path': seed_addresses.path,
           },
           0: {
@@ -3726,6 +3725,22 @@ wally_fn.wordCount = function(str) {
 }
 
 
+/**
+ * Check if the last character of a string is a single quote, 'M', or 'm'.
+ *
+ * @param {string} str - The input string to check.
+ * @returns {boolean} Returns `true` if the last character is a single quote, 'M', or 'm', `false` otherwise.
+ */
+wally_fn.strIsHardened = function(str) {
+  
+  const strLength = str.length;
+  if (typeof str !== 'string' || strLength === 0) {
+    return false; // Return false for empty or non-string input
+  }
+
+  const lastChar = str[strLength - 1];
+  return lastChar === "'" || lastChar === 'M' || lastChar === 'm';
+}
 
 
 

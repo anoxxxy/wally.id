@@ -1426,10 +1426,20 @@ wally_kit.walletRenderSeedAddresses = function(addressType = 'both') {
   console.log('===wally_kit.walletRenderSeedAddresses===');
   try {
     var derived = login_wizard.profile_data.generated[coinjs.asset.slug].addresses;
+    var coinPath = login_wizard.profile_data.generated[coinjs.asset.slug].seed.path.receive;
+    var pathIsHardened = login_wizard.profile_data.generated[coinjs.asset.slug].seed.path.isHardened;
+
 
     var receive = '';
     var change = '';
     var addr = '';
+    var path = '';
+    var derivedPath = '';
+
+    var hardenedAddress = "";
+    if (pathIsHardened)
+      hardenedAddress = "'";
+
 
     if (addressType === 'both' || addressType === 'receive') {
       for (var i=0; i < (derived.receive).length; i++) {
@@ -1439,9 +1449,12 @@ wally_kit.walletRenderSeedAddresses = function(addressType = 'both') {
         else
           addr = derived.receive[i].address.address;
 
+        derivedPath = coinPath + i + hardenedAddress;
+
+        path = 
         receive += `
           <tr>
-            <th scope="row">${i}</th>
+            <th scope="row">${derivedPath}</th>
             <td>${addr} <i class=" float-right bi bi-copy"></i></td>
             <td class="text-right">0</td>
           </tr>`;
@@ -1460,7 +1473,7 @@ wally_kit.walletRenderSeedAddresses = function(addressType = 'both') {
 
         change += `
           <tr>
-            <th scope="row">${i}</th>
+            <th scope="row">${derivedPath}</th>
             <td>${addr} <i class=" float-right bi bi-copy"></i></td>
             <td class="text-right">0</td>
           </tr>`;
