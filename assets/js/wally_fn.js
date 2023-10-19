@@ -26,7 +26,7 @@
     'change': 5, //total change addresses to generate upon click load more button
     'receivePage': 0, //page 2 -> shows 2*'receive' addresses
     'changePage': 0,
-    'timeout': 30000, //timeout for loading more addresses, in ms
+    'timeout': 10000, //timeout for loading more addresses, in ms
   };
 
 
@@ -991,6 +991,10 @@ wally_fn.loadWalletSeedAddresses = async function(addressType = 'both'){
     }
   }
 
+  //save generated data settings - user dependent
+  if (login_wizard.profile_data.remember)
+    storage_s.set('wally.profile', login_wizard.profile_data);
+
   coinbinf.NoticeLoader.close();
   return {receive, change};
 }
@@ -1125,8 +1129,9 @@ wally_fn.getMasterKeyAddresses = async function (masterKey, client_wallet_protoc
   derivePath = wally_fn.stripLastPathComponent(derivePath);
   var path = {'receive': receivePath, 'change': changePath, 'derivePath': derivePath, isHardened: clientWallet.address.hardened};
 
-  
+
   coinbinf.NoticeLoader.close();
+
 
   //console.log('derived: ', derived);
   return {receive, change, path};
@@ -1299,6 +1304,10 @@ wally_fn.generateWalletMnemonicAddresses = async function(p, s, protocol){
         //set back the original object properties
         //coinGenerated.name = coinjs.asset.name;
         //coinGenerated.symbol = coinjs.asset.symbol;
+
+        //save generated data settings - user dependent
+        if (login_wizard.profile_data.remember)
+          storage_s.set('wally.profile', login_wizard.profile_data);
 
         return {coinGenerated, 'addresses': {'receive': receiveAddresses, 'change': changeAddresses}};
 
@@ -2955,7 +2964,7 @@ wally_fn.networks_tokens = {
           name: 'Bitcoin',
           slug: 'bitcoin',
           symbol: 'tBTC',
-          symbols: ['btc', 'bitcoin'],
+          symbols: ['tbtc', 'bitcoin'],
           icon: './assets/images/crypto/bitcoin-btc-logo.svg',
           network: 'testnet',
           supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
@@ -3068,14 +3077,14 @@ wally_fn.networks_tokens = {
         developer: 'moZx3Vhdj4xe1JbEp7BegcpVdMNWTpzWHh',
       },
       */
-      ethereum : {
+      'ethereum-goerli' : {
         symbol: 'ETH-Goerli',      //ticker
         asset: {
           chainModel: 'account',
           name: 'Ethereum-Goerli',
-          slug: 'ethereum-goerli-erc20',
+          slug: 'ethereum-goerli',
           symbol: 'ETH-Goerli',
-          symbols: ['eth-goerli', 'ethereum-goerli', 'goerli', 'eth'],
+          symbols: ['eth-goerli', 'ethereum-goerli', 'goerli', 'teth'],
           icon: './assets/images/crypto/ethereum-eth-logo.svg',
           network: 'testnet',
           supports_address : ['single'],

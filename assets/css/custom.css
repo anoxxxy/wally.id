@@ -1564,6 +1564,12 @@ right: 10px;
 	background: transparent;
 }
 
+#openLogin textarea.form-control{
+	border: 0;
+	box-shadow: unset;
+	background: transparent;
+}
+
 
 
 .callout.callout-no-border select,
@@ -3550,6 +3556,9 @@ padding-left: 0.75rem;
   position: fixed !important;
   display: flex;
   
+}
+.jBox-wrapper label {
+	display: unset;
 }
 
 .inception-overlay {

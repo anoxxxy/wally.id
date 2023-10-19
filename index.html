@@ -2377,21 +2377,31 @@
                                 <!-- Mnemonic Wallet -->
                                 <div class="multisteps-form__panel hidden animate__animated mb-2 " data-wallet-type="mnemonic_wallet">
                                   
-                                  <div class="alert alert-warning animate__animated animate__shakeX">
-                                    <img src="./assets/images/auctions_and_sales.svg" class="icon32" alt="Mnemonic Login"> <b>Login with your BIP seed or Electrum seed!</b>
+                                  <div class="alert alert-warning">
+                                    <b>Login with your seed!</b>
                                   </div>
 
                                   <div class="callout-title">
                                       Mnemonic
                                     </div>
-                                    <div class="callout callout-no-border form-group  m-0">
-                                      <div class="form-email mt-4">
-                                        <textarea id="openSeed" name="openSeed" data-input-type="seed" class="form-control" placeholder="Seed" autofocus style="height:100px"></textarea>
+                                    <div class="form-group  m-0">
+                                      <div >
+                                        <div class="callout callout-no-border m-0">
+                                          <textarea id="openSeed" name="openSeed" data-input-type="seed" class="form-control" placeholder="Seed" autofocus style="height:100px"></textarea>
+
+                                          <div class="d-flex justify-content-end input-group mt-2 m-0">
+                                            <div class="input-group-append">
+                                              <span id="newMnemonicLogin" class="input-group-text cursor-pointer newMnemonicLoginGenerate">Create</span>
+                                              <span class="input-group-text cursor-pointer newMnemonicLoginWords"><i class="bi bi-gear-fill"></i></span>
+                                            </div>
+                                          </div>
+                                        </div>
+
 
                                         
 
 
-                                        <div class="row my-3">
+                                        <div class="row my-3 callout callout-no-border form-group  m-0">
                                           <label for="openClientWallet" class="col-12 col-md-2 control-label pt-2">Client</label>
                                           <div class="col-12 col-md-10">
                                               <select id="openClientWallet" class="client form-control">
@@ -2410,20 +2420,33 @@
                                         </div>
 
 
-                                        <div id="openSeedPasswordBox" class="checkbox mt-2 hidden">
+                                        <div id="openSeedPasswordBox" class="checkbox m-0  mt-2 callout callout-no-border form-group  hidden">
                                           <label>
                                             <input type="checkbox" id="newOpenSeedBrainwalletCheck" class="checkbox-inline"> BIP39 Passphrase <span class="text-muted">(optional)</span></label>
 
                                           
-                                          <div class="input-group mt-2 m-0 hidden">
-                                            <div class="input-group-prepend">
-                                              <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
+                                          <div class="seedGeneratePassword hidden">
+                                            <div class="input-group mt-2 m-0">
+                                              <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
+                                              </div>
+                                              <input id="openSeedPassword" name="openSeedPassword" type="password" class="form-control" placeholder="BIP39 Passphrase">
+                                              <div class="input-group-append">
+                                                <span class="showKey input-group-text cursor-pointer" type="button"><i class="bi bi-eye-fill"></i></span>
+                                              </div>
+
+                                              
+
                                             </div>
-                                            <input id="openSeedPassword" name="openSeedPassword" type="password" class="form-control" placeholder="BIP39 Passphrase">
-                                            <div class="input-group-append">
-                                              <span class="showKey input-group-text cursor-pointer" type="button"><i class="bi bi-eye-fill"></i></span>
+                                            <div class="d-flex justify-content-end input-group mt-2 m-0">
+                                              <div class="input-group-append">
+                                                <span class="input-group-text cursor-pointer generatePassword" data-input-for="#openSeedPassword">Generate</span>
+                                                <span class="input-group-text cursor-pointer" data-input-for="#openSeedPassword" data-toggle="popover" data-html="true" data-target="#popPasswordSettings" data-placement="top"><i class="bi bi-gear-fill"></i></span>
+                                              </div>
                                             </div>
+
                                           </div>
+
                                         </div>
 
                                         
@@ -2432,9 +2455,9 @@
 
                                       
                                     </div>
-                                    <div class="alert alert-warning animate__animated animate__shakeX mt-4">
-                                      <img src="./assets/images/convertshape-2.svg" class="icon32" alt="Mnemonic Login"> 
-                                      Seeds from Trezor, Ledger, Electrum wallets are supported. We are ALL in one!
+                                    <div class="alert alert-info mt-3">
+                                      <img src="./assets/images/pencil.svg" class="icon32" alt="Mnemonic Login"> 
+                                      Always backup your seed!
                                     </div>
 
 
@@ -6126,7 +6149,7 @@
     </div>
   </div>
 
-  <!--
+  <!-- Not used for now
     <div class="modal fade" id="modalMediator" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -6456,14 +6479,14 @@
   </div>
 
 
-  <!-- BIP Options -->
+  <!-- BIP Options for Manual Pages-->
 
   <div id="popBIPSettingsContainer">
     <div id="popBIPSettings" class="popover hidden">
       <div class="arrow"></div>
       <div class="popover-header popover-title">
         <!-- <button class="close" data-dismiss="popover">&times;</button>-->
-        Protocol Options<small class="text-muted"></small>
+        Protocol & Seed Options<small class="text-muted"></small>
       </div>
       <div class="popover-body popover-content">
 
@@ -6520,6 +6543,45 @@
     </div>
   </div>
 
+
+
+<!-- Seed Options for Login-->
+
+  <div id="popBIPLoginSettingsContainer">
+    <div id="popBIPLoginSettings" class="popover hidden">
+      <div class="arrow"></div>
+      <div class="popover-header popover-title">
+        <!-- <button class="close" data-dismiss="popover">&times;</button>-->
+        Mnemonic Options<small class="text-muted"></small>
+      </div>
+      <div class="popover-body popover-content">
+
+        <!-- Seed Settings -->
+        <div class="">
+
+          <div class="">
+            <label>Mnemonic length <span class="text-muted">(words)</span>:
+
+              <select id="seedLoginMnemonicLength" class="client form-control w-100">
+                <option value="12" selected>12 words</option>
+                <option value="15">15 words</option>
+                <option value="18">18 words</option>
+                <option value="21">21 words</option>
+                <option value="24">24 words</option>
+              </select>
+
+            </label>
+          </div>
+
+        </div>
+        <!-- //Choose BIP protocol -->
+
+      </div>
+      <div class="popover-footer">
+        <input type="button" class="btn btn-block btn-sm btn-flat-primary generateInput newMnemonicLoginGenerate" value="Create Mnemonic">
+      </div>
+    </div>
+  </div>
 
   <!-- Bottom Menu - Wallet Content -->
 

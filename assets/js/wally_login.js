@@ -458,7 +458,7 @@
           success = false;  
         }
         console.log('wally_fn.wordCount(s): ', wally_fn.wordCount(s))
-        console.log('login_wizard.clientWallets[clientWalletProtocolIndex]?.wordCount ', login_wizard.clientWallets[clientWalletProtocolIndex]?.wordCount)
+        //console.log('login_wizard.clientWallets[clientWalletProtocolIndex]?.wordCount ', login_wizard.clientWallets[clientWalletProtocolIndex]?.wordCount)
         
         if (!success) {
           login_wizard.errorMessage += '<p>&#8226; Wrong Seed, please try again!!</p>';
@@ -522,7 +522,7 @@
 
         //coin doesnt support bip type, set bitcoin as default coin before proceeding!
         if (!wally_fn.networks[ coinjs.asset.network ][coinjs.asset.slug][protocol]) {
-           await wally_kit.setNetwork();          
+           await wally_kit.setNetwork();
         }
 
 
@@ -530,6 +530,8 @@
 
         //init master key generation of keys for mnemonic and first gapLimit addresses
         await wally_fn.generateWalletMnemonicAddresses(p, s, clientProtocol);
+
+
 
         /*
         //generate mnemonic derivation for each coin/asset
@@ -859,12 +861,15 @@ login_wizard.initCoinList = function(coinListModal, addrObj) {
     };
 
     //fetch coininfo from Coingecko
-    await wally_kit.getCoinInfo();
+    //await wally_kit.getCoinInfo();
 
     //todo: render dom with coininfo
     //this is done in router settings
     //
 
+    //generate a list of user assets
+    wally_kit.walletRenderAssets();
+    wally_kit.walletRenderSeedAddresses();
 
     $('#openBtn').click();
     return ;
@@ -1227,6 +1232,7 @@ login_wizard.downloadFileBlob = function (filename, text) {
         coinbinf.openClientWalletPassphrase.velocity('slideUp')
       }
     }
+
 
 
   var loginBtn = document.getElementById('openBtn');
@@ -2401,14 +2407,13 @@ $('#openLogin input[type="password"], #openLogin input[type="text"], #openLogin 
 coinbinf.openClientWalletPassphraseCheck.on("click", function(e){
   console.log('===login_wizard.openClientWalletPassphraseCheck===', e);
   if($(this).is(":checked")){
-    coinbinf.openSeedPassword.parent().removeClass('hidden').velocity('slideDown');
+    coinbinf.openSeedPassword.parent().parent().removeClass('hidden').velocity('slideDown');
   } else {
-    coinbinf.openSeedPassword.parent().velocity('slideUp');
+    coinbinf.openSeedPassword.parent().parent().velocity('slideUp');
   }
 });
 
-  //check if user is auth
-  login_wizard.openUserWallet();
+  
 
 }); //End DOM ready
 

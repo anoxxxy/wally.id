@@ -64,7 +64,6 @@
         if (options.isAuth) {
           //await wally_fn.timeout(200);  //lets swait until profile_data is loaded
 
-          console.log('login_wizard.profile_data.seed.protocol.bip', login_wizard.profile_data.seed.protocol.bip);
           var protocol = login_wizard.profile_data.seed.protocol.bip;
 
           //hdkey, bip32, bip44 has same address master keys
@@ -89,7 +88,7 @@
 
         //render BIP types on UI, ( Protocol Options ) popover
         var bip, bip_name, bip_options='';;
-        for (i=0; i< coinjs.biptypes.length;i++){
+        for (var i=0; i< coinjs.biptypes.length;i++){
           //compare if version matches bip-type prv or pub 
           bip = coinjs.biptypes[i];
           if (coinjs[coinjs.biptypes[i]] && Object.keys(coinjs[coinjs.biptypes[i]]).length === 2) {
@@ -517,7 +516,7 @@
               console.log('loop for key, value: '+ key);
               console.log('loop for symbol: '+ value.asset.symbol);
 
-              if ( (value.asset.symbols).includes(choosenAsset.toLowerCase()) ) {
+              if ( (key).includes(choosenAsset.toLowerCase()) ) {
               //if ( (value.asset.symbols).includes(choosenAsset) ) {
                 isAssetFound = true;
                 assetKeyInObject = key;
@@ -538,6 +537,12 @@
 
                 //try change asset to the selected one
                 //if coin has no support for the bip protocol quit rendering
+                console.log('aaa login_wizard.profile_data.generated: ', login_wizard.profile_data);
+                
+                //break the loop if selected coin is already set!
+                if (coinjs.asset.symbol === value.asset.symbol)
+                  break;
+
                 var coinSupportsProtocol = await wally_kit.setNetwork('mainnet', assetKeyInObject, {saveSettings: true, showMessage: false, renderFields: true, isAuth: true});
                 console.log('coinSupportsProtocol: ', coinSupportsProtocol);
                 if(!coinSupportsProtocol) {
@@ -558,7 +563,7 @@
               
           }
 
-          //Show Asset page or Overview page?
+          //Show Coin page or Overview page?
           if (walletSubPage) {
             $('#walletOverview').addClass('hidden');
             $('#walletAsset').removeClass('hidden');
@@ -566,13 +571,14 @@
           }else {
             $('#walletOverview').removeClass('hidden');
             $('#walletAsset').addClass('hidden');
-            console.log('Wallet Asset -page');
+            console.log('Wallet Coin -page');
           }
 
-          if (!coinjs.asset || !isAssetFound)
+          //coin has not been changed or no such coin -> exit
+          if (!coinjs.asset || !isAssetFound) {
+            console.log('Coin NOT FOUND! ',coinjs.asset , isAssetFound);
             return;
-
-
+          }
           
           //render password addresses / generate and render mnemonic addresses if they are not present
           if (login_wizard.profile_data.login_type === 'password') {
@@ -584,6 +590,9 @@
           //check if addresses for a mnemonic/ seed /master has been generated
           
             //has the addresses been generated, if not generate them for the choosen coin/asset!
+            console.log('wallet page login_wizard.profile_data.generated: ', login_wizard.profile_data.generated);
+            console.log('wallet page slug: ', [coinjs.asset.slug]);
+            console.log('wallet page login_wizard.profile_data.generated slug: ', login_wizard.profile_data.generated[coinjs.asset.slug]);
             if (!login_wizard.profile_data.generated[coinjs.asset.slug]) {
               //init master key generation of keys for mnemonic and first gapLimit addresses
               var p =  login_wizard.profile_data.seed.passphrase;
@@ -801,13 +810,14 @@
 
           login_wizard.profile_data = {};
           //clear all inputs
-          $('input').val('');
+          $('input[type=text], input[type=password]').val('');
+          $('textarea').val('');
 
 
           //from old coding
-          $("#openEmail").val("");
-          $("#openPass").val("");
-          $("#openPass-confirm").val("");
+          //$("#openEmail").val("");
+          //$("#openPass").val("");
+          //$("#openPass-confirm").val("");
 
           //$("#login").removeClass('hidden');
           //$("#openLogin").show();
@@ -1030,36 +1040,42 @@
 
 
       //List supported assets, footer page, quick asset change in modal, donations list etc...
-      wally_kit.listAssets();
+      this.listAssets();
+
+      //check if user is auth
+      login_wizard.openUserWallet();
+
+      //set default Chain Network 
+      //if (!coinjs.asset)
+        await this.setNetwork('mainnet', 'bitcoin', {saveSettings: true, showMessage: false, renderFields: true});
+
+      
 
       //get pageURL Parameters
       await this.initRouter();
       await this.checkUrlParams();
       console.log('networkType: ', networkTypesRadio);
 
-      
-
-      //set default Chain Network 
-      if (coinjs.asset === undefined)
-        this.setNetwork('mainnet', 'bitcoin', {saveSettings: true, showMessage: false, renderFields: true});
-
       //if defined, set to selected/active Network
       if(coinjs.asset.network) {
         networkTypesRadio.parent().removeClass('active');
-        $('input[type=radio][name=radio_selectNetworkType][data-network-type='+coinjs.asset.network+']').prop('checked', true).parent().addClass('active');
+        $('input[type=radio][name=radio_selectNetworkType][data-network-type=mainnet]').trigger('change').prop('checked', true).parent().addClass('active');
+        var ice = $('input[type=radio][name=radio_selectNetworkType][data-network-type=mainnet]');
+
+        //$('input[type=radio][name=radio_selectNetworkType][data-network-type='+coinjs.asset.network+']').prop('checked', true).parent().addClass('active');
         console.log('Network Type is already set!');
 
         //show providers for i.e Broadcast and UTXO API
         //wally_kit.settingsListAssets(coinjs.asset.network)
         //wally_kit.settingsListChainProviders(coinjs.asset.network)
 
-    } else {
-      //no network is choosen, set default to mainnet
-      networkTypesRadio.parent().removeClass('active');
-      $('input[type=radio][name=radio_selectNetworkType][data-network-type=mainnet]').prop('checked', true).parent().addClass('active');
-      console.log('No Network Type! Set to Default!');
-      throw('No Network Type! Set to Default!')
-    }
+      } else {
+        //no network is choosen, set default to mainnet
+        networkTypesRadio.parent().removeClass('active');
+        $('input[type=radio][name=radio_selectNetworkType][data-network-type=mainnet]').prop('checked', true).parent().addClass('active');
+        console.log('No Network Type! Set to Default!');
+        throw('No Network Type! Set to Default!')
+      }
 
   
 
@@ -1309,14 +1325,15 @@
 wally_kit.walletRenderAssets = function() {
   console.log('===wally_kit.walletRenderAssets===');
   let userAssetList = '';
-
+  var walletAssets = $('#userWalletAssets');
+  walletAssets.text('');
   //render only if coin has support for the wallet client / bip brotocol
   var protocol = login_wizard.profile_data.seed.protocol.bip;
 
   //hdkey, bip32, bip44 has same address master keys
   protocol = (protocol === "bip32" || protocol === "bip44") ? "hdkey" : protocol;
 
-
+  //for (var [key, value] of Object.entries(wally_fn.networks[ wally_fn.network ])) {
   for (var [key, value] of Object.entries(wally_fn.networks[ coinjs.asset.network ])) {
 
     //coin doesnt support bip type, skip to next coin!
@@ -1324,8 +1341,8 @@ wally_kit.walletRenderAssets = function() {
       continue; // Skip the current iteration and move to the next one
 
 
-    userAssetList += `
-      <div class="list-border position-relative">
+    userAssetList = `
+      <div class="list-border position-relative hidden">
         <div class="list-wrapper">
           <div class="list-name">
             <div class="coin-icon">
@@ -1335,7 +1352,7 @@ wally_kit.walletRenderAssets = function() {
             </div>
             <div class="coin-info">
               <span class="title">
-                <a href="#wallet/asset/${value.asset.symbol}" class="stretched-link">${value.asset.name}</a>
+                <a href="#wallet/asset/${key}" class="stretched-link">${value.asset.name}</a>
                 <span class="badge badge-primary chain_model">${value.asset.chainModel}</span>
               </span>
               <span class="subtitle">
@@ -1363,10 +1380,11 @@ wally_kit.walletRenderAssets = function() {
           </div>
         </div>
       </div>`;
+      walletAssets.append(userAssetList).find(".list-border:last").removeClass('hidden').velocity('slideDown', { duration: 200 });
   }
 
   //add user assets to the list
-  $('#userWalletAssets').html(userAssetList);
+ // $('#userWalletAssets').html(userAssetList);
   
 };
 
@@ -1519,7 +1537,34 @@ wally_kit.walletRenderSeedAddresses = function(addressType = 'both') {
       }
     }
 
+    /*
     if (addressType === 'both' || addressType === 'change') {
+      
+      coinbinf.changeAddresses.removeClass('hidden').find('table tbody').text('');
+      var changeTable = coinbinf.changeAddresses.find('table tbody');
+      for (var i=0; i < (derived.change).length; i++) {
+        
+        derivedPath = coinChangePath + '/' + i + hardenedAddress;
+
+        if (derived.change[i].address.redeemscript === undefined)  //check if redeemscript is present
+          addr = derived.change[i].address;
+        else
+          addr = derived.change[i].address.address;
+
+        change = `
+          <tr>
+            <th scope="row text-muted hidden"><small>${derivedPath}</small></th>
+            <td class="hidden">${addr} <i class=" float-right bi bi-copy"></i></td>
+            <td class="text-right hidden">0</td>
+          </tr>`;
+          changeTable.append(change).find('tr:last td.hidden').removeClass('hidden').velocity('slideDown', { duration: 200 });
+      }
+
+      
+    }
+    */
+    if (addressType === 'both' || addressType === 'change') {
+      
       for (var i=0; i < (derived.change).length; i++) {
         
         derivedPath = coinChangePath + '/' + i + hardenedAddress;
@@ -1532,12 +1577,15 @@ wally_kit.walletRenderSeedAddresses = function(addressType = 'both') {
         change += `
           <tr>
             <th scope="row text-muted"><small>${derivedPath}</small></th>
-            <td>${addr} <i class=" float-right bi bi-copy"></i></td>
+            <td class="">${addr} <i class=" float-right bi bi-copy"></i></td>
             <td class="text-right">0</td>
           </tr>`;
       }
+
+      
     }
 
+    
     //add user assets to the list
     if (receive)
       coinbinf.receiveAddresses.removeClass('hidden').find('table tbody').html(receive);
@@ -1548,6 +1596,7 @@ wally_kit.walletRenderSeedAddresses = function(addressType = 'both') {
       coinbinf.changeAddresses.removeClass('hidden').find('table tbody').html(change);
     else
       coinbinf.changeAddresses.addClass('hidden');
+    
     
 
   } catch (e) {
@@ -1563,7 +1612,6 @@ wally_kit.walletRenderSeedAddresses = function(addressType = 'both') {
  */
 wally_kit.getCoinInfo = async function () {
   console.log('===wally_kit.getCoinInfo===');
-  return;
   try {
     
 
@@ -2166,7 +2214,7 @@ coinbinf.loadChangeAddresses.on('click', async function(e) {
   console.log('==coinbinf.loadChangeAddresses==');
 
   $(this).prop('disabled', true);
-  var spinner = coinbinf.loadReceiveAddresses.find('.spinner-border');
+  var spinner = coinbinf.loadChangeAddresses.find('.spinner-border');
 
   spinner.removeClass('hidden');
 

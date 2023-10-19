@@ -21,7 +21,7 @@ $(document).ready(function() {
 	
 
 
-  	//Init POPUP for BIP PROTOCOLS AND CLIENTS DERIVATION
+  	//Init POPUP for BIP PROTOCOLS AND CLIENTS DERIVATION <- Manual Pages
   	var popoverBIPProtocol = new jBox('Tooltip', {
     attach: '.newMnemonicWords',
     width: 280,
@@ -62,8 +62,39 @@ $(document).ready(function() {
   });
 
   $('#popBIPSettingsJBox').removeClass('hidden');
-  	//}).hide().show( function () {  });
-  //
+
+	//Init POPUP for Seed Login <- Login Page
+	var popoverBIPProtocol = new jBox('Tooltip', {
+    attach: '.newMnemonicLoginWords',
+    width: 280,
+    trigger: 'click',
+    class: 'popover',
+    closeOnClick: 'body',
+    addClass: 'JBoxPopover hidden',
+    overlayClass: 'ice-car',
+    id: 'popSeedLoginSettingsJBox',
+    //closeOnMouseleave: true,
+    animation: 'zoomIn',
+    content: $('#popBIPLoginSettings').html(),
+    createOnInit: true,
+    position: {
+	    x: 'left',
+	    y: 'bottom'
+	  },
+    onInit: function() { 
+    	console.log('this: ', this);
+    },
+    onOpen: function () {
+    	//coinbinf.backdrop();
+    },
+    onClose: function () {
+      coinbinf.backdrop(false);
+      
+    }
+  });
+
+  $('#popSeedLoginSettingsJBox').removeClass('hidden');
+
 
   	//BIP Path to render from
   	coinbinf.bippath = $("#bip_path");
@@ -183,11 +214,15 @@ profile_data = {
 
 		console.log('openBtn clicked');
 
+		//no generated coin data -> exit
+		if (!login_wizard.profile_data.generated)
+			return;
+
 		//Remember me?
       	const loginRemember = $('#loginRemember').is(':checked');
 
-      	//save to localStorage if remember is checked, or else remove user data
-      	if (loginRemember) {
+    //save to localStorage if remember is checked, or else remove user data
+    if (loginRemember) {
 			login_wizard.profile_data.remember = loginRemember;
 			storage_s.set('wally.profile', login_wizard.profile_data);
 		} else {
@@ -217,6 +252,9 @@ profile_data = {
 		}
 
 		var choosenCoin = coinjs.asset.slug;
+		//console.log('choosenCoin: ', choosenCoin);
+		//console.log('login_wizard.profile_data.generated: ', login_wizard.profile_data.generated[choosenCoin]);
+
 		var adr_legacy = login_wizard.profile_data.generated[choosenCoin][0].address;	//legacy (compressed)
 		var wif = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.compressed.key;	
 		var pubkey = login_wizard.profile_data.generated[choosenCoin][0].addresses_supported.compressed.public_key;	
@@ -314,9 +352,11 @@ profile_data = {
 		
 	});
 
+	/*
 	$("#walletLogout").click(function(){
 		
 	});
+	*/
 
 	$("#walletSegwit").click(function(){
 		if($(this).is(":checked")){
@@ -1139,9 +1179,34 @@ profile_data = {
 		}
 	});
 
+	/*Popover for Mnemonic Login Options*/
+	$(".newMnemonicLoginGenerate").on("click", function(e){
+		console.log('===newMnemonicLogin===');
+
+		//get elements in opened/active popover
+		var poppis = $('#popSeedLoginSettingsJBox');
+		var mnemonicLengthEl = poppis.find('#seedLoginMnemonicLength');
+		var mnemonicLength = 	mnemonicLengthEl.val();
+
+		console.log('mnemonic length1: '+ mnemonicLength);
+		//set default to 24, if out of range. 12 <= mnemonicLength <= 24
+		if (isNaN(mnemonicLength) ||  mnemonicLength > 24 )
+			mnemonicLength = 24;
+		
+		if (isNaN(mnemonicLength) || mnemonicLength < 12  )
+			mnemonicLength = 12;
+		mnemonicLengthEl.val(mnemonicLength);
+
+		var s = bip39.generateMnemonic((mnemonicLength/3)*32);	//24 mnemonic words!
+		$("#openSeed").val(s);
+
+	});
+
+
+
 	/*Popover for BIP options*/
 	$("body").on("click", ".newMnemonicGenerate", function(e){
-		console.log('newMnemonicGenerate');
+		console.log('===newMnemonicGenerate===');
 		coinbinf.newMnemonicPubInput.val("");
 		coinbinf.newMnemonicPrvInput.val("");
 
@@ -1149,7 +1214,7 @@ profile_data = {
 		var poppis = $('#popBIPSettingsJBox');
 		var mnemonicLengthEl = poppis.find('.bipMnemonicLength');
 		var mnemonicLength = 	mnemonicLengthEl.val();
-		
+
 		console.log('mnemonic length1: '+ mnemonicLength);
 		//set default to 24, if out of range. 12 <= mnemonicLength <= 24
 		if (isNaN(mnemonicLength) ||  mnemonicLength > 24 )
@@ -1164,6 +1229,7 @@ profile_data = {
 		$("#newMnemonicWords").removeClass("border-danger");
 		$("#newMnemonicWords").parent().removeClass("border-danger").removeAttr('title').attr('title', '').attr("data-original-title", '');
 	});
+
 
 
 	$("#newMnemonicKeysBtn").click(function(){
@@ -4800,11 +4866,13 @@ function parseIntNoNaN(val, defaultVal) {
 
 	//Crypto Random Password generator! 
 $('.generatePassword').on("click", function () {
+	console.log('===generatePassword===');
     var $el = $(this);
 
     
     //bip seed
-    	
+    
+
     console.log($el[0].dataset.inputFor);
     if($el[0].dataset.inputFor == '#newMnemonicWords') {
       coinbinf.newMnemonicPubInput.val("");
@@ -4842,6 +4910,7 @@ $('.generatePassword').on("click", function () {
 
 
     var inputElPass = $el.attr( "data-input-for");
+    console.log('inputElPass: ', inputElPass);
     $(inputElPass).val( wally_fn.generatePassword() ).fadeOut().fadeIn();
   });
 
@@ -4858,7 +4927,9 @@ const randomFunc = {
 $("body").on("click", ".pwdGenerate", function(e){
 	console.log('===pwdGenerate===');
 	//console.log('this data-input-for: ', $(this).attr( "data-input-for"));
-	var generatePwdField = $('#'+ $(this).attr( "data-input-for"));
+	var inputId = $(this).attr( "data-input-for");
+	console.log('this data-input-for: ', inputId);
+	var generatePwdField = $('#'+ inputId);
 
 	//get elements in opened/active popover
 	var poppis = $('.popover.show');
@@ -4876,7 +4947,8 @@ $("body").on("click", ".pwdGenerate", function(e){
 	console.log('hasSymbol: '+ hasSymbol);
 	*/
 
-	
+	console.log('generatePwdField: ', generatePwdField);
+
 	generatePwdField.val( GeneratePasswordInPop(lengthIs, hasLower, hasUpper, hasNumber, hasSymbol) );
 });
 

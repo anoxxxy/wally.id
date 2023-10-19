@@ -35,6 +35,60 @@
 	coinjs.decimalPlaces = 8;
 	coinjs.symbol = 'BTC';
 	coinjs.coinName = 'Bitcoin';
+	coinjs.asset = {
+          chainModel: 'utxo',
+          name: 'Bitcoin',
+          slug: 'bitcoin',
+          symbol: 'BTC',
+          symbols: ['btc', 'bitcoin'],
+          icon: './assets/images/crypto/bitcoin-btc-logo.svg',
+          network: 'mainnet',
+          supports_address : ['compressed', 'uncompressed', 'bech32', 'segwit'],
+          api : {
+              //only key is used for the moment, not the value!
+            unspent_outputs: {
+              'Blockcypher.com': 'btc',
+              'Blockchain.info': 'btc', //no arguments needs to be passed
+              //'Blockchair.com': 'bitcoin',
+              
+              'Blockstream.info': 'Blockstream.info',
+              //'Chain.so': 'BTC',
+              'Coinb.in': 'Coinb.in',
+              'Cryptoid.info': 'btc',
+              //'Mempool.space': 'btc',
+            },
+            broadcast: {
+              'Blockcypher.com': 'btc',
+              //'Blockchair.com': 'bitcoin',
+              
+              'Blockstream.info': 'Blockstream.info', //no arguments needs to be passed
+              //'Chain.so': 'BTC',
+              'Coinb.in': '',                 //no arguments needs to be passed
+              'Cryptoid.info': 'btc',
+              //'Mempool.space': 'btc',
+            }
+          },
+          data: {
+            blocktime: 1231006505,
+            total_tokens: "19382187.00000000",
+          },
+          social: {
+            discord : {
+              official: '',
+            },
+            telegram : {
+              official: '',
+              english: '',
+            },
+            twitter : {
+              official: '',
+            },
+            website: {
+              official: '',
+            },
+          },
+
+        };
 
 
 
