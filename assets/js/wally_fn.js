@@ -3383,6 +3383,169 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
     }
     return hmac;
   }
+
+
+
+
+  wally_fn.createElectrumSeedOld = function (seedType = 'p2wpkh') {
+
+    //if(bip39.validate(s)) {
+    if (!seedType.includes('p2pkh, p2wpkh'))
+    return;
+    
+    var s;
+    var loopCount = 0;
+    bip39.setProtocol('electrum');
+    seedType = 'p2wpkh';
+
+
+    while (true) {
+      s = bip39.generateMnemonic((12 / 3) * 32);  // Generate a 12-word mnemonic
+
+      if (this.wally_fn.seedVersion(s, 'electrum') == seedType) {
+        break;  // Break the loop when the condition is met
+      }
+
+      loopCount++;
+      if (loopCount >= 10000) {
+        break;  // Break the loop after 100 iterations
+      }
+
+    }
+    console.log('s: ', s);
+    console.log('bip39.validate(s): ', bip39.validate(s));
+
+    
+
+    //Make sure the mnemonic we generate is not also a valid bip39 seed
+    //by accident. Note that this test has not always been done historically,
+    //so it cannot be relied upon.
+    /*if bip39_is_checksum_valid(seed, wordlist=self.wordlist) == (True, True):
+      continue;
+    if is_new_seed(seed, prefix):
+      break;
+    */
+
+    return s;
+
+
+  }
+
+//https://github.com/spesmilo/electrum/blob/4aa319e5c31543883346e28a5459fa3642601be6/electrum/mnemonic.py#L190-L222
+wally_fn.createElectrumSeed = async function (seedType = 'p2wpkh') {
+  console.log('===wally_fn.createElectrumSeed===');
+  if (!seedType.includes('p2pkh') && !seedType.includes('p2wpkh')) {
+    return false;
+  }
+
+  const maxLoops = 99999; //set a limit when looping
+  const protocol = 'electrum';
+  var usedProtocol = bip39.getProtocol();
+  bip39.setProtocol('electrum');
+
+  for (let loopCount = 0; loopCount < maxLoops; loopCount++) {
+    const s = bip39.generateMnemonic(128); // 128 bits for 12 words
+
+    if (wally_fn.seedVersion(s, protocol) == seedType) {
+      //console.log('s: ', s);
+      //console.log('bip39.validate(s): ', bip39.validate(s));
+      console.log('loopCount: ', loopCount);
+      return s;
+    }
+
+    //implement later or skip it basically since it cannot be relied upon.
+    //Make sure the mnemonic we generate is not also a valid bip39 seed
+    //by accident. Note that this test has not always been done historically,
+    //so it cannot be relied upon.
+    /*if bip39_is_checksum_valid(seed, wordlist=self.wordlist) == (True, True):
+      continue;
+    if is_new_seed(seed, prefix):
+      break;
+    */
+    await wally_fn.timeout(1);
+  }
+
+  bip39.setProtocol(usedProtocol);  //set back the used protocol
+
+  return false; //no Electrum seed was created
+}
+
+
+
+function getRandomInt(bound) {
+  // Create a typed array to store random bytes
+  const randomBytes = new Uint8Array(1);
+  let randomInt;
+
+  do {
+    crypto.getRandomValues(randomBytes);
+    // Convert the random byte to an integer and scale it to [1, bound)
+    randomInt = randomBytes[0] % bound + 1;
+  } while (randomInt >= bound);
+
+  return randomInt;
+}
+
+
+
+  wally_fn.createElectrumSeedFromEntropy = async function (seedType = 'p2wpkh', maxLoops = 9999) {
+    console.log('===wally_fn.createElectrumSeedFromEntropy===');
+    if (!seedType.includes('p2pkh') && !seedType.includes('p2wpkh')) {
+      return false;
+    }
+
+    const delayAfterIterations = 500;
+    const protocol = 'electrum';
+    const usedProtocol = bip39.getProtocol();
+    //bip39.setProtocol('electrum');
+    const numBits = 132; // 12 words require 128 bits of entropy
+
+    const entropyArray = new Uint8Array(numBits / 8);
+    crypto.getRandomValues(entropyArray); // Generate random entropy once
+
+    //const entropyHex = '0x' + Array.from(entropyArray, byte => byte.toString(16).padStart(2, '0')).join('');
+    const entropyHex = '0x' + Array.from({ length: numBits / 8 }, () =>
+        getRandomInt(256-1).toString(16).padStart(2, '0')
+      ).join('');
+    
+    
+    //cat combine comfort hen simple symbol brush broken apple remove peanut general
+    //console.log('entropyHex: ', entropyHex);
+    let nonce = 0n;
+    let entropy = BigInt(entropyHex);
+
+    let loopCount;
+    await wally_fn.timeout(50);
+    for (loopCount = 0; loopCount < maxLoops; loopCount++) {
+      
+      while (true) {
+        nonce += 1n;
+        entropy = BigInt(entropyHex) + nonce;
+        // Ensure the entropy string has a minimum length of 32 characters by padding it with '0' to the right if needed.
+        const s = bip39.entropyToMnemonicElectrum(entropy.toString(16).padEnd(32, '0'), numBits);
+
+        if (wally_fn.seedVersion(s, protocol) === seedType) {
+          console.log('loopCount: ', loopCount, s, wally_fn.seedVersion(s, protocol));
+          return s;
+        }
+        loopCount++;
+        if (loopCount % delayAfterIterations === 0)
+          await wally_fn.timeout(1);
+      }
+      loopCount++; // Increment loopCount one more time if seed is not found
+    }
+
+    //bip39.setProtocol(usedProtocol);
+    return false;
+  }
+
+
+
+
+
+
+
+
   // Usage with the seed and an optional client argument
   /*const result = wally_fn.seedVersion('enough tourist luggage comfort view garment picture assume dish void tide shed');
   if (result) {
@@ -3404,6 +3567,10 @@ $ curl -d 'tx_hex=0102100001ac…' https://chain.so/api/v2/send_tx/DOGE
    * @returns {number} The count of words in the input string.
    */
   wally_fn.wordCount = function(str) {
+    // Handle the case where 'str' is not a valid string or is empty
+    if (typeof str !== 'string' || str.trim() === '')
+      return false;
+
     return str.split(" ").length;
   }
   /**

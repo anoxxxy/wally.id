@@ -945,9 +945,17 @@ transition: all 0.2s ease-in;
 }
 
 .input-group button, .input-group input, .input-group span, .input-group div{
-	height: 40px;
+	/*height: 40px;
 	line-height: 1.5;
+	*/
 }
+/*
+.input-group span.spinner,
+.input-group span.spinner-border {
+	height: unset;
+	line-height: unset;
+}
+*/
 
 textarea.form-control, input.form-control, .input-group input, .input-group .input-group-append > span, .input-group .input-group-append > div, .input-group .input-group-prepend > span, .input-group .input-group-prepend > div {
 --bs-btn-padding-x:0.75rem;
@@ -3689,25 +3697,6 @@ padding-left: 0.75rem;
 
 
 
-.gx {background-size:contain; padding:10% 0; text-align:center; width:100%; height:auto;}
+/* Flex Table */
 
-.gx-logo {animation:tronFilter 12s infinite; 
-    fill:#000000; stroke:#666; stroke-width:2; stroke-linecap:round; stroke-linejoin:bevel;}
 
-@keyframes tronFilter {
-    0% {-webkit-filter: drop-shadow( -.75px 0px 2px #31eefd );
-                filter: drop-shadow( -.75px 0px 2px #31eefd ); stroke:#31eefd;} 
-   22% {-webkit-filter: drop-shadow( -.75px 0px 2px #1d85bb );
-                filter: drop-shadow( -.75px 0px 2px #1d85bb ); stroke:#1d85bb;} /* end blue */  
-    
-   42% {-webkit-filter: drop-shadow( -.75px 0px 2px #884173 );
-                filter: drop-shadow( -.75px 0px 2px #884173 ); stroke:#884173;}
-   62% {-webkit-filter: drop-shadow( -.75px 0px 2px #ff0071 );
-                filter: drop-shadow( -.75px 0px 2px #ff0071 ); stroke:#ff0071;} /* end magenta */  
-   82% {-webkit-filter: drop-shadow( -.75px 0px 2px #009997 );
-                filter: drop-shadow( -.75px 0px 2px #009997 ); stroke:#009997;}
-   92% {-webkit-filter: drop-shadow( -.75px 0px 2px #92ffd7 );
-                filter: drop-shadow( -.75px 0px 2px #92ffd7 ); stroke:#92ffd7;} /* end green */      
-  100% {-webkit-filter: drop-shadow( -.75px 0px 2px #31eefd );
-                filter: drop-shadow( -.75px 0px 2px #31eefd ); stroke:#31eefd;} 
-}

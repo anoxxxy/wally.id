@@ -1686,14 +1686,19 @@
                                       <div class="callout callout-no-border m-0">
                                         <textarea id="openSeed" name="openSeed" data-input-type="seed" class="form-control" placeholder="Seed" autofocus style="height: 100px;"></textarea>
                                         <div class="d-flex justify-content-end input-group mt-2 m-0">
+                                          <div class="input-group-prepend">
+                                            <button id="newMnemonicLogin" class="btn btn-block btn-sm btn-flat-primary generateInput newMnemonicLoginGenerate"><span class="spinner-border spinner-border-sm hidden" role="status" aria-hidden="true"></span> Create</button>
+                                          </div>
                                           <div class="input-group-append">
-                                            <span id="newMnemonicLogin" class="input-group-text cursor-pointer newMnemonicLoginGenerate">Create</span>
-                                            <span class="input-group-text cursor-pointer newMnemonicLoginWords"><i class="bi bi-gear-fill"></i></span>
+                                            <button class="btn btn-block btn-sm btn-flat-primary newMnemonicLoginWords">
+                                              <span class="spinner-border spinner-border-sm hidden" role="status" aria-hidden="true"></span>
+                                              <i class="bi bi-gear-fill"></i>
+                                            </button>
                                           </div>
                                         </div>
                                       </div>
                                       <div class="row my-3 callout callout-no-border form-group m-0">
-                                        <label for="openClientWallet" class="col-12 col-md-2 control-label pt-2">Client</label>
+                                        <label for="openClientWallet" class="col-12 col-md-2 control-label pt-2 text-muted">Client</label>
                                         <div class="col-12 col-md-10">
                                           <select id="openClientWallet" class="client form-control">
                                             <!-- <option value="custom">Custom derivation path</option> -->
@@ -1708,6 +1713,32 @@
                                             <option value="6">Trezor</option>
                                           </select>
                                         </div>
+
+                                        <div class="col-12 mt-2">
+                                          <div class="row checkbox hidden" id="openSeedElectrumOptions">
+                                            <div class="col-12">
+                                              <label for="openSeedElectrumSeedOption1">
+                                                <input id="openSeedElectrumSeedOption1" name="openSeedElectrumAddressOption" type="radio" checked="true" data-seed>Electrum Seed  <span class="badge badge-primary text-uppercase">SegWit - p2wpkh</span>
+                                              </label>
+                                            </div>
+                                            <div class="col-12">
+                                              <label for="openSeedElectrumSeedOption2">
+                                                <input id="openSeedElectrumSeedOption2" name="openSeedElectrumAddressOption" type="radio">Electrum Seed Old <span class="badge badge-secondary text-uppercase">Legacy - p2pkh</span>
+                                              </label>
+                                            </div>
+                                            <input id="openSeedElectrumAddressSemanticsInput" type="text" value="p2wpkh" class="hidden">
+                                            <!--
+                                              Add this later
+                                            <div class="col-12">
+                                              <label for="openSeedElectrumSeedOption3" >
+                                                <input id="openSeedElectrumSeedOption3" name="openSeedElectrumSeedOptions" type="radio"> BIP39 Seed <span class="badge badge-primary text-uppercase">SegWit - p2wpkh</span>
+                                              </label>
+                                            </div>
+                                            -->
+
+                                          </div>
+                                        </div>
+
                                       </div>
                                       <div id="openSeedPasswordBox" class="checkbox m-0 mt-2 callout callout-no-border form-group hidden">
                                         <label> <input type="checkbox" id="newOpenSeedBrainwalletCheck" class="checkbox-inline" /> BIP39 Passphrase <span class="text-muted">(optional)</span></label>
@@ -5439,7 +5470,7 @@
         <!-- //Choose BIP protocol -->
       </div>
       <div class="popover-footer">
-        <input type="button" class="btn btn-block btn-sm btn-flat-primary generateInput newMnemonicLoginGenerate" value="Create Mnemonic" />
+        <button class="btn btn-block btn-sm btn-flat-primary generateInput newMnemonicLoginGenerate"><span class="spinner-border spinner-border-sm hidden" role="status" aria-hidden="true"></span> Create Mnemonic</button>
       </div>
     </div>
   </div>

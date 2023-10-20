@@ -62,9 +62,51 @@ BIP39.prototype.entropyToMnemonic = function(entropy) {
     return this.wordlist[index]
   }, this)
 
-
     return words.join(' ')
 }
+
+BIP39.prototype.entropyToMnemonicElectrum = function(entropy, strength) {
+  console.log('===entropyToMnemonicElectrum===');
+  var entropyBuffer = new Buffer(entropy, 'hex')
+  var entropyBits = bytesToBinary([].slice.call(entropyBuffer))
+  var checksum = checksumBits(entropyBuffer)
+
+  var bits = entropyBits + checksum
+  var chunks = bits.match(/(.{1,11})/g)
+
+  var words = chunks.map(function(binary) {
+    var index = parseInt(binary, 2)
+
+    return this.wordlist[index]
+  }, this)
+
+    return words.join(' ')
+};
+
+BIP39.prototype.entropyToMnemonicElectrumbak = function (entropyHex, strength) {
+  strength = strength || 128;
+  const entropyLength = strength / 4;
+  let entropyBits = '';
+  let bits, binary, chunks;
+
+  for (let i = 2; i < entropyHex.length; i++) {
+    const hexChar = parseInt(entropyHex[i], 16).toString(2).padStart(4, '0');
+    entropyBits += hexChar;
+  }
+
+  const checksum = entropyBits.slice(-entropyLength / 32);
+  bits = entropyBits.slice(0, -entropyLength / 32);
+  chunks = bits.match(/.{1,11}/g);
+
+  const words = chunks.map((binary) => {
+    const index = parseInt(binary, 2);
+    return this.wordlist[index];
+  });
+
+  return words.join(' ');
+};
+
+
 
 BIP39.prototype.generateMnemonic = function(strength, rng) {
   strength = strength || 128

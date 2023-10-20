@@ -1,3 +1,4 @@
+'use strict';
 var bip39 = new BIP39('en');
 var wweb3 = new Web3(new Web3.providers.HttpProvider(''));
 
@@ -142,6 +143,12 @@ $(document).ready(function() {
   coinbinf.openClientWalletPassphraseCheck = $('#newOpenSeedBrainwalletCheck');
   coinbinf.openSeedPassword = $('#openSeedPassword')
   coinbinf.openClientWallet = $('#openClientWallet');
+  coinbinf.openSeed = $('#openSeed');
+
+  coinbinf.openSeedElectrumOptions = $('#openSeedElectrumOptions');
+  coinbinf.openSeedElectrumAddressOptionRadio = $("input[name='openSeedElectrumAddressOption']");
+  coinbinf.openSeedElectrumAddressSemanticsInput = $("#openSeedElectrumAddressSemanticsInput");
+
   
 
   //Mnemonic User related
@@ -289,11 +296,11 @@ profile_data = {
 			if($("#walletSegwit").is(":checked")){
 				if($("#walletSegwitBech32").is(":checked")){
 					address = adr_bech32;
-					address_redeem = adr_bech32_redeem
-					var walletToAddress = 'Bech32';
+					var address_redeem = adr_bech32_redeem
+					walletToAddress = 'Bech32';
 				} else {
 					address = adr_segwit;
-					address_redeem = adr_segwit_redeem;
+					var address_redeem = adr_segwit_redeem;
 					walletToAddress = 'SegWit';
 				}
 
@@ -1180,8 +1187,10 @@ profile_data = {
 	});
 
 	/*Popover for Mnemonic Login Options*/
-	$(".newMnemonicLoginGenerate").on("click", function(e){
-		console.log('===newMnemonicLogin===');
+	$(".newMnemonicLoginGenerate").on("click", async function(e){
+		e.preventDefault();
+		$(this).attr('disabled', true);
+		console.log('===newMnemonicLoginSeed===');
 
 		//get elements in opened/active popover
 		var poppis = $('#popSeedLoginSettingsJBox');
@@ -1197,8 +1206,37 @@ profile_data = {
 			mnemonicLength = 12;
 		mnemonicLengthEl.val(mnemonicLength);
 
-		var s = bip39.generateMnemonic((mnemonicLength/3)*32);	//24 mnemonic words!
-		$("#openSeed").val(s);
+		var s;
+		
+		//generate either Electrum seed (new, old) else BIP39 seed!
+		var clientWalletIndex = parseInt(coinbinf.openClientWallet.val());
+
+		if (coinbinf.openClientWallet.val() == 4) {
+			
+			var spinner = $(this).find('.spinner-border');
+    	spinner.removeClass('hidden');
+
+			var electrumAddressSemantics = coinbinf.openSeedElectrumAddressSemanticsInput.val();
+			if (electrumAddressSemantics == 'p2wpkh') {
+				//s = await wally_fn.createElectrumSeed('p2wpkh');
+				s = await wally_fn.createElectrumSeedFromEntropy('p2wpkh');
+
+				//console.log('create Electrum NEW seed');
+			}
+			else if (electrumAddressSemantics == 'p2pkh') {
+				//s = await wally_fn.createElectrumSeed('p2pkh');
+				s = await wally_fn.createElectrumSeedFromEntropy('p2pkh');
+				//console.log('create Electrum OLD seed');
+			}
+			
+			spinner.addClass('hidden');
+		} else {
+			s = bip39.generateMnemonic((mnemonicLength/3)*32);
+			//console.log('create BIP39 seed');
+		}
+
+		coinbinf.openSeed.val(s);
+		$(this).attr('disabled', false);
 
 	});
 
@@ -3900,10 +3938,10 @@ new jBox('Tooltip', {
 	        
 
 	        if ( $(data.target + ' .popover-title').length > 0 )
-	        	contentTitle = $(data.target + ' .popover-title').html();
+	        	var contentTitle = $(data.target + ' .popover-title').html();
 
 	        if ( $(data.target + ' .popover-footer').length > 0 )
-	        	contentFooter = $(data.target + ' .popover-footer').html();
+	        	var contentFooter = $(data.target + ' .popover-footer').html();
 
 	        
 	        //console.log('data.footer: ', contentFooter);
@@ -4020,7 +4058,7 @@ new jBox('Tooltip', {
 
 
 	/* add three pubkeys for multisig address creation*/
-	for(i=1;i<3;i++){
+	for(var i=1;i<3;i++){
 		$("#multisigPubKeys .pubkeyAdd").click();
 	}
 
@@ -5088,63 +5126,50 @@ coinbinf.NoticeLoader = new jBox('Notice', {
 
 //coinbinf.NoticeLoader.setTitle();
 //coinbinf.NoticeLoader.setContent();
-
 //remove tooltip and popover after release, and replace with jBox Tooltip!
-	$('[title], [data-content]').each(function(index, value) {
+$('[title], [data-content]').each(function(index, value) {
+  var _this_ = $(this);
+  //set a unique id for the tooltip/jbox
+  var tooltip_id = 'jBoxTooltip-' + Math.floor(Math.random() * 999) + '_' + wally_fn.generatePassword(16, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
+  _this_.attr('data-tooltip-id', tooltip_id);
+  if (_this_.attr("data-content")) {
+    console.log('jbox tooltip content is empty: ', _this_.attr("data-content"));
+    if (_this_.attr("data-content") == '')
+      return;
+    new jBox("Tooltip", {
+      id: tooltip_id,
+      attach: $(this),
+      //content: $(this).attr("data-jbox-content"),
+      getTitle: 'title',
+      getContent: 'data-content',
+      //attach: "#" + $(this).attr("id")
+      closeOnMouseleave: true,
+    }) //.attach();
+  } else {
+    if (_this_.attr("title") == '')
+      return;
+    /*
+    var defaultPlacement = 'center';
+    var jBoxPlacement = _this_.attr('data-placement');
 
-		  var _this_ = $(this);
+    if (jBoxPlacement)
+    	defaultPlacement = jBoxPlacement;
+    */
+    new jBox("Tooltip", {
+      id: tooltip_id,
+      theme: "TooltipDark",
+      attach: $(this),
+      //getTitle: 'title',
+      getContent: 'title',
+      position: {
+        x: 'center',
+        y: 'bottom'
+      },
+      closeOnMouseleave: false,
+    }) //.attach();
+  }
+});
 
-		  //set a unique id for the tooltip/jbox
-		  var tooltip_id = 'jBoxTooltip-'+Math.floor(Math.random() * 999)+'_'+wally_fn.generatePassword(16, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
-		  
-		  _this_.attr('data-tooltip-id', tooltip_id);
-		  
-		  if(_this_.attr("data-content")) {
-		  	console.log('jbox tooltip content is empty: ', _this_.attr("data-content"));
-		  	if(_this_.attr("data-content") == '')
-		  		return;
-
-		  	new jBox("Tooltip", {
-			    id: tooltip_id,
-			    attach: $(this),
-			    //content: $(this).attr("data-jbox-content"),
-			    getTitle: 'title',
-	  			getContent: 'data-content',
-			    //attach: "#" + $(this).attr("id")
-			    closeOnMouseleave: true,
-			  })//.attach();
-		  } else {
-		  	if(_this_.attr("title") == '')
-		  		return;
-
-		  	/*
-		  	var defaultPlacement = 'center';
-		  	var jBoxPlacement = _this_.attr('data-placement');
-
-		  	if (jBoxPlacement)
-		  		defaultPlacement = jBoxPlacement;
-		  	*/
-
-
-
-		  	new jBox("Tooltip", {
-		  		id: tooltip_id,
-			    theme: "TooltipDark",
-			    attach: $(this),
-			    //getTitle: 'title',
-	  			getContent: 'title',
-	  			position: {
-			      x: 'center',
-			      y: 'bottom'
-			    },
-	  			closeOnMouseleave: false,
-			  })//.attach();
-		  }
-		  	
-
-		  
-		});
-	
 
 /*
 	$('[data-jbox-content]').each(function() {

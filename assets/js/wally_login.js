@@ -349,7 +349,7 @@
         //generate xprv/xpub from seed
         coinjs.compressed = true;
         var success = false;
-        var s = $("#openSeed").val().trim(); //seed
+        var s = coinbinf.openSeed.val().trim(); //seed
         var clientWalletProtocolIndex = $('#openClientWallet').val();
         console.log('clientWalletProtocolIndex: ', clientWalletProtocolIndex);
         if (clientWalletProtocolIndex == 4 || clientWalletProtocolIndex == 7) { //isElectrumProtocol
@@ -376,7 +376,7 @@
         //console.log('login_wizard.clientWallets[clientWalletProtocolIndex]?.wordCount ', login_wizard.clientWallets[clientWalletProtocolIndex]?.wordCount)
         if (!success) {
           login_wizard.errorMessage += '<p>&#8226; Wrong Seed, please try again!!</p>';
-          $('#openSeed').addClass('border-danger');
+          coinbinf.openSeed.addClass('border-danger');
           //***Errror occured!
           throw (login_wizard.errorMessage);
         }
@@ -504,7 +504,7 @@ profile_data example:
 */
       }
       $('#walletLoginStatusBox').addClass('hidden');
-      $('#openSeed').removeClass('border-danger');
+      coinbinf.openSeed.removeClass('border-danger');
       //empty default error message content
       login_wizard.errorMessage = '';
       //set remember me in profile_data to default false
@@ -1001,12 +1001,11 @@ $(document).ready(function() {
   coinbinf.openClientWallet.on("change", openClientWalletChanged);
 
   function openClientWalletChanged(e) {
-    console.log('===openClientWalletChanged===', e);
+    console.log('===openClientWalletChanged===');
     var selectedOptionText = coinbinf.openClientWallet.find('option:selected').text();
     var clientIndex = coinbinf.openClientWallet.val();
     var selectedOption = login_wizard.clientWallets[clientIndex];
-    //console.log(`selectedOptionText: "${selectedOptionText}"`);
-    //console.log('selectedOption: ', selectedOption);
+    console.log('selectedOption: ', selectedOption);
     //hide passPhrase field if wallet client doesnt support it
     if (selectedOption?.supports.passphrase) {
       if (coinbinf.openClientWalletPassphrase[0].style.display == 'none' || coinbinf.openClientWalletPassphrase[0].classList.contains("hidden"))
@@ -1016,7 +1015,37 @@ $(document).ready(function() {
         coinbinf.openClientWalletPassphraseCheck.click();
       coinbinf.openClientWalletPassphrase.velocity('slideUp')
     }
+
+    var mnemonicWords = $('#popSeedLoginSettingsJBox #seedLoginMnemonicLength');
+    //give electrum possibility to choose new and old Electrum seed
+    if (selectedOption.slug === 'electrum') {
+      coinbinf.openSeedElectrumOptions.removeClass('hidden').velocity('slideDown');
+      mnemonicWords.val(12).prop('disabled', true);
+      var s = coinbinf.openSeed.val();
+      var mnemonicLength = wally_fn.wordCount(s);
+      //empty seed input if words length is greater than 12
+      //if (mnemonicLength != 12) {
+        coinbinf.openSeed.val('');
+      //}
+    }else {
+      coinbinf.openSeedElectrumOptions.velocity('slideUp');
+      mnemonicWords.prop('disabled', false);
+    }
   }
+  
+  coinbinf.openSeedElectrumAddressOptionRadio.on("change", function() {
+    console.log('===coinbinf.openSeedElectrumAddressOptionRadio===');
+    if (this.id === "openSeedElectrumSeedOption1") {
+      coinbinf.openSeedElectrumAddressSemanticsInput.val("p2wpkh");
+    } else if (this.id === "openSeedElectrumSeedOption2") {
+      coinbinf.openSeedElectrumAddressSemanticsInput.val("p2pkh");
+    }
+
+    coinbinf.openSeed.val(""); // Clear the openSeed textarea when the radio buttons are changed
+  });
+  
+
+
   var loginBtn = document.getElementById('openBtn');
   //var loginBtnNext = document.getElementById('openBtnNext');
   //var loginBtn = document.getElementById('openBtn');

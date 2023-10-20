@@ -1,3 +1,4 @@
+'use strict';
 /*
  Coinjs 0.01 beta by OutCast3k{at}gmail.com
  A bitcoin framework.
@@ -796,7 +797,7 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 
 				//check bip type, hdkey/bip32, bip49, bip84
 				var bip = 'hdkey';	//set default to bip32
-				for (i=0; i< coinjs.biptypes.length;i++){
+				for (var i=0; i< coinjs.biptypes.length;i++){
 					//compare if version matches bip-type prv or pub 
 						if (coinjs[coinjs.biptypes[i]]?.prv === r.version || coinjs[coinjs.biptypes[i]]?.pub === r.version) {
 							bip = coinjs.biptypes[i];
@@ -1228,10 +1229,10 @@ https://chainz.cryptoid.info/bay/api.dws?q=multiaddr&active=bEt6ewGusWxrAbWUQLQZ
 		// make a master hd xprv/xpub
 		r.masterMnemonic = function(seed, pass, bip = 'hdkey') {
 			
-			seed = seed.normalize('NFKD');
-			pass = (pass !== null) ? pass.normalize('NFKD') : pass;
+			var seed = seed.normalize('NFKD');
+			var pass = (pass !== null) ? pass.normalize('NFKD') : pass;
 
-			seeder = bip39.mnemonicToSeed(seed, pass);
+			var seeder = bip39.mnemonicToSeed(seed, pass);
 
 			var hasher = new jsSHA(seeder, 'HEX');
 			var I = hasher.getHMAC("Bitcoin seed", "TEXT", "SHA-512", "HEX");
