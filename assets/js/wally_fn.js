@@ -231,7 +231,7 @@
     var regnums = (pass.match(/[0-9]+/g)) ? pass.match(/[0-9]+/g).length : 1;
     s += ((regnums + regchars) + regupchars) * pass.length + '3571';
     s += (s + '' + s);
-    for (i = 0; i <= 50; i++) {
+    for (var i = 0; i <= 50; i++) {
       s = Crypto.SHA256(s);
     }
     //s = s.padStart(64, '0');
@@ -279,7 +279,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
     return new BigInteger(h, 10).toString(16);
   }
   wally_fn.isHex = function(str) {
-    regexHex = /^[0-9a-fA-F]+$/;
+    var regexHex = /^[0-9a-fA-F]+$/;
     if (regexHex.test(str))
       return true;
     else
@@ -1133,7 +1133,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
         //asset supports compressed keys?
         if ((value.asset.supports_address).includes('compressed')) {
           $.extend(coinjs, value); //change asset and generate address
-          for (i = 0; i < keys_length; i++) {
+          for (var i = 0; i < keys_length; i++) {
             genAddress = this.hexPrivKeyDecode(h[i], {
               'supports_address': value.asset.supports_address
             });

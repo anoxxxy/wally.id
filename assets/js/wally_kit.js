@@ -1167,21 +1167,67 @@
       var path = '';
       var derivedPath = '';
       var hardenedAddress = "";
+      var receiveAddressesTotal = 0;
+      var changeAddressesTotal = 0;
       if (pathIsHardened)
         hardenedAddress = "'";
       if (addressType === 'both' || addressType === 'receive') {
-        for (var i = 0; i < (derived.receive).length; i++) {
+        receiveAddressesTotal = (derived.receive).length;
+        for (var i = 0; i < receiveAddressesTotal; i++) {
           derivedPath = coinReceivePath + '/' + i + hardenedAddress;
           if (derived.receive[i].address.redeemscript === undefined) //check if redeemscript is present
             addr = derived.receive[i].address;
           else
             addr = derived.receive[i].address.address;
-          receive += `
+          /*receive += `
           <tr>
             <th scope="row text-muted"><small>${derivedPath}</small></th>
             <td>${addr} <i class=" float-right bi bi-copy"></i></td>
             <td class="text-right">0</td>
-          </tr>`;
+          </tr>`;*/
+          var blockieIcon = makeBlockie(addr);
+          receive += `
+<li class="flex-list m-1 p-1 mb-2">
+  <div class="d-flex ml-1">
+    <div class="d-flex align-items-center mr-1">
+      <div class="blockie_wrapper blockie_address" ><img class="icon icon24" src="${blockieIcon}"></div>
+    </div>
+    <div class="d-flex flex-column flex-grow-1">
+      <div class="d-flex justify-content-between">
+        <div>
+          <div class="mb-0 d-inline-block truncate-sm fs-3 coin_address coin_receive_address">${addr} </div>
+        </div>
+        <div class="d-flex align-items-start">
+          <div class="address_path mb-1 text-black-50 date-time">path: <span class="coin_address_path text-primary">${derivedPath}</span></div>
+        </div>
+      </div>
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <div class="d-flex flex-row">
+            <!-- <div class="font-weight-bold"> <span class="badge badge-light fs-3 p-1 text-muted "><span class="coin_address_balance">-</span> <span class="coin_symbol">BTC</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-left"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-up-right"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-up"></i>TXs: 0</span></div> -->
+            <div class="font-weight-bold"> <span class="badge badge-light fs-3 p-1 text-muted "><span class="coin_address_balance">-</span> <span class="coin_symbol">BTC</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-left"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-up-right"></i> 0</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="list-action">
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-flat-primary"><i class="bi bi-info-circle"></i> info</button>
+              <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="bi bi-caret-down"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#"><img src="./assets/images/send.svg" class="icon28" /> Send</a>
+                <a class="dropdown-item" href="#"><img src="./assets/images/receive.svg" class="icon28" /> Receive</a>
+                <a class="dropdown-item" href="#"><img src="./assets/images/qr-code.svg" class="icon28" /> QR code</a>
+                <a class="dropdown-item" href="#"><img src="./assets/images/info.svg" class="icon28" /> Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>`;
         }
       }
       /*
@@ -1211,32 +1257,91 @@
       }
       */
       if (addressType === 'both' || addressType === 'change') {
+        changeAddressesTotal = (derived.change).length;
         for (var i = 0; i < (derived.change).length; i++) {
           derivedPath = coinChangePath + '/' + i + hardenedAddress;
           if (derived.change[i].address.redeemscript === undefined) //check if redeemscript is present
             addr = derived.change[i].address;
           else
             addr = derived.change[i].address.address;
-          change += `
+          /*change += `
           <tr>
             <th scope="row text-muted"><small>${derivedPath}</small></th>
             <td class="">${addr} <i class=" float-right bi bi-copy"></i></td>
             <td class="text-right">0</td>
-          </tr>`;
+          </tr>`;*/
+            /*var address = '0x138854708D8B603c9b7d4d6e55b6d32D40557F4D';
+
+            var img = new Image();
+            img.src = makeBlockie(address);
+            img.classList.add('icon');
+            img.classList.add('icon24');
+
+            $(".blockie_address").append(img)
+            */
+            var blockieIcon = makeBlockie(addr);
+          change += `
+<li class="flex-list m-1 p-1 mb-2">
+  <div class="d-flex ml-1">
+    <div class="d-flex align-items-center mr-1">
+      <div class="blockie_wrapper blockie_address" ><img class="icon icon24" src="${blockieIcon}"></div>
+    </div>
+    <div class="d-flex flex-column flex-grow-1">
+      <div class="d-flex justify-content-between">
+        <div>
+          <div class="mb-0 d-inline-block truncate-sm fs-3 coin_address coin_change_address">${addr} </div>
+        </div>
+        <div class="d-flex align-items-start">
+          <div class="address_path mb-1 text-black-50 date-time">path: <span class="coin_address_path text-primary">${derivedPath}</span></div>
+        </div>
+      </div>
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <div class="d-flex flex-row">
+            <!-- <div class="font-weight-bold"> <span class="badge badge-light fs-3 p-1 text-muted "><span class="coin_address_balance">-</span> <span class="coin_symbol">BTC</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-left"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-up-right"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-up"></i>TXs: 0</span></div> -->
+            <div class="font-weight-bold"> <span class="badge badge-light fs-3 p-1 text-muted "><span class="coin_address_balance">-</span> <span class="coin_symbol">BTC</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-left"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-up-right"></i> 0</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="list-action">
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-flat-primary"><i class="bi bi-info-circle"></i> info</button>
+              <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="bi bi-caret-down"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#"><img src="./assets/images/send.svg" class="icon28" /> Send</a>
+                <a class="dropdown-item" href="#"><img src="./assets/images/receive.svg" class="icon28" /> Receive</a>
+                <a class="dropdown-item" href="#"><img src="./assets/images/info.svg" class="icon28" /> Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>`;
         }
       }
       //add user assets to the list
-      if (receive)
-        coinbinf.receiveAddresses.removeClass('hidden').find('table tbody').html(receive);
-      else
+      if (receive) {
+        coinbinf.receiveAddresses.removeClass('hidden').find('ul').html(receive);
+        $('.coin_receive_addresses_total').text(receiveAddressesTotal);
+      } else
         coinbinf.receiveAddresses.addClass('hidden');
-      if (change)
-        coinbinf.changeAddresses.removeClass('hidden').find('table tbody').html(change);
-      else
+
+      if (change) {
+        coinbinf.changeAddresses.removeClass('hidden').find('ul').html(change);
+        $('.coin_change_addresses_total').text(changeAddressesTotal);
+      } else
         coinbinf.changeAddresses.addClass('hidden');
+
     } catch (e) {
       console.log('===wally_kit.walletRenderSeedAddresses=== ERROR: ', e);
     }
+
+    $('.coin_name').text(coinjs.asset.name)
+    $('.coin_symbol').text(coinjs.asset.symbol)
   }
   /**
    * Fetches coin information from Coingecko API and updates wallet assets data.
@@ -1507,7 +1612,7 @@ $(document).ready(function() {
     };
   })();
   /*@ Copy text to clipboard */
-  wally_kit.copyContent = $('[data-copy-content]');
+  wally_kit.copyContent = $('body [data-copy-content]');
   wally_kit.copyContent.click(function(e) {
     console.log('===wally_kit.copyContent===');
     var contentToCopy = $(this).attr('data-copy-content');

@@ -156,8 +156,8 @@ $(document).ready(function() {
   coinbinf.changeAddresses = $('#changeAddresses');
 
   	//buttons for loading more seed addresses
-  coinbinf.loadReceiveAddresses = $('#loadReceiveAddresses');
-  coinbinf.loadChangeAddresses = $('#loadChangeAddresses');
+  coinbinf.loadReceiveAddresses = $('.loadReceiveAddresses');
+  coinbinf.loadChangeAddresses = $('.loadChangeAddresses');
   
 
 
@@ -3358,7 +3358,10 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 		try {
 			var privkey = coinbinf.verifyScript.val();
-			
+
+			// Remove "0x" prefix from privkey if present
+			if (privkey.startsWith("0x"))
+			    privkey = privkey.slice(2);
 
 			//try to decode WIF key
 			if(privkey.length==51 || privkey.length==52){
@@ -3469,7 +3472,12 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 
 	function decodePubKey(){
 		console.log('===coinjs.decodePubKey===')
-		var pubkey = coinbinf.verifyScript.val().trim();
+		var pubkey = coinbinf.verifyScript.val();
+		
+		// Remove "0x" prefix from pubkey if present
+		if (pubkey.startsWith("0x"))
+		    pubkey = pubkey.slice(2);
+
 		if(pubkey.length==66 || pubkey.length==130){
 			try {
 				console.log('correct format!')
@@ -5084,7 +5092,17 @@ $("#walletSendReset").click(function(){
 
   // Create the blockie image
   var address = '0x138854708D8B603c9b7d4d6e55b6d32D40557F4D';
+/*
+var img = new Image();
+img.src = makeBlockie(address);
+img.classList.add('icon');
+img.classList.add('icon24');
 
+$(".blockie_address").append(img)
+*/
+//$(".blockie_address").css("background", "url(" + img.src + ")");
+
+//$(".blockie_address.icon").css("background-image", "url(" + makeBlockie(address) + ")");
 
 $(".blockie_wrapper .icon").css("background-image", "url(" + makeBlockie(address) + ")");
 $(".blockie_wrapper .wallet_address").html(address);
@@ -5127,7 +5145,7 @@ coinbinf.NoticeLoader = new jBox('Notice', {
 //coinbinf.NoticeLoader.setTitle();
 //coinbinf.NoticeLoader.setContent();
 //remove tooltip and popover after release, and replace with jBox Tooltip!
-$('[title], [data-content]').each(function(index, value) {
+$('body [title], body [data-content]').each(function(index, value) {
   var _this_ = $(this);
   //set a unique id for the tooltip/jbox
   var tooltip_id = 'jBoxTooltip-' + Math.floor(Math.random() * 999) + '_' + wally_fn.generatePassword(16, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');

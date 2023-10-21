@@ -363,6 +363,13 @@ border-bottom:1px solid #F0F2F4;
  text-align: right;
 }
 
+.truncate-sm {
+		display: inline-block;
+		white-space: nowrap;      /*keep text on one line */
+		overflow: hidden;         /*prevent text from being shown outside the border */
+		text-overflow: ellipsis;  /*cut off text with an ellipsis*/
+		word-wrap:break-word; 
+	}
 
 @media (max-width:576px) {
  .tab-content .tab-pane {
@@ -395,8 +402,43 @@ border-bottom:1px solid #F0F2F4;
 
 		}
 
+	.truncate-sm {
+		max-width: 300px; 
+	}
+	#wallet_addresses .addressesHeader {
+		flex-direction: column;
+	}
+	#wallet_addresses .addressesTitle{
+		/*flex-grow: 1 !important;*/
+	}
+	#wallet_addresses .addressesSubTitle{
+		flex-direction: row;
+		flex-grow: 1 !important;
+		align-items: center;
+    justify-content: space-between;
+	}
 	
 
+}
+@media (max-width:480px) {
+	.truncate-sm {
+		max-width: 230px; 
+	}
+	.walletAddresses .address_path {
+		/*display: none;*/
+	}
+}
+@media (max-width:400px) {
+	.truncate-sm {
+		max-width: 190px; 
+	}
+	
+}
+
+@media (max-width:360px) {
+	.truncate-sm {
+		max-width: 170px; 
+	}
 }
 
 @media (min-width:576px) {
@@ -505,32 +547,32 @@ vertical-align: -8px;
 .icon24 {
 	width: 24px;
 	height: 24px;
-	font-size: 24px;
+  /*font-size: 24px;*/
 }
 .icon28 {
 	width: 28px;
 	height: 28px;
-	font-size: 28px;
+	/*font-size: 28px;*/
 }
 .icon32 {
 	width: 32px;
 	height: 32px;
-	font-size: 32px;
+	/*font-size: 32px*/;
 }
 .icon48 {
 	width: 48px;
 	height: 48px;
-	font-size: 48px;
+	/*font-size: 48px;*/
 }
 .icon64 {
 	width: 64px;
 	height: 64px;
-	font-size: 64px;
+	/*font-size: 64px;*/
 }
 .icon128 {
 	width: 128px;
 	height: 128px;
-	font-size: 128px;
+	/*font-size: 128px;*/
 }
 
 
@@ -1326,8 +1368,9 @@ border-color: #fff;
 }
 .flex-align-top {
 	align-self: flex-start;
-
 }
+
+
 
 .box {
   position: relative;
@@ -3107,13 +3150,16 @@ text-decoration: none;
 	display: flex;
 	flex-direction: column;
 }
+#wallet .btn-group,
 #wallet .list-border .btn-group {
 	box-shadow: 1px 1px 11px 0px rgba(43,45,80,.1),0 1px 1px 0 rgba(43,45,80,.1),0 0px 11px 0 rgba(43,45,80,.08),0 0px 1.5px 0 rgba(0,0,0,.08),0 1px 0px 0 rgba(0,0,0,.08) !important;
 	border-radius: 10px;
 }
+#wallet .btn,
 #wallet .list-border .btn {
 	box-shadow: unset;
 }
+#wallet .btn-group button:first-child,
 #wallet .list-border .btn-group button:first-child  {
 	border-top-right-radius: 0 !important;
 	border-bottom-right-radius: 0 !important;
@@ -3122,6 +3168,7 @@ text-decoration: none;
 	border-right-width: 1px;
   border-right-color: #dedede;
 }
+#wallet .btn-group button:last-child ,
 #wallet .list-border .btn-group button:last-child  {
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
@@ -3242,7 +3289,7 @@ text-decoration: none;
 }
 
 
-.list-border .calendar {
+.list-border .list-action {
   font-size: 14px;
   font-weight: 500;
   letter-spacing: -0.1px;
@@ -3331,7 +3378,7 @@ border-radius: 100%;
 
 /*walletAsset*/
 #walletAsset .list-wrapper {
-	padding: 0;
+	/*padding: 0;*/
 }
 #walletAsset .coin-info {
 	margin-left: 10px;
@@ -3370,8 +3417,78 @@ bottom: 0;
 	border-bottom: unset;
 }
 #walletAsset .callout-title {
-	top: 8px;
+	top: 0;
 }
+
+
+
+.icons i {
+  color: #b5b3b3;
+  border: 1px solid #b5b3b3;
+  padding: 6px;
+  margin-left: 4px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.activity-done {
+  font-weight: 600;
+}
+
+.list-group li {
+  margin-bottom: 12px;
+}
+
+.list-group-item {
+}
+
+.list li {
+  list-style: none;
+  padding: 10px;
+  border: 1px solid #e3dada;
+  margin-top: 12px;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.flex-list {
+	box-shadow: 0px 8px 36px rgba(81, 81, 81, 0.1);
+}
+
+li.flex-list {
+	border: unset;
+	line-height: 24px;
+	border-radius: 10px;
+	box-shadow: 0px 8px 16px rgba(81, 81, 81, 0.1);
+}
+li.flex-list.coin_address {
+}
+li.flex-list:hover {
+	box-shadow: 2px 2px 2px rgba(81, 81, 81, 0.1);
+}
+
+li.flex-list:hover .coin_address {
+	font-weight: 600;
+	transition:.3s ease all;
+}
+.dropdown-item {
+	line-height: 36px;
+}
+
+
+.checkicon {
+  color: green;
+  font-size: 19px;
+}
+
+.date-time {
+  font-size: 12px;
+}
+
+.profile-image img {
+  margin-left: 3px;
+}
+
 
 /* Default table styles for flex table "table-ice"*/
 
@@ -3524,8 +3641,6 @@ padding-left: 0.75rem;
 }
 .blockie_wrapper .icon {
 	display: block;
-	width: 32px;
-	height: 32px;
 	background-size: cover;
 	background-repeat: no-repeat;
 	border-radius: 20%;

@@ -689,7 +689,7 @@
                               </div>
                             </div>
                             <div class="list-details">
-                              <div class="calendar">
+                              <div class="list-action">
                                 <div class="btn-group">
                                   <button type="button" class="btn btn-sm btn-flat-primary"><img src="./assets/images/send.svg" class="icon24" /> Send</button>
                                   <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -721,7 +721,7 @@
                               </div>
                             </div>
                             <div class="list-details">
-                              <div class="calendar">
+                              <div class="list-action">
                                 <div class="btn-group">
                                   <button type="button" class="btn btn-sm btn-flat-primary"><img src="./assets/images/send.svg" class="icon24" /> Send</button>
                                   <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -753,7 +753,7 @@
                               </div>
                             </div>
                             <div class="list-details">
-                              <div class="calendar">
+                              <div class="list-action">
                                 <div class="btn-group">
                                   <button type="button" class="btn btn-sm btn-flat-primary"><img src="./assets/images/send.svg" class="icon24" /> Send</button>
                                   <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -785,7 +785,7 @@
                               </div>
                             </div>
                             <div class="list-details">
-                              <div class="calendar">
+                              <div class="list-action">
                                 <div class="btn-group">
                                   <button type="button" class="btn btn-sm btn-flat-primary"><img src="./assets/images/send.svg" class="icon24" /> Send</button>
                                   <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -817,7 +817,7 @@
                               </div>
                             </div>
                             <div class="list-details">
-                              <div class="calendar">
+                              <div class="list-action">
                                 <div class="btn-group">
                                   <button type="button" class="btn btn-sm btn-flat-primary"><img src="./assets/images/send.svg" class="icon24" /> Send</button>
                                   <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -852,7 +852,7 @@
                               </div>
                             </div>
                             <div class="list-details">
-                              <div class="calendar">
+                              <div class="list-action">
                                 <div class="btn-group">
                                   <button type="button" class="btn btn-sm btn-flat-primary"><img src="./assets/images/send.svg" class="icon24" /> Send</button>
                                   <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -884,7 +884,7 @@
                               </div>
                             </div>
                             <div class="list-details">
-                              <div class="calendar">
+                              <div class="list-action">
                                 <div class="btn-group">
                                   <button type="button" class="btn btn-sm btn-flat-primary"><img src="./assets/images/send.svg" class="icon24" /> Send</button>
                                   <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -928,7 +928,7 @@
                             <div class="blockie_list">
                               <div class="blockie_wrapper d-flex">
                                 <div class="blockie_wrapper_with_title d-flex">
-                                  <div class="icon"></div>
+                                  <div class="icon icon32"></div>
                                   <span class="wallet_address text-primary font-weight-bold"></span>
                                 </div>
                                 <i class="float-right bi bi-copy icon ml-2"></i>
@@ -1213,101 +1213,191 @@
                                 <div id="" class="walletAddresses">
                                   <div>
                                     <!-- Receive Addresses -->
-                                    <div id="receiveAddresses">
-                                      <div class="callout m-0 p-0 py-2">
-                                        <div>
-                                          <div class="input-group-callout">
-                                            <div class="callout-title text-muted text-primary">Receive Address</div>
+                                    <div >
+                                      <div class="m-0 p-0 py-2">
+                                        
+                                        <div class="container mt-5" id="receiveAddresses">
+                                          <div class="row">
+                                            <div class="col-md-12">
+                                              <div class="d-flex justify-content-between align-items-center addressesHeader">
+                                                <div class="addressesTitle">
+                                                  <div class="text-muted text-primary fs-2-5">
+                                                    Receive Address
+                                                    #<span class="coin_receive_addresses_total">0</span>
+                                                  </div>
+                                                </div>
+                                                
+                                                <div class="addressesSubTitle">
+                                                  <!-- <div><span class="activity-done">Receive Addresses</span></div>-->
+                                                  <div class="mr-2">
+                                                    <button class="btn btn-sm btn-flat-primary ml-2 loadReceiveAddresses" type="button">
+                                                      <i class="bi bi-three-dots"></i> <span class="spinner-border spinner-border-sm hidden" role="status" aria-hidden="true"></span>
+                                                      Load More Addresses
+                                                    </button>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="mt-3">
+                                                <ul class="list list-inline">
+
+                                                  <li class="flex-list m-1 p-1">
+                                                    <div class="d-flex ml-1">
+                                                      <div class="d-flex align-items-center mr-1">
+                                                        <div class="blockie_wrapper blockie_address"></div>
+                                                      </div>
+                                                      <div class="d-flex flex-column flex-grow-1">
+                                                        <div class="d-flex justify-content-between">
+                                                          <div>
+                                                            <div class="mb-0 d-inline-block truncate-sm fs-4" title="Copy Address" data-copy-content="0x138854708D8B603c9b7d4d6e55b6d32D40557F4D">0x138854708D8B603c9b7d4d6e55b6d32D40557F4D
+                                                            </div>
+                                                          </div>
+                                                          <div class="d-flex align-items-start">
+                                                            <!--<div class="address_path mr-2"><span class="badge badge-light fs-4 p-1 text-muted">path: m/0</span></div>-->
+                                                            <div class="address_path mb-1 text-black-50 date-time">path: <span class="coin_address_path text-primary">m/0</span></div>
+                                                          </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                          <div>
+                                                            <div class="d-flex flex-row">
+                                                              <div class="font-weight-bold">
+                                                                <span class="badge badge-light fs-3 p-1 text-muted ">123.00000000 BTC</span>
+                                                                <div class="font-weight-bold"> <span class="badge badge-light fs-3 p-1 text-muted "><span class="coin_address_balance">-</span> <span class="coin_symbol">BTC</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-left"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-up-right"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-up"></i>TXs: 0</span></div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                          <div>
+                                                            <div class="list-details">
+                                                              <div class="list-action">
+                                                                <div class="btn-group">
+                                                                  <button type="button" class="btn btn-sm btn-flat-primary"><i class="bi bi-info-circle"></i> info</button>
+                                                                  <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <i class="bi bi-caret-down"></i>
+                                                                  </button>
+                                                                  <div class="dropdown-menu dropdown-menu-right">
+                                                                    <a class="dropdown-item" href="#"><img src="./assets/images/send.svg" class="icon28" /> Send</a>
+                                                                    <a class="dropdown-item" href="#"><img src="./assets/images/receive.svg" class="icon28" /> Receive</a>
+                                                                    <a class="dropdown-item" href="#"><img src="./assets/images/info.svg" class="icon28" /> Details</a>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                            </div>
+
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </li>
+
+                                                </ul>
+                                              </div>
+                                            </div>
                                           </div>
-                                        </div>
-                                        <table class="table table-striped">
-                                          <thead>
-                                            <tr>
-                                              <th class="text-muted">Path</th>
-                                              <th>Address</th>
-                                              <th class="text-right">Balance</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            <!--<tr>
-                                              <th scope="row">1</th>
-                                              <td>abcd1234 <i class=" float-right bi bi-copy"></i></td>
-                                              <td class="text-right">0</td>
-                                            </tr>
-                                            -->
-                                          </tbody>
-                                        </table>
-                                      </div>
-                                      <div class="row row mt-2 mb-4">
-                                        <div class="col-12 d-flex justify-content-end">
-                                          <button class="btn btn-sm btn-flat-primary ml-2" type="button" id="loadReceiveAddresses">
-                                            <i class="bi bi-three-dots"></i> <span class="spinner-border spinner-border-sm hidden" role="status" aria-hidden="true"></span>
-                                            Load Receive Addresses
-                                          </button>
+                                          <div class="row mt-2 mb-4">
+                                            <div class="col-12 d-flex justify-content-end">
+                                              <button class="btn btn-sm btn-flat-primary ml-2 loadReceiveAddresses" type="button">
+                                                <i class="bi bi-three-dots"></i> <span class="spinner-border spinner-border-sm hidden" role="status" aria-hidden="true"></span>
+                                                Load Receive Addresses
+                                              </button>
+                                            </div>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
+                                    <hr>
                                     <!-- Change Addresses -->
-                                    <div id="changeAddresses">
-                                      <div class="callout m-0 mt-3 p-0 py-2">
-                                        <div>
-                                          <div class="input-group-callout">
-                                            <div class="callout-title text-muted text-primary">Change Address</div>
+                                    <div >
+                                      <div class="m-0 p-0 py-2 mt-6">
+                                        <div class="container mt-3" id="changeAddresses">
+                                          <div class="row">
+                                            <div class="col-md-12">
+                                              
+                                              <div class="d-flex justify-content-between align-items-center addressesHeader">
+                                                <div class="addressesTitle">
+                                                  <div class="text-muted text-primary fs-2-5">
+                                                    Change Addresses
+                                                    #<span class="coin_change_addresses_total">0</span>
+                                                  </div>
+                                                </div>
+                                                
+                                                <div class="addressesSubTitle">
+                                                  <!-- <div><span class="activity-done">Receive Addresses</span></div>-->
+                                                  <div class="mr-2">
+                                                    <button class="btn btn-sm btn-flat-primary ml-2 loadChangeAddresses" type="button">
+                                                      <i class="bi bi-three-dots"></i> <span class="spinner-border spinner-border-sm hidden" role="status" aria-hidden="true"></span>
+                                                      Load More Addresses
+                                                    </button>
+                                                  </div>
+                                                </div>
+                                              </div>
+
+                                              <div class="mt-3">
+                                                <ul class="list list-inline">
+
+                                                  <li class="flex-list m-1 p-1">
+                                                    <div class="d-flex ml-1">
+                                                      <div class="d-flex align-items-center mr-1">
+                                                        <div class="blockie_wrapper blockie_address"></div>
+                                                      </div>
+                                                      <div class="d-flex flex-column flex-grow-1">
+                                                        <div class="d-flex justify-content-between">
+                                                          <div>
+                                                            <div class="mb-0 d-inline-block truncate-sm fs-4" title="Copy Address" data-copy-content="0x138854708D8B603c9b7d4d6e55b6d32D40557F4D">0x138854708D8B603c9b7d4d6e55b6d32D40557F4D
+                                                            </div>
+                                                          </div>
+                                                          <div class="d-flex align-items-start">
+                                                            <!--<div class="address_path mr-2"><span class="badge badge-light fs-4 p-1 text-muted">path: m/0</span></div>-->
+                                                            <div class="address_path mb-1 text-black-50 date-time">path: <span class="coin_address_path text-primary">m/0</span></div>
+                                                          </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                          <div>
+                                                            <div class="d-flex flex-row">
+                                                              <div class="font-weight-bold">
+                                                                <span class="badge badge-light fs-3 p-1 text-muted ">123.00000000 BTC</span>
+                                                                <div class="font-weight-bold"> <span class="badge badge-light fs-3 p-1 text-muted "><span class="coin_address_balance">-</span> <span class="coin_symbol">BTC</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-left"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-up-right"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-up"></i>TXs: 0</span></div>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                          <div>
+                                                            <div class="list-details">
+                                                              <div class="list-action">
+                                                                <div class="btn-group">
+                                                                  <button type="button" class="btn btn-sm btn-flat-primary"><i class="bi bi-info-circle"></i> info</button>
+                                                                  <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <i class="bi bi-caret-down"></i>
+                                                                  </button>
+                                                                  <div class="dropdown-menu dropdown-menu-right">
+                                                                    <a class="dropdown-item" href="#"><img src="./assets/images/send.svg" class="icon28" /> Send</a>
+                                                                    <a class="dropdown-item" href="#"><img src="./assets/images/receive.svg" class="icon28" /> Receive</a>
+                                                                    <a class="dropdown-item" href="#"><img src="./assets/images/info.svg" class="icon28" /> Details</a>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                            </div>
+
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </li>
+
+                                                </ul>
+                                              </div>
+                                            </div>
                                           </div>
-                                        </div>
-                                        <table class="table table-striped">
-                                          <thead>
-                                            <tr>
-                                              <th class="text-muted">Path</th>
-                                              <th>Address</th>
-                                              <th class="text-right">Balance</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            <!--
-                                            <tr>
-                                              <th scope="row">1</th>
-                                              <td>abcd1234 <i class=" float-right bi bi-copy"></i></td>
-                                              <td class="text-right">0</td>
-                                            </tr>
-                                          -->
-                                          </tbody>
-                                        </table>
-                                      </div>
-                                      <div class="row row mt-2 mb-3">
-                                        <div class="col-12 d-flex justify-content-end">
-                                          <button class="btn btn-sm btn-flat-primary ml-2" type="button" id="loadChangeAddresses">
-                                            <i class="bi bi-three-dots"></i> <span class="spinner-border spinner-border-sm hidden" role="status" aria-hidden="true"></span>
-                                            Load Change Addresses
-                                          </button>
+                                          <div class="row mt-2 mb-4">
+                                            <div class="col-12 d-flex justify-content-end">
+                                              <button class="btn btn-sm btn-flat-primary ml-2 loadChangeAddresses" type="button">
+                                                <i class="bi bi-three-dots"></i> <span class="spinner-border spinner-border-sm hidden" role="status" aria-hidden="true"></span>
+                                                Load Change Addresses
+                                              </button>
+                                            </div>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                   <div class="row py-3"></div>
-                                  <div class="row py-3">
-                                    <div class="col-12 m-0 p-0">
-                                      <div class="form-horizontal output callout">
-                                        <div class="col-6">
-                                          <label class="text-muted">
-                                            <abbr title="Amount to pay in network fee">Transaction Fee</abbr>&nbsp;&nbsp;
-                                            <a href="javascript:;"></a>
-                                          </label>
-                                          <input type="text" class="form-control" value="0.00001000" placeholder="0.00000000" />
-                                        </div>
-                                        <div class="col-6">
-                                          <label class="text-muted"><abbr title="Amount to donate to Wally.id">Donation</abbr></label>
-                                          <input type="text" class="form-control" value="0.001" placeholder="0.00000000" />
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-12 d-flex justify-content-end">
-                                      <button class="btn btn-sm btn-flat-warning" type="button"><img src="./assets/images/reset.svg" class="icon28" /> Reset</button>
-                                      <button class="btn btn-sm btn-flat-primary ml-2" type="button"><img src="./assets/images/send.svg" class="icon28" /> Send</button>
-                                    </div>
-                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -3935,6 +4025,47 @@
             <div class="col-12">
               <div class="iceee">
 
+
+                <!-- Flex Layout -->
+                <section>
+                  <div class="d-flex" style="border: 2px solid purple;">
+                    <div class="d-flex align-items-center">
+                      ico
+                    </div>
+                    <div class="d-flex flex-column flex-grow-1" style="border: 1px solid orange; ">
+                      <div class="d-flex justify-content-between">
+                        <div>address<br>address2</div>
+                        <div>copy</div>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <div>balance</div>
+                        <div>buttons</div>
+                      </div>
+                    </div>
+                  </div>
+
+                </section>
+                <section>
+                  <div class="d-block">
+                    <div class="d-flex justify-content-between">
+                        <div class="d-block">
+                          address
+                        </div>
+                        <div class="d-block">
+                          copy
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="d-block">
+                          balance
+                        </div>
+                        <div class="d-block">
+                          buttons
+                        </div>
+                    </div>
+                </div>
+
+                </section>
                 <!-- Card-->
                 <section>
                   <div class="card-openwallet-box">
