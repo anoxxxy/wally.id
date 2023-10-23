@@ -24,7 +24,9 @@ body.zeynep-opened {
   box-shadow: 0 4px 11px rgba(0,0,0,.125),0 2px 6px rgba(0,0,0,.2);
 
 }
-
+.zeynep.left-panel[data-user="auth"] {
+  background-color: #202238;
+}
 
 .zeynep:not(.no-transition),
 .zeynep .submenu:not(.no-transition){
@@ -118,7 +120,7 @@ div.zeynep.opened.submenu-opened.current ul > li small {
 
 /* zeynepjs menu styles */
 .zeynep {
-  background-color: #ffffff;
+  background-color: #fafafa;
   color: #666;
   width: 295px;
 }
@@ -127,11 +129,15 @@ div.zeynep.opened.submenu-opened.current ul > li small {
 .zeynep.left-panel {
   right: auto;
   left: 0;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .zeynep.right-panel {
   left: auto;
   right: 0;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 .zeynep.right-panel:not(.opened) {
   transform: translateX(100%);
@@ -142,7 +148,7 @@ div.zeynep.opened.submenu-opened.current ul > li small {
 .zeynep ul {
   list-style-type: none;
   padding: 0;
-  padding-left: 20px;
+  padding-left: 10px;
   -webkit-overflow-scrolling: touch;
 }
 .zeynep ul > li {
@@ -177,7 +183,7 @@ div.zeynep.opened.submenu-opened.current ul > li small {
 }
 .zeynep ul > li > a {
 
-  padding: 8px 20px;
+  padding: 8px 20px 8px 10px;
   text-decoration: none;
   transition: all 150ms;
 }

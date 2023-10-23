@@ -6660,6 +6660,10 @@ button.bg-dark:hover {
  -ms-flex-pack:distribute!important;
  justify-content:space-around!important
 }
+.justify-content-evenly {
+ justify-content:space-evenly!important
+}
+
 .align-items-start {
  -ms-flex-align:start!important;
  align-items:flex-start!important

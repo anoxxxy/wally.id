@@ -33,67 +33,7 @@
   <!-- <link rel="stylesheet" href="./assets/css/buttons.css" media="screen"> -->
   <link rel="stylesheet" href="./assets/css/style.css" media="screen" />
   <link rel="stylesheet" href="./assets/css/custom.css" media="screen" />
-  <!-- storage function lib-->
-  <script type="text/javascript" src="./assets/js/storage/storage.js"></script>
-  <!-- data-binder library-->
-  <script type="text/javascript" src="./assets/js/dabi.js"></script>
-  <!-- async function lib-->
-  <script type="text/javascript" src="./assets/js/wait.js"></script>
-  <!-- router library-->
-  <script type="text/javascript" src="./assets/js/router.js"></script>
-  <!-- animation library-->
-  <script type="text/javascript" src="./assets/js/anime-v.3.2.1..min.js"></script>
-  <!-- Boostrap / JQuery / JS -->
-  <script type="text/javascript" src="./assets/js/jquery-3.6.1.min.js"></script>
-  <!-- jBox modal/tooltip/popover/notice -->
-  <script type="text/javascript" src="./assets/js/jbox/jBox.min.js"></script>
-  <!-- Panel-Menu -->
-  <script type="text/javascript" src="./assets/js/panel-menu/zeynep.js"></script>
-  <!-- DOMpurify plugin 
-    <script type="text/javascript" src="assets/js/dompurify/purify.js"></script>
-    <script type="text/javascript" src="assets/js/dompurify/jpurify.js"></script>
-  -->
-  <!-- Animation library -->
-  <script type="text/javascript" src="./assets/js/velocity.min.js"></script>
-  <script type="text/javascript" src="./assets/js/velocity.ui.min.js"></script>
-  <script type="text/javascript" src="./assets/js/bootstrap.min.js"></script>
-  <!-- Internal Wally functions -->
-  <script type="text/javascript" src="./assets/js/wally_fn.js?version=xyz3"></script>
-  <script src="./assets/js/bootstrap-dialog.js" type="text/javascript"></script>
-  <script type="text/javascript" src="./assets/js/datetime-flatpickr.js"></script>
-  <!-- Coinbin code -->
-  <script type="text/javascript" src="js/crypto-min.js"></script>
-  <script type="text/javascript" src="js/crypto-sha256.js"></script>
-  <script type="text/javascript" src="js/crypto-sha256-hmac.js"></script>
-  <script type="text/javascript" src="js/sha512.js"></script>
-  <script type="text/javascript" src="js/ripemd160.js"></script>
-  <script type="text/javascript" src="js/aes.js"></script>
-  <script type="text/javascript" src="js/qrcode.js"></script>
-  <script type="text/javascript" src="js/qcode-decoder.min.js"></script>
-  <script type="text/javascript" src="js/jsbn.js"></script>
-  <script type="text/javascript" src="js/ellipticcurve.js"></script>
-  <script type="text/javascript" src="js/web3/web3v1.8.1.min.js"></script>
-  <script type="text/javascript" src="js/web3/abi_erc20.js"></script>
-  <script type="text/javascript" src="js/bip39.js"></script>
-  <script type="text/javascript" src="js/coin.js"></script>
-  <script type="text/javascript" src="js/coinbin.js"></script>
-  <!-- Tools - Converter -->
-  <script type="text/javascript" src="js/converter/mnemonic.js"></script>
-  <script type="text/javascript" src="js/converter/rfc1751.js"></script>
-  <script type="text/javascript" src="js/converter/asn1.js"></script>
-  <script type="text/javascript" src="js/converter/armory.js"></script>
-  <script type="text/javascript" src="js/converter.base.js"></script>
-  <script type="text/javascript" src="./assets/js/waves.min.js"></script>
-  <script type="text/javascript" src="./assets/js/blockies/pnglib.js"></script>
-  <script type="text/javascript" src="./assets/js/blockies/blockie.js"></script>
-  <!-- pieChart -->
-  <script type="text/javascript" src="./assets/js/chart/piechart.js"></script>
-  <!-- Custom Code -->
-  <!-- Internal and DOM Wally functions -->
-  <script type="text/javascript" src="./assets/js/wally_kit.js"></script>
-  <script type="text/javascript" src="./assets/js/custom.js"></script>
-  <script type="text/javascript" src="./assets/js/wally_login.js"></script>
-  <!-- Open Wallet Functions -->
+
 </head>
 
 <body data-user="guest">
@@ -326,7 +266,7 @@
         <!-- Landing page -->
         <div class="tab-pane tab-content active" id="home">
           <!-- FEATURES -->
-          <div class="tab-body">
+          <div class="tab-body landing_page_subpage">
             <section class="py-1 py-md-11">
               <div class="col-12 py-0 mt-6">
                 <div class="row no-gutters">
@@ -614,30 +554,255 @@
         <!-- Wallet Page -->
         <div class="tab-pane tab-content" id="wallet" data-route="wallet">
           <div class="pageScrollSpace">&nbsp;</div>
+
+          <div class="row">
+            <!-- Desktop Menu-->
+            <!--<div class="col-12">
+              <fieldset class="checkbox-group" id="walletMenu">
+                <div class="checkbox">
+                  <label class="checkbox-wrapper">
+                    <input type="radio" name="apa"  class="checkbox-input" />
+                    <span class="checkbox-tile">
+                      <span class="checkbox-icon">
+                        <img src="./assets/images/purse_wallet.svg" class="icon icon32" />
+                      </span>
+                      <span class="checkbox-label">Wallet</span>
+                    </span>
+                  </label>
+                </div>
+                <div class="checkbox">
+                    <label class="checkbox-wrapper">
+                    <a href="#wallet">
+                    <input type="radio" name="apa" class="checkbox-input"  checked />
+                    <span class="checkbox-tile">
+                      <span class="checkbox-icon">
+                        <img src="./assets/images/chain.svg" class="icon icon32" />
+                      </span>
+                      <span class="checkbox-label">Send</span>
+                    </span>
+                    </a>
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label class="checkbox-wrapper">
+                    <a href="#wallet/asset">
+                    <input type="radio" name="apa"  class="checkbox-input" />
+                    <span class="checkbox-tile">
+                      <span class="checkbox-icon">
+                        <img src="./assets/images/chain.svg" class="icon icon32" />
+                      </span>
+                      <span class="checkbox-label">Receive</span>
+                    </span>
+                    </a>
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label class="checkbox-wrapper">
+                    <input type="radio" name="apa"  class="checkbox-input" />
+                    <span class="checkbox-tile">
+                      <span class="checkbox-icon">
+                        <img src="./assets/images/chain.svg" class="icon icon32" />
+                      </span>
+                      <span class="checkbox-label">Coins</span>
+                    </span>
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label class="checkbox-wrapper">
+                    <input type="radio" name="apa"  class="checkbox-input" />
+                    <span class="checkbox-tile">
+                      <span class="checkbox-icon">
+                        <img src="./assets/images/chain.svg" class="icon icon32" />
+                      </span>
+                      <span class="checkbox-label">Tokens</span>
+                    </span>
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label class="checkbox-wrapper">
+                    <input type="radio" name="apa"  class="checkbox-input" />
+                    <span class="checkbox-tile">
+                      <span class="checkbox-icon">
+                        <img src="./assets/images/chain.svg" class="icon icon32" />
+                      </span>
+                      <span class="checkbox-label">NFT</span>
+                    </span>
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label class="checkbox-wrapper">
+                    <input type="radio" name="apa"  class="checkbox-input" />
+                    <span class="checkbox-tile">
+                      <span class="checkbox-icon">
+                        <img src="./assets/images/chain.svg" class="icon icon32" />
+                      </span>
+                      <span class="checkbox-label">Backup</span>
+                    </span>
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label class="checkbox-wrapper">
+                    <a href="#settings">
+                    <input type="radio" name="apa"  class="checkbox-input" checked/>
+                    <span class="checkbox-tile">
+                      <span class="checkbox-icon">
+                        <img src="./assets/images/chain.svg" class="icon icon32" />
+                      </span>
+                      <span class="checkbox-label">Settings</span>
+                    </span>
+                  </a>
+                  </label>
+                </div>
+              </fieldset>
+            </div>
+            -->
+            <!-- //Desktop Menu -->
+
+          </div>
           <div class="row">
             <div class="col-md-3 mb-2">
-              <div id="wallet_menu" class="card-wallet">
+              <div id="wallet_menu" class="card-wallet wallet-menu wallet-menu-desktop">
                 <div class="card-openwallet-header">
                   <h3 class="card-openwallet-title">Wallet <small>Menu</small></h3>
                 </div>
-                <div class="card-openwallet-body m-1">
-                  <div class="p-1 py-1">
-                    <a href="#wallet" class="btn btn-block btn-flat-primary d-flex align-items-center"><img src="./assets/images/overview.svg" class="icon icon28" /> Wallet Overview</a>
-                    <a href="#" class="btn btn-block btn-flat-primary d-flex align-items-center"><img src="./assets/images/minus_plus.svg" class="icon icon28" /> Import/Hide Assets</a>
-                    <a href="#logout" class="btn btn-block btn-flat-primary d-flex align-items-center"><img src="./assets/images/lock.svg" class="icon icon28" /> Logout</a>
+                <div class="card-openwallet-body m-0">
+                  <div class="col-12 p-0">
+                    <!-- //Desktop Menu -->
+                    <fieldset class="checkbox-group walletMenu" id="walletMenu">
+                      <div class="checkbox" title="Under Construction">
+                        <label class="checkbox-wrapper">
+                          <input type="radio" name="apa"  class="checkbox-input" disabled/>
+                          <span class="checkbox-tile disabled">
+                            <span class="checkbox-icon">
+                              <img src="./assets/images/purse_wallet.svg" class="icon icon32" />
+                            </span>
+                            <span class="checkbox-label">Wallet</span>
+                          </span>
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label class="checkbox-wrapper">
+                          <a href="#wallet">
+                            <input type="radio" name="apa"  class="checkbox-input" checked />
+                            <span class="checkbox-tile">
+                              <span class="checkbox-icon">
+                                <img src="./assets/images/chain.svg" class="icon icon32" />
+                              </span>
+                              <span class="checkbox-label">Coins</span>
+                            </span>
+                          </a>
+                        </label>
+                      </div>
+                      <div class="checkbox" title="Added to Roadmap">
+                        <label class="checkbox-wrapper">
+                          <input type="radio" name="apa"  class="checkbox-input" disabled/>
+                          <span class="checkbox-tile disabled">
+                            <span class="checkbox-icon">
+                              <img src="./assets/images/chain.svg" class="icon icon32" />
+                            </span>
+                            <span class="checkbox-label">Tokens</span>
+                          </span>
+                        </label>
+                      </div>
+                      <div class="checkbox" title="Added to Roadmap">
+                        <label class="checkbox-wrapper">
+                          <input type="radio" name="apa"  class="checkbox-input" disabled/>
+                          <span class="checkbox-tile disabled">
+                            <span class="checkbox-icon">
+                              <img src="./assets/images/chain.svg" class="icon icon32" />
+                            </span>
+                            <span class="checkbox-label">NFT</span>
+                          </span>
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                          <label class="checkbox-wrapper">
+                          <a href="#wallet/send/bitcoin" data-wallet-menu-update>
+                          <input type="radio" name="apa" class="checkbox-input" />
+                          <span class="checkbox-tile">
+                            <span class="checkbox-icon">
+                              <img src="./assets/images/chain.svg" class="icon icon32" />
+                            </span>
+                            <span class="checkbox-label">Send</span>
+                          </span>
+                          </a>
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label class="checkbox-wrapper">
+                          <a href="#wallet/receive/bitcoin" data-wallet-menu-update>
+                          <input type="radio" name="apa"  class="checkbox-input" />
+                          <span class="checkbox-tile">
+                            <span class="checkbox-icon">
+                              <img src="./assets/images/chain.svg" class="icon icon32" />
+                            </span>
+                            <span class="checkbox-label">Receive</span>
+                          </span>
+                          </a>
+                        </label>
+                      </div>
+                      <div class="checkbox" title="Under Construction">
+                        <label class="checkbox-wrapper">
+                          <a href="#wallet/addresses/bitcoin" data-wallet-menu-update>
+                            <input type="radio" name="apa"  class="checkbox-input" />
+                            <span class="checkbox-tile">
+                              <span class="checkbox-icon">
+                                <img src="./assets/images/chain.svg" class="icon icon32" />
+                              </span>
+                              <span class="checkbox-label">Addresses</span>
+                            </span>
+                          </a>
+                        </label>
+                      </div>
+                      <div class="checkbox" title="Under Construction">
+                        <label class="checkbox-wrapper">
+                          <a href="#wallet/contacts/bitcoin" data-wallet-menu-update>
+                          <input type="radio" name="apa"  class="checkbox-input"/>
+                          <span class="checkbox-tile">
+                            <span class="checkbox-icon">
+                              <img src="./assets/images/chain.svg" class="icon icon32" />
+                            </span>
+                            <span class="checkbox-label">Contacts</span>
+                          </span>
+                        </a>
+                        </label>
+                      </div>
+
+
+                      
+                    </fieldset>
+                    <!-- //Desktop Menu -->
                   </div>
                 </div>
+                <div class="card-openwallet-footer wallet-menu-bottom">
+                  <div class="d-flex flex-row justify-content-evenly flex-wrap wallet-menu-bottom">
+                  <div class="checkbox">
+                    <label class="checkbox-wrapper">
+                      <a href="#logout">
+                      <input type="radio" name="apa" class="checkbox-input" disabled="">
+                      <span class="checkbox-tile disabled">
+                        <span class="checkbox-icon">
+                          <img src="./assets/images/chain.svg" class="icon icon32">
+                        </span>
+                        <span class="checkbox-label">Logout</span>
+                      </span>
+                    </a>
+                    </label>
+                  </div>
+                  </div>
+                </div>
+
               </div>
             </div>
             <div id="walletOverview" class="col-md-9 mb-2 animate__animated animate__fadeIn">
               <div class="card-openwallet">
                 <div class="card-openwallet-header">
-                  <h3 class="card-openwallet-title">Wallet Portfolio <small>Wally.id</small></h3>
+                  <h3 class="card-openwallet-title">Wally.id<small> - Your Keys, Your Crypto!</small></h3>
                 </div>
                 <div class="card-openwallet-body overflow-visible">
                   <div class="p-1 py-1">
                     <!-- PieChart-->
-                    <div class="col-md-12 m-0 mb-6">
+                    <div class="col-md-12 m-0 mb-6 hidden">
                       <h3 class="card-openwallet-title">Asset <small>Allocation</small></h3>
                       <div class="d-flex mt-2 pieChart_box" id="pieChartBox">
                         <div id="pieChart" class="pieChart"></div>
@@ -664,17 +829,35 @@
                           </li>
                         </ul>
                       </div>
+
+                      <div class="col-md-12 mb-6">
+                        <div class="callout m-0 py-3 mb-3">
+                          Total Balance: $192,400.00
+                        </div>
+                      </div>
+
                     </div>
+                    
+                    <!-- Wallet Asset Search Filter-->
                     <div class="col-md-12 mb-6">
                       <div class="callout m-0 py-3 mb-3">
-                        Total Balance: $192,400.00
+                        <div class="input-group-callout">
+                          <div class="callout-title text-muted text-primary">Search Filter</div>
+                          <div class="pb-2">
+                            <input id="searchInput" type="text" placeholder="Search by name, chain or symbol" class="form-control">
+                          </div>
+                        </div>
                       </div>
                     </div>
+                    <!-- //Wallet Asset Search Filter-->
+
+
                     <div class="col-md-12 mb-2">
-                      <h3 class="card-openwallet-title">Portfolio <small>Overview</small></h3>
+                      <h3 class="card-openwallet-title">Wallet <small>Overview</small></h3>
                       <!-- Filter Asset Options -->
                       <!-- List Assets -->
                       <div class="list_assets" id="userWalletAssets">
+                        <!--walletAssets template
                         <div class="list-border position-relative">
                           <div class="list-wrapper">
                             <div class="list-name">
@@ -900,6 +1083,7 @@
                             </div>
                           </div>
                         </div>
+                      -->
                       </div>
                     </div>
                     <!--Something Else? -->
@@ -913,9 +1097,6 @@
               <div class="card-openwallet">
                 <div class="card-openwallet-header">
                   <h3 class="card-openwallet-title">Asset <small>Options</small></h3>
-                  <span class="d-flex justify-content-end walletLogout">
-                    <a href="#logout" id="walletLogout" class="text-decoration-none"><i class="bi bi-person-fill-lock"></i> Logout</a>
-                  </span>
                 </div>
                 <div class="card-openwallet-body overflow-visible">
                   <div class="p-1 py-1">
@@ -931,7 +1112,6 @@
                                   <div class="icon icon32"></div>
                                   <span class="wallet_address text-primary font-weight-bold"></span>
                                 </div>
-                                <i class="float-right bi bi-copy icon ml-2"></i>
                               </div>
                             </div>
                             <div id="wallet_advanced_options_dropdown">
@@ -951,27 +1131,27 @@
                       <div class="row no-gutter">
                         <!-- Wallet Tabs-->
                         <div class="col-12">
-                          <ul class="nav nav-tabs addIndicator" role="tablist" id="walletOptions">
+                          <ul class="nav nav-tabs addIndicator walletMenu" role="tablist">
                             <li class="nav-item">
-                              <a class="nav-link active" id="asset-tab" data-toggle="tab" href="#wallet/asset/bitcoin" role="tab" data-target="#wallet_asset" data-asset="">
+                              <a class="nav-link active" id="asset-tab" data-toggle="tab" href="#wallet/asset/bitcoin" role="tab" data-target="#wallet_asset" data-asset="" data-wallet-menu-update>
                                 <img src="./assets/images/crypto/walrus-wally-logo.svg" class="icon24" /> Info
                               </a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="send-tab" href="#wallet/send/bitcoin" data-target="#wallet_send" data-asset="" data-toggle="tab" role="tab"> <img src="./assets/images/send.svg" class="icon24" /> Send </a>
+                              <a class="nav-link" id="send-tab" href="#wallet/send/bitcoin" data-target="#wallet_send" data-asset="" data-toggle="tab" role="tab" data-wallet-menu-update> <img src="./assets/images/send.svg" class="icon24" /> Send </a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="receive-tab" data-toggle="tab" href="#wallet/receive/bitcoin" data-target="#wallet_receive" data-asset="" role="tab">
+                              <a class="nav-link" id="receive-tab" data-toggle="tab" href="#wallet/receive/bitcoin" data-target="#wallet_receive" data-asset="" role="tab" data-wallet-menu-update>
                                 <img src="./assets/images/receive.svg" class="icon24" /> Receive
                               </a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="addresses-tab" data-toggle="tab" href="#wallet/addresses/bitcoin" data-target="#wallet_addresses" data-asset="" role="tab">
+                              <a class="nav-link" id="addresses-tab" data-toggle="tab" href="#wallet/addresses/bitcoin" data-target="#wallet_addresses" data-asset="" role="tab" data-wallet-menu-update>
                                 <img src="./assets/images/wallet-1.svg" class="icon24" /> Addresses
                               </a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="contacts-tab" data-toggle="tab" href="#wallet/contacts/bitcoin" data-target="#wallet_contacts" data-asset="" role="tab">
+                              <a class="nav-link" id="contacts-tab" data-toggle="tab" href="#wallet/contacts/bitcoin" data-target="#wallet_contacts" data-asset="" role="tab" data-wallet-menu-update>
                                 <img src="./assets/images/contacts.svg" class="icon24" /> Contacts
                               </a>
                             </li>
@@ -1214,9 +1394,9 @@
                                   <div>
                                     <!-- Receive Addresses -->
                                     <div >
-                                      <div class="m-0 p-0 py-2">
+                                      <div class="m-0 p-0 py-2" id="receiveAddresses">
                                         
-                                        <div class="container mt-5" id="receiveAddresses">
+                                        <div class="container mt-1">
                                           <div class="row">
                                             <div class="col-md-12">
                                               <div class="d-flex justify-content-between align-items-center addressesHeader">
@@ -1230,16 +1410,16 @@
                                                 <div class="addressesSubTitle">
                                                   <!-- <div><span class="activity-done">Receive Addresses</span></div>-->
                                                   <div class="mr-2">
-                                                    <button class="btn btn-sm btn-flat-primary ml-2 loadReceiveAddresses" type="button">
+                                                    <button class="btn btn-sm btn-flat-primary ml-2 loadReceiveAddresses" type="button" data-login-type="seed">
                                                       <i class="bi bi-three-dots"></i> <span class="spinner-border spinner-border-sm hidden" role="status" aria-hidden="true"></span>
-                                                      Load More Addresses
+                                                      Load Addresses
                                                     </button>
                                                   </div>
                                                 </div>
                                               </div>
                                               <div class="mt-3">
-                                                <ul class="list list-inline">
-
+                                                <ul class="list list-inline" id="receiveAddressesTpl">
+                                                  <!--
                                                   <li class="flex-list m-1 p-1">
                                                     <div class="d-flex ml-1">
                                                       <div class="d-flex align-items-center mr-1">
@@ -1252,7 +1432,7 @@
                                                             </div>
                                                           </div>
                                                           <div class="d-flex align-items-start">
-                                                            <!--<div class="address_path mr-2"><span class="badge badge-light fs-4 p-1 text-muted">path: m/0</span></div>-->
+                                                            <div class="address_path mr-2"><span class="badge badge-light fs-4 p-1 text-muted">path: m/0</span></div>
                                                             <div class="address_path mb-1 text-black-50 date-time">path: <span class="coin_address_path text-primary">m/0</span></div>
                                                           </div>
                                                         </div>
@@ -1287,6 +1467,7 @@
                                                       </div>
                                                     </div>
                                                   </li>
+                                                -->
 
                                                 </ul>
                                               </div>
@@ -1294,7 +1475,7 @@
                                           </div>
                                           <div class="row mt-2 mb-4">
                                             <div class="col-12 d-flex justify-content-end">
-                                              <button class="btn btn-sm btn-flat-primary ml-2 loadReceiveAddresses" type="button">
+                                              <button class="btn btn-sm btn-flat-primary ml-2 loadReceiveAddresses" type="button" data-login-type="seed">
                                                 <i class="bi bi-three-dots"></i> <span class="spinner-border spinner-border-sm hidden" role="status" aria-hidden="true"></span>
                                                 Load Receive Addresses
                                               </button>
@@ -1306,8 +1487,8 @@
                                     <hr>
                                     <!-- Change Addresses -->
                                     <div >
-                                      <div class="m-0 p-0 py-2 mt-6">
-                                        <div class="container mt-3" id="changeAddresses">
+                                      <div class="m-0 p-0 py-2 mt-6" id="changeAddresses">
+                                        <div class="container mt-3">
                                           <div class="row">
                                             <div class="col-md-12">
                                               
@@ -1322,17 +1503,17 @@
                                                 <div class="addressesSubTitle">
                                                   <!-- <div><span class="activity-done">Receive Addresses</span></div>-->
                                                   <div class="mr-2">
-                                                    <button class="btn btn-sm btn-flat-primary ml-2 loadChangeAddresses" type="button">
+                                                    <button class="btn btn-sm btn-flat-primary ml-2 loadChangeAddresses" type="button" data-login-type="seed">
                                                       <i class="bi bi-three-dots"></i> <span class="spinner-border spinner-border-sm hidden" role="status" aria-hidden="true"></span>
-                                                      Load More Addresses
+                                                      Load Addresses
                                                     </button>
                                                   </div>
                                                 </div>
                                               </div>
 
                                               <div class="mt-3">
-                                                <ul class="list list-inline">
-
+                                                <ul class="list list-inline" id="changeAddressesTpl">
+                                                  <!--
                                                   <li class="flex-list m-1 p-1">
                                                     <div class="d-flex ml-1">
                                                       <div class="d-flex align-items-center mr-1">
@@ -1345,7 +1526,6 @@
                                                             </div>
                                                           </div>
                                                           <div class="d-flex align-items-start">
-                                                            <!--<div class="address_path mr-2"><span class="badge badge-light fs-4 p-1 text-muted">path: m/0</span></div>-->
                                                             <div class="address_path mb-1 text-black-50 date-time">path: <span class="coin_address_path text-primary">m/0</span></div>
                                                           </div>
                                                         </div>
@@ -1380,6 +1560,8 @@
                                                       </div>
                                                     </div>
                                                   </li>
+                                                -->
+
 
                                                 </ul>
                                               </div>
@@ -1387,7 +1569,7 @@
                                           </div>
                                           <div class="row mt-2 mb-4">
                                             <div class="col-12 d-flex justify-content-end">
-                                              <button class="btn btn-sm btn-flat-primary ml-2 loadChangeAddresses" type="button">
+                                              <button class="btn btn-sm btn-flat-primary ml-2 loadChangeAddresses" type="button" data-login-type="seed">
                                                 <i class="bi bi-three-dots"></i> <span class="spinner-border spinner-border-sm hidden" role="status" aria-hidden="true"></span>
                                                 Load Change Addresses
                                               </button>
@@ -1478,11 +1660,18 @@
               <h3 class="card-openwallet-title">Wally.id <small>Logout</small></h3>
             </div>
             <div class="card-openwallet-body m-1">
-              <div class="p-1 py-1">
-                <div class="alert alert-success text-center">
-                  You are now logged out!
+              <div class="p-1 py-3">
+                <div class="alert alert-success text-center py-3">
+                  You've been Been Logged Out!
                 </div>
               </div>
+
+              <div class="row no-gutters">
+                <div class="col-12">
+                  <a href="#login" class="btn btn-block btn btn-flat-primary waves-effect login-again"><span class="icon"></span> Login again</a>
+                </div>
+              </div>
+
             </div>
             <div class="card-openwallet-footer">Wally.id - version: <span class="walletVersion">XYZ</span></div>
           </div>
@@ -1541,7 +1730,7 @@
                                   </div>
                                   <div class="folder-item__details">
                                     <div class="folder-item__details__name">
-                                      Mnemonic
+                                      Mnemonic <small class="text-muted">Recommended </small>
                                     </div>
                                     <div class="folder-item__details__subname">
                                       Login with your seed phrase!
@@ -1556,7 +1745,7 @@
                                     <img src="./assets/images/purse_wallet.svg" class="icon32" />
                                   </div>
                                   <div class="folder-item__details">
-                                    <div class="folder-item__details__name">Custom Seed <small>Coinb.in </small></div>
+                                    <div class="folder-item__details__name">Custom Seed <small class="text-muted">Coinb.in </small></div>
                                     <div class="folder-item__details__subname">Login with E-mail & Password!</div>
                                   </div>
                                   <div class="folder-item__size">
@@ -1873,7 +2062,7 @@
                                     <div id="walletLoginFormAccept" class="form-group form-accept checkbox">
                                       <p class="alert alert-danger">
                                         Wally.id is a non-custodial multi-blockchain cold wallet. <br />
-                                        If you forget your email or password it CANNOT be recovered!
+                                        If you forget your credentials it CANNOT be recovered!
                                         <br />
                                         <br />
                                         You need to have your wallet-backup before proceeding!
@@ -5676,74 +5865,177 @@ iceee - remove me later
   </div>
   <!-- -->
   <!-- ZeynepJS - Mobile menu - Left and Right Drawer Menu -->
-  <div class="zeynep left-panel" data-menu-name="left-panel">
-    <ul>
+  <div class="zeynep left-panel" data-menu-name="left-panel" data-user="guest">
+    <ul data-user-show="guest">
       <label>Wallet Type</label>
       <li>
-        <a href="#login?wallet_type=mnemonic_wallet"><img src="./assets/images/seed.svg" class="icon32 mx-2" /> Mnemonic</a>
+        <a href="#login?wallet_type=mnemonic_wallet"><img src="./assets/images/seed.svg" class="icon32 mx-2" />Mnemonic <small class="text-muted">Recommended</small></a>
       </li>
       <li>
-        <a href="#login?wallet_type=regular_wallet"><img src="./assets/images/purse_wallet.svg" class="icon32 mx-2" /> Custom Seed <small>Coinb.in</small></a>
+        <a href="#login?wallet_type=regular_wallet"><img src="./assets/images/purse_wallet.svg" class="icon32 mx-2" />Custom Seed <small class="text-muted">Coinb.in</small></a>
       </li>
       <li>
-        <a href="#login?wallet_type=multisig_wallet"><img src="./assets/images/keys.svg" class="icon32 mx-2" /> Multisig Wallet</a>
+        <a href="#login?wallet_type=multisig_wallet"><img src="./assets/images/keys.svg" class="icon32 mx-2" />Multisig Wallet</a>
       </li>
       <li>
-        <a href="#login?wallet_type=privatekey_wallet"><img src="./assets/images/key.svg" class="icon32 mx-2" /> Master Key</a>
+        <a href="#login?wallet_type=privatekey_wallet"><img src="./assets/images/key.svg" class="icon32 mx-2" />Master Key</a>
       </li>
       <li>
-        <a href="#login?wallet_type=import_wallet"><img src="./assets/images/wallet_import2.svg" class="icon32 mx-2" /> Import Wallet</a>
+        <a href="#login?wallet_type=import_wallet"><img src="./assets/images/wallet_import2.svg" class="icon32 mx-2" />Import Wallet</a>
       </li>
-      <!--
-        <li class="has-submenu">
-          <a href="#" data-submenu="stores">Open Wallet</a>
-
-          <div id="stores" class="submenu">
-            <div class="submenu-header">
-              <a href="#" data-submenu-close="stores">Main Menu</a>
-            </div>
-
-            <label>Wallet Type</label>
-
-            <ul>
-              <li>
-                <a href="#">Regular Wallet</a>
-              </li>
-              <li>
-                <a href="#">Multisig Wallet</a>
-              </li>
-              <li>
-                <a href="#">Private Key</a>
-              </li>
-              <li>
-                <a href="#">Import Wallet</a>
-              </li>
-            </ul>
-          </div>
-        </li>
-      
-
-        
-
-        <li>
-          <a href="#">Backup</a>
-        </li>
-        -->
       <label>Support & Help</label>
       <li>
-        <a href="https://github.com/anoxxxy/wally.id" class="text-decoration-none" target="_blank"> <img src="./assets/images/brands/github_logo.svg" class="icon32 mx-2" /> Github </a>
+        <a href="https://github.com/anoxxxy/wally.id" class="text-decoration-none" target="_blank"> <img src="./assets/images/brands/github_logo.svg" class="icon32 mx-2" />Github</a>
       </li>
       <li>
-        <a href="https://twitter.com/WallyIDOfficial" class="text-decoration-none" target="_blank"> <img src="./assets/images/brands/twitter_logo.svg" class="icon32 mx-2" /> Twitter </a>
+        <a href="https://twitter.com/WallyIDOfficial" class="text-decoration-none" target="_blank"> <img src="./assets/images/brands/twitter_logo.svg" class="icon32 mx-2" />Twitter</a>
       </li>
       <li>
-        <a href="https://t.me/wallyid" class="text-decoration-none" target="_blank"> <img src="./assets/images/brands/telegram_logo.svg" class="icon32 mx-2" /> Telegram </a>
+        <a href="https://t.me/wallyid" class="text-decoration-none" target="_blank"> <img src="./assets/images/brands/telegram_logo.svg" class="icon32 mx-2" />
+        Telegram</a>
       </li>
       <li>
-        <a href="https://discord.gg/d6heuxun4v" class="text-decoration-none" target="_blank"> <img src="./assets/images/brands/discord_logo.svg" class="icon32 mx-2" /> Discord </a>
+        <a href="https://discord.gg/d6heuxun4v" class="text-decoration-none" target="_blank"> <img src="./assets/images/brands/discord_logo.svg" class="icon32 mx-2" />Discord</a>
       </li>
     </ul>
+
+    <div class="wallet-menu wallet-menu-mobile hidden" data-menu-name="left-panel" data-user-show="auth">
+      <div class="col-12 p-0">
+                    <!-- //Wallet Mobile Menu -->
+
+                    <fieldset class="checkbox-group walletMenu d-flex pt-3" id="walletMenu">
+                      <div class="mt-2 pt-2 fs-2 menu-title">
+                        Wallet Menu
+                      </div>
+
+                      <div class="d-flex flex-row justify-content-evenly flex-wrap">
+                      <div class="checkbox" title="Under Construction">
+                        <label class="checkbox-wrapper">
+                          <input type="radio" name="apa" class="checkbox-input" disabled="">
+                          <span class="checkbox-tile disabled">
+                            <span class="checkbox-icon">
+                              <img src="./assets/images/purse_wallet.svg" class="icon icon32">
+                            </span>
+                            <span class="checkbox-label">Wallet</span>
+                          </span>
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label class="checkbox-wrapper">
+                          <a href="#wallet">
+                            <input type="radio" name="apa" class="checkbox-input" checked="">
+                            <span class="checkbox-tile">
+                              <span class="checkbox-icon">
+                                <img src="./assets/images/chain.svg" class="icon icon32">-
+                              </span>
+                              <span class="checkbox-label">Coins</span>
+                            </span>
+                          </a>
+                        </label>
+                      </div>
+                      <div class="checkbox" title="Added to Roadmap">
+                        <label class="checkbox-wrapper">
+                          <input type="radio" name="apa" class="checkbox-input" disabled="">
+                          <span class="checkbox-tile disabled">
+                            <span class="checkbox-icon">
+                              <img src="./assets/images/chain.svg" class="icon icon32">
+                            </span>
+                            <span class="checkbox-label">Tokens</span>
+                          </span>
+                        </label>
+                      </div>
+                      <div class="checkbox" title="Added to Roadmap">
+                        <label class="checkbox-wrapper">
+                          <input type="radio" name="apa" class="checkbox-input" disabled="">
+                          <span class="checkbox-tile disabled">
+                            <span class="checkbox-icon">
+                              <img src="./assets/images/chain.svg" class="icon icon32">
+                            </span>
+                            <span class="checkbox-label">NFT</span>
+                          </span>
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                          <label class="checkbox-wrapper">
+                          <a href="#wallet/send/bitcoin" data-wallet-menu-update="">
+                          <input type="radio" name="apa" class="checkbox-input">
+                          <span class="checkbox-tile">
+                            <span class="checkbox-icon">
+                              <img src="./assets/images/chain.svg" class="icon icon32">
+                            </span>
+                            <span class="checkbox-label">Send</span>
+                          </span>
+                          </a>
+                        </label>
+                      </div>
+                      <div class="checkbox">
+                        <label class="checkbox-wrapper">
+                          <a href="#wallet/receive/bitcoin" data-wallet-menu-update="">
+                          <input type="radio" name="apa" class="checkbox-input">
+                          <span class="checkbox-tile">
+                            <span class="checkbox-icon">
+                              <img src="./assets/images/chain.svg" class="icon icon32">
+                            </span>
+                            <span class="checkbox-label">Receive</span>
+                          </span>
+                          </a>
+                        </label>
+                      </div>
+                      <div class="checkbox" title="Under Construction">
+                        <label class="checkbox-wrapper">
+                          <a href="#wallet/addresses/bitcoin" data-wallet-menu-update="">
+                            <input type="radio" name="apa" class="checkbox-input" disabled="">
+                            <span class="checkbox-tile">
+                              <span class="checkbox-icon">
+                                <img src="./assets/images/chain.svg" class="icon icon32">
+                              </span>
+                              <span class="checkbox-label">Addresses</span>
+                            </span>
+                          </a>
+                        </label>
+                      </div>
+                      <div class="checkbox" title="Under Construction">
+                        <label class="checkbox-wrapper">
+                          <a href="#wallet/contacts/bitcoin" data-wallet-menu-update="">
+                          <input type="radio" name="apa" class="checkbox-input" >
+                          <span class="checkbox-tile">
+                            <span class="checkbox-icon">
+                              <img src="./assets/images/chain.svg" class="icon icon32">
+                            </span>
+                            <span class="checkbox-label">Contacts</span>
+                          </span>
+                        </a>
+                        </label>
+                      </div>
+                      
+                      </div>
+
+                      <div class="d-flex flex-row justify-content-evenly flex-wrap wallet-menu-bottom">
+                      <div class="checkbox">
+                        <label class="checkbox-wrapper">
+                          <a href="#logout">
+                          <input type="radio" name="apa" class="checkbox-input" disabled="">
+                          <span class="checkbox-tile disabled">
+                            <span class="checkbox-icon">
+                              <img src="./assets/images/chain.svg" class="icon icon32">
+                            </span>
+                            <span class="checkbox-label">Logout</span>
+                          </span>
+                        </a>
+                        </label>
+                      </div>
+                      </div>
+
+                    </fieldset>
+                    <!-- //Wallet Mobile Menu -->
+                  </div>
+
+    </div>
+
   </div>
+
+  
+
   <div class="zeynep right-panel" data-menu-name="right-panel">
     <ul>
       <label>Advanced Options </label>
@@ -5890,6 +6182,75 @@ iceee - remove me later
   <!-- choose currency wallet modal -->
   <div class="hidden" id="entropybucket"></div>
   <div class="modal-backdrop fade show hidden"></div>
+
+  <!-- Javascript Files -->
+  <!-- Mikado Template Engine - lightweight yet super fast rendering framework-->
+  <script src="./assets/js/mikado.debug.js"></script>
+
+  <!-- storage function lib-->
+  <script type="text/javascript" src="./assets/js/storage/storage.js"></script>
+  <!-- data-binder library-->
+  <script type="text/javascript" src="./assets/js/dabi.js"></script>
+  <!-- async function lib-->
+  <script type="text/javascript" src="./assets/js/wait.js"></script>
+  <!-- router library-->
+  <script type="text/javascript" src="./assets/js/router.js"></script>
+  <!-- animation library-->
+  <script type="text/javascript" src="./assets/js/anime-v.3.2.1..min.js"></script>
+  <!-- Boostrap / JQuery / JS -->
+  <script type="text/javascript" src="./assets/js/jquery-3.6.1.min.js"></script>
+  <!-- jBox modal/tooltip/popover/notice -->
+  <script type="text/javascript" src="./assets/js/jbox/jBox.min.js"></script>
+  <!-- Panel-Menu -->
+  <script type="text/javascript" src="./assets/js/panel-menu/zeynep.js"></script>
+  <!-- DOMpurify plugin 
+    <script type="text/javascript" src="assets/js/dompurify/purify.js"></script>
+    <script type="text/javascript" src="assets/js/dompurify/jpurify.js"></script>
+  -->
+  <!-- Animation library -->
+  <script type="text/javascript" src="./assets/js/velocity.min.js"></script>
+  <script type="text/javascript" src="./assets/js/velocity.ui.min.js"></script>
+  <script type="text/javascript" src="./assets/js/bootstrap.min.js"></script>
+  <!-- Internal Wally functions -->
+  <script type="text/javascript" src="./assets/js/wally_fn.js?version=xyz3"></script>
+  <!-- Contains Mikado Templates -->
+  <script type="text/javascript" src="./assets/js/templates/templates.js?version=xyz"></script>
+  <script src="./assets/js/bootstrap-dialog.js" type="text/javascript"></script>
+  <script type="text/javascript" src="./assets/js/datetime-flatpickr.js"></script>
+  <!-- Coinbin code -->
+  <script type="text/javascript" src="js/crypto-min.js"></script>
+  <script type="text/javascript" src="js/crypto-sha256.js"></script>
+  <script type="text/javascript" src="js/crypto-sha256-hmac.js"></script>
+  <script type="text/javascript" src="js/sha512.js"></script>
+  <script type="text/javascript" src="js/ripemd160.js"></script>
+  <script type="text/javascript" src="js/aes.js"></script>
+  <script type="text/javascript" src="js/qrcode.js"></script>
+  <script type="text/javascript" src="js/qcode-decoder.min.js"></script>
+  <script type="text/javascript" src="js/jsbn.js"></script>
+  <script type="text/javascript" src="js/ellipticcurve.js"></script>
+  <script type="text/javascript" src="js/web3/web3v1.8.1.min.js"></script>
+  <script type="text/javascript" src="js/web3/abi_erc20.js"></script>
+  <script type="text/javascript" src="js/bip39.js"></script>
+  <script type="text/javascript" src="js/coin.js"></script>
+  <script type="text/javascript" src="js/coinbin.js"></script>
+  <!-- Tools - Converter -->
+  <script type="text/javascript" src="js/converter/mnemonic.js"></script>
+  <script type="text/javascript" src="js/converter/rfc1751.js"></script>
+  <script type="text/javascript" src="js/converter/asn1.js"></script>
+  <script type="text/javascript" src="js/converter/armory.js"></script>
+  <script type="text/javascript" src="js/converter.base.js"></script>
+  <script type="text/javascript" src="./assets/js/waves.min.js"></script>
+  <script type="text/javascript" src="./assets/js/blockies/pnglib.js"></script>
+  <script type="text/javascript" src="./assets/js/blockies/blockie.js"></script>
+  <!-- pieChart -->
+  <script type="text/javascript" src="./assets/js/chart/piechart.js"></script>
+  <!-- Custom Code -->
+  <!-- Internal and DOM Wally functions -->
+  <script type="text/javascript" src="./assets/js/wally_kit.js"></script>
+  <script type="text/javascript" src="./assets/js/custom.js"></script>
+  <script type="text/javascript" src="./assets/js/wally_login.js"></script>
+  <!-- Open Wallet Functions -->
+
 </body>
 
 </html>

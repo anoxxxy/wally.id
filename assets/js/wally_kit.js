@@ -52,14 +52,19 @@
         //is user logged in? if so do:
         //check if coin has support for the wallet client / bip brotocol
         if (options.isAuth) {
-          //await wally_fn.timeout(200);  //lets swait until profile_data is loaded
-          var protocol = login_wizard.profile_data.seed.protocol.bip;
-          //hdkey, bip32, bip44 has same address master keys
-          protocol = (protocol === "bip32" || protocol === "bip44") ? "hdkey" : protocol;
-          if (!wally_fn.networks[network_var][asset_var][protocol]) {
-            throw (asset_var.toUpperCase() + ' has no support for ' + protocol.toUpperCase());
-            alert('danger');
-            return;
+
+          let loginType = login_wizard.profile_data.login_type;
+          //for seed login
+          if (loginType === 'seed' || loginType === 'mnemonic' ) {
+
+            var protocol = login_wizard.profile_data.seed.protocol.bip;
+            //hdkey, bip32, bip44 has same address master keys
+            protocol = (protocol === "bip32" || protocol === "bip44") ? "hdkey" : protocol;
+            if (!wally_fn.networks[network_var][asset_var][protocol]) {
+              throw (asset_var.toUpperCase() + ' has no support for ' + protocol.toUpperCase());
+              alert('danger');
+              return;
+            }
           }
         }
         //extend coinjs with the updated asset configuration
@@ -385,7 +390,7 @@
         console.log('data: ', data);
         //check nested tab within page, set to activate for navigation when back/forth
         var walletSubPage = false;
-        var walletAssetTabs = ['asset', 'send', 'receive', 'addresses', 'settings'];
+        var walletAssetTabs = ['asset', 'send', 'receive', 'addresses', 'contacts', 'settings'];
         if (walletAssetTabs.includes(data[1])) {
           $('#walletAsset [data-target="#' + data[0] + '_' + data[1] + '"]').tab('show');
           walletSubPage = data[1];
@@ -408,9 +413,9 @@
               //if ( (value.asset.symbols).includes(choosenAsset) ) {
               isAssetFound = true;
               assetKeyInObject = key;
-              console.log('asset was found: ', value.asset.symbol);
-              console.log('asset key was found: ', key);
-              //update coinjs.asset info
+              //console.log('asset was found: ', value.asset.symbol);
+              //console.log('asset key was found: ', key);
+
               /*
               //check if coin has support for the wallet client / bip brotocol
               var protocol = login_wizard.profile_data.seed.protocol.bip;
@@ -422,10 +427,10 @@
               */
               //try change asset to the selected one
               //if coin has no support for the bip protocol quit rendering
-              console.log('aaa login_wizard.profile_data.generated: ', login_wizard.profile_data);
               //break the loop if selected coin is already set!
               if (coinjs.asset.symbol === value.asset.symbol)
                 break;
+              //else update settings with the new coin!
               var coinSupportsProtocol = await wally_kit.setNetwork('mainnet', assetKeyInObject, {
                 saveSettings: true,
                 showMessage: false,
@@ -443,6 +448,8 @@
             }
           }
         }
+        
+        //Render specific subpage
         //Show Coin page or Overview page?
         if (walletSubPage) {
           $('#walletOverview').addClass('hidden');
@@ -453,13 +460,16 @@
           $('#walletAsset').addClass('hidden');
           console.log('Wallet Coin -page');
         }
+
         //coin has not been changed or no such coin -> exit
-        if (!coinjs.asset || !isAssetFound) {
+        if (!isAssetFound) {
           console.log('Coin NOT FOUND! ', coinjs.asset, isAssetFound);
           return;
         }
         //render password addresses / generate and render mnemonic addresses if they are not present
         if (login_wizard.profile_data.login_type === 'password') {
+          $('[data-login-type="seed"]').addClass('hidden');
+
           var addrObj = {
             'addresses': login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses_supported,
             'chainModel': coinjs.asset.chainModel
@@ -467,6 +477,7 @@
           //render the addresses
           wally_kit.walletRenderAddresses(addrObj);
         } else if (login_wizard.profile_data.login_type === 'mnemonic') {
+          $('[data-login-type="seed"]').removeClass('hidden');
           //check if addresses for a mnemonic/ seed /master has been generated
           //has the addresses been generated, if not generate them for the choosen coin/asset!
           console.log('wallet page login_wizard.profile_data.generated: ', login_wizard.profile_data.generated);
@@ -490,35 +501,10 @@
           });
           */
         }
-        //update tabs and their links relative to the choosen asset
-        $("#walletOptions a").each(function() {
-          var originalHref = $(this).attr("href");
-          // Remove any existing coin name from the originalHref
-          var newPath = originalHref.split('/').slice(0, -1).join('/');
-          // Add the new coin name to the path
-          var newHref = newPath + "/" + choosenAsset;
-          console.log('newHref: ', newHref)
-          $(this).attr("href", newHref);
-          $(this).attr("data-asset", choosenAsset);
-        });
-        /*
-                  //if a wallet page is set, dont check if asset exists
-                  if (!walletSubPage) {
-                    if (isAssetFound) {
-                      $('#walletOverview').addClass('hidden');
-                      $('#walletAsset').removeClass('hidden');
+        //pass over the asset and update wallet menu
+        wally_kit.menuUpdate(choosenAsset);
 
-                      console.log('isAssetFound: ' + isAssetFound);
-                    } else {
-                      $('#walletOverview').removeClass('hidden');
-                      $('#walletAsset').addClass('hidden');
 
-                      console.log('asset was NOT found!!')
-                      Router.navigate('wallet');
-
-                    }
-                  }
-                  */
         //render UI relative to utxo /evm
         if (coinjs.asset.chainModel === "utxo") {
           $('#wallet_advanced_options_dropdown').removeClass('hidden')
@@ -620,6 +606,10 @@
       })
       .add(/logout(.*)/, function(data) {
         console.log('**logout page**');
+
+        //empty receive/change addresses
+        wally_fn.tpl.seed.viewReceiveAddresses.render([]);
+        wally_fn.tpl.seed.viewChangeAddresses.render([]);
         //alert('sign page');
         //if user is logged in navigate to wallet page
         const userIsAuth = $('body').attr('data-user');
@@ -627,6 +617,12 @@
           Router.navigate('home');
           return;
         }
+        //render stuff - hide wallet menu for auth user
+        $('.zeynep.left-panel').attr('data-user', 'guest');
+        $('[data-user-show="auth"]').addClass('hidden');
+        $('[data-user-show="guest"]').removeClass('hidden');
+
+
         //remove session if remember me is false
         //if (!login_wizard.profile_data.remember)
         storage_s.remove('wally.profile');
@@ -650,6 +646,20 @@
         $("#walletKeys .privkey").val("");
         $("#walletKeys .pubkey").val("");
         $("#openLoginStatus").html("").hide();
+
+        //enable next on wallet login, and disable open wallet
+        $('#openBtn').prop('disabled', true).addClass('hidden');
+        $('#openBtnNext').prop('disabled', false).removeClass('hidden');
+        //uncheck remember me
+        $('#loginRemember').prop('checked', false);
+
+        
+        //uncheck terms and wallet backup
+        $('#walletLoginFormAccept .alert').removeClass('alert-success').addClass('alert-danger')
+        $('#openCheckBackupAlreadySaved').prop('checked', false)
+        $('#openCheckAcceptTerms').prop('checked', false)
+
+        
       })
       .add(/about(.*)/, function(data) {
         console.log('**about page**');
@@ -1019,62 +1029,33 @@
   wally_kit.walletRenderAssets = function() {
     console.log('===wally_kit.walletRenderAssets===');
     let userAssetList = '';
-    var walletAssets = $('#userWalletAssets');
-    walletAssets.text('');
-    //render only if coin has support for the wallet client / bip brotocol
-    var protocol = login_wizard.profile_data.seed.protocol.bip;
-    //hdkey, bip32, bip44 has same address master keys
-    protocol = (protocol === "bip32" || protocol === "bip44") ? "hdkey" : protocol;
+    let userAssetListArr = [];
+    //var walletAssets = $('#userWalletAssets');
+    //walletAssets.text('');
+
+    let loginType = login_wizard.profile_data.login_type;
+    //for seed login
+    if (loginType === 'seed' || loginType === 'mnemonic' ) {
+      //render only if coin has support for the wallet client / bip brotocol
+      var protocol = login_wizard.profile_data.seed.protocol.bip;
+      //hdkey, bip32, bip44 has same address master keys
+      protocol = (protocol === "bip32" || protocol === "bip44") ? "hdkey" : protocol;
+    }
+
     //for (var [key, value] of Object.entries(wally_fn.networks[ wally_fn.network ])) {
     for (var [key, value] of Object.entries(wally_fn.networks[coinjs.asset.network])) {
       //coin doesnt support bip type, skip to next coin!
-      if (!wally_fn.networks[coinjs.asset.network][key][protocol])
-        continue; // Skip the current iteration and move to the next one
-      userAssetList = `
-      <div class="list-border position-relative hidden">
-        <div class="list-wrapper">
-          <div class="list-name">
-            <div class="coin-icon">
-              <div class="icon icon32">
-                <img src="${value.asset.icon}">
-              </div>
-            </div>
-            <div class="coin-info">
-              <span class="title">
-                <a href="#wallet/asset/${key}" class="stretched-link">${value.asset.name}</a>
-                <span class="badge badge-primary chain_model">${value.asset.chainModel}</span>
-              </span>
-              <span class="subtitle">
-                <span class="balance">0</span> ${value.asset.symbol} </span>
-            </div>
-          </div>
-          <div class="list-details">
-            <div class="calendar">
-              <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-flat-primary">
-                  <img src="./assets/images/send.svg" class="icon24"> Send </button>
-                <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="bi bi-caret-down"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item" href="#wallet/send/${value.asset.symbols[0]}">
-                    <img src="./assets/images/send.svg" class="icon28"> Send </a>
-                  <a class="dropdown-item" href="#wallet/receive/${value.asset.symbols[0]}">
-                    <img src="./assets/images/receive.svg" class="icon28"> Receive </a>
-                  <a class="dropdown-item" href="#wallet/settings/${value.asset.symbols[0]}">
-                    <img src="./assets/images/settings.svg" class="icon28"> Settings </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>`;
-      walletAssets.append(userAssetList).find(".list-border:last").removeClass('hidden').velocity('slideDown', {
-        duration: 200
-      });
+      if (loginType === 'seed' || loginType === 'mnemonic' ) {
+        if (!wally_fn.networks[coinjs.asset.network][key][protocol])
+          continue; // Skip the current iteration and move to the next one
+      }
+
+      userAssetListArr.push({'name': value.asset.name, 'icon': value.asset.icon, 'chainModel': value.asset.chainModel, 'symbol': value.asset.symbol, 'slug': key});
+
     }
     //add user assets to the list
     // $('#userWalletAssets').html(userAssetList);
+    wally_fn.tpl.seed.viewWalletAssets.render(userAssetListArr);
   };
   /*
    @ generate a list of wallet addresses from an object, 'addresses' and 'chainModel' in the object
@@ -1084,65 +1065,56 @@
     //var addr = login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses_supported;
     var addr = addrObj.addresses;
     var chain = addrObj.chainModel;
-    var receive = '';
+    var receiveArr = [];
+    var receiveAddressesTotal = 0;
+    
+
     if (chain === 'utxo') {
       if (addr.compressed) {
         // Legacy Address
         //addr.compressed.key
         //addr.compressed.public_key
         //addr.compressed.address
-        receive = `
-        <tr>
-          <th scope="row">Compressed Legacy</th>
-          <td>${addr.compressed.address} <i class=" float-right bi bi-copy"></i></td>
-          <td class="text-right">0</td>
-        </tr>`;
+        var blockieIcon = makeBlockie(addr.compressed.address);
+        receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr.compressed.address, 'derivedPath': 'Compressed Legacy', 'path': false});
+        receiveAddressesTotal++;
         // Bech32 Address (p2wpkh)
         if (addr.compressed?.bech32) {
           //addr.compressed.bech32.address
           //addr.compressed.bech32.redeemscript
-          receive += `
-        <tr>
-          <th scope="row">Compressed Segwit</th>
-          <td>${addr.compressed.bech32.address} <i class=" float-right bi bi-copy"></i></td>
-          <td class="text-right">0</td>
-        </tr>`;
+          var blockieIcon = makeBlockie(addr.compressed.bech32.address);
+          receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr.compressed.bech32.address, 'derivedPath': 'Bech32', 'path': false});
+          receiveAddressesTotal++;
         }
         ///P2SH Segwit Address
         if (addr.compressed?.segwit) {
           //addr.compressed.bech32.address
           //addr.compressed.bech32.redeemscript
-          receive += `
-        <tr>
-          <th scope="row">Compressed Bech32</th>
-          <td>${addr.compressed.segwit.address} <i class=" float-right bi bi-copy"></i></td>
-          <td class="text-right">0</td>
-        </tr>`;
+          var blockieIcon = makeBlockie(addr.compressed.segwit.address);
+          receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr.compressed.segwit.address, 'derivedPath': 'SegWit', 'path': false});
+          receiveAddressesTotal++;
         }
       }
       if (addr.uncompressed) {
         //addr.uncompressed.key
         //addr.uncompressed.public_key
         //addr.uncompressed.address
-        receive += `
-        <tr>
-          <th scope="row">Uncompressed Legacy</th>
-          <td>${addr.uncompressed.address} <i class=" float-right bi bi-copy"></i></td>
-          <td class="text-right">0</td>
-        </tr>`;
+        var blockieIcon = makeBlockie(addr.uncompressed.address);
+        receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr.uncompressed.address, 'derivedPath': 'Uncompressed Legacy', 'path': false});
+        receiveAddressesTotal++;
       }
     } else if (chain === 'account') {
-      addr.privateKey
-      addr.publicKey
-      addr.address
-      receive += `
-        <tr>
-          <th scope="row">EVM</th>
-          <td>${addr.address} <i class=" float-right bi bi-copy"></i></td>
-          <td class="text-right">0</td>
-        </tr>`;
+
+      var blockieIcon = makeBlockie(addr.address);
+      receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr.address, 'derivedPath': 'EVM'});
+      receiveAddressesTotal++;
     }
-    coinbinf.receiveAddresses.find('table tbody').html(receive);
+    wally_fn.tpl.seed.viewReceiveAddresses.render(receiveArr);
+    //password/key login has no change addresses, set to empty!
+    //wally_fn.tpl.seed.viewChangeAddresses.render([]);
+    coinbinf.changeAddresses.addClass('hidden');
+    $('.coin_receive_addresses_total').text(receiveAddressesTotal);
+
   }
   /*
    @ generate a list of wallet addresses for a seed
@@ -1161,8 +1133,8 @@
       var coinReceivePath = login_wizard.profile_data.generated[coinjs.asset.slug].seed.path.receive;
       var coinChangePath = login_wizard.profile_data.generated[coinjs.asset.slug].seed.path.change;
       var pathIsHardened = login_wizard.profile_data.generated[coinjs.asset.slug].seed.path.isHardened;
-      var receive = '';
-      var change = '';
+      var receiveArr = [];
+      var changeArr = [];
       var addr = '';
       var path = '';
       var derivedPath = '';
@@ -1179,83 +1151,13 @@
             addr = derived.receive[i].address;
           else
             addr = derived.receive[i].address.address;
-          /*receive += `
-          <tr>
-            <th scope="row text-muted"><small>${derivedPath}</small></th>
-            <td>${addr} <i class=" float-right bi bi-copy"></i></td>
-            <td class="text-right">0</td>
-          </tr>`;*/
+
           var blockieIcon = makeBlockie(addr);
-          receive += `
-<li class="flex-list m-1 p-1 mb-2">
-  <div class="d-flex ml-1">
-    <div class="d-flex align-items-center mr-1">
-      <div class="blockie_wrapper blockie_address" ><img class="icon icon24" src="${blockieIcon}"></div>
-    </div>
-    <div class="d-flex flex-column flex-grow-1">
-      <div class="d-flex justify-content-between">
-        <div>
-          <div class="mb-0 d-inline-block truncate-sm fs-3 coin_address coin_receive_address">${addr} </div>
-        </div>
-        <div class="d-flex align-items-start">
-          <div class="address_path mb-1 text-black-50 date-time">path: <span class="coin_address_path text-primary">${derivedPath}</span></div>
-        </div>
-      </div>
-      <div class="d-flex align-items-center justify-content-between">
-        <div>
-          <div class="d-flex flex-row">
-            <!-- <div class="font-weight-bold"> <span class="badge badge-light fs-3 p-1 text-muted "><span class="coin_address_balance">-</span> <span class="coin_symbol">BTC</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-left"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-up-right"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-up"></i>TXs: 0</span></div> -->
-            <div class="font-weight-bold"> <span class="badge badge-light fs-3 p-1 text-muted "><span class="coin_address_balance">-</span> <span class="coin_symbol">BTC</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-left"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-up-right"></i> 0</span></div>
-          </div>
-        </div>
-        <div>
-          <div class="list-action">
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-flat-primary"><i class="bi bi-info-circle"></i> info</button>
-              <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="bi bi-caret-down"></i>
-              </button>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#"><img src="./assets/images/send.svg" class="icon28" /> Send</a>
-                <a class="dropdown-item" href="#"><img src="./assets/images/receive.svg" class="icon28" /> Receive</a>
-                <a class="dropdown-item" href="#"><img src="./assets/images/qr-code.svg" class="icon28" /> QR code</a>
-                <a class="dropdown-item" href="#"><img src="./assets/images/info.svg" class="icon28" /> Details</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</li>`;
+          receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr, 'derivedPath': derivedPath, 'path': true});
+
         }
       }
-      /*
-      if (addressType === 'both' || addressType === 'change') {
-        
-        coinbinf.changeAddresses.removeClass('hidden').find('table tbody').text('');
-        var changeTable = coinbinf.changeAddresses.find('table tbody');
-        for (var i=0; i < (derived.change).length; i++) {
-          
-          derivedPath = coinChangePath + '/' + i + hardenedAddress;
 
-          if (derived.change[i].address.redeemscript === undefined)  //check if redeemscript is present
-            addr = derived.change[i].address;
-          else
-            addr = derived.change[i].address.address;
-
-          change = `
-            <tr>
-              <th scope="row text-muted hidden"><small>${derivedPath}</small></th>
-              <td class="hidden">${addr} <i class=" float-right bi bi-copy"></i></td>
-              <td class="text-right hidden">0</td>
-            </tr>`;
-            changeTable.append(change).find('tr:last td.hidden').removeClass('hidden').velocity('slideDown', { duration: 200 });
-        }
-
-        
-      }
-      */
       if (addressType === 'both' || addressType === 'change') {
         changeAddressesTotal = (derived.change).length;
         for (var i = 0; i < (derived.change).length; i++) {
@@ -1264,75 +1166,26 @@
             addr = derived.change[i].address;
           else
             addr = derived.change[i].address.address;
-          /*change += `
-          <tr>
-            <th scope="row text-muted"><small>${derivedPath}</small></th>
-            <td class="">${addr} <i class=" float-right bi bi-copy"></i></td>
-            <td class="text-right">0</td>
-          </tr>`;*/
-            /*var address = '0x138854708D8B603c9b7d4d6e55b6d32D40557F4D';
 
-            var img = new Image();
-            img.src = makeBlockie(address);
-            img.classList.add('icon');
-            img.classList.add('icon24');
-
-            $(".blockie_address").append(img)
-            */
             var blockieIcon = makeBlockie(addr);
-          change += `
-<li class="flex-list m-1 p-1 mb-2">
-  <div class="d-flex ml-1">
-    <div class="d-flex align-items-center mr-1">
-      <div class="blockie_wrapper blockie_address" ><img class="icon icon24" src="${blockieIcon}"></div>
-    </div>
-    <div class="d-flex flex-column flex-grow-1">
-      <div class="d-flex justify-content-between">
-        <div>
-          <div class="mb-0 d-inline-block truncate-sm fs-3 coin_address coin_change_address">${addr} </div>
-        </div>
-        <div class="d-flex align-items-start">
-          <div class="address_path mb-1 text-black-50 date-time">path: <span class="coin_address_path text-primary">${derivedPath}</span></div>
-        </div>
-      </div>
-      <div class="d-flex align-items-center justify-content-between">
-        <div>
-          <div class="d-flex flex-row">
-            <!-- <div class="font-weight-bold"> <span class="badge badge-light fs-3 p-1 text-muted "><span class="coin_address_balance">-</span> <span class="coin_symbol">BTC</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-left"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-up-right"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-up"></i>TXs: 0</span></div> -->
-            <div class="font-weight-bold"> <span class="badge badge-light fs-3 p-1 text-muted "><span class="coin_address_balance">-</span> <span class="coin_symbol">BTC</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-left"></i> 0</span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-up-right"></i> 0</span></div>
-          </div>
-        </div>
-        <div>
-          <div class="list-action">
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-flat-primary"><i class="bi bi-info-circle"></i> info</button>
-              <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="bi bi-caret-down"></i>
-              </button>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#"><img src="./assets/images/send.svg" class="icon28" /> Send</a>
-                <a class="dropdown-item" href="#"><img src="./assets/images/receive.svg" class="icon28" /> Receive</a>
-                <a class="dropdown-item" href="#"><img src="./assets/images/info.svg" class="icon28" /> Details</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</li>`;
+            changeArr.push({'blockieIcon': blockieIcon, 'addr': addr, 'derivedPath': derivedPath, 'path': true});
+
         }
       }
       //add user assets to the list
-      if (receive) {
-        coinbinf.receiveAddresses.removeClass('hidden').find('ul').html(receive);
+      if (receiveArr.length) {
+        coinbinf.receiveAddresses.removeClass('hidden');
         $('.coin_receive_addresses_total').text(receiveAddressesTotal);
+        console.log('receiveArr: ', receiveArr);
+        wally_fn.tpl.seed.viewReceiveAddresses.render(receiveArr);
       } else
         coinbinf.receiveAddresses.addClass('hidden');
 
-      if (change) {
-        coinbinf.changeAddresses.removeClass('hidden').find('ul').html(change);
+      if (changeArr.length) {
+        coinbinf.changeAddresses.removeClass('hidden');
         $('.coin_change_addresses_total').text(changeAddressesTotal);
+        console.log('changeArr: ', changeArr);
+        wally_fn.tpl.seed.viewChangeAddresses.render(changeArr);
       } else
         coinbinf.changeAddresses.addClass('hidden');
 
@@ -1591,6 +1444,26 @@
       Router.navigate('error_404');
     }
   }
+
+
+  //update wallet menu and the links relative to the choosen asset
+    wally_kit.menuUpdate = function(asset) {
+      
+      $(".walletMenu a[data-wallet-menu-update]").each(function() {
+
+      //$("#walletOptions a").each(function() {
+        var originalHref = $(this).attr("href");
+        // Remove any existing coin name from the originalHref
+        var newPath = originalHref.split('/').slice(0, -1).join('/');
+        // Add the new coin name to the path
+        var newHref = newPath + "/" + asset;
+        console.log('newHref: ', newHref)
+        $(this).attr("href", newHref);
+        $(this).attr("data-asset", asset);
+      });
+    }
+
+
   /*
 https://benalman.com/projects/jquery-hashchange-plugin/
 
@@ -1809,6 +1682,58 @@ $(document).ready(function() {
     await wally_fn.timeout(wally_fn.gap.timeout);
     $(this).prop('disabled', false);
   });
+
+  
+  coinbinf.walletMenu.on('click', function(e) {
+    console.log('===coinbinf.walletMenu===');
+    $(this).find('input[type=radio]').prop('checked', true);
+  });
+
+  $('.login-again').on('click', function(e) {
+    login_wizard.setActivePanel('mnemonic_wallet');
+    window.location.href = "#login?wallet_type=mnemonic_wallet";
+    
+  });
+  
+/**
+ * Search for wallet assets in DOM elements based on user input.
+ * @param {Array} viewWalletAssets - An array of DOM element references.
+ * @param {string} searchQuery - The user's search query.
+ */
+function searchForAssets(viewWalletAssets, searchQuery) {
+    viewWalletAssets.forEach(item => {
+        const data = item._data; // Access the data associated with each element
+
+        // Combine the fields you want to search
+        const combinedFields = `${data.chainModel} ${data.name} ${data.slug} ${data.symbol}`.toLowerCase();
+
+        // Check if the search query exists in any of the fields
+        if (combinedFields.includes(searchQuery)) {
+            // Show the corresponding DOM element
+            $(item).removeClass('hidden');
+        } else {
+            // Hide the corresponding DOM element
+            $(item).addClass('hidden');
+        }
+    });
+}
+const $searchInput = $('#searchInput');
+
+// Attach an event listener to the search input field
+$searchInput.on('input', function() {
+    let timer;
+    clearTimeout(timer); // Clear any previous timers
+    const viewWalletAssets = wally_fn.tpl.seed.viewWalletAssets.where({});
+    const searchQuery = $(this).val().toLowerCase();
+    
+
+    // Set a new timer to delay the asset search
+    timer = setTimeout(function() {
+        searchForAssets(viewWalletAssets, searchQuery);
+    }, 300); // Adjust the delay time (in milliseconds) as needed
+});
+
+
   //coinbinf.loadChangeAddresses
   /*
       BootstrapDialog.show({

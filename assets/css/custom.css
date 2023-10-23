@@ -243,7 +243,7 @@ a:hover {
   border-radius: 10px;
   margin: auto;
   padding: 1.5rem 1.2rem;
-  background-color: #fdfdfd;
+  background-color: #f3f3f3;
 }
 
 .tab-content .tab-pane .tab-body-open-wallet{
@@ -252,7 +252,7 @@ a:hover {
   box-shadow: 0 4px 11px rgba(0,0,0,.125),0 2px 6px rgba(0,0,0,.2);
   border-radius: 10px;
   padding: 1.5rem 1.2rem;
-  background-color: #fdfdfd;
+  background-color: #f3f3f3;
 	width: auto;
 	max-width: 450px;
 	margin: 0 auto;
@@ -276,7 +276,7 @@ a:hover {
   border-radius: 10px;
  
   padding: 0;
-  background-color: #fdfdfd;
+  background-color: #f3f3f3;
 	width: auto;
 	
 	margin: 0 auto;
@@ -294,15 +294,18 @@ a:hover {
 	padding:.5rem 1rem 0.3rem;
  
  
- background-color: #f6f7f9;
+ background-color: #e6e6e6;
  border-top-left-radius: 10px;
 border-top-right-radius: 10px;
 }
 
-.tab-content .tab-pane .card-openwallet-header {
-
+#wallet_menu {
+	position: sticky;
+  top: 3rem;
 }
-
+#wallet_menu .tab-content .tab-pane .card-openwallet-header {
+	background-color: #242238;
+}
 .card .card-header .card-title {
 	color: #626262;
 }
@@ -326,6 +329,7 @@ margin-top: .4rem
 border-bottom:1px solid #F0F2F4;
 }
 
+
 .tab-content.tab-pane .card-openwallet-body {
 	flex: 1 1 auto;
 	padding: 1rem 0.5rem;
@@ -341,12 +345,25 @@ border-bottom:1px solid #F0F2F4;
   border-radius: 10px;
  
   padding: 0;
-  background-color: #fdfdfd;
+  background-color: #f3f3f3;
 	width: auto;
 	
 	margin: 0 auto;
 }
+#wallet_menu.card-wallet{
+	background-color: #34324a;
+}
+#wallet_menu.card-wallet .card-openwallet-header{
+	background-color: #232137;
+}
 
+#wallet_menu.card-wallet .card-openwallet-title {
+	color: #efefef;
+}
+#wallet_menu a {
+	color: #edd5f9;
+	text-decoration: none;
+}
 
 #settings.tab-content.tab-pane .card-openwallet-body {
 	overflow: unset;
@@ -1363,6 +1380,12 @@ font-weight: 500;
 background-color: #a465ea;
 border-color: #fff;
 }
+#home .landing_page_subpage {
+	background: #f7effd;
+  border: unset;
+  box-shadow: unset;
+}
+
 .flex {
 	display: flex;
 }
@@ -1393,7 +1416,8 @@ border-color: #fff;
 .callout {
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  background-color: #fff;
+  background-color: #fafafa;
+
   border-left: 5px solid #e9ecef;
   margin: 1rem;
   padding: 1rem 0.875rem;
@@ -2038,7 +2062,7 @@ cursor: pointer;
 /*open wallet anime content */
 
 .folder {
-  background: #ffffff;
+  background: #fcfcfc;
   border-radius: 10px;
   /*box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.1), 0 5px 5px -5px rgba(0, 0, 0, 0.04);*/
   box-shadow:  0 4px 11px rgba(0,0,0,.125),0 2px 6px rgba(0,0,0,.2);
@@ -2299,7 +2323,7 @@ border: 1px solid red;
 	
 }
 .folder-content > li.folder-item:hover{
-	background-color: #f9f9f9;
+	background-color: #f6f6f6;
 	color: #6c48af;
 	cursor: pointer;
 }
@@ -2903,9 +2927,14 @@ select.form-control,
 		
 		#wallet .card-openwallet-body {
 			padding: 1rem 0.2rem;
-		}
-
-		
+		}		
+}
+@media(max-width: 960px) {
+	.checkbox-group .checkbox-tile {
+		width: 5rem;
+  	height: 5rem;
+  	margin: 0 0.2rem;
+	}
 }
 
 .table-hover tbody tr:hover{
@@ -3085,8 +3114,38 @@ outline:  none;
 		
 	}
 
-}
+	.wallet-menu.wallet-menu-desktop {
+		display: none;
+	}
 
+	.wallet-menu.wallet-menu-mobile .menu-title {
+		color: #c9bdd5 !important;
+	}
+	 .checkbox-group .checkbox-tile {
+    width: 5rem;
+    height: 5rem;
+    margin: 0 1rem;
+  }
+  .wallet-menu.wallet-menu-mobile .checkbox-group .wallet-menu-bottom {
+	  position: fixed;
+    padding-bottom: 2rem;
+    bottom: 0;
+    background-color: #17182b;
+    width: 100%;
+    border-top: 2px solid #141526;
+	}
+
+
+}
+.tab-content .tab-pane .card-openwallet-footer.wallet-menu-bottom {
+	position: unset;	
+  padding-bottom: 1rem;
+  bottom: 0;
+  /*background-color: #17182b;
+  border-top: 2px solid #141526;*/
+  background-color: #232137;
+  border-top: 2px solid #181926;
+}
 
 .modal-backdrop, .menu__overlay {
 	backdrop-filter: blur(3px);
@@ -3408,6 +3467,7 @@ bottom: 0;
 
 #walletAsset .list-group li {
 	padding: .5rem .5rem;
+	border-radius: 10px;
 }
 
 #walletAsset .list-group.list-group-flush li {
@@ -3416,8 +3476,8 @@ bottom: 0;
 #walletAsset .list-group.list-group-flush li:last-child {
 	border-bottom: unset;
 }
-#walletAsset .callout-title {
-	top: 0;
+#wallet .callout-title {
+	top: 8px;
 }
 
 
@@ -3815,3 +3875,203 @@ padding-left: 0.75rem;
 /* Flex Table */
 
 
+
+
+/*wallet menu desktop*/
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  /*width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 600px;
+  */
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.checkbox-group > * {
+  /*margin: 0.5rem 0;*/
+}
+
+.checkbox-group label {
+	margin-bottom:  0;
+}
+
+.checkbox-input {
+  clip: rect(0 0 0 0);
+  -webkit-clip-path: inset(100%);
+          clip-path: inset(100%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+.checkbox-input:checked + .checkbox-tile {
+  border-color: #6c48af;
+  /*box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);*/
+  box-shadow:  0 5px 10px #0000001a;
+  color: #6c48af;
+}
+.checkbox-input:checked + .checkbox-tile:before {
+  transform: scale(1);
+  opacity: 1;
+  background-color: #74498a;
+  border-color: #6c48af;
+}
+.checkbox-tile.disabled {
+	border: 2px solid #291939;
+}
+
+.checkbox-input:checked + .checkbox-tile .checkbox-icon, .checkbox-input:checked + .checkbox-tile .checkbox-label {
+  color: #edd5f9;
+  font-weight: 600;
+}
+.checkbox-input:focus + .checkbox-tile {
+  border-color: #6c48af;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1), 0 0 0 4px 2px solid #7149b2;
+}
+.checkbox-input:focus + .checkbox-tile:before {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.checkbox-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 6rem;
+  height: 6rem;
+  margin: 0 0.1rem;
+  border-radius: 1.5rem;
+  border: 2px solid #a475d2;
+
+  background-color: #242238;
+  box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.2), 0 0.1rem 0.5rem rgba(0, 0, 0, 0.3), 0 0.2rem 1.5rem rgba(0, 0, 0, 0.4);
+  transition: 0.15s ease;
+  cursor: pointer;
+  position: relative;
+}
+.wallet-menu-shortcut {
+	position: unset;
+}
+
+.wallet-menu-shortcut .checkbox-tile {
+	width: 6rem;
+  height: 4rem;
+  border-radius: 1.5rem;
+	}
+.checkbox-tile:before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 4px solid #242238;
+  background-color: #232137;
+  border-radius: 10px;
+  top: 0.5rem;
+  left: 0.5rem;
+  opacity: 0;
+  transform: scale(0);
+  transition: 0.25s ease;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' fill='%23FFFFFF' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' fill='none'%3E%3C/rect%3E%3Cpolyline points='216 72.005 104 184 48 128.005' fill='none' stroke='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' stroke-width='32'%3E%3C/polyline%3E%3C/svg%3E");
+  background-size: 12px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+.checkbox-tile:hover {
+  border-color: #6c48af;
+}
+.checkbox-tile:hover:before {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.checkbox-icon {
+  transition: 0.375s ease;
+  color: #494949;
+}
+.checkbox-icon svg {
+  width: 3rem;
+  height: 3rem;
+}
+
+.checkbox-label {
+  color: #d568d9;
+  transition: 0.375s ease;
+  text-align: center;
+}
+
+
+/**dark theme */
+
+.dark-theme .tab-content .tab-pane .card-wallet {
+	border-radius: 10px;
+}
+.dark-theme .tab-content .tab-pane .card-openwallet-header{
+	background-color: #232137;
+}
+.dark-theme .tab-content .tab-pane .card-openwallet-header{
+	
+}
+
+.dark-theme .tab-content .tab-pane .card-openwallet-title {
+	color: #e0e0e0;
+}
+
+.dark-theme .tab-content.tab-pane .card-openwallet-body {
+	background-color: #323047;
+}
+.dark-theme .tab-content .tab-pane .card-openwallet-footer {
+	background-color: #242238;
+	border-top: 1px solid #262238;
+}
+
+.dark-theme .callout{
+	background-color: #242238;
+	border-left: 5px solid #291939;
+	color: #c4bace;
+
+}
+
+.dark-theme .list-border{
+	background: linear-gradient( -90deg, #242238 0%, #242238 25%, #1f1e2c 85%, #a274d0 90%, #1a1926 100% );
+}
+
+.dark-theme .list-wrapper,
+.dark-theme .flex-list {
+	background-color: #2d2b41;
+}
+.dark-theme .flex-list {
+	color: #d568d9;
+}
+.dark-theme .badge {
+	background-color: #242238;
+}
+.dark-theme .list-wrapper:hover {
+	background: linear-gradient( -90deg, #2d2b41 0%, #242238 25%, #242238 50%, #2d2b41 90%, #291939 100% );
+	background: linear-gradient( -90deg, rgb(50, 49, 72) 0%, rgb(53, 51, 71) 25%, rgb(45, 43, 65) 50%, rgb(36, 34, 56) 90%, rgb(36, 34, 56) 100% );
+}
+.dark-theme .dropdown-menu {
+	background-color: #242238;
+	border: 1px solid #56518e;
+}
+.dark-theme .dropdown-menu .dropdown-item{
+	color: #cc99f1;
+}
+.dark-theme .dropdown-menu .dropdown-item:hover{
+	color: #7367f0;
+	color: #c160c8;
+	background-color: #1c1933;
+}
+
+.dark-theme .form-horizontal, 
+.dark-theme.form-horizontal.output {
+	border-bottom: 2px solid #2d2b41;
+}

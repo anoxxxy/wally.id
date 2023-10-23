@@ -32,6 +32,12 @@
     chainModel: '',
     provider: '',
   };
+
+  //used with Mikado.js for template rendering
+  wally_fn.tpl = {};
+  wally_fn.tpl.seed = {};
+
+
   //wally_fn.availablePages = ["home", "newAddress", "newSegWit", "newMultiSig", "newTimeLocked", "newHDaddress", "newTransaction", "verify", "sign", "broadcast", "wallet", "settings", "about", "fees", "converter"];
   wally_fn.navigationPages = {
     "home": ['all'],
@@ -1137,7 +1143,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             genAddress = this.hexPrivKeyDecode(h[i], {
               'supports_address': value.asset.supports_address
             });
-            console.log('genAddress.wif: ', genAddress, i);
+            //console.log('genAddress.wif: ', genAddress, i);
             //if passed key is not a privkey, then it is probably a bip master/extended key
             //try to decode the bip key
             var account_key = h[i];
@@ -1147,11 +1153,11 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
                 'supports_address': value.asset.supports_address
               }, 'bip44', '');
               if (genAddress) {
-                console.log('genAddress.seed: ', genAddress);
+                //console.log('genAddress.seed: ', genAddress);
                 account_tmp = genAddress;
               }
             }
-            console.log('walletAddress[ key ][i]: ', walletAddress, key, i);
+            //console.log('walletAddress[ key ][i]: ', walletAddress, key, i);
             walletAddress[key][i] = {};
             walletAddress[key][i]['name'] = value.asset.name;
             walletAddress[key][i]['symbol'] = value.asset.symbol;
@@ -1207,7 +1213,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             //var evm_account = wweb3.eth.accounts.privateKeyToAccount('0d11db7762acfdf1fec7518cd5ad5517ccfed719ed4bf228f1d0c5138273a915');
             var evm_account = wweb3.eth.accounts.privateKeyToAccount(account_key);
             evm_account.publicKey = '0x' + coinjs.privkey2pubkey(h[i], true)['pubkey'];
-            console.log('evm_account privateKeyToAccount: ', evm_account);
+            //console.log('evm_account privateKeyToAccount: ', evm_account);
             walletAddress[key][i] = {};
             walletAddress[key][i].address = evm_account.address;
             walletAddress[key][i].privateKey = evm_account.privateKey;
@@ -1247,7 +1253,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
           }
         }
       }
-      console.log('walletAddress: ', walletAddress);
+      //console.log('walletAddress: ', walletAddress);
       //await wally_fn.nonBlockTick();
       await wally_fn.timeout(5);
     }

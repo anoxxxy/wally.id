@@ -536,6 +536,9 @@ profile_data example:
       $('#openBtnNext').addClass('hidden');
       //show open wallet button
       $('#openBtn').removeClass('hidden');
+
+      //login_wizard.setActivePanel(0); //reset the login wizard!
+
       //now we need to open an account with all addresses related to the specific hex key!
       //iceeeeeeeeeee
       return;
@@ -707,8 +710,22 @@ export functionality for all coins
     //generate a list of user assets
     wally_kit.walletRenderAssets();
     wally_kit.walletRenderSeedAddresses();
-    $('#openBtn').click();
+    
+
+    //render wallet menu for auth user
+    $('.zeynep.left-panel').attr('data-user', 'auth');
+    //re-render guest/auth elements
+    $('[data-user-show="auth"]').removeClass('hidden');
+    $('[data-user-show="guest"]').addClass('hidden');
+
+    //set body to user is auth!
+    $('body').attr('data-user', 'auth');
+
+
+    $('#openBtn').click().trigger('change');
     return;
+
+
     var privkeyaes, privkeyaes2;
     //login_type = ["password", "privatekey_wallet", "import_wallet", "mnemonic_wallet", "hdmaster_wallet", "terms"];
     //wallet_type = ["regular", "multisig"]
@@ -1117,7 +1134,7 @@ $(document).ready(function() {
     });
     return activePanel;
   };
-  const setActivePanel = (activePanelNum, setClassName = 'animate__fadeInUp') => {
+  login_wizard.setActivePanel = function (activePanelNum, setClassName = 'animate__fadeInUp') {
     console.log('===============setActivePanel:' + activePanelNum + '===============');
     removeClasses(wizardEl.stepFormPanels, 'js-active');
     removeClasses(wizardEl.stepFormPanels, stepNextAnimation);
@@ -1678,10 +1695,10 @@ $(document).ready(function() {
     elem.addEventListener("click", async (e) => {
       //update toggleButton content
       //console.log('elem', elem);
-      $('.folder-summary__details__name').text(elem.children[1].children[0].innerText).velocity('fadeIn', {
+      $('.folder-summary__details__name').html(elem.children[1].children[0].innerHTML).velocity('fadeIn', {
         duration: 200
       });
-      $('.folder-summary__details__subname').text(elem.children[1].children[1].innerText).velocity('fadeIn', {
+      $('.folder-summary__details__subname').html(elem.children[1].children[1].innerHTML).velocity('fadeIn', {
         duration: 200
       });
       document.querySelector('.folder-summary__wallet-icon img').src = elem.children[0].children[0].attributes.src.value;
@@ -1689,7 +1706,7 @@ $(document).ready(function() {
       //document.querySelector('.folder-summary__details__subname').innerText = elem.children[1].children[1].innerText; //wallet subname
       toggleFolder.click();
       await login_wizard.sleepPromise(300);
-      setActivePanel(elem.dataset.walletType);
+      login_wizard.setActivePanel(elem.dataset.walletType);
       loginBtnNext.prop('disabled', false); //enable Next button when Portfolio type is changed!
       console.log('dataset.walletType: ' + elem.dataset.walletType);
     });
@@ -1787,7 +1804,7 @@ $(document).ready(function() {
     if (login_wizard.openBtnNextStepPanel != '') {
       //validate form wizard panel name!
       if (login_wizard.panelStepNames.includes(login_wizard.openBtnNextStepPanel)) {
-        setActivePanel(login_wizard.openBtnNextStepPanel);
+        login_wizard.setActivePanel(login_wizard.openBtnNextStepPanel);
         //reset login wizard panel, validate fields again on login next button click (validation must be fulfilled if user chooses another portfolio!)
         login_wizard.openBtnNextStepPanel = '';
         loginBtnNext.prop('disabled', true);

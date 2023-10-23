@@ -127,7 +127,7 @@ header .dropdown__arrow {
 header .dropdown__bg {
   width: 280px;
   height: 400px;
-  background-color: white;
+  background-color: #fbfbfb;
   opacity: 0;
   transition: 0.25s ease;
   border-radius: 10px;
@@ -136,7 +136,7 @@ header .dropdown__bg {
   box-shadow: 0 4px 11px rgba(0,0,0,.125),0 2px 6px rgba(0,0,0,.2);
 }
 header .dropdown__bg-bottom {
-  background-color: #fafafa;
+  background-color: #f4f4f4;
   position: absolute;
   width: 100%;
   left: 0;
@@ -183,6 +183,7 @@ header .wdropdown-menu.active .dropdown-menu__content {
   opacity: 1;
   pointer-events: all;
   display: block;
+  max-width: min-content;
 }
 
 /*
