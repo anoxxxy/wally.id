@@ -1733,6 +1733,12 @@ $searchInput.on('input', function() {
     }, 300); // Adjust the delay time (in milliseconds) as needed
 });
 
+// Attach a click event to the "x" icons with the class "clear-input"
+$('.input-clear').on('click', function() {
+    // Find the input field within the same parent and clear its value
+    $(this).closest('.input-group').find('input').val('')
+});
+
 
   //coinbinf.loadChangeAddresses
   /*

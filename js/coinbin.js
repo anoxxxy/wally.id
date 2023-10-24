@@ -160,6 +160,8 @@ $(document).ready(function() {
   coinbinf.loadChangeAddresses = $('.loadChangeAddresses');
   
 
+  // top wallet menu when logged in
+  coinbinf.walletMenu = $('#walletMenu a');
 
 	//***Initialize/Set default Network
   wally_kit.initNetwork($('input[type=radio][name=radio_selectNetworkType]'));
@@ -345,6 +347,16 @@ profile_data = {
 		wally_kit.walletRenderAssets();
 
 
+		//render wallet menu for auth user
+		$('.zeynep.left-panel').attr('data-user', 'auth');
+
+		//re-render guest/auth elements
+		$('[data-user-show="auth"]').removeClass('hidden');
+    $('[data-user-show="guest"]').addClass('hidden');
+
+    //set body to user is auth!
+		$('body').attr('data-user', 'auth');
+
 		//generate key addresses
 		//if (login_wizard.profile_data.login_type === 'password')
 		//wally_kit.walletlistKeyAddresses();
@@ -354,8 +366,7 @@ profile_data = {
 			//await wally_kit.walletListSeedAddresses();
 
 
-		//set body to user is auth!
-		$('body').attr('data-user', 'auth');
+		
 		
 	});
 
