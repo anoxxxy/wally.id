@@ -1,4 +1,4 @@
-'use strict';
+//'use strict';
 /*
  Coinjs 0.01 beta by OutCast3k{at}gmail.com
  A bitcoin framework.

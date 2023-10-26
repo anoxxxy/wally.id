@@ -2685,6 +2685,63 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
         txRBFTransaction: false,
         developer: '8RTwrgaA9sSTokWJsJN5tc9f3QKWJuAdzD',
       },
+      komodo: {
+        symbol: 'KMD', //ticker
+        asset: {
+          chainModel: 'utxo',
+          name: 'Komodo',
+          slug: 'komodo',
+          symbol: 'KMD',
+          symbols: ['kmd', 'komodo'],
+          icon: './assets/images/crypto/komodo-kmd-logo.svg',
+          network: 'mainnet',
+          supports_address: ['compressed', 'uncompressed'],
+          api: {
+            //only key is used for the moment, not the value!
+            unspent_outputs: {
+            },
+            broadcast: {
+            }
+          },
+          data: {
+            blocktime: '',
+            total_tokens: '',
+          },
+          social: {
+            discord: {
+              official: '',
+            },
+            telegram: {
+              official: '',
+              english: '',
+            },
+            twitter: {
+              official: '',
+            },
+            website: {
+              official: '',
+            },
+          },
+        },
+        pub: 0x3c, //pubKeyHash
+        priv: 0xbc, //wif
+        multisig: 0x55, //scriptHash
+        //bip32, xpub
+        hdkey: {
+          'prv': 0x0488ade4,
+          'pub': 0x0488b21e
+        },
+        slip_path: 141, //bip path constants are used as hardened derivation.
+        //electrumbip: 'bip49', 'derivation': m/0, generate "bc" /  Address (Bech32) insead of segwit
+        bech32: {},
+        txExtraTimeField: false, //Set to true for PoS coins
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces: 8,
+        txRBFTransaction: false,
+        developer: 'RAFGdMU9jM5oZkZ8vMiN4XfXhF7ZkmNtKA',
+      },
     },
     //TESTNET
     testnet: {

@@ -1,4 +1,4 @@
-'use strict';
+//'use strict';
 var bip39 = new BIP39('en');
 var wweb3 = new Web3(new Web3.providers.HttpProvider(''));
 
@@ -349,7 +349,6 @@ profile_data = {
 
 		//render wallet menu for auth user
 		$('.zeynep.left-panel').attr('data-user', 'auth');
-
 		//re-render guest/auth elements
 		$('[data-user-show="auth"]').removeClass('hidden');
     $('[data-user-show="guest"]').addClass('hidden');
