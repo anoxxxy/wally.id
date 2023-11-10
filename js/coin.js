@@ -2815,10 +2815,12 @@ var hash = Crypto.SHA256(message);
 
 	/* raw ajax function to avoid needing bigger frame works like jquery, mootools etc */
 	coinjs.ajax = function(u, f, m='GET', a){	//url, callbackFunction, method, a?isAwhat? =parameters for POST
+		/*
 		console.log('u:', u);
 		console.log('f:', f);
 		console.log('m:', m);
 		console.log('a:', a);
+		*/
 
 		var x = false;
 		try{

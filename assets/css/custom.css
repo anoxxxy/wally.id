@@ -301,7 +301,7 @@ border-top-right-radius: 10px;
 
 #wallet_menu {
 	position: sticky;
-  top: 3rem;
+  top: 0;
 }
 #wallet_menu .tab-content .tab-pane .card-openwallet-header {
 	background-color: #242238;
@@ -1381,7 +1381,7 @@ background-color: #a465ea;
 border-color: #fff;
 }
 #home .landing_page_subpage {
-	background: #f7effd;
+	background: transparent;/*#f7effd;*/
   border: unset;
   box-shadow: unset;
 }
@@ -4074,4 +4074,43 @@ padding-left: 0.75rem;
 .dark-theme .form-horizontal, 
 .dark-theme.form-horizontal.output {
 	border-bottom: 2px solid #2d2b41;
+}
+/*
+#walletAsset .tab-pane.active {
+    animation: slide-down 0.3s ease-out;
+}
+
+
+@keyframes slide-down {
+    0% { opacity: 0; transform: translateY(100%); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+*/
+
+
+#walletAsset .nav-slider{
+  width: 30px;
+  height: 4px;
+  border-radius: 3px;
+  background-color: #c259ec;
+  position: absolute;
+  margin-top: 42px;
+  transition: all .4s linear;
+  border-bottom-left-radius: 100%;
+  border-bottom-right-radius: 100%;
+}
+
+
+#walletAsset .nav-tabs .active{
+  background-color:transparent!important;
+  border:none!important;
+  color:#c259ec!important;
+}
+
+#walletAsset .nav-tabs .nav-link:not(.active):hover:before {
+  opacity: 1;
+}
+
+#walletAsset .nav-tabs .nav-link:not(.active):hover {
+  color: #333;
 }

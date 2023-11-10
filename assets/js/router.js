@@ -118,7 +118,8 @@
             window.location.hash = path ? '#' + path : '';
             return router;
             */
-            console.log('===navigate===');
+            console.log('===navigate===', path);
+            console.trace();
             document.title = title || document.title;
             path = path ? path : '';
             path = path.replace(/##/g, '#') || '';

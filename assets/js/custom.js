@@ -74,6 +74,9 @@
     */
   }
   $(document).ready(function() {
+
+
+
     //Customized JS
     $(".choose-currency-modal").on("click", function() {
       var modalPosition = $(this).attr('data-modal-position');
@@ -555,5 +558,27 @@
           Waves.attach("[class*='btn-label-']");
           Waves.attach(".pagination .page-item .page-link");
     */
+
+
+  // Tabs slider
+  const $subPageNavTabs = $("#walletAsset .nav-tabs");
+  const $subPageNavSlider = $("#walletAsset .nav-slider");
+
+  $subPageNavTabs.on('click', 'a', function() {
+      const $parent = $(this).parent();
+      $subPageNavSlider.css({"left": $parent.position().left, "width": $parent.width()});
   });
+
+  const activeTab = $subPageNavTabs.find("a.nav-link.active").parent();
+  $subPageNavSlider.css({"left": activeTab[0].offsetLeft, "width": activeTab[0].offsetWidth});
+
+
+    
+
+  });
+
+  
+  
+
+
 })();

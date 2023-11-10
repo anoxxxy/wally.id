@@ -37,7 +37,7 @@ $(document).ready(function() {
     content: $('#popBIPSettings').html(),
     createOnInit: true,
     onInit: function() { 
-    	console.log('this: ', this);
+    	//console.log('this: ', this);
     	//this.wrapper[0].classList.add('hidden icee');
     	/*this.open(); 
     	this.close(10);
@@ -163,10 +163,18 @@ $(document).ready(function() {
   // top wallet menu when logged in
   coinbinf.walletMenu = $('#walletMenu a');
 
+
+  // get coin based elements
+	coinbinf.coinUTXO = $('[data-chain="utxo"]');		//show only for utxo chains
+	coinbinf.coinEVM = $('[data-chain="evm"]');			//show only for evm chains
+
 	//***Initialize/Set default Network
   wally_kit.initNetwork($('input[type=radio][name=radio_selectNetworkType]'));
 
-
+  // API Provider Elements
+  coinbinf.apiBalanceProviderSelector = $('#apiBalanceProviderSelector');
+  coinbinf.apiListunspentProviderSelector = $('#apiListunspentProviderSelector');
+  coinbinf.apiPushrawtxProviderSelector = $('#apiPushrawtxProviderSelector');
 
 	/* open wallet code */
 
@@ -1164,7 +1172,12 @@ profile_data = {
 		if (useClientProtocol) {
 			//mnemonicProtocols.find('label').not('[data-bip-option="bip84"]').addClass('disabled').removeClass('active');
 			mnemonicProtocols.find('label').addClass('disabled');//.removeClass('active');
-			mnemonicLengthEl.val(12).prop('disabled', true);
+			
+			// Disable options other than 12 and 24
+      mnemonicLengthEl.val(12).find('option:not([value="12"]):not([value="24"])').prop('disabled', true);
+
+			
+
 			//mnemonicProtocols.find('label[data-bip-option="bip84"]').addClass('active').find('input').prop('checked', true);
 			
 			//coinbinf.deriveFromBipProtocol.val('bip84').trigger('change');
@@ -1186,7 +1199,8 @@ profile_data = {
 			mnemonicProtocols.find('label').removeClass('disabled');//.removeClass('active');
 			mnemonicProtocols.find('label.active').text();
 
-			mnemonicLengthEl.prop('disabled', false)
+			mnemonicLengthEl.find('option').prop('disabled', false); // Enable all options
+
 			coinbinf.bip32Client.val('custom');//.prop('disabled', false);
 			//coinbinf.bip32path.val("m/0'/0").prop('disabled', false);
 			coinbinf.bippath.val("m/0");//.prop('disabled', false);
@@ -1296,7 +1310,7 @@ profile_data = {
 		if (bipProtocolVal !== 'bip49' && bipProtocolVal !== 'bip84')
 			bipProtocolVal = 'hdkey';
 
-		isElectrumProtocol = coinbinf.bipMnemonicClientProtocol.is(':checked');
+		var isElectrumProtocol = coinbinf.bipMnemonicClientProtocol.is(':checked');
 
 		if (isElectrumProtocol){
 			bip39.setProtocol('electrum');
@@ -1327,7 +1341,8 @@ profile_data = {
 			success = false;
 
     //return if seed words doesnt equal 12 words!
-    if (isElectrumProtocol && wally_fn.wordCount(s) !== 12)
+    //if (isElectrumProtocol && wally_fn.wordCount(s) !== 12)
+    if (isElectrumProtocol && wally_fn.wordCount(s) !== 12 && wally_fn.wordCount(s) !== 24)
 			success = false;
 
     if (!success) {
@@ -2277,7 +2292,7 @@ profile_data = {
 
 
 
-	// retrieve unspent data from chainz.cryptoid.info (mainnet and testnet)
+	// retrieve unspent data from blockchain.info (mainnet and testnet)
 	function listUnspentBlockhaininfo(redeem, network){ 
 		console.log("listUnspentBlockhaininfo");
 		//https://blockchain.info/unspent?active=bc1qldtwp5yz6t4uuhhjcp00hvsmrsfxar2hy09v0d
@@ -5128,12 +5143,15 @@ $(".blockie_wrapper").attr('title', 'Copy Address').attr('data-copy-content', ad
 var jbox_loader_id = 'jBoxTooltip-'+Math.floor(Math.random() * 999)+'_'+wally_fn.generatePassword(16, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
 coinbinf.NoticeLoader = new jBox('Notice', {
 	id: jbox_loader_id,
+	animation: "flip",
 	title: '<span class="text-muted">Loading...</span>',
   content: '',
   color: 'black',
   autoClose: false,
-  addClass: 'jBox-notice-content-loader',
-  
+  theme: "NoticeFancy",
+  //addClass: 'jBox-notice-content-loader',
+  showCountdown: !0,
+  //delayOnHover: !0,
   blockScroll: true,
   overlay: true,
   //overlayClass: 'inception-overlay',
@@ -5150,6 +5168,8 @@ coinbinf.NoticeLoader = new jBox('Notice', {
     this.setContent('');
   }
 });
+
+
 //coinbinf.NoticeLoader.open();
 
 //coinbinf.NoticeLoader.setTitle();

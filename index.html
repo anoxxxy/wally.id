@@ -1136,31 +1136,32 @@
                         <!-- Wallet Tabs-->
                         <div class="col-12">
                           <ul class="nav nav-tabs addIndicator walletMenu" role="tablist">
+                            <div class="nav-slider"></div>
                             <li class="nav-item">
-                              <a class="nav-link active" id="asset-tab" data-toggle="tab" href="#wallet/asset/bitcoin" role="tab" data-target="#wallet_asset" data-asset="" data-wallet-menu-update>
+                              <a class="nav-link active" id="asset-tab" data-toggle="tab" href="#wallet/asset" role="tab" data-target="#wallet_asset" data-asset="" >
                                 <img src="./assets/images/crypto/walrus-wally-logo.svg" class="icon24" /> Info
                               </a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="send-tab" href="#wallet/send/bitcoin" data-target="#wallet_send" data-asset="" data-toggle="tab" role="tab" data-wallet-menu-update> <img src="./assets/images/send.svg" class="icon24" /> Send </a>
+                              <a class="nav-link" id="send-tab" href="#wallet/send" data-target="#wallet_send" data-asset="" data-toggle="tab" role="tab" > <img src="./assets/images/send.svg" class="icon24" /> Send </a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="receive-tab" data-toggle="tab" href="#wallet/receive/bitcoin" data-target="#wallet_receive" data-asset="" role="tab" data-wallet-menu-update>
+                              <a class="nav-link" id="receive-tab" data-toggle="tab" href="#wallet/receive" data-target="#wallet_receive" data-asset="" role="tab" >
                                 <img src="./assets/images/receive.svg" class="icon24" /> Receive
                               </a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="addresses-tab" data-toggle="tab" href="#wallet/addresses/bitcoin" data-target="#wallet_addresses" data-asset="" role="tab" data-wallet-menu-update>
+                              <a class="nav-link" id="addresses-tab" data-toggle="tab" href="#wallet/addresses" data-target="#wallet_addresses" data-asset="" role="tab" >
                                 <img src="./assets/images/wallet-1.svg" class="icon24" /> Addresses
                               </a>
                             </li>
-                            <li class="nav-item">
-                              <a class="nav-link" id="contacts-tab" data-toggle="tab" href="#wallet/contacts/bitcoin" data-target="#wallet_contacts" data-asset="" role="tab" data-wallet-menu-update>
+                            <li class="nav-item" data-content="Address Contacts">
+                              <a class="nav-link" id="contacts-tab" data-toggle="tab" href="#wallet/contacts" data-target="#wallet_contacts" data-asset="" role="tab" >
                                 <img src="./assets/images/contacts.svg" class="icon24" /> Contacts
                               </a>
                             </li>
-                            <li class="nav-item">
-                              <a class="nav-link" id="settings-tab" data-toggle="tab" href="#wallet/settings/bitcoin" data-target="#wallet_settings" data-asset="" role="tab">
+                            <li class="nav-item" data-content="Settings for API Providers">
+                              <a class="nav-link" id="settings-tab" data-toggle="tab" href="#wallet/settings" data-target="#wallet_settings" data-asset="" role="tab">
                                 <img src="./assets/images/settings.svg" class="icon24" />
                               </a>
                             </li>
@@ -1179,7 +1180,7 @@
                                             <div class="coin-icon">
                                               <div class="">
                                                 <figure class="avatar_with_badge">
-                                                  <img src="./assets/images/crypto/walrus-wally-logo.svg" class="avatar_main coin_icon" />
+                                                  <img src="./assets/images/crypto/walrus-wally-logo.svg" class="avatar_main coin_icon icon64" />
                                                   <img src="./assets/images/crypto/ethereum-eth-logo.svg" class="avatar_badge coin_icon" />
                                                 </figure>
                                               </div>
@@ -1589,9 +1590,71 @@
                             </div>
                             <!-- Settings -->
                             <div class="tab-pane fade" id="wallet_settings" role="tabpanel" aria-labelledby="settings-tab">
-                              Settings
+                              <h4 class="text-primary">Settings</h4>
                               <br />
-                              <div class="col-md-12">
+
+    <div class="col-md-12">
+        <!-- Balance Info -->
+        <div class="alert alert-info alert-dismissible d-flex align-items-center fade show">
+            <i class="bi-info-circle-fill"></i>
+            <strong class="mx-2">Note!</strong> Your balance updates automatically every minute.
+        </div>
+      </div>
+    
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-4 pb-2">
+          <div class="callout-title">
+            Balance Provider
+          </div>
+          <div class="callout callout-no-border m-0 b">
+            <div class="card-body px-0">
+              <p class="card-text">
+                <select id="apiBalanceProviderSelector" class="apiProviderSelector form-control w-100 p-0"></select>
+              </p>
+            </div>
+            <div class="card-footer">
+              <small>API for getting Balance</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 pb-2" data-chain="utxo">
+          <div class="callout-title">
+            Listunspent Provider
+          </div>
+          <div class="callout callout-no-border m-0">
+            <div class="card-body px-0">
+              <p class="card-text">
+                <select id="apiListunspentProviderSelector" class="apiProviderSelector form-control w-100 p-0"></select>
+              </p>
+            </div>
+            <div class="card-footer">
+              <small>API for Listunspent (UTXO)</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 pb-2">
+          <div class="callout-title">
+            Transaction Provider
+          </div>
+          <div class="callout callout-no-border m-0">
+            <div class="card-body px-0">
+              <p class="card-text">
+                <select id="apiPushrawtxProviderSelector" class="apiProviderSelector form-control w-100 p-0"></select>
+              </p>
+            </div>
+            <div class="card-footer">
+              <small>API for Broadcasting</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+                              
+
+                              <div class="col-md-12 hidden iceeeee-remove">
                                 <div class="accordion mt-3" id="openWalletAdvancedOptionsButton">
                                   <div class="card accordion-item">
                                     <h2 class="accordion-header d-flex align-items-center">

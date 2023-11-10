@@ -2166,7 +2166,8 @@ var tagMapping = {
   tfoot: "table",
   li: "ul",
   dt: "dl",
-  dd: "dl"
+  dd: "dl",
+  //option: "select"
   // Add more mappings as needed
 };
 

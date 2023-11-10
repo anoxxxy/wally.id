@@ -25,7 +25,7 @@ const walletAssetsTpl = `
             <span class="badge badge-primary chain_model ml-1">{{data.chainModel}}</span>
           </span>
           <span class="subtitle">
-            <span class="balance">0</span> <span> {{data.symbol}}</span></span>
+            <span class="balance"></span> <span> {{data.symbol}}</span></span>
         </div>
       </div>
       <div class="list-details">
@@ -95,7 +95,7 @@ const seedReceiveAddressesTpl = `
         <div>
           <div class="d-flex flex-row">
             <div class="font-weight-bold">
-            <span class="badge badge-light fs-3 p-1 text-muted mr-1"><span class="coin_address_balance">-</span> <span class="coin_symbol"> {{=data.coin}}</span></span> <span class="badge badge-light fs-4 pl-2 text-muted mr-1"><i class="bi bi-arrow-down-left"></i> <span>0</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-up"></i> <span>TX: 0</span></span>
+            <span class="badge badge-light fs-3 p-1 text-muted mr-1"><span class="coin_address_balance">{{=data.ext.final_balance}}</span> <span class="coin_symbol ml-1"> {{=data.coin}}</span></span> <span class="badge badge-light fs-4 pl-2 text-muted mr-1"><i class="bi bi-arrow-down-left"></i> <span>{{=data.ext.total_received}}</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-up"></i> <span class="font-weight-normal">TX:</span><span> {{=data.ext.n_tx}}</span></span>
             </div>
           </div>
         </div>
@@ -164,7 +164,7 @@ const seedChangeAddressesTpl = `
         <div>
           <div class="d-flex flex-row">
             <div class="font-weight-bold">
-            <span class="badge badge-light fs-3 p-1 text-muted mr-1"><span class="coin_address_balance">-</span> <span class="coin_symbol"> {{=data.coin}}</span></span><span class="badge badge-light fs-4 pl-2 text-muted mr-1"><i class="bi bi-arrow-down-left"></i> <span>0</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-up"></i> <span>TX: 0</span></span>
+            <span class="badge badge-light fs-3 p-1 text-muted mr-1"><span class="coin_address_balance">{{=data.ext.final_balance}}</span> <span class="coin_symbol ml-1"> {{=data.coin}}</span></span> <span class="badge badge-light fs-4 pl-2 text-muted mr-1"><i class="bi bi-arrow-down-left"></i> <span>{{=data.ext.total_received}}</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-up"></i> <span><span class="font-weight-normal">TX:</span><span> {{=data.ext.n_tx}}</span></span>
             </div>
           </div>
         </div>
@@ -195,20 +195,125 @@ const tplSeedChangeAddressesC = Mikado.compile(seedChangeAddressesTpl);
 wally_fn.tpl.seed.viewChangeAddresses  = Mikado(containerSeedChangeAddresses, tplSeedChangeAddressesC, {
   on: {
     create: function(node) {
-      //console.log("Mikado.Templates.viewReceiveAddresses - created:", node);
+      //console.log("Mikado.Templates.viewChangeAddresses - created:", node);
     },
     insert: function(node) {
-      //console.log("Mikado.Templates.viewReceiveAddresses - inserted:", node);
+      //console.log("Mikado.Templates.viewChangeAddresses - inserted:", node);
     },
     update: function(node) {
-      //console.log("Mikado.Templates.viewReceiveAddresses - updated:", node);
+      //console.log("Mikado.Templates.viewChangeAddresses - updated:", node);
     },
     change: function(node) {
-      //console.log("Mikado.Templates.viewReceiveAddresses - changed:", node);
+      //console.log("Mikado.Templates.viewChangeAddresses - changed:", node);
     },
     remove: function(node) {
-      //console.log("Mikado.Templates.viewReceiveAddresses - removed:", node);
+      //console.log("Mikado.Templates.viewChangeAddresses - removed:", node);
     },
     cache: false,
   }
 });
+
+
+
+
+
+//template for rendering wallet provider options for balance 
+const apiBalanceProviderOptionsTpl = `
+<option value="{{=data.name}}">{{=capitalizeFirstLetter(data.name)}}</option>
+`;
+
+const containerApiBalanceProviderSelect = document.getElementById("apiBalanceProviderSelector");
+const tplApiBalanceProviderOptionsC = Mikado.compile(apiBalanceProviderOptionsTpl);
+
+wally_fn.tpl.seed.viewBalanceProviderOptions  = Mikado(containerApiBalanceProviderSelect, tplApiBalanceProviderOptionsC, {
+  on: {
+    create: function(node) {
+      console.log("Mikado.Templates.viewBalanceProviderOptions - created:", node);
+    },
+    insert: function(node) {
+      console.log("Mikado.Templates.viewBalanceProviderOptions - inserted:", node);
+    },
+    update: function(node) {
+      console.log("Mikado.Templates.viewBalanceProviderOptions - updated:", node);
+    },
+    change: function(node) {
+      console.log("Mikado.Templates.viewBalanceProviderOptions - changed:", node);
+    },
+    remove: function(node) {
+      console.log("Mikado.Templates.viewBalanceProviderOptions - removed:", node);
+    },
+    async: true,
+    reuse: true,
+    cache: false,
+  }
+});
+
+function capitalizeFirstLetter (strName){
+    return strName.charAt(0).toUpperCase() + strName.slice(1);
+}
+//template for rendering wallet provider options for listunspent
+const apiListunspentProviderOptionsTpl = `
+<option value="{{=data.name}}">{{=capitalizeFirstLetter(data.name)}}</option>
+`;
+
+const containerApiListunspentProviderSelect = document.getElementById("apiListunspentProviderSelector");
+const tplListunspentProviderOptionsC = Mikado.compile(apiListunspentProviderOptionsTpl);
+
+wally_fn.tpl.seed.viewListunspentProviderOptions  = Mikado(containerApiListunspentProviderSelect, tplListunspentProviderOptionsC, {
+  on: {
+    create: function(node) {
+      console.log("Mikado.Templates.viewListunspentProviderOptions - created:", node);
+    },
+    insert: function(node) {
+      console.log("Mikado.Templates.viewListunspentProviderOptions - inserted:", node);
+    },
+    update: function(node) {
+      console.log("Mikado.Templates.viewListunspentProviderOptions - updated:", node);
+    },
+    change: function(node) {
+      console.log("Mikado.Templates.viewListunspentProviderOptions - changed:", node);
+    },
+    remove: function(node) {
+      console.log("Mikado.Templates.viewListunspentProviderOptions - removed:", node);
+    },
+    async: true,
+    reuse: true,
+    cache: false,
+  }
+});
+
+
+//template for rendering wallet provider options for listunspent
+const apiPushrawtxProviderOptionsTpl = `
+<option value="{{=data.name}}">{{=capitalizeFirstLetter(data.name)}}</option>
+`;
+
+const containerApiPushrawtxProviderSelect = document.getElementById("apiPushrawtxProviderSelector");
+const tplPushrawtxProviderOptionsC = Mikado.compile(apiPushrawtxProviderOptionsTpl);
+
+wally_fn.tpl.seed.viewPushrawtxProviderOptions  = Mikado(containerApiPushrawtxProviderSelect, tplPushrawtxProviderOptionsC, {
+  on: {
+    create: function(node) {
+      console.log("Mikado.Templates.viewPushrawtxProviderOptions - created:", node);
+    },
+    insert: function(node) {
+      console.log("Mikado.Templates.viewPushrawtxProviderOptions - inserted:", node);
+    },
+    update: function(node) {
+      console.log("Mikado.Templates.viewPushrawtxProviderOptions - updated:", node);
+    },
+    change: function(node) {
+      console.log("Mikado.Templates.viewPushrawtxProviderOptions - changed:", node);
+    },
+    remove: function(node) {
+      console.log("Mikado.Templates.viewPushrawtxProviderOptions - removed:", node);
+    },
+    async: true,
+    reuse: true,
+    cache: false,
+  }
+});
+
+
+
+

@@ -723,6 +723,17 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
       */
     return keyPair;
   }
+
+  // init address balance structure
+  wally_fn.initAddressBalance = function () {
+    return {
+      "total_sent": 0,
+      "total_received": 0,
+      "final_balance": 0,
+      "n_tx": 0
+    };
+  }
+
   /*
    @ Load more Addresses from Master key
    addressType (string), 'both', 'change', 'receive'
@@ -747,7 +758,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
     var receivePath, changePath;
     var addressesLength = 0; //counts the total addresses for the user
     if (addressType === 'receive' || addressType === 'both') {
-      addressesLength = (login_wizard.profile_data.generated[coinjs.asset.slug].addresses.receive).length;
+      addressesLength = (login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses.receive).length;
       var nextGapLimit = addressesLength + wally_fn.gap.receive;
       //limit receive addresses depending on its chain
       var coinChain = wally_fn.coinChainIs();
@@ -777,14 +788,15 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
           'type': derived.type,
           'version': derived.version,
           'wif': derived.keys.wif,
+          'ext': wally_fn.initAddressBalance()
         };
-        (login_wizard.profile_data.generated[coinjs.asset.slug].addresses.receive).push(tmp);
+        (login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses.receive).push(tmp);
         receive = derived;
         derived = {};
       }
     }
     if (addressType === 'change' || addressType === 'both') {
-      addressesLength = (login_wizard.profile_data.generated[coinjs.asset.slug].addresses.change).length;
+      addressesLength = (login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses.change).length;
       var nextGapLimit = addressesLength + wally_fn.gap.change;
       //limit receive addresses depending on its chain
       var coinChain = wally_fn.coinChainIs();
@@ -815,8 +827,9 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
           'type': derived.type,
           'version': derived.version,
           'wif': derived.keys.wif,
+          'ext': wally_fn.initAddressBalance()
         };
-        (login_wizard.profile_data.generated[coinjs.asset.slug].addresses.change).push(tmp);
+        (login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses.change).push(tmp);
         change = derived;
         derived = {};
       }
@@ -955,6 +968,8 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
       'privkey': privateKey
     };
   }
+
+  /*Compress the key-data from derived addresses */
   wally_fn.derivedToCompressed = function(derived) {
     var derivedCompressed = [];
     for (var i = 0; i < derived.length; i++) {
@@ -965,6 +980,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
         'pubkey': derived[i].keys.pubkey,
         'type': derived[i].type,
         'version': derived[i].version,
+        'ext': wally_fn.initAddressBalance()
       };
     }
     return derivedCompressed;
@@ -1007,6 +1023,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
       return;
     }
     var isEVM = wally_fn.isEVM();
+    var coinChanIs = wally_fn.coinChainIs();
     var deriveReceiveAddresses = true;
     var deriveChangeAddresses = true;
     if (isEVM) {
@@ -1036,10 +1053,8 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
     login_wizard.profile_data.seed.path = seed_addresses.path;
     console.log('receiveAddresses: ', receiveAddresses);
     console.log('changeAddresses: ', changeAddresses);
-    console.log('wally_fn.coinChainIs(): ', wally_fn.coinChainIs());
+    console.log('wally_fn.coinChainIs(): ',  coinChanIs);
     var coinGenerated = {
-      //'name': coinjs.asset.name,
-      //'symbol': coinjs.asset.symbol,
       'chainModel': coinjs.asset.chainModel,
       'seed': {
         'keys': login_wizard.profile_data.seed.keys,
@@ -1051,42 +1066,31 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
         'addresses_supported': {
           'compressed': {
             'address': receiveAddresses[0].address,
-            'key': ((wally_fn.coinChainIs() == 'utxo') ? receiveAddresses[0].wif : receiveAddresses[0].privkey),
-            'wif': ((wally_fn.coinChainIs() == 'utxo') ? receiveAddresses[0].wif : ''),
-            'hexkey': ((wally_fn.coinChainIs() == 'utxo') ? receiveAddresses[0].privkey : (receiveAddresses[0].privkey).slice(2)),
+            'key': coinChanIs === 'utxo' ? receiveAddresses[0].wif : receiveAddresses[0].privkey,
+            'wif': coinChanIs === 'utxo' ? receiveAddresses[0].wif : '',
+            'hexkey': coinChanIs === 'utxo' ? receiveAddresses[0].privkey : receiveAddresses[0].privkey.slice(2), // Remove the first 2 characters "0x" for EVM coins
             'public_key': receiveAddresses[0].pubkey,
           },
         },
       },
     };
     login_wizard.profile_data.generated[coinjs.asset.slug] = coinGenerated;
-    //login_wizard.profile_data.generated[coinjs.asset.slug].name = coinjs.asset.name;
-    //login_wizard.profile_data.generated[coinjs.asset.slug].symbol = coinjs.asset.symbol;
-    login_wizard.profile_data.generated[coinjs.asset.slug].addresses = {
+        
+      // 0 key for single addresses, with multisig for seeds it will change
+    login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses = {
       'receive': receiveAddresses,
       'change': changeAddresses
     };
     //if the coin is EVM, apply receive and change addresses to all EVM chains since they use same addresses
     if (isEVM) {
-      //loop through the coins, and if evm chains is found add receive addresses to them all
+      // Loop through the coins, and if EVM chains are found, add receive addresses to them all
       for (var [key, value] of Object.entries(wally_fn.networks[coinjs.asset.network])) {
         if (value.asset.platform === 'evm') {
-          console.log('value.asset.name: ', value.asset.name);
-          console.log('value.asset.symbol: ', value.asset.symbol);
-          console.log('value.asset.slug: ', value.asset.slug);
-          //coinGenerated['name'] = value.asset.name;
-          //coinGenerated['symbol'] = value.asset.symbol;
-          login_wizard.profile_data.generated[value.asset.slug] = coinGenerated;
-          //login_wizard.profile_data.generated[value.asset.slug].name = value.asset.name;
-          //login_wizard.profile_data.generated[value.asset.slug].symbol = value.asset.symbol;
-          //console.log('icee name: ', login_wizard.profile_data.generated[value.asset.slug].name)
-          //console.log('icee symbol: ', login_wizard.profile_data.generated[value.asset.slug].symbol)
+          login_wizard.profile_data.generated[value.asset.slug] = coinjs.clone(coinGenerated);  // Clone object, don't share object reference!
         }
       }
     }
-    //set back the original object properties
-    //coinGenerated.name = coinjs.asset.name;
-    //coinGenerated.symbol = coinjs.asset.symbol;
+
     //save generated data settings - user dependent
     if (login_wizard.profile_data.remember)
       storage_s.set('wally.profile', login_wizard.profile_data);
@@ -1143,7 +1147,7 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             genAddress = this.hexPrivKeyDecode(h[i], {
               'supports_address': value.asset.supports_address
             });
-            //console.log('genAddress.wif: ', genAddress, i);
+            console.log('genAddress.wif: ', genAddress, i);
             //if passed key is not a privkey, then it is probably a bip master/extended key
             //try to decode the bip key
             var account_key = h[i];
@@ -1162,6 +1166,59 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             walletAddress[key][i]['name'] = value.asset.name;
             walletAddress[key][i]['symbol'] = value.asset.symbol;
             walletAddress[key][i]['address'] = genAddress.wif?.compressed?.address || '';
+
+            //add addresses so they have same structure as seed addresses -> addresses -> receieve for password login
+            walletAddress[key][i]['addresses'] = {
+              'receive': [
+                {
+                  address: genAddress.wif.compressed.address,
+                  wif: genAddress.wif.compressed.key,
+                  privkey: genAddress.hex_key,
+                  pubkey: genAddress.wif.compressed.public_key,
+                  type: "compressed",
+                  version: '',
+                  key: genAddress.hex_key,
+                  ext: wally_fn.initAddressBalance()
+                },
+                // Check if bech32 exists, then create the object
+                genAddress.wif.compressed.bech32 && {
+                  address: genAddress.wif.compressed.bech32.address,
+                  wif: genAddress.wif.compressed.key,
+                  privkey: genAddress.hex_key,
+                  pubkey: genAddress.wif.compressed.public_key,
+                  redeemscript: genAddress.wif.compressed.bech32.redeemscript,
+                  type: genAddress.wif.compressed.bech32.type,
+                  version: '',
+                  ext: wally_fn.initAddressBalance()
+                },
+                // Check if segwit exists, then create the object
+                genAddress.wif.compressed.segwit && {
+                  address: genAddress.wif.compressed.segwit.address,
+                  wif: genAddress.wif.compressed.key,
+                  privkey: genAddress.hex_key,
+                  pubkey: genAddress.wif.compressed.public_key,
+                  redeemscript: genAddress.wif.compressed.segwit.redeemscript,
+                  type: genAddress.wif.compressed.segwit.type,
+                  version: '',
+                  ext: wally_fn.initAddressBalance()
+                },
+                {
+                  address: genAddress.wif.uncompressed.address,
+                  wif: genAddress.wif.uncompressed.key,
+                  privkey: genAddress.hex_key,
+                  pubkey: genAddress.wif.uncompressed.public_key,
+                  type: "uncompressed",
+                  version: '',
+                  ext: wally_fn.initAddressBalance()
+                }
+              ].filter(Boolean) // Filter out undefined values
+            };
+
+
+
+
+
+
             walletAddress[key][i]['addresses_supported'] = genAddress.wif;
             walletAddress[key][i]['chainModel'] = value.asset.chainModel;
             //UI rendering
@@ -1219,6 +1276,24 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             walletAddress[key][i].privateKey = evm_account.privateKey;
             walletAddress[key][i].publicKey = evm_account.publicKey;
             walletAddress[key][i]['chainModel'] = value.asset.chainModel;
+
+
+            //add addresses so they have same structure as seed addresses -> addresses -> receieve for password login
+            walletAddress[key][i]['addresses'] = {
+              'receive': [
+                {
+                  address: evm_account.address,
+                  wif: '',
+                  privkey: evm_account.privateKey,
+                  pubkey: evm_account.publicKey,
+                  type: "evm",
+                  version: '',
+                  ext: wally_fn.initAddressBalance()
+                }
+              ]
+            };
+
+
             //do we have a token protocol
             //inject network tokens to the main parent
             /*if (value.asset.protocol.protocol_data) {
@@ -1796,6 +1871,8 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
           icon: './assets/images/crypto/bitcoin-btc-logo.svg',
           network: 'mainnet',
           supports_address: ['compressed', 'uncompressed', 'bech32', 'segwit'],
+          
+          // API-key is used for "manual pages"
           api: {
             //only key is used for the moment, not the value!
             unspent_outputs: {
@@ -1816,8 +1893,54 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
               'Coinb.in': '', //no arguments needs to be passed
               'Cryptoid.info': 'btc',
               //'Mempool.space': 'btc',
+            },
+
+            // PROVIDERS-key is used for "wallet pages" - isAuth = true
+          providers: {
+            //only key is used for the moment, not the value!
+            balance: {
+              //provider name as key
+              'blockchain.info': {
+                params: { //params if provider requires specific ticker names, case sensitive etc..
+                }
+              },
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            listunspent: {
+              'blockchain.info': {
+                params: { //params if provider requires specific ticker names, case sensitive etc..
+                }
+              },
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            pushrawtx: {
+              'blockchain.info': {
+                params: { //params if provider requires specific ticker names, case sensitive etc..
+                }
+              },
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
             }
           },
+          },
+
+          
+
+
           data: {
             blocktime: 1231006505,
             total_tokens: "19382187.00000000",
@@ -1909,9 +2032,39 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
               'ElectrumX-1 (SSL)': 'electrum1.cipig.net:20063',
               'ElectrumX-2 (SSL)': 'electrum2.cipig.net:20063',
               'ElectrumX-3 (SSL)': 'electrum3.cipig.net:20063',
-            }
-          }
+            },
+            providers: {
+              balance: {
+                'cryptoid.info': {
+                  params: {},
+                },
+                'electrumx': {
+                  params: {},
+                },
+              },
+              listunspent: {
+                'cryptoid.info': {
+                  params: {},
+                },
+                'electrumx': {
+                  params: {},
+                },
+              },
+              pushrawtx: {
+                'cryptoid.info': {
+                  params: {},
+                },
+                'electrumx': {
+                  params: {},
+                },
+              }
+            },
+          },
+
+          
         },
+
+
         pub: 0x30, //pubKeyHash
         priv: 0xb0, //wif
         multisig: 0x32, //scriptHash
@@ -1976,8 +2129,35 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
               'ElectrumX-3 (SSL)': 'electrum3.cipig.net:20060',
               //'Blockchair.com': 'dogecoin',
               //'Chain.so': 'DOGE',
-            }
-          }
+            },
+            providers: {
+              balance: {
+                'cryptoid.info': {
+                  params: {},
+                },
+                'electrumx': {
+                  params: {},
+                },
+              },
+              listunspent: {
+                'cryptoid.info': {
+                  params: {},
+                },
+                'electrumx': {
+                  params: {},
+                },
+              },
+              pushrawtx: {
+                'cryptoid.info': {
+                  params: {},
+                },
+                'electrumx': {
+                  params: {},
+                },
+              }
+            },
+          },
+          
         },
         pub: 0x1e, //pubKeyHash
         priv: 0x9e, //wif
@@ -2019,7 +2199,33 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             broadcast: {
               'Cryptoid.info': 'bay',
               //'BitBay Node': '',
-            }
+            },
+            providers: {
+              balance: {
+                'cryptoid.info': {
+                  params: {},
+                },
+                'bbnode': {
+                  params: {},
+                },
+              },
+              listunspent: {
+                'cryptoid.info': {
+                  params: {},
+                },
+                'bbnode': {
+                  params: {},
+                },
+              },
+              pushrawtx: {
+                'cryptoid.info': {
+                  params: {},
+                },
+                'bbnode': {
+                  params: {},
+                },
+              }
+            },
           }
         },
         pub: 0x19, //pubKeyHash
@@ -2056,7 +2262,33 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             },
             broadcast: {
               'Cryptoid.info': 'blk'
+            },
+            providers: {
+            balance: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            listunspent: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            pushrawtx: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
             }
+          },
           }
         },
         pub: 0x19, //pubKeyHash
@@ -2101,7 +2333,33 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
               'ElectrumX-6 (SSL)': 'electrum6.getlynx.io:50002',
               'ElectrumX-7 (SSL)': 'electrum7.getlynx.io:50002',
               'ElectrumX-9 (SSL)': 'electrum9.getlynx.io:50002',
+            },
+            providers: {
+            balance: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            listunspent: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            pushrawtx: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
             }
+          },
           }
         },
         pub: 0x2d, //pubKeyHash
@@ -2148,7 +2406,33 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
               'Cryptoid.info': 'pot',
               'ElectrumX-1 (TCP)': '62.171.189.243:50001',
               'ElectrumX-2 (SSL)': 'pot-duo.ewmcx.net:50012',
+            },
+            providers: {
+            balance: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            listunspent: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            pushrawtx: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
             }
+          },
           },
         },
         /*oinjs_multisig").value = "0x5";
@@ -2207,7 +2491,33 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
               'ElectrumX-1 (SSL)': 'electrum01.reddcoin.com:50002',
               'ElectrumX-2 (SSL)': 'electrum02.reddcoin.com:50002',
               'ElectrumX-3 (SSL)': 'electrum03.reddcoin.com:50002',
+            },
+            providers: {
+            balance: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            listunspent: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            pushrawtx: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
             }
+          },
           },
         },
         pub: 0x3d, //pubKeyHash
@@ -2245,7 +2555,33 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             },
             broadcast: {
               'Cryptoid.info': 'il8p'
+            },
+            providers: {
+            balance: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            listunspent: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            pushrawtx: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
             }
+          },
           },
         },
         pub: 0x21, //pubKeyHash
@@ -2290,7 +2626,33 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
               'ElectrumX-2 (SSL)': 'elec-seeder-two.artbytecoin.org:50012',
               //'ElectrumX-3': 'electrumx-three.artbyte.live:50012',
               //'ElectrumX-4': 'electrumx-four.artbyte.live:50012',
+            },
+            providers: {
+            balance: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            listunspent: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            pushrawtx: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
             }
+          },
           },
         },
         pub: 28, //pubKeyHash
@@ -2327,7 +2689,33 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             },
             broadcast: {
               'Cryptoid.info': 'zet'
+            },
+            providers: {
+            balance: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            listunspent: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            pushrawtx: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
             }
+          },
           },
         },
         pub: 20, //pubKeyHash
@@ -2364,7 +2752,33 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             },
             broadcast: {
               'Cryptoid.info': 'xvc'
+            },
+            providers: {
+            balance: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            listunspent: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            pushrawtx: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
             }
+          },
           },
         },
         pub: 18, //pubKeyHash, PUBKEY_ADDRESS
@@ -2403,7 +2817,33 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
               'Cryptoid.info': 'nvc',
               'ElectrumX-1 (SSL)': 'electrumx.nvc.ewmcx.org:50002',
               'ElectrumX-2 (SSL)': 'failover.nvc.ewmcx.biz:50002',
+            },
+            providers: {
+            balance: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            listunspent: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            pushrawtx: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
             }
+          },
           },
           social: {
             discord: {
@@ -2453,7 +2893,19 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             },
             broadcast: {
               '': '',
-            }
+            },
+            providers: {
+              balance: {
+                'etherscan.io': {
+                  params: {},
+                }
+              },
+              pushrawtx: {
+                'etherscan.io': {
+                  params: {},
+                }
+              }
+            },
           },
           protocol: {
             "type": "account", //has no parent
@@ -2506,7 +2958,19 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             },
             broadcast: {
               '': '',
-            }
+            },
+            providers: {
+              balance: {
+                'bscscan.com': {
+                  params: {},
+                }
+              },
+              pushrawtx: {
+                'bscscan.com': {
+                  params: {},
+                }
+              }
+            },
           },
           protocol: {
             "type": "account", //has no parent
@@ -2559,7 +3023,19 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             },
             broadcast: {
               '': '',
-            }
+            },
+            providers: {
+              balance: {
+                'snowtrace.io': {
+                  params: {},
+                }
+              },
+              pushrawtx: {
+                'snowtrace.io': {
+                  params: {},
+                }
+              }
+            },
           },
           protocol: {
             "type": "account", //has no parent
@@ -2611,7 +3087,19 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             },
             broadcast: {
               '': '',
-            }
+            },
+            providers: {
+              balance: {
+                'polygonscan.com': {
+                  params: {},
+                }
+              },
+              pushrawtx: {
+                'polygonscan.com': {
+                  params: {},
+                }
+              }
+            },
           },
           protocol: {
             "type": "account", //has no parent
@@ -2665,7 +3153,33 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             broadcast: {
               'Cryptoid.info': 'pink',
               'ElectrumX-1 (TCP)': 'pink-one.ewm-cx.net:50001',
+            },
+            providers: {
+            balance: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            listunspent: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            pushrawtx: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
             }
+          },
           },
         },
         pub: 0x03, //pubKeyHash, PUBKEY_ADDRESS
@@ -2701,7 +3215,33 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
             unspent_outputs: {
             },
             broadcast: {
+            },
+            providers: {
+            balance: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            listunspent: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
+            },
+            pushrawtx: {
+              'cryptoid.info': {
+                params: {},
+              },
+              'electrumx': {
+                params: {},
+              },
             }
+          },
           },
           data: {
             blocktime: '',
@@ -3650,6 +4190,163 @@ function getRandomInt(bound) {
     const lastChar = str[strLength - 1];
     return lastChar === "'" || lastChar === 'M' || lastChar === 'm';
   }
+
+
+/**
+ * Retrieve both receive and change addresses based on login type and coin key.
+ *
+ * @returns {{receive: string[], change: string[]}} An object containing arrays of receive and change addresses.
+ */
+wally_fn.getReceiveAndChangeAddresses = function() {
+  console.log('===wall_fn.getReceiveAndChangeAddresses===');
+  // Get the login type ('password' or 'mnemonic') and coin key
+  const loginType = login_wizard.profile_data.login_type;
+  const coinKey = coinjs.asset.slug;
+
+  // Retrieve the addresses data
+  const addressesData = login_wizard.profile_data.generated[coinKey][0].addresses;
+
+  // Initialize arrays to store receive and change addresses
+  let receiveAddresses = [];
+  let changeAddresses = [];
+
+  // Check the login type to determine which addresses to include
+  if (loginType === 'password') {
+    receiveAddresses = addressesData.receive.map(item => item.address);
+  } else if (loginType === 'mnemonic') {
+    // For mnemonic login, include both receive and change addresses
+    receiveAddresses = addressesData.receive.map(item => item.address);
+    changeAddresses = addressesData.change.map(item => item.address);
+  }
+
+  //console.log('===wall_fn.getReceiveAndChangeAddresses=== receiveAddresses: ', receiveAddresses);
+  //console.log('===wall_fn.getReceiveAndChangeAddresses=== changeAddresses: ', changeAddresses);
+
+  // Return an object with 'receive' and 'change' properties
+  return { receive: receiveAddresses, change: changeAddresses };
+}
+
+
+/**
+ * Retrieve the receive addresses based on login type and wallet type.
+ *
+ * @returns {string[]} An array of receive addresses.
+ */
+wally_fn.getReceiveAddresses = function() {
+  const loginType = login_wizard.profile_data.login_type; // password, mnemonic
+  const walletType = login_wizard.profile_data.wallet_type; // regular, mnemonic_wallet
+  const coinKey = coinjs.asset.slug;
+  const addressesData = login_wizard.profile_data.generated[coinKey][0].addresses.receive; // Get non-multisig addresses
+  let addresses;
+
+  if (loginType === 'password') {
+    // No receive addresses for non-seed login
+  } else if (loginType === 'mnemonic') {
+    // Seed login has receive addresses
+  }
+  // Extract all addresses from the 'receive' array of objects
+  addresses = addressesData.map(item => item.address);
+
+  console.log(addresses);
+  return addresses;
+}
+
+
+
+/**
+ * Retrieve the change addresses based on login type and wallet type.
+ *
+ * @returns {string[]} An array of change addresses.
+ */
+wally_fn.getChangeAddresses = function() {
+  const loginType = login_wizard.profile_data.login_type; // password, mnemonic
+  const walletType = login_wizard.profile_data.wallet_type; // regular, mnemonic_wallet
+  const coinKey = coinjs.asset.slug;
+  let addressesData;
+  let addresses = [];
+
+  if (loginType === 'password') {
+    // No change addresses for none-seed login
+  } else if (loginType === 'mnemonic') {
+    // Seed login has both change and receive addresses
+    addressesData = login_wizard.profile_data.generated[coinKey][0].addresses;
+    // Extract all addresses from the 'change' array of objects
+    addresses = addressesData.change.map(item => item.address);
+  }
+
+  console.log(addresses);
+  return addresses;
+}
+
+
+
+/**
+ * Sets balance information for a specific address.
+ *
+ * @param {string} addressType - The type of address ('receive' or 'change').
+ * @param {number} index - The index of the address in the addresses array.
+ * @param {object} matchingApiResponse - The balance information to set for the address.
+ */
+wally_fn.setAddressBalanceInfo = function (addressType, index, matchingApiResponse) {
+
+  
+  // Ensure 'ext' field exists for the wallet address
+  // 'ext' field is used to store external data associated with the wallet address, such as balance and transaction inputs (listunspent).
+  const walletAddress = login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses[addressType][index];
+  
+  if (!walletAddress.ext) {
+    walletAddress.ext = {};
+  }
+  
+  // Store balance information in the 'ext' field
+  walletAddress.ext.balance = matchingApiResponse;
+
+  // Update the original object with the modified walletAddress
+  login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses[addressType][index].ext.balance = walletAddress.ext.balance;
+
+
+
+  console.log('wally_fn.setBalanceInfo updated');
+
+  /*
+  unified keys for balance:
+      "final_balance": 0,
+      "n_tx": 0,
+      "total_received": 0
+
+  balance structure:
+  cryptoid.info & blockchain.info
+  "balance": {
+    "address": "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4",
+    "total_sent": 199541,
+    "total_received": 199541,
+    "final_balance": 0,
+    "n_tx": 26
+  }
+{
+      "address": "38xPY27A6fiRXHSDRbRkLfV2xQb7UmKpXv",
+      "final_balance": 0,
+      "n_tx": 0,
+      "total_received": 0,
+      "total_sent": 0
+    },
+
+  blockchain.info
+  {
+    "final_balance": 0,
+    "n_tx": 0,
+    "total_received": 0
+  }
+
+  EVM based API:
+  {
+    "account": "0x2b5ad5c4795c026514f8317c7a215e218dccd6cf",
+    "balance": "3310800000000"
+  },
+
+  */
+}
+
 })();
 //DomReady.ready(function() {     
 /*

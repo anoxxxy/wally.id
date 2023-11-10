@@ -189,7 +189,7 @@
           $("#nTime").val(Date.now() / 1000 | 0);
           $("#txTimeOptional").show();
           $("#verifyTransactionData .txtime").show();
-          console.log('show extra field!');
+          console.log('show extra TX TIME field!');
         } else {
           $("#txTimeOptional").hide();
           $("#verifyTransactionData .txtime").hide();
@@ -376,7 +376,7 @@
       .add(/(\bwallet\b|(?<=\bwallet\/.*)[^\/?]+|(?<=\bwallet\?.*)(?<=\?).*)/g, async function(data) {
         //https://stackoverflow.com/questions/4419000/regex-match-everything-after-question-mark
         //.add(/(wallet|(?<=wallet\/.*)[^/?]+|(?<=\?).*)/g, function(data){  //https://regex101.com/r/2RtRfv/6/codegen?language=javascript
-        console.log('**wallet page**')
+        console.log('**wallet page**', data);
         /*
         index.html#wallet/send/attans?key=value&param=paramValue
         gives:
@@ -388,64 +388,61 @@
         ]
         */
         console.log('data: ', data);
-        //check nested tab within page, set to activate for navigation when back/forth
-        var walletSubPage = false;
+        // Check if the provided data corresponds to a valid wallet asset subpage
+        var walletSubPage = false; // Variable to store the wallet subpage
         var walletAssetTabs = ['asset', 'send', 'receive', 'addresses', 'contacts', 'settings'];
+
         if (walletAssetTabs.includes(data[1])) {
-          $('#walletAsset [data-target="#' + data[0] + '_' + data[1] + '"]').tab('show');
-          walletSubPage = data[1];
+            // Activate the corresponding tab for navigation when navigating back and forth
+            $('#walletAsset [data-target="#' + data[0] + '_' + data[1] + '"]').tab('show');
+            walletSubPage = data[1]; // Store the active subpage
+
+
+            // Reset the page tab navigation slider to the first tab if the active subpage is 'asset'
+            if (walletSubPage === 'asset') {
+                const $subPageNavTabs = $("#walletAsset .nav-tabs");
+                const $subPageNavSlider = $("#walletAsset .nav-slider");
+
+                // Set the active tab to the first one and adjust the slider position and width
+                const activeTab = $subPageNavTabs.find("li:first");
+                $subPageNavSlider.css({ "left": 0, "width": 90 });
+            }
+
+
         }
         console.log('walletSubPage before: ' + walletSubPage);
         //get asset name
-        const choosenAsset = data[data.length - 1];
+        const choosenAsset = data[data.length - 1].toLowerCase();
         console.log('walletSubPage choosenAsset: ' + choosenAsset);
-        //does asset exist?
+
+        //is coin supported
         var isAssetFound = false;
         var assetKeyInObject = '';
-        if (choosenAsset != 'wallet') {
-          //console.log('if 1 okey');
-          //console.log('Router.urlParams._params_.asset: '+ Router.urlParams._params_.asset);
-          //search for asset name and symbol for i.e (bitcoin/btc)
-          for (var [key, value] of Object.entries(wally_fn.networks[wally_fn.network])) {
-            console.log('loop for key, value: ' + key);
-            console.log('loop for symbol: ' + value.asset.symbol);
-            if ((key).includes(choosenAsset.toLowerCase())) {
-              //if ( (value.asset.symbols).includes(choosenAsset) ) {
-              isAssetFound = true;
-              assetKeyInObject = key;
-              //console.log('asset was found: ', value.asset.symbol);
-              //console.log('asset key was found: ', key);
+        if (!walletAssetTabs.includes(choosenAsset) && choosenAsset != 'wallet') {
 
-              /*
-              //check if coin has support for the wallet client / bip brotocol
-              var protocol = login_wizard.profile_data.seed.protocol.bip;
-              if (!value[protocol]) {
-                console.log('===wally_kit.renderWAlletAssetPage=== ERROR: Coin has no support for '+ protocol);
-                alert('danger');
-                return ;
+        //if (choosenAsset != 'wallet') {
+          
+          if (wally_fn.networks[wally_fn.network].hasOwnProperty(choosenAsset)) {
+              var value = wally_fn.networks[wally_fn.network][choosenAsset];
+              
+              // The asset was found, and value contains the asset information
+              isAssetFound = true;
+              assetKeyInObject = choosenAsset;
+              
+              // Try changing the asset to the selected one
+              // (assuming 'coinjs' and other variables are defined somewhere)
+              if (coinjs.asset.symbol !== value.asset.symbol) {
+                  var coinSupportsProtocol = await wally_kit.setNetwork('mainnet', assetKeyInObject, {
+                      saveSettings: true,
+                      showMessage: false,
+                      renderFields: true,
+                      isAuth: true
+                  });
+                  if (!coinSupportsProtocol) {
+                      Router.navigate('wallet');
+                      return;
+                  }
               }
-              */
-              //try change asset to the selected one
-              //if coin has no support for the bip protocol quit rendering
-              //break the loop if selected coin is already set!
-              if (coinjs.asset.symbol === value.asset.symbol)
-                break;
-              //else update settings with the new coin!
-              var coinSupportsProtocol = await wally_kit.setNetwork('mainnet', assetKeyInObject, {
-                saveSettings: true,
-                showMessage: false,
-                renderFields: true,
-                isAuth: true
-              });
-              console.log('coinSupportsProtocol: ', coinSupportsProtocol);
-              if (!coinSupportsProtocol) {
-                Router.navigate('wallet');
-                return;
-              }
-              //$.extend(coinjs, value);  //change asset and generate address
-              //break the loop
-              break;
-            }
           }
         }
         
@@ -455,34 +452,67 @@
           $('#walletOverview').addClass('hidden');
           $('#walletAsset').removeClass('hidden');
           console.log('Wallet Overview - page');
+          
         } else {
           $('#walletOverview').removeClass('hidden');
           $('#walletAsset').addClass('hidden');
           console.log('Wallet Coin -page');
+          return;
         }
+
+
+        const coinChain = wally_fn.coinChainIs();
+
+        //Render Api Provider Options
+        var apiProviderBalance = wally_kit.getCoinProvidersForApiService(coinjs.asset.api.providers, 'balance');
+        var apiProviderListunspent = wally_kit.getCoinProvidersForApiService(coinjs.asset.api.providers, 'listunspent');
+        var apiProviderPushrawtx = wally_kit.getCoinProvidersForApiService(coinjs.asset.api.providers, 'pushrawtx');
+
+        wally_fn.tpl.seed.viewBalanceProviderOptions.render(apiProviderBalance);
+        wally_fn.tpl.seed.viewListunspentProviderOptions.render(apiProviderListunspent);
+        wally_fn.tpl.seed.viewPushrawtxProviderOptions.render(apiProviderPushrawtx);
+
+
+
+        //wallet settings page
+        if (walletSubPage == 'settings') {
+          console.log('wallet settings page - update provider API list');
+
+          if (coinChain == 'utxo')
+            coinbinf.coinUTXO.removeClass('hidden');
+          else
+           coinbinf.coinUTXO.addClass('hidden');
+        }
+
 
         //coin has not been changed or no such coin -> exit
         if (!isAssetFound) {
-          console.log('Coin NOT FOUND! ', coinjs.asset, isAssetFound);
+          console.log('Coin Not Changed or Not Found! ', coinjs.name);
           return;
         }
+
+
+
         //render password addresses / generate and render mnemonic addresses if they are not present
         if (login_wizard.profile_data.login_type === 'password') {
           $('[data-login-type="seed"]').addClass('hidden');
 
           var addrObj = {
-            'addresses': login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses_supported,
+            'addresses': login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses,
             'chainModel': coinjs.asset.chainModel
           };
           //render the addresses
-          wally_kit.walletRenderAddresses(addrObj);
+          //wally_kit.walletRenderAddresses(addrObj);
+          await wally_kit.walletRenderPasswordAddresses(addrObj);
+
+          
         } else if (login_wizard.profile_data.login_type === 'mnemonic') {
           $('[data-login-type="seed"]').removeClass('hidden');
           //check if addresses for a mnemonic/ seed /master has been generated
           //has the addresses been generated, if not generate them for the choosen coin/asset!
           console.log('wallet page login_wizard.profile_data.generated: ', login_wizard.profile_data.generated);
           console.log('wallet page slug: ', [coinjs.asset.slug]);
-          console.log('wallet page login_wizard.profile_data.generated slug: ', login_wizard.profile_data.generated[coinjs.asset.slug]);
+
           if (!login_wizard.profile_data.generated[coinjs.asset.slug]) {
             //init master key generation of keys for mnemonic and first gapLimit addresses
             var p = login_wizard.profile_data.seed.passphrase;
@@ -501,8 +531,33 @@
           });
           */
         }
+
+        //init default API Providers for the coin
+        if(!login_wizard.profile_data.generated[coinjs.asset.slug].api_provider) {
+          login_wizard.profile_data.generated[coinjs.asset.slug].api_provider = {
+            'balance':  Object.keys(coinjs.asset.api.providers?.balance)[0] ?? null, //set the first provider as default, default to null if there is no provider
+            'listunspent': coinjs.asset.api.providers?.listunspent && typeof coinjs.asset.api.providers.listunspent === 'object' ? Object.keys(coinjs.asset.api.providers.listunspent)[0] : null,
+            'pushrawtx': Object.keys(coinjs.asset.api.providers?.pushrawtx)[0] ?? null,
+          };
+        }
+
+
+        //set the user prefered API Provider
+        if (login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.balance) {
+          coinbinf.apiBalanceProviderSelector.val(login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.balance);
+        }
+        if (login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.listunspent) {
+          coinbinf.apiListunspentProviderSelector.val(login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.listunspent);
+        }
+        if (login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.pushrawtx) {
+          coinbinf.apiPushrawtxProviderSelector.val(login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.pushrawtx);
+        }
+
+        //coin - get balance
+        await wally_kit.apiGetCoinBalance(coinbinf.apiBalanceProviderSelector.val());
+
         //pass over the asset and update wallet menu
-        wally_kit.menuUpdate(choosenAsset);
+        //wally_kit.pageMenuUpdate(coinjs.asset.slug);  //deprecated
 
 
         //render UI relative to utxo /evm
@@ -541,7 +596,7 @@
         var coininfo = login_wizard.profile_data.api?.assets;
         // API call request denied, skip rendering asset coininfo data
         if (coininfo[assetKeyInObject]?.coininfos === undefined) {
-          console.log('Could not retrieve asset data!')
+          console.log('Could not retrieve API asset chain info!')
           return;
         }
         $('.coin_price_change_24h').text(parseFloat(coininfo[assetKeyInObject].coininfos.price_change_24h).toFixed(8) + ' (' + parseFloat(coininfo[assetKeyInObject].coininfos.price_change_percentage_24h).toFixed(2) + '%)')
@@ -601,8 +656,20 @@
       //.add(/kalle(.*)/, function(data){})
       .add(/login(.*)/, function(data) {
         console.log('**login page**');
-        //alert('sign page');
+
+        // check if user is logged in
+        const userIsAuth = $('body').attr('data-user');
+        if (userIsAuth === "auth") {
+          Router.navigate('wallet');
+          return;
+        }
+        
+        //proceed with interaction with login page
         loginWalletInteraction();
+        
+
+
+        
       })
       .add(/logout(.*)/, function(data) {
         console.log('**logout page**');
@@ -1060,15 +1127,22 @@
   /*
    @ generate a list of wallet addresses from an object, 'addresses' and 'chainModel' in the object
   */
-  wally_kit.walletRenderAddresses = function(addrObj) {
-    console.log('===wally_kit.walletlistKeyAddresses===');
+  wally_kit.walletRenderAddressesOld = function(addrObj) {
+    console.log('===wally_kit.walletRenderAddressesOld=== ', addrObj);
     //var addr = login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses_supported;
     var addr = addrObj.addresses;
     var chain = addrObj.chainModel;
     var receiveArr = [];
     var receiveAddressesTotal = 0;
     
-
+    // init address balance structure
+    var init_balance = {
+      "total_sent": 0,
+      "total_received": 0,
+      "final_balance": 0,
+      "n_tx": 0
+    };
+    
     if (chain === 'utxo') {
       if (addr.compressed) {
         // Legacy Address
@@ -1076,14 +1150,14 @@
         //addr.compressed.public_key
         //addr.compressed.address
         var blockieIcon = makeBlockie(addr.compressed.address);
-        receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr.compressed.address, 'derivedPath': 'Compressed Legacy', 'path': false});
+        receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr.compressed.address, 'derivedPath': 'Compressed Legacy', 'path': false, 'ext': init_balance});
         receiveAddressesTotal++;
         // Bech32 Address (p2wpkh)
         if (addr.compressed?.bech32) {
           //addr.compressed.bech32.address
           //addr.compressed.bech32.redeemscript
           var blockieIcon = makeBlockie(addr.compressed.bech32.address);
-          receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr.compressed.bech32.address, 'derivedPath': 'Bech32', 'path': false});
+          receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr.compressed.bech32.address, 'derivedPath': 'Bech32', 'path': false, 'ext': init_balance});
           receiveAddressesTotal++;
         }
         ///P2SH Segwit Address
@@ -1091,7 +1165,7 @@
           //addr.compressed.bech32.address
           //addr.compressed.bech32.redeemscript
           var blockieIcon = makeBlockie(addr.compressed.segwit.address);
-          receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr.compressed.segwit.address, 'derivedPath': 'SegWit', 'path': false});
+          receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr.compressed.segwit.address, 'derivedPath': 'SegWit', 'path': false, 'ext': init_balance});
           receiveAddressesTotal++;
         }
       }
@@ -1100,13 +1174,15 @@
         //addr.uncompressed.public_key
         //addr.uncompressed.address
         var blockieIcon = makeBlockie(addr.uncompressed.address);
-        receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr.uncompressed.address, 'derivedPath': 'Uncompressed Legacy', 'path': false});
+        receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr.uncompressed.address, 'derivedPath': 'Uncompressed Legacy', 'path': false, 'ext': init_balance});
         receiveAddressesTotal++;
       }
     } else if (chain === 'account') {
 
+      console.log('addr: ', addr);
+
       var blockieIcon = makeBlockie(addr.address);
-      receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr.address, 'derivedPath': 'EVM'});
+      receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr.address, 'derivedPath': 'EVM', 'ext': init_balance});
       receiveAddressesTotal++;
     }
     wally_fn.tpl.seed.viewReceiveAddresses.render(receiveArr);
@@ -1116,6 +1192,46 @@
     $('.coin_receive_addresses_total').text(receiveAddressesTotal);
 
   }
+
+  /*
+   @ generate a list of wallet addresses from an object, 'addresses' and 'chainModel' in the object
+  */
+  wally_kit.walletRenderPasswordAddresses = async function(addrObj) {
+    console.log('===wally_kit.walletRenderPasswordAddresses=== ', addrObj);
+    //var addr = login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses_supported;
+    var addresses = addrObj.addresses.receive;  //password login, has only receive addresses
+    var chain = addrObj.chainModel;
+    var receiveArr = [];
+    var receiveAddressesTotal = addresses.length;
+
+    console.log('addresses: ', addresses);
+    /*// address balance structure
+    {
+      "total_sent": 0,
+      "total_received": 0,
+      "final_balance": 0,
+      "n_tx": 0
+    };
+    */
+    
+    for (var i = 0; i < receiveAddressesTotal; i++) {
+    
+      var balance = addresses[i].ext;
+      var blockieIcon = makeBlockie(addresses[i].address);
+      // derived path in this case is compressed, uncompressed, bech32, segwit, evm etc...
+      receiveArr.push({'blockieIcon': blockieIcon, 'addr': addresses[i].address, 'derivedPath': addresses[i].type, 'path': true, 'ext': balance});
+    }
+
+    console.log('receiveArr: ', receiveArr);
+
+    wally_fn.tpl.seed.viewReceiveAddresses.render(receiveArr);
+    //password/key login has no change addresses, set to empty!
+    //wally_fn.tpl.seed.viewChangeAddresses.render([]);
+    coinbinf.changeAddresses.addClass('hidden');
+    $('.coin_receive_addresses_total').text(receiveAddressesTotal);
+
+  }
+
   /*
    @ generate a list of wallet addresses for a seed
   */
@@ -1129,7 +1245,7 @@
         return ;
       }
       */
-      var derived = login_wizard.profile_data.generated[coinjs.asset.slug].addresses;
+      var derived = login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses;
       var coinReceivePath = login_wizard.profile_data.generated[coinjs.asset.slug].seed.path.receive;
       var coinChangePath = login_wizard.profile_data.generated[coinjs.asset.slug].seed.path.change;
       var pathIsHardened = login_wizard.profile_data.generated[coinjs.asset.slug].seed.path.isHardened;
@@ -1141,6 +1257,17 @@
       var hardenedAddress = "";
       var receiveAddressesTotal = 0;
       var changeAddressesTotal = 0;
+
+      // address balance structure
+      /*var balance = {
+        "total_sent": 0,
+        "total_received": 0,
+        "final_balance": 0,
+        "n_tx": 0
+      };
+      */
+      var balance;
+
       if (pathIsHardened)
         hardenedAddress = "'";
       if (addressType === 'both' || addressType === 'receive') {
@@ -1152,8 +1279,9 @@
           else
             addr = derived.receive[i].address.address;
 
+          balance = derived.receive[i].ext
           var blockieIcon = makeBlockie(addr);
-          receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr, 'derivedPath': derivedPath, 'path': true});
+          receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr, 'derivedPath': derivedPath, 'path': true, 'ext': balance});
 
         }
       }
@@ -1168,7 +1296,7 @@
             addr = derived.change[i].address.address;
 
             var blockieIcon = makeBlockie(addr);
-            changeArr.push({'blockieIcon': blockieIcon, 'addr': addr, 'derivedPath': derivedPath, 'path': true});
+            changeArr.push({'blockieIcon': blockieIcon, 'addr': addr, 'derivedPath': derivedPath, 'path': true, 'ext': balance});
 
         }
       }
@@ -1267,10 +1395,473 @@
       Router.navigate('logout');
     }
   }
+
+
+/***************CryptoProviderAPI Requests - START *************************/
+
+
+/**
+ * Process and update address balance information for the EVM API provider.
+ *
+ * @param {Object} apiResponse - The API response containing address data.
+ * @param {Object} addressesData - Object containing receive and change addresses.
+ */
+function processAddressesForEvm(apiResponse, addressesData) {
+  const apiResult = apiResponse.result;
+
+  if (!apiResult || !Array.isArray(apiResult) || apiResult.length === 0) {
+    console.log('Addresses are empty for the EVM API provider!');
+    return;
+  }
+
+  /**
+   * Process addresses of a specific type and update balance information.
+   *
+   * @param {string} addressType - The type of address (e.g., "receive" or "change").
+   * @param {Array} addresses - Array of addresses of the specified type.
+   */
+  function processAddress(addressType, addresses) {
+    addresses.forEach((address, i) => {
+      const matchingApiResponse = apiResult.find(apiAddress => apiAddress.account === address);
+
+      if (matchingApiResponse) {
+        const balanceWei = matchingApiResponse.balance || '0';
+        const balanceEth = wweb3.utils.fromWei(balanceWei, 'ether');
+        
+        const balanceInfo = {
+          final_balance: balanceEth, // Convert Wei to Ether
+          // Other properties can be extracted and added here if needed
+        };
+
+        wally_fn.setAddressBalanceInfo(addressType, i, balanceInfo);
+        console.log(`EVM - ${addressType} Address: found balance: ${address}`);
+      } else {
+        console.log(`EVM - ${addressType} Address: no balance: ${address}`);
+      }
+    });
+  }
+
+  processAddress('receive', addressesData.receive);
+  processAddress('change', addressesData.change);
+}
+
+
+
+/**
+ * Process and update address balance information for the "cryptoid.info" provider.
+ *
+ * @param {Object} apiResponse - The API response containing address data.
+ * @param {Object} addressesData - Object containing receive and change addresses.
+ */
+function processAddressesForCryptoId(apiResponse, addressesData) {
+  const apiAddresses = apiResponse.addresses;
+
+  if (!apiAddresses.length) {
+    console.log('Addresses are empty for Cryptoid!');
+    return;
+  }
+
+   /**
+   * Process addresses of a specific type and update balance information.
+   *
+   * @param {string} addressType - The type of address (e.g., "receive" or "change").
+   * @param {Array} addresses - Array of addresses of the specified type.
+   */
+  function processAddress(addressType, addresses) {
+    addresses.forEach((address, i) => {
+      const matchingApiResponse = apiAddresses.find(apiAddress => apiAddress.address === address);
+      if (matchingApiResponse) {
+        delete matchingApiResponse.address;
+        wally_fn.setAddressBalanceInfo(addressType, i, matchingApiResponse);
+        console.log(`Cryptoid - ${addressType} Address: found balance: ${address}`);
+      } else {
+        console.log(`Cryptoid - ${addressType} Address: no balance: ${address}`);
+      }
+    });
+  }
+
+  processAddress('receive', addressesData.receive);
+  processAddress('change', addressesData.change);
+}
+
+/**
+ * Process and update address balance information for the "blockchain.info" provider.
+ *
+ * @param {Object} apiResponse - The API response containing address data in the specified format.
+ * @param {Object} addressesData - Object containing receive and change addresses.
+ */
+function processAddressesForBlockchainInfo(apiResponse, addressesData) {
+  /**
+   * Object with address balances from the API response.
+   * @type {Object}
+   */
+  const addressBalances = apiResponse;
+
+  /**
+   * Process addresses of a specific type and update balance information.
+   *
+   * @param {string} addressType - The type of address (e.g., "receive" or "change").
+   * @param {Array} addresses - Array of addresses of the specified type.
+   */
+  function processAddress(addressType, addresses) {
+    addresses.forEach((address, i) => {
+      /**
+       * Balance information for the current address.
+       * @type {Object|undefined}
+       */
+      const balanceInfo = addressBalances[address];
+
+      if (balanceInfo) {
+        wally_fn.setAddressBalanceInfo(addressType, i, balanceInfo);
+        console.log(`Blockchain.info - ${addressType} Address: found balance: ${address}`);
+      } else {
+        console.log(`Blockchain.info - ${addressType} Address: no balance: ${address}`);
+      }
+    });
+  }
+
+  // Process receive and change addresses
+  processAddress('receive', addressesData.receive);
+  processAddress('change', addressesData.change);
+}
+
+
+
+async function fetchApiDataWithRateLimit(apiUrl, providerName) {
+  return await apiProvider.makeRateLimitedRequest(providerName, async () => {
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+    }
+
+    return await response.json();
+  });
+}
+
+
+
+/**
+ * Retrieves the balance of a specific cryptocurrency coin.
+ * @function
+ */
+/**
+ * Fetch API response from the given URL using async/await.
+ *
+ * @param {string} url - The URL to fetch data from.
+ * @returns {Object} - The parsed JSON response.
+ */
+async function fetchApiResponse(url) {
+  const apiResponse = await fetch(url);
+  /*const apiResponse = await (async () => {
+      try {
+        const response = await new Promise((resolve) => {
+          coinjs.ajax(url, resolve, 'GET');
+        });
+        console.log('Response received1:', response);
+        // You can add your code to process the response data here
+        return $.parseJSON(response);
+      } catch (error) {
+        console.error('Error:', error);
+        console.error('Request failed:', response.status, response.statusText);
+        return;
+      }
+    })();
+    */
+
+  if (!apiResponse.ok) {
+    throw new Error(`Request failed: ${apiResponse.status} ${apiResponse.statusText}`);
+  }
+
+  return await apiResponse.json();
+}
+
+/**
+ * Build the API URL for the specified provider.
+ *
+ * @param {string} providerName - The name of the API provider.
+ * @param {string} coinTicker - The ticker symbol (e.g., BTC, LTC, ETH).
+ * @param {Array} mergedAddresses - The merged array of addresses.
+ * @returns {string} - The API URL.
+ */
+function buildApiUrl(providerName, coinTicker, mergedAddresses) {
+  const network = wally_fn.network;
+  const chainType = wally_fn.chainModel;
+  const unifiedProviders = apiProvider.getUnifiedProviders(chainType, network);
+  const coinChain = wally_fn.coinChainIs();
+  const coinName = coinjs.asset.slug;
+  const networkType = coinjs.asset.network;
+
+  // Check if the provider exists in unified providers
+  if (unifiedProviders[providerName]) {
+    // Use the provider from unified providers to build the URL
+    const provider = unifiedProviders[providerName];
+    return apiProvider.buildProviderURL(provider, {
+      coin: coinTicker,
+      address: mergedAddresses,
+    });
+  } else {
+    // If the provider is not in unified providers, try coin-specific providers
+    const coinProviders = apiProvider.getCoinProviders(coinName, coinChain, networkType);
+    const provider = coinProviders[providerName];
+
+    if (!provider) {
+      throw new Error(`No API Provider "${providerName}" for the coin: ${coinTicker}`);
+    }
+
+    // Build the URL using the coin-specific provider
+    return apiProvider.buildProviderURL(provider, {
+      address: mergedAddresses,
+    });
+  }
+}
+
+/**
+ * Process and update address balance information based on the provider.
+ *
+ * @param {string} providerName - The name of the API provider.
+ */
+wally_kit.apiGetCoinBalance = async function (providerName) {
+  try {
+    console.log('===wally_kit.apiGetCoinBalance===', providerName);
+
+    const coinTicker = coinjs.asset.symbol;
+    const addressesData = wally_fn.getReceiveAndChangeAddresses();
+    const mergedAddresses = [...addressesData.receive, ...addressesData.change];
+    let url = buildApiUrl(providerName, coinTicker, mergedAddresses);
+
+    /*
+    CORS issue fixed By Cryptoid.info - confirm iceee
+    if (url.includes('chainz.cryptoid.info/btc')) {
+      url = url.replace('chainz.cryptoid', 'btc.cryptoid');
+    }
+    */
+
+    console.log('apiProvider.providerRateLimits before: ', apiProvider.providerRateLimits);
+    //const apiResponse = await fetchApiResponse(url);
+    const apiResponse = await fetchApiDataWithRateLimit(url, providerName);
+    
+    if (!apiResponse)
+      throw('Rate Limit exceeded!')
+
+    console.log('Response on addresses balance:', apiResponse);
+
+    console.log('apiProvider.providerRateLimits after: ', apiProvider.providerRateLimits);
+    
+    //adapt the response from the API providers (balance info object info)
+    const coinChain = wally_fn.coinChainIs();
+
+    // Call the appropriate function based on the provider
+    if (coinChain == 'utxo') {
+      if (providerName === 'cryptoid.info') {
+        processAddressesForCryptoId(apiResponse, addressesData);
+      } else if (providerName === 'blockchain.info') {
+        processAddressesForBlockchainInfo(apiResponse, addressesData);
+      } else {
+        console.log(`Unsupported provider: ${providerName}`);
+      }
+    } else if (coinChain == 'evm') {
+      processAddressesForEvm(apiResponse, addressesData);
+    }
+
+
+    
+  } catch (error) {
+    const modalTitle = 'API Provider';
+    const modalMessage = `Unable to get Balance!<br>${error}`;
+    custom.showModal(modalTitle, modalMessage, 'danger', {
+      'buttons': {
+        'cancel': false
+      }
+    });
+  }
+};
+
+
+/**
+ * Retrieves a list of unspent transaction outputs (UTXOs) for a cryptocurrency coin.
+ * @function
+ */
+wally_kit.apiGetListUnspent = async function() {
+  // Your code for fetching list of UTXOs here
+}
+
+/**
+ * Broadcasts a signed raw transaction to the network.
+ * @function
+ */
+wally_kit.apiPushRawTX = async function() {
+  // Your code for broadcasting raw transaction here
+}
+
+
+
+
+/**
+ * Get a unified provider for a specific asset and API service.
+ *
+ * @param {string} asset - The asset symbol (e.g., 'bitcoin', 'ethereum').
+ * @param {string} apiService - The API service (e.g., 'balance', 'listunspent', 'pushrawtx').
+ * @param {string} chainType - The type of blockchain (e.g., 'utxo', 'evm').
+ * @param {string} network - The network type (e.g., 'mainnet', 'testnet').
+ * @returns {Object|null} - The selected provider with its type ('unified') or null if not found.
+ */
+wally_kit.apiGetUnifiedProviderForCoin = function(asset, apiService, chainType, network) {
+  
+
+  try {
+    const providersKey = wally_fn.networks[network][asset].asset.api.providers[apiService];
+    if (providersKey) {
+      // Check if there are any unified providers for the specified API service
+      const unifiedProviders = apiProvider.getUnifiedProviders(chainType, network);
+
+      for (const providerName in providersKey) {
+        if (unifiedProviders && unifiedProviders[providerName]) {
+          // Return the unified provider name and mark it as a unified provider
+          return { name: providerName, type: 'unified' };
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error when getting unified provider:', error);
+  }
+
+  // If no suitable unified providers are found, return null
+  return null;
+}
+
+/**
+ * Get a coin-specific provider for a specific asset and API service.
+ *
+ * @param {string} asset - The asset symbol (e.g., 'bitcoin', 'ethereum').
+ * @param {string} apiService - The API service (e.g., 'balance', 'listunspent', 'pushrawtx').
+ * @param {string} chainType - The type of blockchain (e.g., 'utxo', 'evm').
+ * @param {string} network - The network type (e.g., 'mainnet', 'testnet').
+ * @returns {Object|null} - The selected provider with its type ('coin-specific') or null if not found.
+ */
+wally_kit.getCoinProviderForCoin = function(asset, apiService, chainType, network) {
+  
+
+  try {
+    const providersKey = wally_fn.networks[network][asset].asset.api.providers[apiService];
+    if (providersKey) {
+      // Check if there are any coin-specific providers for the specified API service
+      const coinProviders = apiProvider.getCoinProviders(asset, chainType, network);
+
+      for (const providerName in providersKey) {
+        if (coinProviders && coinProviders[providerName]) {
+          // Return the coin-specific provider name and mark it as a coin-specific provider
+          return { name: providerName, type: 'coin-specific' };
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error when getting coin-specific provider:', error);
+  }
+
+  // If no suitable coin-specific providers are found, return null
+  return null;
+}
+/*
+// Example usage:
+const asset = 'bitcoin';
+const apiService = 'balance'; // 'balance', 'listunspent', etc.
+const chainType = 'utxo'; // 'utxo', 'evm', etc.
+const network = wally_fn.network; // 'mainnet' or 'testnet'
+let provider;
+
+const selectedUnifiedProvider = wally_kit.apiGetUnifiedProviderForCoin(asset, apiService, chainType, network);
+
+try {
+  if (selectedUnifiedProvider) {
+    provider = selectedUnifiedProvider;
+  } else {
+    const selectedCoinProvider = wally_kit.getCoinProviderForCoin(asset, apiService, chainType, network);
+    provider = selectedCoinProvider;
+  }
+} catch (error) {
+  console.error('Error when selecting the provider:', error);
+}
+
+if (provider) {
+  console.log(`Selected ${provider.type} provider for ${asset} (${network}) - ${apiService}: ${provider.name}`);
+} else {
+  console.log(`No providers found for ${asset} (${network}) - ${apiService}`);
+}
+
+
+
+*/
   /*
   get electrumx active nodes:
   https://electrum-status.dragonhound.info/api/v1/electrums_status
+  https://1209k.com/bitcoin-eye/ele.php?chain=lynx
+  https://stats.kmd.io/atomicdex/electrum_status/
+  
   */
+
+/**
+ * Recursively collect all coin providers from a nested object.
+ *
+ * @param {Object} obj - The object containing coin providers information. (coinjs.asset.api.providers)
+ * @param {number} depth - The current depth level (used for recursion, default is 0).
+ * @returns {Object} - An object containing all coin providers.
+ */
+wally_kit.collectAllCoinProviders = function (obj, depth = 0) {
+  const result = {};
+  const spaces = '  '.repeat(depth);
+  
+  for (const key in obj) {
+    if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+      result[key] = wally_kit.collectAllCoinProviders(obj[key], depth + 1);
+    } else {
+      result[key] = obj[key];
+    }
+  }
+
+  return result;
+}
+
+
+
+/**
+ * Recursively collect all coin providers for a specific API service from a nested object.
+ *
+ * @param {Object} obj - The object containing coin providers information.
+ * @param {string} apiService - The specific API service to collect providers for.
+ * @param {Array} results - An array to collect the provider objects.
+ */
+wally_kit.getCoinProvidersForApiService = function (obj, apiService, results = []) {
+  if (apiService in obj) {
+    for (const providerName in obj[apiService]) {
+      results.push({ name: providerName, params: obj[apiService][providerName].params });
+    }
+  }
+
+  for (const key in obj) {
+    if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+      wally_kit.getCoinProvidersForApiService(obj[key], apiService, results);
+    }
+  }
+
+  return results;
+}
+/*
+Use like:
+
+var apiService = 'balance';
+
+var providersForApiService = wally_kit.getCoinProvidersForApiService(coinjs.asset.api.providers, 'apiService');
+
+console.log(providersForApiService);
+
+*/
+
+
+
+/***************CryptoProviderAPI Requests - END *************************/
+
+
   /*
   @ Switch Blockchain Network Settings
   */
@@ -1447,7 +2038,7 @@
 
 
   //update wallet menu and the links relative to the choosen asset
-    wally_kit.menuUpdate = function(asset) {
+    wally_kit.pageMenuUpdate = function(asset) {
       
       $(".walletMenu a[data-wallet-menu-update]").each(function() {
 
@@ -1457,7 +2048,7 @@
         var newPath = originalHref.split('/').slice(0, -1).join('/');
         // Add the new coin name to the path
         var newHref = newPath + "/" + asset;
-        console.log('newHref: ', newHref)
+        //console.log('newHref: ', newHref)
         $(this).attr("href", newHref);
         $(this).attr("data-asset", asset);
       });
@@ -1720,7 +2311,7 @@ function searchForAssets(viewWalletAssets, searchQuery) {
 const $searchInput = $('#searchInput');
 
 // Attach an event listener to the search input field
-$searchInput.on('input', function() {
+$searchInput.on('input change', function() {
     let timer;
     clearTimeout(timer); // Clear any previous timers
     const viewWalletAssets = wally_fn.tpl.seed.viewWalletAssets.where({});
@@ -1736,8 +2327,41 @@ $searchInput.on('input', function() {
 // Attach a click event to the "x" icons with the class "clear-input"
 $('.input-clear').on('click', function() {
     // Find the input field within the same parent and clear its value
-    $(this).closest('.input-group').find('input').val('')
+    $(this).closest('.input-group').find('input').val('').trigger('change');
 });
+
+// API provider selector events
+ // Add a change event listener
+  coinbinf.apiBalanceProviderSelector.on('change', function() {
+    const selectedValue = $(this).val(); // Get the selected value
+
+    // Update the variable with the selected value
+    if (login_wizard.profile_data.generated && coinjs.asset.slug) {
+      login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.balance = selectedValue;
+    }
+  });
+
+
+ // Add a change event listener
+  coinbinf.apiListunspentProviderSelector.on('change', function() {
+    const selectedValue = $(this).val(); // Get the selected value
+
+    // Update the variable with the selected value
+    if (login_wizard.profile_data.generated && coinjs.asset.slug) {
+      login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.listunspent = selectedValue;
+    }
+  });
+
+
+ // Add a change event listener
+  coinbinf.apiPushrawtxProviderSelector.on('change', function() {
+    const selectedValue = $(this).val(); // Get the selected value
+
+    // Update the variable with the selected value
+    if (login_wizard.profile_data.generated && coinjs.asset.slug) {
+      login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.pushrawtx = selectedValue;
+    }
+  });
 
 
   //coinbinf.loadChangeAddresses
