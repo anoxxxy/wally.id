@@ -3699,7 +3699,8 @@ padding-left: 0.75rem;
 .blockie_list .blockie_wrapper {
 	align-items: center;
 }
-.blockie_wrapper .icon {
+.blockie_wrapper .icon,
+.blockieIcon {
 	display: block;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -4113,4 +4114,10 @@ padding-left: 0.75rem;
 
 #walletAsset .nav-tabs .nav-link:not(.active):hover {
   color: #333;
+}
+
+
+#addressInfoQrCode {
+	width: 200px;
+	height: 200px;
 }

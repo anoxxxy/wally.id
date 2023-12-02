@@ -80,7 +80,7 @@ const seedReceiveAddressesTpl = `
 <li class="flex-list m-1 p-1 mb-2">
   <div class="d-flex ml-1">
     <div class="d-flex align-items-center mr-1">
-      <div class="blockie_wrapper blockie_address" ><img class="icon icon24" src="{{data.blockieIcon}}"></div>
+      <div class="blockie_wrapper blockie_address" ><img class="icon icon24" src="{{=data.blockieIcon}}"></div>
     </div>
     <div class="d-flex flex-column flex-grow-1">
       <div class="d-flex justify-content-between">
@@ -102,7 +102,9 @@ const seedReceiveAddressesTpl = `
         <div>
           <div class="list-action">
             <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-flat-primary"><i class="bi bi-info-circle"></i> <span> info</span></button>
+              
+              <a href="#addressInfoModal" role="button" data-toggle="modal" data-address="{{=data.addr}}" data-blockieicon="{{=data.blockieIcon}}" data-coin="{{=data.coin}}" data-pubkey="{{=data.pubkey}}" data-privkey="{{=data.privkey}}" data-privkeyhex="{{=data.privkeyhex}}" data-derived-path="{{=data.derivedPath}}" class="btn btn-sm btn-flat-primary"><i class="bi bi-info-circle"></i> <span> info</span></a>
+              
               <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="bi bi-caret-down"></i>
               </button>
@@ -110,7 +112,7 @@ const seedReceiveAddressesTpl = `
                 <a class="dropdown-item" href="#"><img src="./assets/images/send.svg" class="icon28" /> <span>Send</span></a>
                 <a class="dropdown-item" href="#"><img src="./assets/images/receive.svg" class="icon28" /> <span>Receive</span></a>
                 <a class="dropdown-item" href="#"><img src="./assets/images/qr-code.svg" class="icon28" /> <span>QR code</span></a>
-                <a class="dropdown-item" href="#"><img src="./assets/images/info.svg" class="icon28" /> <span>Info</span></a>
+                <a class="dropdown-item" href="#addressInfoModal" role="button" data-toggle="modal" data-address="{{=data.addr}}" data-blockieicon="{{=data.blockieIcon}}" data-coin="{{=data.coin}}" data-pubkey="{{=data.pubkey}}" data-privkey="{{=data.privkey}}" data-privkeyhex="{{=data.privkeyhex}}" data-derived-path="{{=data.derivedPath}}"><img src="./assets/images/info.svg" class="icon28" /> <span>Info</span></a>
               </div>
             </div>
           </div>
@@ -149,7 +151,7 @@ const seedChangeAddressesTpl = `
 <li class="flex-list m-1 p-1 mb-2">
   <div class="d-flex ml-1">
     <div class="d-flex align-items-center mr-1">
-      <div class="blockie_wrapper blockie_address" ><img class="icon icon24" src="{{data.blockieIcon}}"></div>
+      <div class="blockie_wrapper blockie_address" ><img class="icon icon24" src="{{=data.blockieIcon}}"></div>
     </div>
     <div class="d-flex flex-column flex-grow-1">
       <div class="d-flex justify-content-between">
@@ -171,7 +173,7 @@ const seedChangeAddressesTpl = `
         <div>
           <div class="list-action">
             <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-flat-primary"><i class="bi bi-info-circle"></i> <span> info</span></button>
+              <a href="#addressInfoModal" role="button" data-toggle="modal" data-address="{{=data.addr}}" data-blockieicon="{{=data.blockieIcon}}" data-coin="{{=data.coin}}" data-pubkey="{{=data.pubkey}}" data-privkey="{{=data.privkey}}" data-privkeyhex="{{=data.privkeyhex}}" data-derived-path="{{=data.derivedPath}}" class="btn btn-sm btn-flat-primary"><i class="bi bi-info-circle"></i> <span> info</span></a>
               <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="bi bi-caret-down"></i>
               </button>
@@ -179,7 +181,7 @@ const seedChangeAddressesTpl = `
                 <a class="dropdown-item" href="#"><img src="./assets/images/send.svg" class="icon28" /> <span>Send</span></a>
                 <a class="dropdown-item" href="#"><img src="./assets/images/receive.svg" class="icon28" /> <span>Receive</span></a>
                 <a class="dropdown-item" href="#"><img src="./assets/images/qr-code.svg" class="icon28" /> <span>QR code</span></a>
-                <a class="dropdown-item" href="#"><img src="./assets/images/info.svg" class="icon28" /> <span>Info</span></a>
+                <a class="dropdown-item" href="#addressInfoModal" role="button" data-toggle="modal" data-address="{{=data.addr}}" data-blockieicon="{{=data.blockieIcon}}" data-coin="{{=data.coin}}" data-pubkey="{{=data.pubkey}}" data-privkey="{{=data.privkey}}" data-privkeyhex="{{=data.privkeyhex}}" data-derived-path="{{=data.derivedPath}}"><img src="./assets/images/info.svg" class="icon28" /> <span>Info</span></a>
               </div>
             </div>
           </div>
@@ -317,3 +319,113 @@ wally_fn.tpl.seed.viewPushrawtxProviderOptions  = Mikado(containerApiPushrawtxPr
 
 
 
+/*
+//template for rendering wallet address info
+const addressInfoTpl = `
+<div>
+<div class="input-group-callout" data-adress-info="qr_code_address">
+  <div class="callout-title text-muted text-primary d-flex justify-content-center mx-auto mb-2">QR code of Address</div>
+  <div id="addressInfoQrCode" class="d-flex justify-content-center mx-auto"><div>{{#=data.qrCode}}</div></div>
+</div>
+<div class="input-group-callout" data-adress-info="address">
+  <div class="callout-title text-muted text-primary">
+    <span class="coin_symbol"></span> Address
+  </div>
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text cursor-pointer mr-0 ml-0 pr-2 pl-2">
+        <img class="blockieIcon icon icon24" src="{{=data.blockieIcon}}">
+        
+      </span>
+    </div>
+    <input id="" type="text" class="form-control addr" value="{{=data.addr}}" readonly />
+    <div class="input-group-append">
+      <span class="input-group-text cursor-pointer" title="Copy Address" data-copy-content="{{=data.addr}}">
+        <i class="bi bi-copy icon"></i>
+      </span>
+    </div>
+  </div>
+</div>
+<div class="input-group-callout" data-adress-info="path_type">
+  <div class="callout-title text-muted text-primary">Path/Type</div>
+  <div class="input-group">
+    <input id="" type="text" class="form-control path_type" value="{{=data.derivedPath}}" readonly />
+    <div class="input-group-append">
+      <span class="input-group-text cursor-pointer" title="Copy" data-copy-content="{{=data.derivedPath}}">
+        <i class="bi bi-copy icon"></i>
+      </span>
+    </div>
+  </div>
+</div>
+<div class="input-group-callout" data-adress-info="pubkey">
+  <div class="callout-title text-muted text-primary">Public Key</div>
+  <div class="input-group">
+    <input id="" type="text" class="form-control pubkey" value="{{=data.pubkey}}" readonly />
+    <div class="input-group-append">
+      <span class="input-group-text cursor-pointer" title="Copy Public Key" data-copy-content="{{=data.pubkey}}">
+        <i class="bi bi-copy icon"></i>
+      </span>
+    </div>
+  </div>
+</div>
+<div class="input-group-callout" data-adress-info="privkey">
+  <div class="callout-title text-muted text-primary">Private Key (WIF)</div>
+  <div class="input-group">
+    <input id="" type="password" class="form-control privkey" value="{{=data.privkey}}" readonly />
+    <div class="input-group-append">
+      <span class="showKey input-group-text cursor-pointer">
+        <i class="bi bi-eye-fill"></i>
+      </span>
+    </div>
+    <div class="input-group-append">
+      <span class="input-group-text cursor-pointer" title="Copy Private Key (WIF)" data-copy-content="{{=data.privkey}}">
+        <i class="bi bi-copy icon"></i>
+      </span>
+    </div>
+  </div>
+</div>
+<div class="input-group-callout" data-adress-info="privkeyhex">
+  <div class="callout-title text-muted text-primary">Private Key (HEX)</div>
+  <div class="input-group">
+    <input id="" type="password" class="form-control privkeyhex" value="{{=data.privkeyhex}}" readonly />
+    <div class="input-group-append">
+      <span class="showKey input-group-text cursor-pointer">
+        <i class="bi bi-eye-fill"></i>
+      </span>
+    </div>
+    <div class="input-group-append">
+      <span class="input-group-text cursor-pointer" title="Copy Private  Key (HEX)" data-copy-content="{{=data.privkeyhex}}">
+        <i class="bi bi-copy icon"></i>
+      </span>
+    </div>
+  </div>
+</div>
+</div>
+`;
+
+const containerAddressInfoTpl = document.getElementById("addressInfo");
+const tplAddressInfoC = Mikado.compile(addressInfoTpl);
+
+wally_fn.tpl.viewAddressInfo  = Mikado(containerAddressInfoTpl, tplAddressInfoC, {
+  on: {
+    create: function(node) {
+      console.log("Mikado.Templates.viewAddressInfo - created:", node);
+    },
+    insert: function(node) {
+      console.log("Mikado.Templates.viewAddressInfo - inserted:", node);
+    },
+    update: function(node) {
+      console.log("Mikado.Templates.viewAddressInfo - updated:", node);
+    },
+    change: function(node) {
+      console.log("Mikado.Templates.viewAddressInfo - changed:", node);
+    },
+    remove: function(node) {
+      console.log("Mikado.Templates.viewAddressInfo - removed:", node);
+    },
+    async: true,
+    reuse: true,
+    cache: false,
+  }
+});
+*/

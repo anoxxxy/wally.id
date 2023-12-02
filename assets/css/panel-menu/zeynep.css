@@ -30,7 +30,7 @@ body.zeynep-opened {
 
 .zeynep:not(.no-transition),
 .zeynep .submenu:not(.no-transition){
-  transition:all 250ms;
+  transition:all 250ms ease-out;
 }
 
 .zeynep-overlay{

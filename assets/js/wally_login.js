@@ -57,7 +57,7 @@
       "supports": {
         "passphrase": true,
         "login": {
-          "mnemonic": true,
+          "mnemonic": false,
           "masterkey": true,
         },
       },
@@ -1033,11 +1033,19 @@ $(document).ready(function() {
       coinbinf.openClientWalletPassphrase.velocity('slideUp')
     }
 
-    var mnemonicWords = $('#popSeedLoginSettingsJBox #seedLoginMnemonicLength');
+    var poppis = $('#popSeedLoginSettingsJBox');
+    var mnemonicWords = poppis.find('.seedLoginMnemonicLength');
+
+    console.log('mnemonicWords: ', mnemonicWords);
+
+    //var mnemonicWords = $('#popSeedLoginSettingsJBox .seedLoginMnemonicLength');
     //give electrum possibility to choose new and old Electrum seed
     if (selectedOption.slug === 'electrum') {
       coinbinf.openSeedElectrumOptions.removeClass('hidden').velocity('slideDown');
-      mnemonicWords.val(12).prop('disabled', true);
+      //mnemonicWords.val(12).prop('disabled', true);
+      
+      mnemonicWords.val(12).find('option:not([value="12"]):not([value="24"])').prop('disabled', true);
+
       var s = coinbinf.openSeed.val();
       var mnemonicLength = wally_fn.wordCount(s);
       //empty seed input if words length is greater than 12
@@ -1045,8 +1053,11 @@ $(document).ready(function() {
         coinbinf.openSeed.val('');
       //}
     }else {
+      console.log('not electrum wallet!');
+      mnemonicWords.find('option').prop('disabled', false);
+
       coinbinf.openSeedElectrumOptions.velocity('slideUp');
-      mnemonicWords.prop('disabled', false);
+      
     }
   }
   
@@ -1177,6 +1188,8 @@ $(document).ready(function() {
       //loginBtnNext.fadeIn();
       $(loginBtnNext).velocity('fadeIn');
       console.log('loginNext enable');
+
+      //*login mnemonic_wallet - disable/enable different login options*/
     }
     //show/hide multisig fields on form wizard
     /*
@@ -1715,10 +1728,10 @@ $(document).ready(function() {
   @ nested/child tab show (routing related)
   */
   //$('[data-target="#txoutputs"], [data-target="#txinputs"]').on('click', function(e) {
-  $('ul.nav-tabs a.nav-link[data-target]').on('click', function(e) {
+  $('ul.nav-tabs a.nav-link[data-target], .nav-tab-target[data-target]').on('click', function(e) {
     var data_target = $(this).attr('data-target').slice(1); //slice hashtag (#)
-    console.log('-->tab.show [data-target=' + data_target + ']');
-    console.log('attr: ' + $(this).attr('data-target'));
+    console.log('===tab.show [data-target=' + data_target + ']');
+    console.log('===tab.show attr: ' + $(this).attr('data-target'));
     var childTarget = '';
     if (data_target.includes('/')) {
       childTarget = data_target.split('/').slice(-1)[0];
@@ -1728,8 +1741,11 @@ $(document).ready(function() {
       childTarget = data_target.split('_').slice(-1)[0];
       console.log('childTarget2: ' + childTarget);
     }
-    //check if we should pass over any asset link
-    var data_asset = $(this).attr('data-asset');
+    //check if we should pass over any asset info, like address, coin etc.. 
+    var data_asset = $(this).attr('data-asset-info');
+    
+    console.log('===tab.show data_asset: ' + data_asset);
+
     if (data_asset)
       data_asset = '/' + data_asset;
     //check if a nested/child tab is clicked, for.i.e #newTransaction/txinputs

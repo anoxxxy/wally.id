@@ -260,9 +260,9 @@ profile_data = {
       		return;
 		}
 
-  		custom.showModal(modalTitle, modalMessage, 'success');
+  	custom.showModal(modalTitle, modalMessage, 'success');
 
-
+  	/*
 		if (login_wizard.profile_data.wallet_type === 'multisig') {
 			var totalKeys = login_wizard.profile_data.hex_key.length;
 			//generate public keys from the hex key
@@ -335,7 +335,7 @@ profile_data = {
 		$(".walletAddress").text(address);
 		$("#walletHistory").attr('href',explorer_addr+address);
 
-		$("#walletQrCode").html("");
+		$("#walletQrCode").text("");
 		var qrcode = new QRCode("walletQrCode");
 		//qrcode.makeCode("bitcoin:"+address);
 		qrcode.makeCode(coinjs.asset.slug+':'+address);
@@ -343,6 +343,8 @@ profile_data = {
 		$("#walletKeys .privkey").val(wif);
 		$("#walletKeys .privkeyhex").val(hexkey);
 		$("#walletKeys .pubkey").val(pubkey);
+
+		*/
 
 		Router.navigate('wallet');
 		//$("#login").addClass('hidden');
@@ -383,6 +385,7 @@ profile_data = {
 	});
 	*/
 
+	/*
 	$("#walletSegwit").click(function(){
 		if($(this).is(":checked")){
 			$("#walletLegacy")[0].checked = false;
@@ -462,6 +465,10 @@ profile_data = {
 
 		//$("#openBtn").click();
 	});
+
+	*/
+
+
 
 
 	$("#walletBalance, #walletQrCode").click(function(){
@@ -1218,7 +1225,7 @@ profile_data = {
 
 		//get elements in opened/active popover
 		var poppis = $('#popSeedLoginSettingsJBox');
-		var mnemonicLengthEl = poppis.find('#seedLoginMnemonicLength');
+		var mnemonicLengthEl = poppis.find('.seedLoginMnemonicLength');
 		var mnemonicLength = 	mnemonicLengthEl.val();
 
 		console.log('mnemonic length1: '+ mnemonicLength);
@@ -1236,6 +1243,8 @@ profile_data = {
 		var clientWalletIndex = parseInt(coinbinf.openClientWallet.val());
 
 		if (coinbinf.openClientWallet.val() == 4) {
+
+			//mnemonicLengthEl.val(12).find('option:not([value="12"]):not([value="24"])').prop('disabled', true);
 			
 			var spinner = $(this).find('.spinner-border');
     	spinner.removeClass('hidden');
@@ -1255,6 +1264,8 @@ profile_data = {
 			
 			spinner.addClass('hidden');
 		} else {
+			//mnemonicLengthEl.find('option').prop('disabled', false); // Enable all options
+
 			s = bip39.generateMnemonic((mnemonicLength/3)*32);
 			//console.log('create BIP39 seed');
 		}

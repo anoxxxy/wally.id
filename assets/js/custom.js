@@ -202,13 +202,14 @@
       //console.log('hassssssssssh this', this.hash);
       //console.log ('href: ',  $(e).attr('href') );
       //console.log ('href: ',  e.attr('href') );
-      console.log('=====.zeynep.left-panel a, .zeynep.right-panel a')
-      console.log('this.hash: ', this.hash)
-      console.log('this.hash.length: ', this.hash.length)
+      
+      //console.log('=====.zeynep.left-panel a, .zeynep.right-panel a')
+      //console.log('this.hash: ', this.hash)
+      //console.log('this.hash.length: ', this.hash.length)
       if((this.hash).length > 1) {
-        console.log('close......................');
-        console.log('leftPanel: ', leftPanel);
-        console.log('rightPanel: ', rightPanel);
+        //console.log('close......................');
+        //console.log('leftPanel: ', leftPanel);
+        //console.log('rightPanel: ', rightPanel);
         leftPanel.close();
         rightPanel.close();
         //$(".modal-backdrop").hide();
@@ -286,9 +287,111 @@
       $(e).addClass('jajajaj2a');
     });
     */
+
+
+/**
+ * Event handler for the 'shown.bs.modal' event on the #addressInfoModal.
+ * This function updates the address information within the modal.
+ * @param {object} e - The event object.
+ */
+$("#addressInfoModal").on('shown.bs.modal', function(e) {
+
+    
+
+    // Extract the modal ID from the event target
+    const modalId = e.target.id;
+    console.log('addressInfoModal - update address info!');
+
+    // Select the modal element using its ID
+    const modalElement = $('#' + modalId);
+    const coin = coinjs.asset.slug;
+    const coinSymbol = coinjs.asset.symbol;
+
+    
+
+
+    // Extract the data values from the related target (element that triggered the modal)
+    const dataValues = $(e.relatedTarget);
+    console.log('addressInfoModal - update address info: ', dataValues);
+
+    // Extract data attributes from the related target
+    var address = dataValues.attr('data-address');
+    var blockieicon = dataValues.attr('data-blockieicon');
+    var derivedpath = dataValues.attr('data-derived-path');
+    var pubkey = dataValues.attr('data-pubkey');
+    var privkey = dataValues.attr('data-privkey');
+    var privkeyhex = dataValues.attr('data-privkeyhex');
+
+    
+
+
+     // Set the modal title text content
+    modalElement.find('.bootstrap-dialog-title').text(coinSymbol + ' Address Information');
+
+    //Create QR code
+    $("#addressInfoQrCode").text("");
+    var qrcode = new QRCode("addressInfoQrCode");
+    //qrcode.makeCode("bitcoin:"+address);
+    qrcode.makeCode(coin+':'+address);
+
+    
+
+    /*
+    //update address info, for rendering
+    wally_kit.setAddressInfo({
+      'address': address,
+      'blockieIcon': blockieicon,
+      'derivedPath': derivedpath,
+      'pubkey': pubkey,
+      'privkey': privkey,
+      'privkeyhex': privkeyhex,
+      'qrcode': qrcode._el.innerHTML,
+    });
+    */
+
+
+    // Update the modal content with the extracted data
+    modalElement
+        .find('[data-adress-info="address"]')
+        .find('input.addr').val(address).end()
+        .find('img.blockieIcon').attr('src', blockieicon).end().end()
+        .find('[data-adress-info="path_type"] input.path_type').val(derivedpath).end()
+        .find('[data-adress-info="pubkey"] input.pubkey').val(pubkey).end()
+        .find('[data-adress-info="privkey"] input.privkey').val(privkey).end()
+        .find('[data-adress-info="privkeyhex"] input.privkeyhex').val(privkeyhex).end()
+        .find('[data-adress-info] span[data-copy-content]').each(function () {
+            // Find the grandparent of the current span and get its input value
+            const grandParent = $(this).parent().parent();
+            const inputValue = grandParent.find('input').val();
+            // Set the data-copy-content attribute of the current span to the input value
+            $(this).attr('data-copy-content', inputValue);
+        });
+
+
+    const coinChain = wally_fn.coinChainIs();
+
+    if (coinChain === 'evm')
+      modalElement.find('[data-adress-info="privkey"]').addClass('hidden');
+    else
+      modalElement.find('[data-adress-info="privkey"]').removeClass('hidden');
+});
+
+
+
+    /*
+    $(document.body).on('shown.bs.modal', function(e) {
+      //$('#myModal').removeData('bs.modal')
+      //$('#' + e.target.id).addClass('jajajaja');      
+    });
+    */
+
     $(document.body).on('hide.bs.modal', '.modal.show', function(e) {
       //$('#myModal').removeData('bs.modal')
-      $('#' + e.target.id).addClass('jajajaja');
+      const modalId = e.target.id;
+      //console.log('modal hide', e.target.id);
+      //const dataValues = $(e.relatedTarget);
+      //console.log('modal - e.relatedTarget dataValues: ', e.relatedTarget, dataValues);
+
     });
     var menuItems = [].slice.call(document.querySelectorAll('.menu__item')),
       menuSubs = [].slice.call(document.querySelectorAll('.wdropdown-menu')),

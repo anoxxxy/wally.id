@@ -66,6 +66,19 @@
               return;
             }
           }
+
+          //update coin info 
+          wally_kit.setCoinInfo({
+            'name': coinjs.asset.name,
+            'network': coinjs.asset.network,
+            'slug': coinjs.asset.slug,
+            'symbol': coinjs.asset.symbol,
+            'chainModel': coinjs.asset.chainModel,
+          });
+
+          //set address info to empty (for rendering specific address info later)
+          wally_kit.setAddressInfo({});
+
         }
         //extend coinjs with the updated asset configuration
         //"remove" bip types which is not common among other coins/assets
@@ -232,6 +245,58 @@
       //console.warn("");
     }
   }
+
+  /**
+ * Sets the coin information in the login_wizard.profile_data.coin object.
+ * @param {object} coinInfo - The coin information object.
+ */
+wally_kit.setCoinInfo = function (coinInfo) {
+    // Set the property in the coin object
+    login_wizard.profile_data.coin.name = coinInfo.name;
+    login_wizard.profile_data.coin.network = coinInfo.network;
+    login_wizard.profile_data.coin.slug = coinInfo.slug;
+    login_wizard.profile_data.coin.symbol = coinInfo.symbol;
+    login_wizard.profile_data.coin.chainModel = coinInfo.chainModel;
+};
+
+
+  /**
+ * Sets the address information in the login_wizard.profile_data.coin object.
+ * @param {object} addressInfo - The address information object.
+ */
+  wally_kit.setAddressInfo = function (addressInfo) {
+      // Check if the provided addressInfo object is empty
+      if (Object.keys(addressInfo).length === 0) {
+          // If empty, set address_info object to an empty object
+          login_wizard.profile_data.coin.address_info = {};
+      } else {
+          // If not empty, set address_info object to the provided addressInfo
+          login_wizard.profile_data.coin.address_info = addressInfo;
+      }
+  };
+/*
+  wally_kit.renderAddressInfo = function (addressInfo) {
+    
+    const coin = coinjs.asset.slug;
+    const coinSymbol = coinjs.asset.symbol;
+    const addr = addressInfo.address;
+
+    //Create QR code
+    $("#addressInfoQrCode").text("");
+    var qrcode = new QRCode("qrcode_el");
+    //qrcode.makeCode("bitcoin:"+address);
+    qrcode.makeCode(coin+':'+addr);
+
+    addressInfo.qrCode = qrcode._el.innerHTML;
+
+    //wally_kit.setAddressInfo(addressInfo);
+
+    wally_fn.tpl.viewAddressInfo.render(addressInfo);
+    //$('#addressInfoModal').modal('show');
+    
+  };
+*/
+
   /*
   @ Wallet Router settings
   */
@@ -1200,9 +1265,11 @@
     console.log('===wally_kit.walletRenderPasswordAddresses=== ', addrObj);
     //var addr = login_wizard.profile_data.generated[coinjs.asset.slug][0].addresses_supported;
     var addresses = addrObj.addresses.receive;  //password login, has only receive addresses
+    var pubkey ='', privkey = '', privkeyhex = '';
     var chain = addrObj.chainModel;
     var receiveArr = [];
     var receiveAddressesTotal = addresses.length;
+    var coin = coinjs.asset.symbol;
 
     console.log('addresses: ', addresses);
     /*// address balance structure
@@ -1218,8 +1285,12 @@
     
       var balance = addresses[i].ext;
       var blockieIcon = makeBlockie(addresses[i].address);
+      pubkey = addresses[i].pubkey;
+      privkey = addresses[i].wif;
+      privkeyhex = addresses[i].privkey;
+
       // derived path in this case is compressed, uncompressed, bech32, segwit, evm etc...
-      receiveArr.push({'blockieIcon': blockieIcon, 'addr': addresses[i].address, 'derivedPath': addresses[i].type, 'path': true, 'ext': balance});
+      receiveArr.push({'coin': coin, 'blockieIcon': blockieIcon, 'addr': addresses[i].address, 'pubkey': pubkey, 'privkey': privkey, 'privkeyhex': privkeyhex, 'derivedPath': addresses[i].type, 'path': true, 'ext': balance});
     }
 
     console.log('receiveArr: ', receiveArr);
@@ -1251,12 +1322,13 @@
       var pathIsHardened = login_wizard.profile_data.generated[coinjs.asset.slug].seed.path.isHardened;
       var receiveArr = [];
       var changeArr = [];
-      var addr = '';
+      var addr = '', pubkey ='', privkey = '', privkeyhex = '';
       var path = '';
       var derivedPath = '';
       var hardenedAddress = "";
       var receiveAddressesTotal = 0;
       var changeAddressesTotal = 0;
+      var coin = coinjs.asset.symbol;
 
       // address balance structure
       /*var balance = {
@@ -1279,9 +1351,13 @@
           else
             addr = derived.receive[i].address.address;
 
+          pubkey = derived.receive[i].pubkey;
+          privkey = derived.receive[i].wif;
+          privkeyhex = derived.receive[i].privkey;
+
           balance = derived.receive[i].ext
           var blockieIcon = makeBlockie(addr);
-          receiveArr.push({'blockieIcon': blockieIcon, 'addr': addr, 'derivedPath': derivedPath, 'path': true, 'ext': balance});
+          receiveArr.push({'coin': coin, 'blockieIcon': blockieIcon, 'addr': addr, 'pubkey': pubkey, 'privkey': privkey, 'privkeyhex': privkeyhex, 'derivedPath': derivedPath, 'path': true, 'ext': balance});
 
         }
       }
@@ -1295,8 +1371,12 @@
           else
             addr = derived.change[i].address.address;
 
-            var blockieIcon = makeBlockie(addr);
-            changeArr.push({'blockieIcon': blockieIcon, 'addr': addr, 'derivedPath': derivedPath, 'path': true, 'ext': balance});
+          pubkey = derived.change[i].pubkey;
+          privkey = derived.change[i].wif;
+          privkeyhex = derived.change[i].privkey;
+
+          var blockieIcon = makeBlockie(addr);
+          changeArr.push({'coin': coin, 'blockieIcon': blockieIcon, 'addr': addr, 'pubkey': pubkey, 'privkey': privkey, 'privkeyhex': privkeyhex, 'derivedPath': derivedPath, 'path': true, 'ext': balance});
 
         }
       }

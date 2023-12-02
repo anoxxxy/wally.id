@@ -16,8 +16,8 @@ class CryptoProviderAPI {
               providers: {
                 'cryptoid.info': {
                   'url': 'https://chainz.cryptoid.info/{coin}/api.dws?q=multiaddr&active={address}&key={apikey}&n={time}',
-                  'coin': '',
-                  'delimiter': ',',
+                  'coin': null,
+                  'delimiter': '|',
                   'apiKey': '',
                   'time': 0,
                 },
@@ -30,6 +30,13 @@ class CryptoProviderAPI {
               coin_providers: {
                 // Add coin-specific services for Bitcoin
                 bitcoin: {
+                  'blockchain.info': {
+                    'url': 'https://blockchain.info/balance?active={address}&base=BTC&cors=true',
+                    'coin': null,
+                    'delimiter': ',',
+                    'apiKey': null,
+                    'time': null,
+                  },
                   service1: {
                     url: '...',
                     delimiter: '|',
@@ -277,6 +284,10 @@ class CryptoProviderAPI {
                     'url': 'https://api.etherscan.io/api?module=account&action=balancemulti&address={address}&tag=latest&apikey={apikey}',
                     'delimiter': ',',
                     'apiKey': '',
+                    'apiKey': '',
+                    'apiKey': '',
+                    
+
                   },
                   // Add more coin-specific services for the coin
                 },
@@ -432,13 +443,15 @@ class CryptoProviderAPI {
         },
       },
     };
-    this.chainServices = {
+
+    // apiServices categorizes supported blockchain services into "utxo" and "evm" chains, specifying available API calls for each chain.
+    this.apiServices = {
       utxo: ['balance', 'pushrawtx', 'listunspent'],
       evm: ['balance', 'pushrawtx'],
     };
     this.version = '0.01'; //class version
     this.providerRateLimits = {}; // Track rate limiting data
-    this.rateLimitInterval = 60000; // Rate limit interval in milliseconds
+    this.rateLimitInterval = 30000; // Rate limit interval in milliseconds
     /* Example of providerRateLimits
       this.providerRateLimits = {
       "provider1": {
@@ -456,34 +469,34 @@ class CryptoProviderAPI {
   }
   // Add a rate-limited request for a provider
   /**
-   * Make a rate-limited request for a specific provider. This method enforces a rate limit for each provider to
-   * prevent excessive requests within a specified time interval.
-   *
-   * @param {string} provider - The provider for which the request is being made.
-   * @param {function} requestFunction - The function that performs the actual request.
-   * @returns {Promise<boolean|*>} - A Promise that resolves with the result of the request if the rate limit
-   *     allows the request, or `false` if the rate limit has been exceeded.
+   * Make a rate-limited request to a provider using the specified request function.
+   * @param {string} provider - The provider's identifier.
+   * @param {Function} requestFunction - The function that performs the request.
+   * @returns {Promise<any|boolean>} A promise with the response data, or `false` if rate limit exceeded.
    */
   async makeRateLimitedRequest(provider, requestFunction) {
-    if (!this.providerRateLimits[provider]) {
-      // First request for this provider
-      this.providerRateLimits[provider] = {
-        lastRequestTime: Date.now(),
-      };
-      return await requestFunction();
-    }
+    // Get the current timestamp
     const currentTime = Date.now();
-    const lastRequestTime = this.providerRateLimits[provider].lastRequestTime;
-    if (currentTime - lastRequestTime >= this.rateLimitInterval) {
-      // It's been more than the specified interval since the last request
-      this.providerRateLimits[provider].lastRequestTime = currentTime;
+    
+    // Get rate limit data for the provider or initialize with default values
+    const rateLimitData = this.providerRateLimits[provider] || { lastRequestTime: 0 };
+
+    if (currentTime - rateLimitData.lastRequestTime >= this.rateLimitInterval) {
+      console.log('make api call');
+      // Rate limit interval exceeded, make the request
+      rateLimitData.lastRequestTime = currentTime;
+      this.providerRateLimits[provider] = rateLimitData;
       return await requestFunction();
-    }
-    else {
+    } else {
+      console.log('do not make api call');
       // Rate limit exceeded, don't make the request
+      console.log('Rate limit exceeded, dont make the request');
       return false;
     }
   }
+
+
+
   /**
    * Example usage of rate-limited request to retrieve custom provider data.
    *
@@ -551,11 +564,11 @@ class CryptoProviderAPI {
    * @returns {boolean|void} - Returns false if the chain or service is invalid, or undefined on success.
    */
   addCustomProvider(chainType, coin, service, provider, network = 'mainnet') {
-    const validChainServices = {
+    const validApiServices = {
       utxo: ['balance', 'pushrawtx', 'listunspent'],
       evm: ['balance', 'pushrawtx'],
     };
-    const validServices = this.chainServices[chainType];
+    const validServices = this.apiServices[chainType];
     if (!validServices || !validServices.includes(service)) {
       return false;
     }
@@ -614,14 +627,27 @@ class CryptoProviderAPI {
     const time = parseInt(customOptions.time) || Date.now(); // UTC Unix timestamp
     const coin = customOptions.coin || provider.coin;
 
+    /*
+    const {
+      addresses,
+      customDelimiter: delimiter,
+      customApiKey: apiKey,
+      customTime: time,
+      coin
+    } = customOptions;
+    */
     // Join multiple addresses using the delimiter
     const addressesString = customOptions.address.join(delimiter);
+
+    // Convert the coin ticker to lowercase
+    const coinTicker = (coin || '').toLowerCase();
+
 
     console.log('buildProviderURL provider: ', provider);
     console.log('buildProviderURL provider.url: ', provider.url);
     // Replace placeholders in the URL
     let urlWithReplacements = provider.url.replace('{address}', addressesString);
-    urlWithReplacements = urlWithReplacements.replace('{coin}', coin);
+    urlWithReplacements = urlWithReplacements.replace('{coin}', coinTicker);
     urlWithReplacements = urlWithReplacements.replace('{apikey}', apiKey);
     urlWithReplacements = urlWithReplacements.replace('{time}', time);
 
@@ -629,21 +655,27 @@ class CryptoProviderAPI {
 }
 
 }
+
+
+//*Dummy Samples API Function*//
+
+
+
 // Test 1: Add and retrieve custom provider (Valid Service)
-const manager = new CryptoProviderAPI();
-manager.addCustomProvider('utxo', 'custom-coin', 'balance', {
+const apiProvider = new CryptoProviderAPI();
+apiProvider.addCustomProvider('utxo', 'custom-coin', 'balance', {
   url: 'https://mybtcprovider.com',
   delimiter: ',',
   apiKey: 'myapikey123',
 });
-const customProvider = manager.getCustomProvider('utxo', 'custom-coin', 'balance', 'mainnet');
+const customProvider = apiProvider.getCustomProvider('utxo', 'custom-coin', 'balance', 'mainnet');
 if (customProvider) {
   console.log('Test 1: Custom Provider (Valid Service) - Test Passed');
 }else {
   console.log('Test 1: Custom Provider not found for a valid service - Test Failed');
 }
 // Test 2: Add custom provider to an invalid service
-const invalidServiceResult = manager.addCustomProvider('utxo', 'custom-coin', 'invalid-service', {
+const invalidServiceResult = apiProvider.addCustomProvider('utxo', 'custom-coin', 'invalid-service', {
   url: 'https://mybtcprovider.com',
   delimiter: ',',
   apiKey: 'myapikey123',
@@ -654,7 +686,7 @@ if (invalidServiceResult === false) {
   console.log('Test 2: Custom Provider added to an invalid service - Test Failed');
 }
 // Test 3: Add custom provider to an invalid chain type
-const invalidChainTypeResult = manager.addCustomProvider('unknown-chain', 'custom-coin', 'balance', {
+const invalidChainTypeResult = apiProvider.addCustomProvider('unknown-chain', 'custom-coin', 'balance', {
   url: 'https://mybtcprovider.com',
   delimiter: ',',
   apiKey: 'myapikey123',
@@ -665,48 +697,48 @@ if (invalidChainTypeResult === false) {
   console.log('Test 3: Custom Provider added to an invalid chain type - Test Failed');
 }
 // Test 4: Get custom provider with an unknown network
-const unknownNetworkProvider = manager.getCustomProvider('utxo', 'custom-coin', 'balance', 'unknown-network');
+const unknownNetworkProvider = apiProvider.getCustomProvider('utxo', 'custom-coin', 'balance', 'unknown-network');
 if (unknownNetworkProvider === false) {
   console.log('Test 4: Custom Provider not found for unknown network - Test Passed');
 }else {
   console.log('Test 4: Unexpected result - Test Failed');
 }
 // Test 5: Get custom provider with an unknown service
-const unknownServiceProvider = manager.getCustomProvider('utxo', 'custom-coin', 'unknown-service', 'mainnet');
+const unknownServiceProvider = apiProvider.getCustomProvider('utxo', 'custom-coin', 'unknown-service', 'mainnet');
 if (unknownServiceProvider === false) {
   console.log('Test 5: Custom Provider not found for unknown service - Test Passed');
 }else {
   console.log('Test 5: Unexpected result - Test Failed');
 }
 // Test 6: Get custom provider with an unknown coin
-const unknownCoinProvider = manager.getCustomProvider('utxo', 'unknown-coin', 'balance', 'mainnet');
+const unknownCoinProvider = apiProvider.getCustomProvider('utxo', 'unknown-coin', 'balance', 'mainnet');
 if (unknownCoinProvider === false) {
   console.log('Test 6: Custom Provider not found for unknown coin - Test Passed');
 }else {
   console.log('Test 6: Unexpected result - Test Failed');
 }
 // Test 7: Get custom provider data (Success Example 2)
-const successExample2 = manager.getCustomProviderData('evm', 'custom-coin', 'pushrawtx', 'mainnet');
+const successExample2 = apiProvider.getCustomProviderData('evm', 'custom-coin', 'pushrawtx', 'mainnet');
 if (successExample2) {
   console.log('Test 7: Success Example 2 - Custom Provider Data - Test Failed');
 }else {
   console.log('Test 7: Success Example 2 - Custom Provider Data not found - Test Passed');
 }
 // Test 8: Add and retrieve custom provider (Valid Service) on testnet
-manager.addCustomProvider('evm', 'custom-coin2', 'pushrawtx', {
+apiProvider.addCustomProvider('evm', 'custom-coin2', 'pushrawtx', {
   url: 'https://etherscan.com',
   delimiter: ',',
   apiKey: 'myapikey123',
 }, 'testnet');
 // Test 9: Get custom provider data (Success Example 3)
-const successExample3 = manager.getCustomProviderData('evm', 'custom-coin2', 'pushrawtx', 'testnet');
+const successExample3 = apiProvider.getCustomProviderData('evm', 'custom-coin2', 'pushrawtx', 'testnet');
 if (successExample3) {
   console.log('Test 9: Success Example 3 - Custom Provider Data - Test Passed');
 }else {
   console.log('Test 9: Success Example 3 - Custom Provider Data not found - Test Failed');
 }
 // Test 10: Get custom provider data (Failed Example - Custom provider does not exist)
-const failedExample = manager.getCustomProviderData('utxo', 'unknown-coin', 'balance', 'mainnet');
+const failedExample = apiProvider.getCustomProviderData('utxo', 'unknown-coin', 'balance', 'mainnet');
 if (failedExample === false) {
   console.log('Test 10: Failed Example - Custom Provider Data not found - Test Passed');
 }else {
@@ -717,7 +749,7 @@ if (failedExample === false) {
 // Using buildProviderURL with getUnifiedProviders:
 
 // Get unified providers for Ethereum on the mainnet
-const unifiedProviders = manager.getUnifiedProviders('utxo', 'mainnet');
+const unifiedProviders = apiProvider.getUnifiedProviders('utxo', 'mainnet');
 console.log('buildProviderURL 1 - getUnifiedProviders: ', unifiedProviders);
 if (unifiedProviders) {
   const provider = unifiedProviders['cryptoid.info'];
@@ -726,14 +758,14 @@ if (unifiedProviders) {
     address: ['0xd41c057fd1c78805AAC12B0A94a405c0461A6FBb', '0x8735015837bD10e05d9cf5EA43A2486Bf4Be156F'],
   };
 
-  const url = manager.buildProviderURL(provider, customOptions);
+  const url = apiProvider.buildProviderURL(provider, customOptions);
   console.log('buildProviderURL 1 - getUnifiedProviders: Unified Providers URL (Test Passed):', url);
 } else {
   console.log('buildProviderURL 1 - getUnifiedProvidersL: Unified Providers not found (Test Failed).');
 }
 
 /*
-const unifiedProviders = manager.getUnifiedProviders('evm', 'mainnet');
+const unifiedProviders = apiProvider.getUnifiedProviders('evm', 'mainnet');
 console.log('buildProviderURL 1 - getUnifiedProviders: ', unifiedProviders);
 if (unifiedProviders) {
   const provider = unifiedProviders['etherscan.io'];
@@ -741,16 +773,16 @@ if (unifiedProviders) {
     address: ['0xd41c057fd1c78805AAC12B0A94a405c0461A6FBb', '0x8735015837bD10e05d9cf5EA43A2486Bf4Be156F'],
   };
 
-  const url = manager.buildProviderURL(provider, customOptions);
+  const url = apiProvider.buildProviderURL(provider, customOptions);
   console.log('buildProviderURL 1 - getUnifiedProviders: Unified Providers URL (Test Passed):', url);
 } else {
   console.log('buildProvaiderUR 1 - getUnifiedProvidersL: Unified Providers not found (Test Failed).');
 }
 */
-
+/*
 // Using buildProviderURL with getCoinProviders:
 // Get coin-specific providers for Ethereum on the mainnet
-const coinProviders = manager.getCoinProviders('ethereum', 'evm', 'mainnet');
+const coinProviders = apiProvider.getCoinProviders('ethereum', 'evm', 'mainnet');
 console.log('buildProviderURL 2 - coinProviders: ', coinProviders);
 if (coinProviders) {
   const provider = coinProviders['etherscan.io'];
@@ -758,7 +790,7 @@ if (coinProviders) {
     address: ['0xd41c057fd1c78805AAC12B0A94a405c0461A6FBb', '0x8735015837bD10e05d9cf5EA43A2486Bf4Be156F'],
   };
 
-  const url = manager.buildProviderURL(provider, customOptions);
+  const url = apiProvider.buildProviderURL(provider, customOptions);
   console.log('buildProviderURL 2 - getCoinProviders: Coin Providers URL (Test Passed):', url);
 } else {
   console.log('buildProviderURL 2 - getCoinProviders: Coin Providers not found. (Test Failed)');
@@ -766,7 +798,7 @@ if (coinProviders) {
 
 //  Using buildProviderURL with getCustomProvider
 // Get a custom provider for a specific chain, service, and coin
-const customProvider3 = manager.getCustomProvider('evm', 'ethereum', 'balance', 'mainnet');
+const customProvider3 = apiProvider.getCustomProvider('evm', 'ethereum', 'balance', 'mainnet');
 console.log('buildProviderURL 3 - getCustomProvider: ', customProvider3);
 if (customProvider3) {
   const firstProvider = Object.values(customProvider3)[0];
@@ -777,8 +809,124 @@ if (customProvider3) {
   };
   console.log('customProvider3: ', customProvider3);
 
-  const url = manager.buildProviderURL(firstProvider, customOptions);
+  const url = apiProvider.buildProviderURL(firstProvider, customOptions);
   console.log('buildProviderURL 3 - getCustomProvider: Custom Provider URL (Test Passed):', url);
 } else {
   console.log('buildProviderURL 3 - getCustomProvider: Custom Provider not found (Test Failed).');
 }
+
+
+/*
+
+function getProviderForAssetAndApiService(asset, apiService, chainType, network) {
+  const providersKey = wally_fn.networks[network][asset].asset.providers[apiService];
+
+  if (providersKey) {
+    // Check if there are any unified providers for the specified ApiService
+    const unifiedProviders = apiProvider.getUnifiedProviders(chainType, network);
+
+    for (const providerName in providersKey) {
+      if (unifiedProviders && unifiedProviders[providerName]) {
+        // Return the unified provider name and mark it as a unified provider
+        return { name: providerName, type: 'unified' };
+      }
+    }
+  }
+
+  // If there are no unified providers, check for custom providers for the specified ApiService
+  const customProviders = apiProvider.getCoinProviders(asset, chainType, network);
+
+  for (const providerName in customProviders) {
+    // Return the custom provider name and mark it as a coin-specific provider
+    return { name: providerName, type: 'coin-specific' };
+  }
+
+  // If no providers are found, return null
+  return null;
+}
+
+// Example usage:
+const asset = 'bitcoin';
+const apiService = 'balance'; // 'balance', 'listunspent', etc.
+const chainType = 'utxo'; // 'utxo', 'evm', etc.
+const network = wally_fn.network; // 'mainnet' or 'testnet'
+
+const selectedProvider = getProviderForAssetAndApiService(asset, apiService, chainType, network);
+if (selectedProvider) {
+  console.log(`Selected provider for ${asset} (${network}) - ${apiService}: ${selectedProvider.name}`);
+  console.log(`Provider type: ${selectedProvider.type}`);
+} else {
+  console.log(`No providers found for ${asset} (${network}) - ${apiService}`);
+}
+
+
+
+*/
+
+
+
+
+
+
+/*
+function getUnifiedProviderForAsset(asset, apiService, chainType, network) {
+  const providersKey = wally_fn.networks[network][asset].asset.providers[apiService];
+
+  if (providersKey) {
+    // Check if there are any unified providers for the specified ApiService
+    const unifiedProviders = apiProvider.getUnifiedProviders(chainType, network);
+
+    for (const providerName in providersKey) {
+      if (unifiedProviders && unifiedProviders[providerName]) {
+        // Return the unified provider name and mark it as a unified provider
+        return { name: providerName, type: 'unified' };
+      }
+    }
+  }
+
+  // If no suitable unified providers are found, return null
+  return null;
+}
+
+function getCoinProviderForAsset(asset, apiService, chainType, network) {
+  const providersKey = wally_fn.networks[network][asset].asset.providers[apiService];
+
+  if (providersKey) {
+    // Check if there are any coin-specific providers for the specified ApiService
+    const coinProviders = apiProvider.getCoinProviders(asset, chainType, network);
+
+    for (const providerName in providersKey) {
+      if (coinProviders && coinProviders[providerName]) {
+        // Return the coin-specific provider name and mark it as a coin-specific provider
+        return { name: providerName, type: 'coin-specific' };
+      }
+    }
+  }
+
+  // If no suitable coin-specific providers are found, return null
+  return null;
+}
+
+// Example usage:
+const asset = 'bitcoin';
+const apiService = 'balance'; // 'balance', 'listunspent', etc.
+const chainType = 'utxo'; // 'utxo', 'evm', etc.
+const network = wally_fn.network; // 'mainnet' or 'testnet'
+
+const selectedUnifiedProvider = getUnifiedProviderForAsset(asset, apiService, chainType, network);
+const selectedCoinProvider = getCoinProviderForAsset(asset, apiService, chainType, network);
+
+console.log(`Unified Provider type: ${selectedUnifiedProvider.type}`);
+console.log(`Coin Provider type: ${selectedCoinProvider.type}`);
+
+if (selectedUnifiedProvider) {
+  console.log(`Selected unified provider for ${asset} (${network}) - ${apiService}: ${selectedUnifiedProvider.name}`);
+  console.log(`Provider type: ${selectedUnifiedProvider.type}`);
+} else if (selectedCoinProvider) {
+  console.log(`Selected coin-specific provider for ${asset} (${network}) - ${apiService}: ${selectedCoinProvider.name}`);
+  console.log(`Provider type: ${selectedCoinProvider.type}`);
+} else {
+  console.log(`No providers found for ${asset} (${network}) - ${apiService}`);
+}
+
+*/

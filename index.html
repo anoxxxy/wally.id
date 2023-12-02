@@ -473,14 +473,19 @@
                     </div>
                     <!-- Connect logos -->
                     <div class="row mt-3 py-3">
-                      <div class="col-6">
+                      <div class="col-4">
                         <div class="text-center">
-                          <a href="https://t.me/wallyid" alt="Wally.id - Official Telegram group"><img src="./assets/images/brands/telegram_logo.svg" class="icon64" /></a>
+                          <a href="https://t.me/wallyid" alt="Wally.id - Official Telegram group" target="_blank"><img src="./assets/images/brands/telegram_logo.svg" class="icon64" /></a>
                         </div>
                       </div>
-                      <div class="col-6">
+                      <div class="col-4">
                         <div class="text-center">
-                          <a href="https://twitter.com/WallyIDOfficial" alt="Wally.id - Official Twitter group"><img src="./assets/images/brands/twitter_logo.svg" class="icon64" /></a>
+                          <a href="https://twitter.com/WallyIDOfficial" alt="Wally.id - Official Twitter group" target="_blank"><img src="./assets/images/brands/twitter_logo.svg" class="icon64" /></a>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="text-center">
+                          <a href="https://discord.gg/d6heuxun4v" alt="Wally.id - Official Discord group" target="_blank"><img src="./assets/images/brands/discord_logo.svg" class="icon64" /></a>
                         </div>
                       </div>
                     </div>
@@ -1105,7 +1110,7 @@
                 <div class="card-openwallet-body overflow-visible">
                   <div class="p-1 py-1">
                     <div class="container">
-                      <!-- Quick Advanced Options Button -->
+                      <!-- Quick Advanced Options Button 
                       <div class="row no-gutter">
                         <div class="col-12">
                           <div class="callout-title text-muted">Your Address</div>
@@ -1132,36 +1137,38 @@
                           </div>
                         </div>
                       </div>
+                    -->
+
                       <div class="row no-gutter">
                         <!-- Wallet Tabs-->
                         <div class="col-12">
                           <ul class="nav nav-tabs addIndicator walletMenu" role="tablist">
                             <div class="nav-slider"></div>
                             <li class="nav-item">
-                              <a class="nav-link active" id="asset-tab" data-toggle="tab" href="#wallet/asset" role="tab" data-target="#wallet_asset" data-asset="" >
+                              <a class="nav-link active" id="asset-tab" data-toggle="tab" href="#wallet/asset" role="tab" data-target="#wallet_asset" data-asset-info="" >
                                 <img src="./assets/images/crypto/walrus-wally-logo.svg" class="icon24" /> Info
                               </a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="send-tab" href="#wallet/send" data-target="#wallet_send" data-asset="" data-toggle="tab" role="tab" > <img src="./assets/images/send.svg" class="icon24" /> Send </a>
+                              <a class="nav-link" id="send-tab" href="#wallet/send" data-target="#wallet_send" data-asset-info="" data-toggle="tab" role="tab" > <img src="./assets/images/send.svg" class="icon24" /> Send </a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="receive-tab" data-toggle="tab" href="#wallet/receive" data-target="#wallet_receive" data-asset="" role="tab" >
+                              <a class="nav-link" id="receive-tab" data-toggle="tab" href="#wallet/receive" data-target="#wallet_receive" data-asset-info="" role="tab" >
                                 <img src="./assets/images/receive.svg" class="icon24" /> Receive
                               </a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link" id="addresses-tab" data-toggle="tab" href="#wallet/addresses" data-target="#wallet_addresses" data-asset="" role="tab" >
+                              <a class="nav-link" id="addresses-tab" data-toggle="tab" href="#wallet/addresses" data-target="#wallet_addresses" data-asset-info="" role="tab" >
                                 <img src="./assets/images/wallet-1.svg" class="icon24" /> Addresses
                               </a>
                             </li>
                             <li class="nav-item" data-content="Address Contacts">
-                              <a class="nav-link" id="contacts-tab" data-toggle="tab" href="#wallet/contacts" data-target="#wallet_contacts" data-asset="" role="tab" >
+                              <a class="nav-link" id="contacts-tab" data-toggle="tab" href="#wallet/contacts" data-target="#wallet_contacts" data-asset-info="" role="tab" >
                                 <img src="./assets/images/contacts.svg" class="icon24" /> Contacts
                               </a>
                             </li>
                             <li class="nav-item" data-content="Settings for API Providers">
-                              <a class="nav-link" id="settings-tab" data-toggle="tab" href="#wallet/settings" data-target="#wallet_settings" data-asset="" role="tab">
+                              <a class="nav-link" id="settings-tab" data-toggle="tab" href="#wallet/settings" data-target="#wallet_settings" data-asset-info="" role="tab">
                                 <img src="./assets/images/settings.svg" class="icon24" />
                               </a>
                             </li>
@@ -5533,6 +5540,109 @@
     </div>
   -->
   <!-- mediator modal -->
+
+  <!-- address info modal -->
+  <div id="addressInfoModal" class="modal fade bootstrap-dialog" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="bootstrap-dialog-header">
+            <div class="bootstrap-dialog-title">Address Info!</div>
+            <div class="bootstrap-dialog-close-button">
+              <button class="close" aria-label="close" data-dismiss="modal">×</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body ">
+          <div class="bootstrap-dialog-body">
+            <div class="bootstrap-dialog-message">
+              
+              <!-- Template - Address info -->
+              <div id="addressInfo" class="col-12 pb-2">
+                <!-- <div class="text-muted coin_utxo">
+                  <p>
+                    <b>Address format</b>: <span class="addressFormat">SegWit/Bech32/Legacy Compressed/Legacy Uncompressed</span>
+                  </p>
+                </div>
+              -->
+
+                <div class="input-group-callout" data-adress-info="qr_code_address">
+                  <div class="callout-title text-muted text-primary d-flex justify-content-center mx-auto mb-2">QR code of Address</div>
+                  <div id="addressInfoQrCode" class="d-flex justify-content-center mx-auto"></div>
+                </div>
+
+
+                <div class="input-group-callout" data-adress-info="address">
+                  <div class="callout-title text-muted text-primary"><span class="coin_symbol"></span> Address</div>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text cursor-pointer mr-0 ml-0 pr-2 pl-2"><img class="blockieIcon icon icon24"></span>
+                    </div>
+
+                    <input id="" type="text" class="form-control addr" readonly />
+                    <div class="input-group-append">
+                      <span class="input-group-text cursor-pointer" title="Copy Address" data-copy-content=""><i class="bi bi-copy icon"></i></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="input-group-callout" data-adress-info="path_type">
+                  <div class="callout-title text-muted text-primary">Path/Type</div>
+                  <div class="input-group">
+                    <input id="" type="text" class="form-control path_type" readonly />
+                    <div class="input-group-append">
+                      <span class="input-group-text cursor-pointer" title="Copy" data-copy-content=""><i class="bi bi-copy icon"></i></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="input-group-callout" data-adress-info="pubkey">
+                  <div class="callout-title text-muted text-primary">Public Key</div>
+                  <div class="input-group">
+                    <input id="" type="text" class="form-control pubkey" readonly />
+                    <div class="input-group-append">
+                      <span class="input-group-text cursor-pointer" title="Copy Public Key" data-copy-content=""><i class="bi bi-copy icon"></i></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="input-group-callout" data-adress-info="privkey">
+                  <div class="callout-title text-muted text-primary">Private Key (WIF)</div>
+                  <div class="input-group">
+                    <input id="" type="password" class="form-control privkey" readonly />
+                    <div class="input-group-append">
+                      <span class="showKey input-group-text cursor-pointer"><i class="bi bi-eye-fill"></i></span>
+                    </div>
+                    <div class="input-group-append">
+                      <span class="input-group-text cursor-pointer" title="Copy Private Key (WIF)" data-copy-content=""><i class="bi bi-copy icon"></i></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="input-group-callout" data-adress-info="privkeyhex">
+                  <div class="callout-title text-muted text-primary">Private Key (HEX)</div>
+                  <div class="input-group">
+                    <input id="" type="password" class="form-control privkeyhex" readonly />
+                    <div class="input-group-append">
+                      <span class="showKey input-group-text cursor-pointer"><i class="bi bi-eye-fill"></i></span>
+                    </div>
+                    <div class="input-group-append">
+                      <span class="input-group-text cursor-pointer" title="Copy Private  Key (HEX)" data-copy-content=""><i class="bi bi-copy icon"></i></span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <!-- //Template - Address info -->
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-sm btn-primary bootstrap4-dialog-button" data-dismiss="modal" id="warningFeeClose">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- //address info modal -->
+
   <!-- warning (fee) modal -->
   <div id="modalWarningFee" class="modal fade bootstrap-dialog" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -5813,7 +5923,7 @@
             <label>
               Mnemonic length <span class="text-muted">(words)</span>:
               <!--<input type="number" id="bipMnemonicLength" value="24" min='12' class="form-control bipMnemonicLength" >-->
-              <select id="bipMnemonicLength" class="client form-control bipMnemonicLength">
+              <select id="bipMnemonicLength" class="client form-control bipMnemonicLength mt-1">
                 <option value="12" selected>12 words</option>
                 <option value="15">15 words</option>
                 <option value="18">18 words</option>
@@ -5844,7 +5954,7 @@
           <div class="">
             <label>
               Mnemonic length <span class="text-muted">(words)</span>:
-              <select id="seedLoginMnemonicLength" class="client form-control w-100">
+              <select id="seedLoginMnemonicLength" class="client form-control w-100 seedLoginMnemonicLength m-1">
                 <option value="12" selected>12 words</option>
                 <option value="15">15 words</option>
                 <option value="18">18 words</option>
@@ -6249,6 +6359,9 @@ iceee - remove me later
   <!-- choose currency wallet modal -->
   <div class="hidden" id="entropybucket"></div>
   <div class="modal-backdrop fade show hidden"></div>
+
+  <!-- Template QR code element (used temporary) -->
+  <div id="qrcode_el" class="hidden"></div>
 
   <!-- Javascript Files -->
   <!-- Mikado Template Engine - lightweight yet super fast rendering framework-->
