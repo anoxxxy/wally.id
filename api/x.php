@@ -12,7 +12,9 @@
 /*
 https://docs.komodoplatform.com/mmV1/coin-integration/electrum-servers-list.html#updated-list-from-the-coins-repository
 
+electrumx servers list
 https://stats.kmd.io/atomicdex/electrum_status/
+https://1209k.com/bitcoin-eye/ele.php
 */
 //return the json response
 header("Content-Type: application/json;charset=utf-8");
@@ -35,13 +37,26 @@ function validateQueryParam($paramName, $errorMessage) {
 
 	//default settings
 	$useSSL = true;
-	$useSSL = ( isset($_GET['useSSL']) ? true : false);
+	$useSSL = ( isset($_GET['ssl']) ? true : false);
 
 	 ///**GET & POST ) Request Parameters
 	$asset_q = ( isset($_GET['asset']) ? $_GET['asset'] : '');
 	$method_q = ( isset($_GET['method']) ? $_GET['method'] : '');
+	
+		//used for batch requests
+	$total_requests = 0;
+
 		//params for ElectrumX
 	$scripthash_q = ( isset($_GET['scripthash']) ? $_GET['scripthash'] : '');
+	// If $scripthash_q is not empty, split the input by commas and store in an array
+	$scripthash_values = !empty($scripthash_q) ? explode(',', $scripthash_q) : array();
+	// Set $total_requests to the number of elements in $scripthash_values
+	$total_requests = count($scripthash_values);
+
+	if($total_requests > 1)
+		$scripthash_q = $scripthash_values[0];
+
+	
 	$rawtx_q = ( isset($_GET['rawtx']) ? $_GET['rawtx'] : '');
 	$tx_hash_q = ( isset($_GET['tx_hash']) ? $_GET['tx_hash'] : '');
 	$verbose_q = ( isset($_GET['verbose']) ? $_GET['verbose'] : '');
@@ -133,7 +148,12 @@ function validateQueryParam($paramName, $errorMessage) {
 
 
 	}
+	//for all other methods
+	else if (array_key_exists($method_q, $electrum_api[$method_q])) {
 
+		$params_q = "";
+		$scripthash_q = 'wally';
+	}
 	
 	if ($params_q != '')
 		$params_q = ', "params":['.$params_q.']';
@@ -154,14 +174,44 @@ function validateQueryParam($paramName, $errorMessage) {
 	///$port = 50012;
 	$timeoutInSeconds = 30;
 	 
+	
+	//batch rquest
+	//$query='[{"id": "'.$scripthash_q.'_", "jsonrpc":"2.0", "method": "'.$method_q.'" '.$params_q.'}, {"id": "'.$scripthash_q.'", "jsonrpc":"2.0", "method": "'.$method_q.'" '.$params_q.'}]';
+	
+	//single request
+	$query='{"id": "'.$scripthash_q.'", "jsonrpc":"2.0", "method": "'.$method_q.'" '.$params_q.'}';
 
-	$query='{"id": "'.$asset_q.'", "jsonrpc":"2.0", "method": "'.$method_q.'" '.$params_q.'}';
+	//only prepare for json batch request when there is more than 1 query
+	if ($total_requests>1) {
+		$json_query = '';
+		// Duplicate the string and create an array
+		for ($i = 0; $i < $total_requests; $i++) {
+		    $json_query .= $query.',';
+		}
+
+		$json_query = rtrim($json_query, ',');
+
+		// set the query from json_output
+		$json_query = '['.$json_query.']';
+	}else
+		$json_query = $query;
+	
+
+	
+
+	//sending batch request example
+	//$query.='[{"id": "btc1", "jsonrpc":"2.0", "method": "blockchain.scripthash.listunspent" , "params":["d41073e36a5b6123efcce7214d2cea7f1502d28496fdc1b3906f1350e2bce056"]}, {"id": "btc2", "jsonrpc":"2.0", "method": "blockchain.scripthash.listunspent" , "params":["d41073e36a5b6123efcce7214d2cea7f1502d28496fdc1b3906f1350e2bce056"]}]';
+
+	//$query='[{"id": 1, "jsonrpc":"2.0", "method": "blockchain.scripthash.get_balance", "params": ["716decbe1660861c3d93906cb1d98ee68b154fd4d23aed9783859c1271b52a9c"]}, {"id": 2, "jsonrpc":"2.0", "method": "blockchain.scripthash.get_balance", "params": ["9f23070df9a696196571f1be061059dea4076d72ee6b321aff3b749967c6f5b7"]}]';
+	
+	//echo json_encode($json_query, JSON_PRETTY_PRINT);
+	//exit();
 	
 	if ( $exit_q) {
-		echo json_encode($query, JSON_PRETTY_PRINT);
+		echo json_encode($json_query, JSON_PRETTY_PRINT);
 		exit();
 	}
-
+//$ echo '[{"id": 1, "method": "blockchain.scripthash.get_balance", "params": ["716decbe1660861c3d93906cb1d98ee68b154fd4d23aed9783859c1271b52a9c"]}, {"id": 2, "method": "blockchain.scripthash.get_balance", "params": ["9f23070df9a696196571f1be061059dea4076d72ee6b321aff3b749967c6f5b7"]}]' | timeout 2 openssl s_client -quiet  -connect electrum1.bluewallet.io:443 2>/dev/null
 
 //SSL connection
 // Function to handle error responses
@@ -180,10 +230,10 @@ function connectUsingSSL($host, $port, $query, $timeoutInSeconds) {
     $context = stream_context_create();
     stream_context_set_option($context, 'ssl', 'allow_self_signed', true);
     stream_context_set_option($context, 'ssl', 'verify_peer_name', false);
-    
+
     try {
         $socket = stream_socket_client('ssl://' . $host . ':' . $port, $errno, $errstr, $timeoutInSeconds, STREAM_CLIENT_CONNECT, $context);
-        
+
         if ($socket) {
             fwrite($socket, $query . "\n");
             $value = fread($socket, 81920);
@@ -202,12 +252,19 @@ function connectUsingSSL($host, $port, $query, $timeoutInSeconds) {
             echo json_encode($result, JSON_PRETTY_PRINT);
             exit();
         } else {
-            handleErrorResponse("SSL 1.1 - Connection Failed: $errno - $errstr");
+            // Check if there was an error during the SSL connection
+            if ($errno) {
+                handleErrorResponse("SSL 1.1 - Connection Failed: $errno - $errstr");
+            } else {
+                // Handle other SSL connection errors here if needed
+                handleErrorResponse("SSL 1.1 - Connection Failed for an unknown reason");
+            }
         }
     } catch (Exception $e) {
         handleErrorResponse("SSL 1.2: " . $e->getMessage());
     }
 }
+
 
 // Function to connect using TCP
 function connectUsingTCP($host, $port, $query, $timeoutInSeconds) {
@@ -223,6 +280,9 @@ function connectUsingTCP($host, $port, $query, $timeoutInSeconds) {
                 throw new Exception("Error reading response");
             }
 
+            //echo json_encode($value, JSON_PRETTY_PRINT);
+            //exit();
+
             $result = json_decode($value);
 
             if ($result === null) {
@@ -232,9 +292,14 @@ function connectUsingTCP($host, $port, $query, $timeoutInSeconds) {
             echo json_encode($result, JSON_PRETTY_PRINT);
             exit();
         } else {
-            $errorMessage = socket_strerror(socket_last_error());
-            $errorDetails = "Failed to connect to {$host}:{$port} - {$errorMessage}";
-            handleErrorResponse("TCP 1.1 - Connection Failed: " . $errorDetails);
+            // Check if there was an error during connection
+            if ($errno) {
+                $errorDetails = "Failed to connect to {$host}:{$port} - {$errstr}";
+                handleErrorResponse("TCP 1.1 - Connection Failed: " . $errorDetails);
+            } else {
+                // Handle other connection errors here if needed
+                handleErrorResponse("TCP 1.1 - Connection Failed for an unknown reason");
+            }
         }
     } catch (JsonException $jsonException) {
         handleErrorResponse("TCP 1.2 JSON Exception: " . $jsonException->getMessage());
@@ -243,10 +308,15 @@ function connectUsingTCP($host, $port, $query, $timeoutInSeconds) {
     }
 }
 
-if ($useSSL) {
-    connectUsingSSL($host, $port, $query, $timeoutInSeconds);
-} else {
-    connectUsingTCP($host, $port, $query, $timeoutInSeconds);
+
+try {
+	if ($useSSL) {
+	    connectUsingSSL($host, $port, $json_query, $timeoutInSeconds);
+	} else {
+	    connectUsingTCP($host, $port, $json_query, $timeoutInSeconds);
+	}
+} catch (Exception $e) {
+	handleErrorResponse("Connection Error: " . $e->getMessage());
 }
 
 // If the code runs below this, something is wrong

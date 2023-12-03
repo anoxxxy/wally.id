@@ -2402,7 +2402,7 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 
 		//var electrum_node = 'electrumx-four.artbyte.live:50012';	//network
 		var electrum_node = coinjs.asset.api.unspent_outputs[wally_fn.provider.utxo];
-		var use_ssl = (wally_fn.provider.utxo).includes('(SSL)') ? "useSSL=true&" : "";
+		var use_ssl = (wally_fn.provider.utxo).includes('(SSL)') ? "ssl=true&" : "";
 
 		var ticker = (coinjs.asset.symbol).toLowerCase();
 		$.ajax ({
@@ -2751,7 +2751,7 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
 		var electrum_node = coinjs.asset.api.broadcast[wally_fn.provider.broadcast];
-		var use_ssl = (wally_fn.provider.broadcast).includes('(SSL)') ? "useSSL=true&" : "";
+		var use_ssl = (wally_fn.provider.broadcast).includes('(SSL)') ? "ssl=true&" : "";
 
 
 		var ticker = (coinjs.asset.symbol).toLowerCase();
@@ -2967,7 +2967,7 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 			var ticker = (coinjs.asset.symbol).toLowerCase();
 
 			var electrum_node = coinjs.asset.api.unspent_outputs[wally_fn.provider.utxo];
-			var use_ssl = (wally_fn.provider.utxo).includes('(SSL)') ? "useSSL=true&" : "";
+			var use_ssl = (wally_fn.provider.utxo).includes('(SSL)') ? "ssl=true&" : "";
 
 
 			console.log("getBalanceCryptoid: ", redeem);
