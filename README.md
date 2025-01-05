@@ -12,12 +12,23 @@ These improvements are the result of dedicated contributions from @anoxxxy.
 
 ## Wally.id Community
 
-- **Telegram:** [Official Telegram](https://t.me/wallyid)
-- **Twitter:** [Official Twitter](https://twitter.com/WallyIDOfficial)
-- **Reddit:** [Official Reddit](https://www.reddit.com/r/wallyid/)
+- **Wally.id on Telegram:** [Official Telegram](https://t.me/wallyid)
+- **Wally.id - Telegram News:** [Official Telegram](https://t.me/wallyid_news)
+- **Wally.id on X:** [Official Twitter](https://x.com/WallyIDOfficial)
+- **Wally.id on Reddit:** [Official Reddit](https://www.reddit.com/r/wallyid/)
 
 
-## Wally.id - Latest Features (v1.9)
+
+## Wally.id - Latest Features (v1.10)
+
+- **API Providers:** View your balance.
+- **Electrum Wallet Integration:** Various API providers, including ElectrumX nodes, were added.
+- **Node URL Selection:** Improved functionality for selecting node URLs based on the node type (balance, listunspent, pushrawtx).
+- **Error Handling:** Refined logic for invalid node type handling.
+- **Code Optimization:** Simplified and optimized the code for better readability and performance.
+
+
+## Wally.id - version v1.9
 
 - **BIP Integration:** Wally.id now supports BIP 32, 39, 44, 49, and 84 Seed Mnemonics for enhanced security and compatibility.
 - **Electrum Wallet Support:** Easily generate and import your Electrum Wallet Seed and perform key derivation within Wally.id.
