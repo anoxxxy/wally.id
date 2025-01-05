@@ -173,8 +173,13 @@ $(document).ready(function() {
 
   // API Provider Elements
   coinbinf.apiBalanceProviderSelector = $('#apiBalanceProviderSelector');
+  coinbinf.apiBalanceProviderNodeSelector = $('#apiBalanceProviderNodeSelector');
+
   coinbinf.apiListunspentProviderSelector = $('#apiListunspentProviderSelector');
+  coinbinf.apiListunspentProviderNodeSelector = $('#apiListunspentProviderNodeSelector');
+  
   coinbinf.apiPushrawtxProviderSelector = $('#apiPushrawtxProviderSelector');
+  coinbinf.apiPushrawtxProviderNodeSelector = $('#apiPushrawtxProviderNodeSelector');
 
 	/* open wallet code */
 
@@ -260,9 +265,9 @@ profile_data = {
       		return;
 		}
 
-  	custom.showModal(modalTitle, modalMessage, 'success');
+  		custom.showModal(modalTitle, modalMessage, 'success');
 
-  	/*
+
 		if (login_wizard.profile_data.wallet_type === 'multisig') {
 			var totalKeys = login_wizard.profile_data.hex_key.length;
 			//generate public keys from the hex key
@@ -344,8 +349,6 @@ profile_data = {
 		$("#walletKeys .privkeyhex").val(hexkey);
 		$("#walletKeys .pubkey").val(pubkey);
 
-		*/
-
 		Router.navigate('wallet');
 		//$("#login").addClass('hidden');
 		//$("#openLogin").hide();
@@ -385,7 +388,6 @@ profile_data = {
 	});
 	*/
 
-	/*
 	$("#walletSegwit").click(function(){
 		if($(this).is(":checked")){
 			$("#walletLegacy")[0].checked = false;
@@ -465,10 +467,6 @@ profile_data = {
 
 		//$("#openBtn").click();
 	});
-
-	*/
-
-
 
 
 	$("#walletBalance, #walletQrCode").click(function(){
@@ -2402,13 +2400,13 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 
 		//var electrum_node = 'electrumx-four.artbyte.live:50012';	//network
 		var electrum_node = coinjs.asset.api.unspent_outputs[wally_fn.provider.utxo];
-		var use_ssl = (wally_fn.provider.utxo).includes('(SSL)') ? "ssl=true&" : "";
+		var protocol = (wally_fn.provider.utxo).includes('(SSL)') ? "protocol=ssl&" : "protocol=tcp&";
 
 		var ticker = (coinjs.asset.symbol).toLowerCase();
 		$.ajax ({
 		  type: "GET",
 		  //https://wally.id/api/x.php?asset=aby&method=blockchain.scripthash.listunspent&scripthash=3f677078a1a9ad42d277fd91e38c102ff89d5cb5160f1a9595dca6552e84561c&server=electrumx-four.artbyte.live:50012
-		  url: "https://wally.id/api/x.php?"+use_ssl+"asset="+ticker+"&method=blockchain.scripthash.listunspent&scripthash="+ coinjs.addressToScriptHash(redeem.addr) + '&server='+electrum_node,
+		  url: "https://wally.id/api/x.php?"+protocol+"asset="+ticker+"&method=blockchain.scripthash.listunspent&scripthash="+ coinjs.addressToScriptHash(redeem.addr) + '&server='+electrum_node,
 		  dataType: "json",
 		  error: function() {
 			$("#redeemFromStatus").removeClass('hidden').html('<i class="bi bi-exclamation-triangle-fill"></i> Unexpected error, unable to retrieve unspent outputs!');
@@ -2751,14 +2749,14 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
 		var electrum_node = coinjs.asset.api.broadcast[wally_fn.provider.broadcast];
-		var use_ssl = (wally_fn.provider.broadcast).includes('(SSL)') ? "ssl=true&" : "";
+		var protocol = (wally_fn.provider.broadcast).includes('(SSL)') ? "protocol=ssl&" : "protocol=tcp&";
 
 
 		var ticker = (coinjs.asset.symbol).toLowerCase();
 		var rawtx = $("#rawTransaction").val();
 		$.ajax ({
 			type: "POST",
-			url: "https://wally.id/api/x.php?"+use_ssl+"asset="+ticker+"&method=blockchain.transaction.broadcast&server="+electrum_node+"&rawtx="+rawtx,
+			url: "https://wally.id/api/x.php?"+protocol+"asset="+ticker+"&method=blockchain.transaction.broadcast&server="+electrum_node+"&rawtx="+rawtx,
 			data: rawtx,
 			error: function(data) {
 				var r = 'Failed to broadcast';
@@ -2967,7 +2965,7 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 			var ticker = (coinjs.asset.symbol).toLowerCase();
 
 			var electrum_node = coinjs.asset.api.unspent_outputs[wally_fn.provider.utxo];
-			var use_ssl = (wally_fn.provider.utxo).includes('(SSL)') ? "ssl=true&" : "";
+			var use_ssl = (wally_fn.provider.utxo).includes('(SSL)') ? "useSSL=true&" : "";
 
 
 			console.log("getBalanceCryptoid: ", redeem);
@@ -3240,8 +3238,27 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 		try {
 			var decode = tx.deserialize(coinbinf.verifyScript.val());
 			console.log('decode: ', decode);
-			if (!decode)
+			
+			//decode failed
+			if (!decode) {
+
+				//check if BLK, if so try to decode in v1 format
+				if (wally_fn.assetInfo.symbol == 'BLK' && wally_fn.assetInfo.version == 2) {
+					console.log('BLK try decode version 1');
+					coinjs.asset.version = 1;
+					coinjs.txExtraTimeField = true;
+
+					decode = tx.deserialize(coinbinf.verifyScript.val());
+					//set to default again
+					//coinjs.asset.version = wally_fn.assetInfo.version;
+					coinjs.asset.version = wally_fn.networks[wally_fn.network][wally_fn.asset].asset.version;
+					coinjs.txExtraTimeField = wally_fn.networks[wally_fn.network][wally_fn.asset].txExtraTimeField;
+
+					if (!decode)
+						return false;
+				} else 
 				return false;
+			}
 			//if the transaction has no inputs: this is not a transaction!
 			if (!decode.ins.length)	//iceeee add back
 				throw false;
@@ -3257,7 +3274,7 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 			}
 
 			$("#verifyTransactionData .transactionSize").html(decode.size()+' <i>bytes</i>');
-			//$("#verifyTransactionData .transactionLockTime").html(decode['lock_time']);
+			//$("#verifyTransactionDataData .transactionLockTime").html(decode['lock_time']);
 			$("#verifyTransactionData .transactionLockTime").html((decode['lock_time'] >= 500000000)? (new Date(decode['lock_time']*1000).toUTCString()) : ('<span class="text-muted">Block height '+decode['lock_time']+'</span>') );
 
 			if (decode['unit']){

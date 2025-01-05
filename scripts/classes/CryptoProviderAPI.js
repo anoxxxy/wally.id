@@ -7,7 +7,10 @@
  * Visit https://github.com/anoxxxy/wally.id or https://wally.id for more information.
  */
 class CryptoProviderAPI {
+
+
   constructor() {
+    this.API_BASE_URL = this.getBaseUrl();
     this.CryptoAPIs = {
       utxo: {
         mainnet: {
@@ -20,6 +23,16 @@ class CryptoProviderAPI {
                   'delimiter': '|',
                   'apiKey': '',
                   'time': 0,
+                },
+                'electrumx': {
+                  //https://wally.id/api/x.php?asset=btc&method=blockchain.scripthash.listunspent&scripthash=9ac16650dce17e4b9784ade9c16182f9dca17c160db7002a98168a1dd22fe688&server=api.ordimint.com:50001
+                  //'url': 'https://wally.id/api/x.php?protocol={protocol}&asset={coin}&server={server}&method=blockchain.scripthash.get_balance&scripthash={address}&verbose={verbose}',
+                  'url': this.API_BASE_URL+'?protocol={protocol}&asset={coin}&server={server}&method=blockchain.scripthash.get_balance&scripthash={address}&verbose={verbose}',
+                  'coin': null,
+                  'delimiter': ',',
+                  'server': '',
+                  'protocol': '',
+                  'verbose': false,
                 },
                 service2: {
                   url: '...',
@@ -59,7 +72,21 @@ class CryptoProviderAPI {
             custom_providers: {}, // User custom providers
           },
           listunspent: {
+
+            
+
             providers: {
+              'electrumx': {
+                  //https://wally.id/api/x.php?asset=btc&method=blockchain.scripthash.listunspent&scripthash=9ac16650dce17e4b9784ade9c16182f9dca17c160db7002a98168a1dd22fe688&server=api.ordimint.com:50001
+                  //'url': 'https://wally.id/api/x.php?protocol={protocol}&asset={coin}&server={server}&method=blockchain.scripthash.listunspent&scripthash={address}&verbose={verbose}',
+                  'url': this.API_BASE_URL+'?protocol={protocol}&asset={coin}&server={server}&method=blockchain.scripthash.listunspent&scripthash={address}&verbose={verbose}',
+                  'coin': null,
+                  'delimiter': ',',
+                  'server': '',
+                  'protocol': '',
+                  'verbose': false,
+                },
+                
               service1: {
                 url: '...',
                 delimiter: ',',
@@ -467,6 +494,32 @@ class CryptoProviderAPI {
   };
   */
   }
+
+  // Determine if the current environment is localhost
+  isLocalhost() {
+    return (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname === ''
+    );
+  }
+
+  // Dynamically generate the base URL for the API
+  getBaseUrl() {
+    const { protocol, hostname, port, pathname } = window.location;
+
+    // Extract the project folder name (if any) from the pathname
+    const projectPath = pathname.split('/').filter(Boolean)[0] || '';
+
+    // Construct the base URL dynamically
+    if (this.isLocalhost()) {
+      return `${protocol}//${hostname}${port ? `:${port}` : ''}/${projectPath}/api/x.php`;
+    }
+
+    // Default to production base URL
+    return `${protocol}//${hostname}${port ? `:${port}` : ''}/api/x.php`;
+  }
+
   // Add a rate-limited request for a provider
   /**
    * Make a rate-limited request to a provider using the specified request function.
@@ -650,6 +703,44 @@ class CryptoProviderAPI {
     urlWithReplacements = urlWithReplacements.replace('{coin}', coinTicker);
     urlWithReplacements = urlWithReplacements.replace('{apikey}', apiKey);
     urlWithReplacements = urlWithReplacements.replace('{time}', time);
+
+    return urlWithReplacements;
+}
+
+buildProviderElectrumXURL(provider, customOptions) {
+    // Use the provider's values if custom values are not provided
+    const delimiter = customOptions.delimiter || provider.delimiter;
+    const server = customOptions.server || provider.server;
+    const verbose = customOptions.verbose || provider.verbose;
+    const coin = customOptions.coin || provider.coin;
+    const protocol = customOptions.protocol ? customOptions.protocol : 'tcp';
+
+    /*
+    const {
+      addresses,
+      customDelimiter: delimiter,
+      customApiKey: apiKey,
+      customTime: time,
+      coin
+    } = customOptions;
+    */
+    // Join multiple addresses using the delimiter
+    const scriptHashString = customOptions.address.join(delimiter);
+    //const addressesString = customOptions.address.join(delimiter);
+
+    // Convert the coin ticker to lowercase
+    const coinTicker = (coin || '').toLowerCase();
+
+
+    console.log('buildProviderElectrumXURL provider: ', provider);
+    console.log('buildProviderElectrumXURL provider.url: ', provider.url);
+    console.log('buildProviderElectrumXURL provider.scriptHashString: ', scriptHashString);
+    // Replace placeholders in the URL
+    let urlWithReplacements = provider.url.replace('{address}', scriptHashString);
+    urlWithReplacements = urlWithReplacements.replace('{coin}', coinTicker);
+    urlWithReplacements = urlWithReplacements.replace('{server}', server);
+    urlWithReplacements = urlWithReplacements.replace('{protocol}', protocol);
+    urlWithReplacements = urlWithReplacements.replace('{verbose}', verbose);
 
     return urlWithReplacements;
 }

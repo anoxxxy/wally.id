@@ -66,19 +66,6 @@
               return;
             }
           }
-
-          //update coin info 
-          wally_kit.setCoinInfo({
-            'name': coinjs.asset.name,
-            'network': coinjs.asset.network,
-            'slug': coinjs.asset.slug,
-            'symbol': coinjs.asset.symbol,
-            'chainModel': coinjs.asset.chainModel,
-          });
-
-          //set address info to empty (for rendering specific address info later)
-          wally_kit.setAddressInfo({});
-
         }
         //extend coinjs with the updated asset configuration
         //"remove" bip types which is not common among other coins/assets
@@ -245,58 +232,6 @@
       //console.warn("");
     }
   }
-
-  /**
- * Sets the coin information in the login_wizard.profile_data.coin object.
- * @param {object} coinInfo - The coin information object.
- */
-wally_kit.setCoinInfo = function (coinInfo) {
-    // Set the property in the coin object
-    login_wizard.profile_data.coin.name = coinInfo.name;
-    login_wizard.profile_data.coin.network = coinInfo.network;
-    login_wizard.profile_data.coin.slug = coinInfo.slug;
-    login_wizard.profile_data.coin.symbol = coinInfo.symbol;
-    login_wizard.profile_data.coin.chainModel = coinInfo.chainModel;
-};
-
-
-  /**
- * Sets the address information in the login_wizard.profile_data.coin object.
- * @param {object} addressInfo - The address information object.
- */
-  wally_kit.setAddressInfo = function (addressInfo) {
-      // Check if the provided addressInfo object is empty
-      if (Object.keys(addressInfo).length === 0) {
-          // If empty, set address_info object to an empty object
-          login_wizard.profile_data.coin.address_info = {};
-      } else {
-          // If not empty, set address_info object to the provided addressInfo
-          login_wizard.profile_data.coin.address_info = addressInfo;
-      }
-  };
-/*
-  wally_kit.renderAddressInfo = function (addressInfo) {
-    
-    const coin = coinjs.asset.slug;
-    const coinSymbol = coinjs.asset.symbol;
-    const addr = addressInfo.address;
-
-    //Create QR code
-    $("#addressInfoQrCode").text("");
-    var qrcode = new QRCode("qrcode_el");
-    //qrcode.makeCode("bitcoin:"+address);
-    qrcode.makeCode(coin+':'+addr);
-
-    addressInfo.qrCode = qrcode._el.innerHTML;
-
-    //wally_kit.setAddressInfo(addressInfo);
-
-    wally_fn.tpl.viewAddressInfo.render(addressInfo);
-    //$('#addressInfoModal').modal('show');
-    
-  };
-*/
-
   /*
   @ Wallet Router settings
   */
@@ -532,12 +467,20 @@ wally_kit.setCoinInfo = function (coinInfo) {
         var apiProviderBalance = wally_kit.getCoinProvidersForApiService(coinjs.asset.api.providers, 'balance');
         var apiProviderListunspent = wally_kit.getCoinProvidersForApiService(coinjs.asset.api.providers, 'listunspent');
         var apiProviderPushrawtx = wally_kit.getCoinProvidersForApiService(coinjs.asset.api.providers, 'pushrawtx');
+        
+
 
         wally_fn.tpl.seed.viewBalanceProviderOptions.render(apiProviderBalance);
         wally_fn.tpl.seed.viewListunspentProviderOptions.render(apiProviderListunspent);
         wally_fn.tpl.seed.viewPushrawtxProviderOptions.render(apiProviderPushrawtx);
 
-
+        var apiProviderElectrumX = wally_kit.getElectrumXNodes();
+        //apiProviderElectrumX.nodes
+        //apiProviderElectrumX.custom_nodes
+        wally_fn.tpl.seed.viewBalanceProviderNodeOptions.render(apiProviderElectrumX.nodes);
+        wally_fn.tpl.seed.viewListunspentProviderNodeOptions.render(apiProviderElectrumX.nodes);
+        wally_fn.tpl.seed.viewPushrawtxProviderNodeOptions.render(apiProviderElectrumX.nodes);
+        
 
         //wallet settings page
         if (walletSubPage == 'settings') {
@@ -603,11 +546,15 @@ wally_kit.setCoinInfo = function (coinInfo) {
             'balance':  Object.keys(coinjs.asset.api.providers?.balance)[0] ?? null, //set the first provider as default, default to null if there is no provider
             'listunspent': coinjs.asset.api.providers?.listunspent && typeof coinjs.asset.api.providers.listunspent === 'object' ? Object.keys(coinjs.asset.api.providers.listunspent)[0] : null,
             'pushrawtx': Object.keys(coinjs.asset.api.providers?.pushrawtx)[0] ?? null,
+
+            'balance_node': null,
+            'listunspent_node': null,
+            'pushrawtx_node': null,
           };
         }
 
 
-        //set the user prefered API Provider
+        //set the user prefered API Provider, render API provider , render nodes
         if (login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.balance) {
           coinbinf.apiBalanceProviderSelector.val(login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.balance);
         }
@@ -617,6 +564,18 @@ wally_kit.setCoinInfo = function (coinInfo) {
         if (login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.pushrawtx) {
           coinbinf.apiPushrawtxProviderSelector.val(login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.pushrawtx);
         }
+        //set the user prefered API Node Provider
+        if (login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.balance_node) {
+          coinbinf.apiBalanceProviderNodeSelector.val(login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.balance_node);
+        }
+        if (login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.listunspent_node) {
+          coinbinf.apiListunspentProviderNodeSelector.val(login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.listunspent_node);
+        }
+        if (login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.pushrawtx_node) {
+          coinbinf.apiPushrawtxProviderNodeSelector.val(login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.pushrawtx_node);
+        }
+
+
 
         //coin - get balance
         await wally_kit.apiGetCoinBalance(coinbinf.apiBalanceProviderSelector.val());
@@ -1181,8 +1140,9 @@ wally_kit.setCoinInfo = function (coinInfo) {
         if (!wally_fn.networks[coinjs.asset.network][key][protocol])
           continue; // Skip the current iteration and move to the next one
       }
-
-      userAssetListArr.push({'name': value.asset.name, 'icon': value.asset.icon, 'chainModel': value.asset.chainModel, 'symbol': value.asset.symbol, 'slug': key});
+      const chainModel = value.asset.chainModel == 'account' ? 'evm' : value.asset.chainModel;
+       
+      userAssetListArr.push({'name': value.asset.name, 'icon': value.asset.icon, 'chainModel': chainModel, 'symbol': value.asset.symbol, 'slug': key});
 
     }
     //add user assets to the list
@@ -1303,6 +1263,10 @@ wally_kit.setCoinInfo = function (coinInfo) {
 
   }
 
+  wally_kit.walletRenderBalance = function(addressType = 'both') {
+    wally_fn.tpl.seed.viewReceiveAddresses.render(receiveArr);
+  }
+
   /*
    @ generate a list of wallet addresses for a seed
   */
@@ -1386,6 +1350,9 @@ wally_kit.setCoinInfo = function (coinInfo) {
         $('.coin_receive_addresses_total').text(receiveAddressesTotal);
         console.log('receiveArr: ', receiveArr);
         wally_fn.tpl.seed.viewReceiveAddresses.render(receiveArr);
+
+        login_wizard.profile_data.generated[coinjs.asset.slug][0].view.receive = receiveArr;
+
       } else
         coinbinf.receiveAddresses.addClass('hidden');
 
@@ -1394,6 +1361,8 @@ wally_kit.setCoinInfo = function (coinInfo) {
         $('.coin_change_addresses_total').text(changeAddressesTotal);
         console.log('changeArr: ', changeArr);
         wally_fn.tpl.seed.viewChangeAddresses.render(changeArr);
+
+        login_wizard.profile_data.generated[coinjs.asset.slug][0].view.change = changeArr;
       } else
         coinbinf.changeAddresses.addClass('hidden');
 
@@ -1513,7 +1482,7 @@ function processAddressesForEvm(apiResponse, addressesData) {
           // Other properties can be extracted and added here if needed
         };
 
-        wally_fn.setAddressBalanceInfo(addressType, i, balanceInfo);
+        wally_fn.setAddressBalanceInfo('evm', addressType, i, balanceInfo);
         console.log(`EVM - ${addressType} Address: found balance: ${address}`);
       } else {
         console.log(`EVM - ${addressType} Address: no balance: ${address}`);
@@ -1523,6 +1492,7 @@ function processAddressesForEvm(apiResponse, addressesData) {
 
   processAddress('receive', addressesData.receive);
   processAddress('change', addressesData.change);
+
 }
 
 
@@ -1535,7 +1505,9 @@ function processAddressesForEvm(apiResponse, addressesData) {
  */
 function processAddressesForCryptoId(apiResponse, addressesData) {
   const apiAddresses = apiResponse.addresses;
-
+  /*
+  {"addresses":[{"address":"BRT5BNeTkKwGfrqVodd63GNcmmTMEHGK9s","total_sent":0,"total_received":800000000,"final_balance":800000000,"n_tx":1},{"address":"B4aJexbwJxBWg4U9yvrj6TE5ophjKYSS7y","total_sent":0,"total_received":489300000,"final_balance":489300000,"n_tx":1}],"txs":[{"hash":"9f1ec568bb618c16a4cfce1cf15c7d42c86620701be662cb47cdcd1d0a2de80a","confirmations":1,"change":400000000,"time_utc":"2025-01-04T02:48:32Z","n":0},{"hash":"9f1ec568bb618c16a4cfce1cf15c7d42c86620701be662cb47cdcd1d0a2de80a","confirmations":1,"change":400000000,"time_utc":"2025-01-04T02:48:32Z","n":1},{"hash":"9f1ec568bb618c16a4cfce1cf15c7d42c86620701be662cb47cdcd1d0a2de80a","confirmations":1,"change":489300000,"time_utc":"2025-01-04T02:48:32Z","n":2}]}
+  */
   if (!apiAddresses.length) {
     console.log('Addresses are empty for Cryptoid!');
     return;
@@ -1552,8 +1524,8 @@ function processAddressesForCryptoId(apiResponse, addressesData) {
       const matchingApiResponse = apiAddresses.find(apiAddress => apiAddress.address === address);
       if (matchingApiResponse) {
         delete matchingApiResponse.address;
-        wally_fn.setAddressBalanceInfo(addressType, i, matchingApiResponse);
-        console.log(`Cryptoid - ${addressType} Address: found balance: ${address}`);
+        wally_fn.setAddressBalanceInfo('cryptoid.info', addressType, i, matchingApiResponse);
+        console.log(`Cryptoid - ${addressType} Address exists:  balance: ${address}`);
       } else {
         console.log(`Cryptoid - ${addressType} Address: no balance: ${address}`);
       }
@@ -1592,8 +1564,8 @@ function processAddressesForBlockchainInfo(apiResponse, addressesData) {
       const balanceInfo = addressBalances[address];
 
       if (balanceInfo) {
-        wally_fn.setAddressBalanceInfo(addressType, i, balanceInfo);
-        console.log(`Blockchain.info - ${addressType} Address: found balance: ${address}`);
+        wally_fn.setAddressBalanceInfo('blockchain.info', addressType, i, balanceInfo);
+        console.log(`Blockchain.info - ${addressType} Address exists: balance: ${address}`);
       } else {
         console.log(`Blockchain.info - ${addressType} Address: no balance: ${address}`);
       }
@@ -1604,6 +1576,86 @@ function processAddressesForBlockchainInfo(apiResponse, addressesData) {
   processAddress('receive', addressesData.receive);
   processAddress('change', addressesData.change);
 }
+
+function processAddressesForElectrumX(apiResponse, addressesData, { addresses, scriptHashes }) {
+  // Ensure apiResponse is always treated as an array (single or batch)
+  const responseArray = Array.isArray(apiResponse) ? apiResponse : [apiResponse];
+
+  // Loop through addresses of both types (receive and change)
+  function processAddress(addressType, addressesSubset, scriptHashesSubset) {
+    addressesSubset.forEach((address, i) => {
+      const scriptHash = scriptHashesSubset[i]; // Get the corresponding scriptHash
+
+      // Find the matching response by scriptHash
+      const matchingApiResponse = responseArray.find(apiResponseItem => apiResponseItem.id === scriptHash);
+
+      if (matchingApiResponse && matchingApiResponse.result) {
+        const balanceInfo = matchingApiResponse.result;
+
+        // Log the scriptHash, response, and corresponding address
+        console.log(
+          `ElectrumX Match Found:`,
+          `ScriptHash: ${scriptHash},`,
+          `Response: ${JSON.stringify(matchingApiResponse)},`,
+          `Address: ${address}`
+        );
+
+        // If balance info exists, update the address balance info
+        wally_fn.setAddressBalanceInfo('electrumx', addressType, i, balanceInfo);
+        if (balanceInfo.confirmed || balanceInfo.unconfirmed) {
+          //wally_fn.setAddressBalanceInfo(addressType, i, balanceInfo);
+          console.log(`ElectrumX - ${addressType} Address exists: balance: ${address}`);
+        } else {
+          console.log(`ElectrumX - ${addressType} Address: no balance: ${address}`);
+        }
+      } else {
+        console.log(`ElectrumX - ${addressType} Address: no matching response for scriptHash: ${scriptHash}`);
+      }
+    });
+  }
+
+  // Process 'receive' addresses
+  processAddress('receive', addressesData.receive, scriptHashes.slice(0, addressesData.receive.length));
+
+  // Process 'change' addresses
+  processAddress('change', addressesData.change, scriptHashes.slice(addressesData.receive.length));
+}
+
+
+function processAddressesForElectrumX2(apiResponse, addressesData) {
+  // Check if apiResponse is a batch or a single response
+  const addressBalances = Array.isArray(apiResponse) ? apiResponse : [apiResponse]; // Convert to array if single response
+  
+  // Loop through addresses of both types (receive and change)
+  function processAddress(addressType, addresses) {
+    addresses.forEach((address, i) => {
+      // Convert the address to its script hash (id in ElectrumX response)
+      const scriptHash = coinjs.addressToScriptHash(address);
+      
+      // Find the corresponding response for this address (match by script hash)
+      const matchingApiResponse = addressBalances.find(apiAddress => apiAddress.id === scriptHash);
+      
+      if (matchingApiResponse && matchingApiResponse.result) {
+        const balanceInfo = matchingApiResponse.result;
+
+        // If balance info exists, update the address balance info
+        if (balanceInfo.confirmed || balanceInfo.unconfirmed) {
+          wally_fn.setAddressBalanceInfo(addressType, i, balanceInfo);
+          console.log(`ElectrumX - ${addressType} Address exists: balance: ${address}`);
+        } else {
+          console.log(`ElectrumX - ${addressType} Address: no balance: ${address}`);
+        }
+      } else {
+        console.log(`ElectrumX - ${addressType} Address: no matching response: ${address}`);
+      }
+    });
+  }
+
+  // Process both 'receive' and 'change' addresses
+  processAddress('receive', addressesData.receive);
+  processAddress('change', addressesData.change);
+}
+
 
 
 
@@ -1686,7 +1738,10 @@ function buildApiUrl(providerName, coinTicker, mergedAddresses) {
     const provider = coinProviders[providerName];
 
     if (!provider) {
-      throw new Error(`No API Provider "${providerName}" for the coin: ${coinTicker}`);
+      //throw new Error(`No API Provider "${providerName}" for the coin: ${coinTicker}`);
+      console.error(`No API Provider "${providerName}" for the coin: ${coinTicker}`);
+
+
     }
 
     // Build the URL using the coin-specific provider
@@ -1695,6 +1750,35 @@ function buildApiUrl(providerName, coinTicker, mergedAddresses) {
     });
   }
 }
+
+function buildApiElectrumXUrl(providerName, coinTicker, scriptHashes) {
+  const network = wally_fn.network;
+  const chainType = wally_fn.chainModel;
+  const unifiedProviders = apiProvider.getUnifiedProviders(chainType, network);
+  const coinChain = wally_fn.coinChainIs();
+  const coinName = coinjs.asset.slug;
+  const networkType = coinjs.asset.network;
+
+  // Check if the provider exists in unified providers
+  if (unifiedProviders[providerName]) {
+    // Use the provider from unified providers to build the URL
+    const provider = unifiedProviders[providerName];
+    if (providerName == 'electrumx') {
+      const electrumXNode = wally_kit.findElectrumXNodeByURL('balance');
+
+      if (typeof electrumXNode === "object") {
+        return apiProvider.buildProviderElectrumXURL(provider, {
+          coin: coinTicker,
+          address: scriptHashes,
+          server: electrumXNode.url, //'api.ordimint.com:50001',
+          protocol: electrumXNode.protocol, //'tcp',
+        });
+      }
+    }
+  }   
+  return '';
+}
+
 
 /**
  * Process and update address balance information based on the provider.
@@ -1706,9 +1790,23 @@ wally_kit.apiGetCoinBalance = async function (providerName) {
     console.log('===wally_kit.apiGetCoinBalance===', providerName);
 
     const coinTicker = coinjs.asset.symbol;
-    const addressesData = wally_fn.getReceiveAndChangeAddresses();
-    const mergedAddresses = [...addressesData.receive, ...addressesData.change];
-    let url = buildApiUrl(providerName, coinTicker, mergedAddresses);
+    
+    let url = ''; //default apiEndpointUrl
+    let addressesData, mergedAddresses, scriptHashes;
+
+    addressesData = wally_fn.getReceiveAndChangeAddresses();
+    mergedAddresses = [...addressesData.receive, ...addressesData.change];
+
+
+
+    if (providerName == 'electrumx') {
+      // Convert each address to a script hash
+      scriptHashes = mergedAddresses.map(address => coinjs.addressToScriptHash(address));
+
+      url = buildApiElectrumXUrl(providerName, coinTicker, scriptHashes);
+    } else {
+      url = buildApiUrl(providerName, coinTicker, mergedAddresses);
+    }
 
     /*
     CORS issue fixed By Cryptoid.info - confirm iceee
@@ -1717,6 +1815,7 @@ wally_kit.apiGetCoinBalance = async function (providerName) {
     }
     */
 
+    console.log('apiProvider.providerRateLimits url: ', url);
     console.log('apiProvider.providerRateLimits before: ', apiProvider.providerRateLimits);
     //const apiResponse = await fetchApiResponse(url);
     const apiResponse = await fetchApiDataWithRateLimit(url, providerName);
@@ -1737,6 +1836,9 @@ wally_kit.apiGetCoinBalance = async function (providerName) {
         processAddressesForCryptoId(apiResponse, addressesData);
       } else if (providerName === 'blockchain.info') {
         processAddressesForBlockchainInfo(apiResponse, addressesData);
+      } else if (providerName.includes('electrumx')) {
+        console.log('ElectrumX provider - scriptHashes: ', scriptHashes);
+        processAddressesForElectrumX(apiResponse, addressesData, {'addresses': mergedAddresses, 'scriptHashes': scriptHashes});
       } else {
         console.log(`Unsupported provider: ${providerName}`);
       }
@@ -1744,7 +1846,9 @@ wally_kit.apiGetCoinBalance = async function (providerName) {
       processAddressesForEvm(apiResponse, addressesData);
     }
 
-
+    //render view addresses
+    wally_fn.tpl.seed.viewReceiveAddresses.render(login_wizard.profile_data.generated[coinjs.asset.slug][0].view.receive);
+    wally_fn.tpl.seed.viewChangeAddresses.render(login_wizard.profile_data.generated[coinjs.asset.slug][0].view.change);
     
   } catch (error) {
     const modalTitle = 'API Provider';
@@ -1773,6 +1877,43 @@ wally_kit.apiGetListUnspent = async function() {
 wally_kit.apiPushRawTX = async function() {
   // Your code for broadcasting raw transaction here
 }
+
+
+wally_kit.findElectrumXNodeByURL = function (nodeType = "balance", url = "") {
+  // Get the appropriate URL based on nodeType if url is not provided
+  if (!url) {
+    const apiProvider = login_wizard.profile_data.generated[coinjs.asset.slug].api_provider;
+    if (nodeType === "balance") {
+      url = apiProvider.balance_node;
+    } else if (nodeType === "listunspent") {
+      url = apiProvider.listunspent_node;
+    } else if (nodeType === "pushrawtx") {
+      url = apiProvider.pushrawtx_node;
+    } else {
+      console.error("Invalid nodeType specified: "+ url);
+      return false;
+    }
+  }
+
+  // Fetch all ElectrumX nodes
+  const nodesObject = wally_kit.getElectrumXNodes();
+
+  if (!nodesObject) {
+    // If nodesObject is false, return null
+    return false;
+  }
+
+  // Combine nodes and custom nodes
+  const allNodes = [...(nodesObject.nodes || []), ...(nodesObject.customNodes || [])];
+
+  // If URL is still empty, return the first node in the list (or false if no nodes exist)
+  if (!url) {
+    return allNodes.length > 0 ? allNodes[0] : false;
+  }
+
+  // Find the node by URL
+  return allNodes.find(node => node.url === url) || false;
+};
 
 
 
@@ -1912,6 +2053,10 @@ wally_kit.collectAllCoinProviders = function (obj, depth = 0) {
  * @param {Array} results - An array to collect the provider objects.
  */
 wally_kit.getCoinProvidersForApiService = function (obj, apiService, results = []) {
+  if (typeof obj !== 'object' || obj === null) {
+    return results; // Exit early if obj is not valid
+  }
+
   if (apiService in obj) {
     for (const providerName in obj[apiService]) {
       results.push({ name: providerName, params: obj[apiService][providerName].params });
@@ -1936,6 +2081,37 @@ var providersForApiService = wally_kit.getCoinProvidersForApiService(coinjs.asse
 console.log(providersForApiService);
 
 */
+
+/**
+ * Retrieves the ElectrumX nodes and custom nodes from the global `coinjs.asset.api.providers.electrumx` object.
+ * 
+ * This function checks if the `coinjs.asset.api.providers.electrumx` object and its properties (`node`, `custom_nodes`) 
+ * exist, returning their values if present, or empty arrays if not.
+ * 
+ * @returns {Object} An object containing two properties:
+ *   - `nodes` (Array): The list of standard ElectrumX nodes, or an empty array if not defined.
+ *   - `customNodes` (Array): The list of custom ElectrumX nodes, or an empty array if not defined.
+ *  * @returns {Object|boolean} An object containing `nodes` and `customNodes` arrays, or `false` if the data is unavailable.
+ * 
+ * @example
+ * const electrumNodes = wally_kit.getElectrumXNodes();
+ * console.log(electrumNodes.nodes);      // Prints the list of standard nodes or an empty array
+ * console.log(electrumNodes.customNodes); // Prints the list of custom nodes or an empty array
+ */
+wally_kit.getElectrumXNodes = function () {
+  const apiProviders = coinjs.asset.api.providers.electrumx;
+
+  // Check if apiProviders and its properties exist, return false if not
+  if (!apiProviders || (!apiProviders.nodes && !apiProviders.custom_nodes)) {
+    return false;
+  }
+
+  return {
+    nodes: apiProviders.nodes ?? [],
+    customNodes: apiProviders.custom_nodes ?? [],
+  };
+};
+
 
 
 
@@ -2415,20 +2591,55 @@ $('.input-clear').on('click', function() {
   coinbinf.apiBalanceProviderSelector.on('change', function() {
     const selectedValue = $(this).val(); // Get the selected value
 
+    console.log('apiBalanceProviderSelector changed '+ selectedValue);
+
     // Update the variable with the selected value
     if (login_wizard.profile_data.generated && coinjs.asset.slug) {
       login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.balance = selectedValue;
     }
+
+    //check for nodes
+    if (selectedValue == "electrumx")
+      coinbinf.apiBalanceProviderNodeSelector.removeClass('hidden');
+    else
+      coinbinf.apiBalanceProviderNodeSelector.addClass('hidden');
   });
+  coinbinf.apiBalanceProviderNodeSelector.on('change', function() {
+    const selectedValue = $(this).val(); // Get the selected value
+
+    console.log('apiBalanceProviderNodeSelector changed '+ selectedValue);
+
+    // Update the variable with the selected value
+    if (login_wizard.profile_data.generated && coinjs.asset.slug) {
+      login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.balance_node = selectedValue;
+    }
+  });
+
 
 
  // Add a change event listener
   coinbinf.apiListunspentProviderSelector.on('change', function() {
     const selectedValue = $(this).val(); // Get the selected value
 
+    console.log('apiListunspentProviderSelector changed '+ selectedValue);
     // Update the variable with the selected value
     if (login_wizard.profile_data.generated && coinjs.asset.slug) {
       login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.listunspent = selectedValue;
+    }
+
+    //check for nodes
+    if (selectedValue == "electrumx")
+      coinbinf.apiListunspentProviderNodeSelector.removeClass('hidden');
+    else
+      coinbinf.apiListunspentProviderNodeSelector.addClass('hidden');
+  });
+  coinbinf.apiListunspentProviderNodeSelector.on('change', function() {
+    const selectedValue = $(this).val(); // Get the selected value
+
+    console.log('apiListunspentProviderNodeSelector changed '+ selectedValue);
+    // Update the variable with the selected value
+    if (login_wizard.profile_data.generated && coinjs.asset.slug) {
+      login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.listunspent_node = selectedValue;
     }
   });
 
@@ -2437,11 +2648,30 @@ $('.input-clear').on('click', function() {
   coinbinf.apiPushrawtxProviderSelector.on('change', function() {
     const selectedValue = $(this).val(); // Get the selected value
 
+    console.log('apiPushrawtxProviderSelector changed '+ selectedValue);
+
     // Update the variable with the selected value
     if (login_wizard.profile_data.generated && coinjs.asset.slug) {
       login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.pushrawtx = selectedValue;
     }
+
+    //check for nodes
+    if (selectedValue == "electrumx")
+      coinbinf.apiPushrawtxProviderNodeSelector.removeClass('hidden');
+    else
+      coinbinf.apiPushrawtxProviderNodeSelector.addClass('hidden');
   });
+  coinbinf.apiPushrawtxProviderNodeSelector.on('change', function() {
+    const selectedValue = $(this).val(); // Get the selected value
+
+    console.log('apiPushrawtxProviderNodeSelector changed '+ selectedValue);
+
+    // Update the variable with the selected value
+    if (login_wizard.profile_data.generated && coinjs.asset.slug) {
+      login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.pushrawtx_node = selectedValue;
+    }
+  });
+
 
 
   //coinbinf.loadChangeAddresses

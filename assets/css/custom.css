@@ -4115,9 +4115,3 @@ padding-left: 0.75rem;
 #walletAsset .nav-tabs .nav-link:not(.active):hover {
   color: #333;
 }
-
-
-#addressInfoQrCode {
-	width: 200px;
-	height: 200px;
-}

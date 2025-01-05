@@ -72,7 +72,55 @@
 
       });
     */
-  }
+  };
+
+// Fetch and process data from the Komodo API with the current timestamp
+custom.fetchAndFilterKomodoData = async function () {
+    const currentTimestamp = Date.now(); // Get the current timestamp in milliseconds
+    const apiUrl = `https://electrum-status.dragonhound.info/api/v1/electrums_status?_=${currentTimestamp}`;
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Filter the data,
+        // for nowwe only need Electrum category  and TCP/SSL protocols
+        const filteredData = data.filter(item =>
+            item.category === "Electrum" &&
+            (item.protocol === "TCP" || item.protocol === "SSL") &&
+            item.result === "Passed" && 
+            !item.coin.includes("-") // Exclude coins with a '-' in their name
+        );
+
+        console.log("Filtered Data:", filteredData);
+
+        // Export the filtered data as a JSON file
+        //custom.exportToJsonFile(filteredData, "komodo_filtered_data.json");
+        custom.exportToJsonFile(filteredData, "komodo_filtered_data.json");
+    } catch (error) {
+        console.error("Error fetching or processing data:", error);
+    }
+}
+
+// Function to export JSON data to a file
+custom.exportToJsonFile = function (data, filename) {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+}
+
+// KOMODO script, filter out dead nodes
+//custom.fetchAndFilterKomodoData();
+
+
+
+
   $(document).ready(function() {
 
 
@@ -202,14 +250,13 @@
       //console.log('hassssssssssh this', this.hash);
       //console.log ('href: ',  $(e).attr('href') );
       //console.log ('href: ',  e.attr('href') );
-      
-      //console.log('=====.zeynep.left-panel a, .zeynep.right-panel a')
-      //console.log('this.hash: ', this.hash)
-      //console.log('this.hash.length: ', this.hash.length)
+      console.log('=====.zeynep.left-panel a, .zeynep.right-panel a')
+      console.log('this.hash: ', this.hash)
+      console.log('this.hash.length: ', this.hash.length)
       if((this.hash).length > 1) {
-        //console.log('close......................');
-        //console.log('leftPanel: ', leftPanel);
-        //console.log('rightPanel: ', rightPanel);
+        console.log('close......................');
+        console.log('leftPanel: ', leftPanel);
+        console.log('rightPanel: ', rightPanel);
         leftPanel.close();
         rightPanel.close();
         //$(".modal-backdrop").hide();
@@ -295,9 +342,6 @@
  * @param {object} e - The event object.
  */
 $("#addressInfoModal").on('shown.bs.modal', function(e) {
-
-    
-
     // Extract the modal ID from the event target
     const modalId = e.target.id;
     console.log('addressInfoModal - update address info!');
@@ -322,9 +366,6 @@ $("#addressInfoModal").on('shown.bs.modal', function(e) {
     var privkey = dataValues.attr('data-privkey');
     var privkeyhex = dataValues.attr('data-privkeyhex');
 
-    
-
-
      // Set the modal title text content
     modalElement.find('.bootstrap-dialog-title').text(coinSymbol + ' Address Information');
 
@@ -333,21 +374,6 @@ $("#addressInfoModal").on('shown.bs.modal', function(e) {
     var qrcode = new QRCode("addressInfoQrCode");
     //qrcode.makeCode("bitcoin:"+address);
     qrcode.makeCode(coin+':'+address);
-
-    
-
-    /*
-    //update address info, for rendering
-    wally_kit.setAddressInfo({
-      'address': address,
-      'blockieIcon': blockieicon,
-      'derivedPath': derivedpath,
-      'pubkey': pubkey,
-      'privkey': privkey,
-      'privkeyhex': privkeyhex,
-      'qrcode': qrcode._el.innerHTML,
-    });
-    */
 
 
     // Update the modal content with the extracted data

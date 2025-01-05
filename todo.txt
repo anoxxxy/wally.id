@@ -9,9 +9,8 @@ $("#verifyRsDataHodl .date").val(decode['checklocktimeverify'] >= 500000000? mom
 ----------------
 
 *add BIP44 derivation path, with custom paths  as well
-*Mnemonic seeds login
-*add Electrumx nodes for all coins (if there any)
-*add add custom nods
+*add Electrumx nodes for all coins (if there are any)
+*add add custom nodes
 *add json object for all coins social network links, website, contact person, team leader accounts, Github repo etc..
 *remove tooltip and popover after release, and replace with jBox Tooltip!
 
@@ -21,6 +20,7 @@ $("#verifyRsDataHodl .date").val(decode['checklocktimeverify'] >= 500000000? mom
 *master key login (login with priv, pub keys as well as with multiple keys)
 *encrypt wallet backup as an option
 *add possibility for m-of-n multisig keys for signing.
+* Backup: optional for the user to choose: add coin path, client, custom providers etc...
 
 
 
@@ -37,7 +37,7 @@ bc1q5tkv0v8hc9qcna77zk6qdnz80udghwj6lthh52
 bc1q46uhnnch2fhsave5t8lqjdhqpg4q973rlve4fj
 
 
-
+*new electrum seed:
 enough tourist luggage comfort view garment picture assume dish void tide shed
 testAR
 
@@ -73,6 +73,7 @@ bolder and darker:
 
 PROBLEMS TO SOLVE:
 
+**fixed**
 SEED: 
 impact object punch garage wet hotel tomorrow potato off front join metal dove nest planet diamond around million much video essence grunt reform large
 
@@ -82,6 +83,7 @@ I choosed bip32 with this key, path m/0
 xprv9s21ZrQH143K43m2VZ51HrLrMZuv4D4E7Yv58qw1KVSejmRUUmm1PRgLS19GPXVdbMz6Ge9qZN75CaLMkTSCCPLaDMTV9kiZYgrvXSkfrZ8
 
 -------------------------
+**fixed**
 seed: 
 soft cupboard already camp diesel retire reveal trip endless saddle ladder tooth chest pupil merry glare divorce crystal private pulse victory destroy square pelican
 
@@ -89,3 +91,106 @@ has xprv: xprv9s21ZrQH143K2sPAQChyk15qGiB4aNWfPUU5EA4p2BgbE2MTnp9EFWNttZNf7uhGs7
 ce46b81c9063d96fee1f4649b7b9f1f262795be2eb164006aaacd6cf3a7874dd
 
 
+----------------------------------------
+
+
+old electrum seed,
+absorb afford gym labor grow merry soup bunker foam dismiss nut because
+
+
+
+The version number is obtained by looking at the first bits of:
+
+hmac_sha_512("Seed version", seed_phrase)
+
+The version number is also used to check seed integrity; in order to be correct, a seed phrase must produce a registered version number.
+
+
+#Version number
+
+#The version number is a prefix of a hash derived from the seed phrase. The length of the prefix is a multiple of 4 bits. The prefix is computed as follows:
+
+def version_number(seed_phrase):
+  # normalize seed
+  normalized = prepare_seed(seed_phrase)
+  # compute hash
+  h = hmac_sha_512("Seed version", normalized)
+  # use hex encoding, because prefix length is a multiple of 4 bits
+  s = h.encode('hex')
+  # the length of the prefix is written on the first 4 bits
+  # for example, the prefix '101' is of length 4*3 bits = 4*(1+2)
+  length = int(s[0]) + 2
+  # read the prefix
+  prefix = s[0:length]
+  # return version number
+  return hex(int(prefix, 16))
+
+
+
+
+#List of reserved numbers
+
+#The following version numbers are used for Electrum seeds.
+
+number      Type        Description
+0x01        Standard    P2PKH and Multisig P2SH wallets
+0x100       Segwit      Segwit: P2WPKH and P2WSH wallets
+0x101       2FA         Two-factor authenticated wallets
+
+
+In addition, the version bytes of master public/private keys indicate what type of output script should be used, and on which network. The prefixes are detailed https://electrum.readthedocs.io/en/latest/xpub_version_bytes.html
+
+
+-----------
+
+
+absorb afford gym labor grow merry soup bunker foam dismiss nut because
+
+
+
+var hash = j.getHMAC(Crypto.util.bytesToHex(r.chain_code), "HEX", "SHA-512", "HEX");
+
+var ir = Crypto.util.hexToBytes(hash.slice(64,128));
+
+
+var seed = 'absorb afford gym labor grow merry soup bunker foam dismiss nut because';
+seed = seed.normalize('NFKD');
+//pass = (pass !== null) ? pass.normalize('NFKD') : pass;
+
+seeder = bip39.mnemonicToSeed(seed, pass);
+
+var hasher = new jsSHA(seeder, 'HEX');
+var I = hasher.getHMAC("Bitcoin seed", "TEXT", "SHA-512", "HEX");
+
+-----------
+**old electrum seed
+
+*current around ridge join mind machine pole good left legal chase baby
+test
+
+xprv9s21ZrQH143K3KqGVbafeocFQZjGzCHs2t3UYg6UUURmQ85gGRmdwG522Kcpr9gbcLv9U4w9mXgfMwyDYDPw6J5Dza7gZX1CaZGEJ6UKyG4
+1GsMqBZoFWWKRKW5fN1iJ7ENUbVLgeUpKh
+
+
+*absorb afford gym labor grow merry soup bunker foam dismiss nut because
+1Jvc3xX71Pz6tb4F5SjCBiww1xx7rHXTCi
+
+xprv9s21ZrQH143K2Bet7S1fAYmHGVUtjtSmWS3ZGzLwTeHKUpz5cxixtYmpGY58Hw8ud4pGMCyE5K6xEEXzYfwkaa7x7MUapi8BPt3MMqVpREg
+
+var seed = 'absorb afford gym labor grow merry soup bunker foam dismiss nut because';
+
+//fixed a working version on:
+https://caligatio.github.io/jsSHA/
+
+
+var seed = 'absorb afford gym labor grow merry soup bunker foam dismiss nut because';
+var ice = new jsSHA(
+  'SHA-512', 'TEXT'
+);
+ice.setHMACKey(
+  'Seed version',
+  'TEXT'
+);
+ice.update(seed);
+
+var signature = ice.getHMAC('HEX');

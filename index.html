@@ -55,7 +55,7 @@
       <div class="left">
         <div class="menu__item nav_logo">
           <a id="homeBtn" href="#home" class="item-home colorize" alt="Wally logotype homepage">
-            <img src="./assets/images/logo/wally_logo_darker_bolder.svg" class="logotype-white icon32" alt="Wally logo" />
+            <img src="./assets/images/logo/wally_logo.svg" class="logotype-white icon32 ml-1" alt="Wally logo" />
           </a>
         </div>
       </div>
@@ -473,19 +473,14 @@
                     </div>
                     <!-- Connect logos -->
                     <div class="row mt-3 py-3">
-                      <div class="col-4">
+                      <div class="col-6">
                         <div class="text-center">
-                          <a href="https://t.me/wallyid" alt="Wally.id - Official Telegram group" target="_blank"><img src="./assets/images/brands/telegram_logo.svg" class="icon64" /></a>
+                          <a href="https://t.me/wallyid" alt="Wally.id - Official Telegram group"><img src="./assets/images/brands/telegram_logo.svg" class="icon64" /></a>
                         </div>
                       </div>
-                      <div class="col-4">
+                      <div class="col-6">
                         <div class="text-center">
-                          <a href="https://twitter.com/WallyIDOfficial" alt="Wally.id - Official Twitter group" target="_blank"><img src="./assets/images/brands/twitter_logo.svg" class="icon64" /></a>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="text-center">
-                          <a href="https://discord.gg/d6heuxun4v" alt="Wally.id - Official Discord group" target="_blank"><img src="./assets/images/brands/discord_logo.svg" class="icon64" /></a>
+                          <a href="https://twitter.com/WallyIDOfficial" alt="Wally.id - Official Twitter group"><img src="./assets/images/brands/twitter_logo.svg" class="icon64" /></a>
                         </div>
                       </div>
                     </div>
@@ -1110,7 +1105,7 @@
                 <div class="card-openwallet-body overflow-visible">
                   <div class="p-1 py-1">
                     <div class="container">
-                      <!-- Quick Advanced Options Button 
+                      <!-- Quick Advanced Options Button -->
                       <div class="row no-gutter">
                         <div class="col-12">
                           <div class="callout-title text-muted">Your Address</div>
@@ -1137,8 +1132,6 @@
                           </div>
                         </div>
                       </div>
-                    -->
-
                       <div class="row no-gutter">
                         <!-- Wallet Tabs-->
                         <div class="col-12">
@@ -1293,7 +1286,7 @@
                                     <div class="callout-title mb-3 mx-auto">QR code of Address</div>
                                     <div id="walletQrCode" class="d-flex justify-content-center mx-auto"></div>
                                     <div class="d-flex justify-content-center mx-auto mt-4 mb-2">
-                                      <span id="walletLoader" class="hidden"><img src="images/loader.gif" /></span>
+                                      <span id="walletLoader" class="hidden"> </span>
                                       <span class="walletAddress"></span>
                                     </div>
                                     <!-- Public/Private-key and Address -->
@@ -1619,10 +1612,12 @@
               <p class="card-text">
                 <select id="apiBalanceProviderSelector" class="apiProviderSelector form-control w-100 p-0"></select>
               </p>
+              <select id="apiBalanceProviderNodeSelector" class="apiProviderNodeSelector form-control w-100 p-0 hidden"></select>
             </div>
-            <div class="card-footer">
+            <!--<div class="card-footer">
               <small>API for getting Balance</small>
             </div>
+          -->
           </div>
         </div>
 
@@ -1635,10 +1630,13 @@
               <p class="card-text">
                 <select id="apiListunspentProviderSelector" class="apiProviderSelector form-control w-100 p-0"></select>
               </p>
+                <select id="apiListunspentProviderNodeSelector" class="apiProviderNodeSelector form-control w-100 p-0 hidden"></select>
+
             </div>
-            <div class="card-footer">
+            <!--<div class="card-footer">
               <small>API for Listunspent (UTXO)</small>
             </div>
+          -->
           </div>
         </div>
 
@@ -1651,10 +1649,13 @@
               <p class="card-text">
                 <select id="apiPushrawtxProviderSelector" class="apiProviderSelector form-control w-100 p-0"></select>
               </p>
+                <select id="apiPushrawtxProviderNodeSelector" class="apiProviderNodeSelector form-control w-100 p-0 hidden"></select>
+
             </div>
-            <div class="card-footer">
+            <!--<div class="card-footer">
               <small>API for Broadcasting</small>
             </div>
+          -->
           </div>
         </div>
       </div>
@@ -2056,14 +2057,15 @@
                                           <select id="openClientWallet" class="client form-control">
                                             <!-- <option value="custom">Custom derivation path</option> -->
                                             <!-- populated by javascript -->
-                                            <option value="0" selected>Bitcoin Core</option>
+                                            <option value="0" >Bitcoin Core</option>
                                             <option value="1">Blockchain.info</option>
                                             <option value="5">Coinb.in</option>
-                                            <option value="3">Coinomi, Ledger</option>
+                                            <option value="3" selected>Coinomi, Ledger</option>
                                             <option value="4">Electrum</option>
                                             <!--<option value="7">Electrum (Old)</option>-->
                                             <option value="2">MultiBit HD</option>
-                                            <option value="6">Trezor</option>
+                                            <option value="6" >Trezor</option>
+                                            <option value="8">Phantom</option>
                                           </select>
                                         </div>
 
@@ -5107,7 +5109,7 @@
         <div class="col-6 col-md-3 col-sm-6">
           <!-- Brand -->
           <div class="footer-brand img-fluid mb-0">
-            <a href="index.html"><img src="./assets/images/logo/wally_logo.svg" class="logotype-purple icon32" alt="Wally,id logotype" /> </a>
+            <a href="index.html"><img src="./assets/images/logo/wally_logo.svg" class="logotype-purple icon32" alt="Wally.id logotype" /> </a>
           </div>
           <!-- Text -->
           <p class="mb-2 text-muted">
@@ -5557,8 +5559,8 @@
           <div class="bootstrap-dialog-body">
             <div class="bootstrap-dialog-message">
               
-              <!-- Template - Address info -->
-              <div id="addressInfo" class="col-12 pb-2">
+              <!-- Address info -->
+              <div id="addressInfo" class="col-12 py-2">
                 <!-- <div class="text-muted coin_utxo">
                   <p>
                     <b>Address format</b>: <span class="addressFormat">SegWit/Bech32/Legacy Compressed/Legacy Uncompressed</span>
@@ -5576,7 +5578,7 @@
                   <div class="callout-title text-muted text-primary"><span class="coin_symbol"></span> Address</div>
                   <div class="input-group">
                     <div class="input-group-prepend">
-                      <span class="input-group-text cursor-pointer mr-0 ml-0 pr-2 pl-2"><img class="blockieIcon icon icon24"></span>
+                      <span class="input-group-text cursor-pointer mr-0 ml-0 pr-2 pl-2"><img class="blockieIcon icon icon24"></i></span>
                     </div>
 
                     <input id="" type="text" class="form-control addr" readonly />
@@ -5630,7 +5632,6 @@
                 </div>
 
               </div>
-              <!-- //Template - Address info -->
 
             </div>
           </div>
@@ -6360,12 +6361,10 @@ iceee - remove me later
   <div class="hidden" id="entropybucket"></div>
   <div class="modal-backdrop fade show hidden"></div>
 
-  <!-- Template QR code element (used temporary) -->
-  <div id="qrcode_el" class="hidden"></div>
-
   <!-- Javascript Files -->
   <!-- Mikado Template Engine - lightweight yet super fast rendering framework-->
   <script src="./assets/js/mikado.debug.js"></script>
+  <!-- <script src="./assets/js/mikado/mikado.bundle.debug.js"></script> -->
 
   <!-- storage function lib-->
   <script type="text/javascript" src="./assets/js/storage/storage.js"></script>
@@ -6392,8 +6391,8 @@ iceee - remove me later
   <script type="text/javascript" src="./assets/js/velocity.ui.min.js"></script>
   <script type="text/javascript" src="./assets/js/bootstrap.min.js"></script>
   <!-- Internal Wally functions -->
-  <script type="text/javascript" src="./scripts/classes/CryptoProviderAPI.js?v=xyz"></script>
-  <script type="text/javascript" src="./assets/js/wally_fn.js?version=xyz3"></script>
+  <script type="text/javascript" src="./scripts/classes/CryptoProviderAPI.js?v=xyz_v1.000"></script>
+  <script type="text/javascript" src="./assets/js/wally_fn.js?v=1.00"></script>
   <!-- Contains Mikado Templates -->
   <script type="text/javascript" src="./assets/js/templates/templates.js?version=xyz"></script>
   <script src="./assets/js/bootstrap-dialog.js" type="text/javascript"></script>
@@ -6412,8 +6411,9 @@ iceee - remove me later
   <script type="text/javascript" src="js/web3/web3v1.8.1.min.js"></script>
   <script type="text/javascript" src="js/web3/abi_erc20.js"></script>
   <script type="text/javascript" src="js/bip39.js"></script>
-  <script type="text/javascript" src="js/coin.js"></script>
-  <script type="text/javascript" src="js/coinbin.js"></script>
+  <!-- Coinbin -->
+  <script type="text/javascript" src="js/coin.js?v=1.00"></script>
+  <script type="text/javascript" src="js/coinbin.js?v=1.00"></script>
   <!-- Tools - Converter -->
   <script type="text/javascript" src="js/converter/mnemonic.js"></script>
   <script type="text/javascript" src="js/converter/rfc1751.js"></script>
@@ -6421,15 +6421,16 @@ iceee - remove me later
   <script type="text/javascript" src="js/converter/armory.js"></script>
   <script type="text/javascript" src="js/converter.base.js"></script>
   <script type="text/javascript" src="./assets/js/waves.min.js"></script>
+  <!-- Image Blockies -->
   <script type="text/javascript" src="./assets/js/blockies/pnglib.js"></script>
   <script type="text/javascript" src="./assets/js/blockies/blockie.js"></script>
   <!-- pieChart -->
   <script type="text/javascript" src="./assets/js/chart/piechart.js"></script>
   <!-- Custom Code -->
   <!-- Internal and DOM Wally functions -->
-  <script type="text/javascript" src="./assets/js/wally_kit.js"></script>
-  <script type="text/javascript" src="./assets/js/custom.js"></script>
-  <script type="text/javascript" src="./assets/js/wally_login.js"></script>
+  <script type="text/javascript" src="./assets/js/wally_kit.js?v=1.00"></script>
+  <script type="text/javascript" src="./assets/js/custom.js?v=1.00"></script>
+  <script type="text/javascript" src="./assets/js/wally_login.js?v=1.00"></script>
   <!-- Open Wallet Functions -->
 
 </body>

@@ -1,0 +1,7117 @@
+[
+    {
+        "id": 3421,
+        "coin": "ABY",
+        "category": "Electrum",
+        "server": "elec-seeder-two.artbytecoin.org:50012",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2829004,
+        "last_connection": 1736041039,
+        "contact": null
+    },
+    {
+        "id": 3422,
+        "coin": "ABY",
+        "category": "Electrum",
+        "server": "electrumx-three.artbyte.live:50012",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2829004,
+        "last_connection": 1736041040,
+        "contact": null
+    },
+    {
+        "id": 4380,
+        "coin": "ACTN",
+        "category": "Electrum",
+        "server": "electrumx2.actioncoin.com:10001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2479646,
+        "last_connection": 1736041131,
+        "contact": [
+            {
+                "email": "support@actioncoin.com"
+            }
+        ]
+    },
+    {
+        "id": 4381,
+        "coin": "ACTN",
+        "category": "Electrum",
+        "server": "electrumx2.actioncoin.com:30001",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2479646,
+        "last_connection": 1736041132,
+        "contact": [
+            {
+                "email": "support@actioncoin.com"
+            }
+        ]
+    },
+    {
+        "id": 3427,
+        "coin": "AIBC",
+        "category": "Electrum",
+        "server": "aibc.pro:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 579428,
+        "last_connection": 1733965490,
+        "contact": [
+            {
+                "email": "electrum1_admin@aibc.pro"
+            },
+            {
+                "github": "nickgsh"
+            }
+        ]
+    },
+    {
+        "id": 3430,
+        "coin": "AIPG",
+        "category": "Electrum",
+        "server": "electrumx2.aipowergrid.io:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 561642,
+        "last_connection": 1736041040,
+        "contact": [
+            {
+                "discord": "482101557383528448"
+            }
+        ]
+    },
+    {
+        "id": 3433,
+        "coin": "ARRR",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10008",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3250287,
+        "last_connection": 1736041040,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3436,
+        "coin": "ARRR",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20008",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3250287,
+        "last_connection": 1736041040,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3434,
+        "coin": "ARRR",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10008",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3250287,
+        "last_connection": 1736041040,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3437,
+        "coin": "ARRR",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20008",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3250287,
+        "last_connection": 1736041040,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3435,
+        "coin": "ARRR",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10008",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3250287,
+        "last_connection": 1736041041,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3438,
+        "coin": "ARRR",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20008",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3250287,
+        "last_connection": 1736041041,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 5118,
+        "coin": "AUR",
+        "category": "Electrum",
+        "server": "electrum1.valhala.is:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 4975720,
+        "last_connection": 1736041041,
+        "contact": [
+            {
+                "discord": "388437778624413706"
+            }
+        ]
+    },
+    {
+        "id": 5119,
+        "coin": "AUR",
+        "category": "Electrum",
+        "server": "electrum1.valhala.is:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4975720,
+        "last_connection": 1736041041,
+        "contact": [
+            {
+                "discord": "388437778624413706"
+            }
+        ]
+    },
+    {
+        "id": 4575,
+        "coin": "AUR",
+        "category": "Electrum",
+        "server": "electrumx.aur.ewmcx.info:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4975720,
+        "last_connection": 1736041041,
+        "contact": null
+    },
+    {
+        "id": 3442,
+        "coin": "AUR",
+        "category": "Electrum",
+        "server": "failover.aur.ewmcx.biz:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4975720,
+        "last_connection": 1736041042,
+        "contact": null
+    },
+    {
+        "id": 3444,
+        "coin": "AVN",
+        "category": "Electrum",
+        "server": "electrum-ca.avn.network:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3461928,
+        "last_connection": 1736041042,
+        "contact": [
+            {
+                "email": "contact@avn.network"
+            }
+        ]
+    },
+    {
+        "id": 3447,
+        "coin": "AVN",
+        "category": "Electrum",
+        "server": "electrum-ca.avn.network:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3461928,
+        "last_connection": 1736041042,
+        "contact": [
+            {
+                "email": "contact@avn.network"
+            }
+        ]
+    },
+    {
+        "id": 3445,
+        "coin": "AVN",
+        "category": "Electrum",
+        "server": "electrum-eu.avn.network:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3461928,
+        "last_connection": 1736041042,
+        "contact": [
+            {
+                "email": "contact@avn.network"
+            }
+        ]
+    },
+    {
+        "id": 3448,
+        "coin": "AVN",
+        "category": "Electrum",
+        "server": "electrum-eu.avn.network:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3461928,
+        "last_connection": 1736041042,
+        "contact": [
+            {
+                "email": "contact@avn.network"
+            }
+        ]
+    },
+    {
+        "id": 3446,
+        "coin": "AVN",
+        "category": "Electrum",
+        "server": "electrum-us.avn.network:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3461928,
+        "last_connection": 1736041042,
+        "contact": [
+            {
+                "email": "contact@avn.network"
+            }
+        ]
+    },
+    {
+        "id": 3449,
+        "coin": "AVN",
+        "category": "Electrum",
+        "server": "electrum-us.avn.network:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3461928,
+        "last_connection": 1736041043,
+        "contact": [
+            {
+                "email": "contact@avn.network"
+            }
+        ]
+    },
+    {
+        "id": 3453,
+        "coin": "AXE",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10057",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1252910,
+        "last_connection": 1736041043,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3456,
+        "coin": "AXE",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20057",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1252910,
+        "last_connection": 1736041043,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3454,
+        "coin": "AXE",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10057",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1252910,
+        "last_connection": 1736041043,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3457,
+        "coin": "AXE",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20057",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1252910,
+        "last_connection": 1736041043,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3455,
+        "coin": "AXE",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10057",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1252910,
+        "last_connection": 1736041043,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3458,
+        "coin": "AXE",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20057",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1252910,
+        "last_connection": 1736041043,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3462,
+        "coin": "AYA",
+        "category": "Electrum",
+        "server": "88.99.26.209:5151",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1558107,
+        "last_connection": 1736041043,
+        "contact": null
+    },
+    {
+        "id": 4656,
+        "coin": "BBK",
+        "category": "Electrum",
+        "server": "bbk-ex-three.ewmci.online:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3263120,
+        "last_connection": 1736041044,
+        "contact": [
+            {
+                "discord": "475820011634819072"
+            }
+        ]
+    },
+    {
+        "id": 4657,
+        "coin": "BBK",
+        "category": "Electrum",
+        "server": "bbk-ex-three.ewmci.online:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3263120,
+        "last_connection": 1736041045,
+        "contact": [
+            {
+                "discord": "475820011634819072"
+            }
+        ]
+    },
+    {
+        "id": 3472,
+        "coin": "BBK",
+        "category": "Electrum",
+        "server": "bbk-ex-two.ewmci.online:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3263120,
+        "last_connection": 1736041045,
+        "contact": [
+            {
+                "discord": "475820011634819072"
+            }
+        ]
+    },
+    {
+        "id": 3473,
+        "coin": "BBK",
+        "category": "Electrum",
+        "server": "bbk-ex-two.ewmci.online:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3263120,
+        "last_connection": 1736041045,
+        "contact": [
+            {
+                "discord": "475820011634819072"
+            }
+        ]
+    },
+    {
+        "id": 3464,
+        "coin": "BCH",
+        "category": "Electrum",
+        "server": "bch.imaginary.cash:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 879655,
+        "last_connection": 1736041044,
+        "contact": null
+    },
+    {
+        "id": 3465,
+        "coin": "BCH",
+        "category": "Electrum",
+        "server": "bch.soul-dev.com:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 879655,
+        "last_connection": 1736041044,
+        "contact": null
+    },
+    {
+        "id": 3466,
+        "coin": "BCH",
+        "category": "Electrum",
+        "server": "cashnode.bch.ninja:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 879655,
+        "last_connection": 1736041044,
+        "contact": null
+    },
+    {
+        "id": 3463,
+        "coin": "BCH",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10055",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 879655,
+        "last_connection": 1736041044,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3467,
+        "coin": "BCH",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20055",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 879655,
+        "last_connection": 1736041044,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3475,
+        "coin": "BITN",
+        "category": "Electrum",
+        "server": "bitexplorer.io:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 727116,
+        "last_connection": 1736041045,
+        "contact": [
+            {
+                "discord": "c4pt#7855"
+            }
+        ]
+    },
+    {
+        "id": 5567,
+        "coin": "BKC",
+        "category": "Electrum",
+        "server": "electrumx1.briskcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 95440,
+        "last_connection": 1736041049,
+        "contact": null
+    },
+    {
+        "id": 5568,
+        "coin": "BKC",
+        "category": "Electrum",
+        "server": "electrumx2.briskcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 95440,
+        "last_connection": 1736041050,
+        "contact": null
+    },
+    {
+        "id": 3477,
+        "coin": "BLK",
+        "category": "Electrum",
+        "server": "electrum1.blackcoin.nl:10001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5238195,
+        "last_connection": 1736041045,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 3480,
+        "coin": "BLK",
+        "category": "Electrum",
+        "server": "electrum1.blackcoin.nl:10002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5238195,
+        "last_connection": 1736041045,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 3478,
+        "coin": "BLK",
+        "category": "Electrum",
+        "server": "electrum2.blackcoin.nl:20001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5238195,
+        "last_connection": 1736041046,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 3481,
+        "coin": "BLK",
+        "category": "Electrum",
+        "server": "electrum2.blackcoin.nl:20002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5238195,
+        "last_connection": 1736041046,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 3479,
+        "coin": "BLK",
+        "category": "Electrum",
+        "server": "electrum3.blackcoin.nl:30001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5238195,
+        "last_connection": 1736041046,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 3482,
+        "coin": "BLK",
+        "category": "Electrum",
+        "server": "electrum3.blackcoin.nl:30002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5238195,
+        "last_connection": 1736041046,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 3497,
+        "coin": "BLOCX",
+        "category": "Electrum",
+        "server": "electrum3.blocx.live:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 453651,
+        "last_connection": 1736041047,
+        "contact": null
+    },
+    {
+        "id": 3500,
+        "coin": "BLOCX",
+        "category": "Electrum",
+        "server": "electrum3.blocx.live:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 453651,
+        "last_connection": 1736041048,
+        "contact": null
+    },
+    {
+        "id": 3504,
+        "coin": "BOLI",
+        "category": "Electrum",
+        "server": "electrum2.bolivarcoin.tech:23001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1273706,
+        "last_connection": 1736041048,
+        "contact": null
+    },
+    {
+        "id": 3505,
+        "coin": "BSTY",
+        "category": "Electrum",
+        "server": "electrumserver01.globalboost.info:50011",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 515464,
+        "last_connection": 1736041048,
+        "contact": null
+    },
+    {
+        "id": 3507,
+        "coin": "BSTY",
+        "category": "Electrum",
+        "server": "electrumserver01.globalboost.info:50014",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 515464,
+        "last_connection": 1736041048,
+        "contact": null
+    },
+    {
+        "id": 3506,
+        "coin": "BSTY",
+        "category": "Electrum",
+        "server": "electrumserver02.globalboost.info:50011",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 515464,
+        "last_connection": 1736041048,
+        "contact": null
+    },
+    {
+        "id": 3508,
+        "coin": "BSTY",
+        "category": "Electrum",
+        "server": "electrumserver02.globalboost.info:50014",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 515464,
+        "last_connection": 1736041048,
+        "contact": null
+    },
+    {
+        "id": 3511,
+        "coin": "BTC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10000",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 877864,
+        "last_connection": 1736041048,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3514,
+        "coin": "BTC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20000",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 877864,
+        "last_connection": 1736041048,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3512,
+        "coin": "BTC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10000",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 877864,
+        "last_connection": 1736041048,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3515,
+        "coin": "BTC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20000",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 877864,
+        "last_connection": 1736041049,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3513,
+        "coin": "BTC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10000",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 877864,
+        "last_connection": 1736041049,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3516,
+        "coin": "BTC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20000",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 877864,
+        "last_connection": 1736041049,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3529,
+        "coin": "BTCZ",
+        "category": "Electrum",
+        "server": "electrum1.btcz.rocks:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1486620,
+        "last_connection": 1736041051,
+        "contact": [
+            {
+                "discord": "VandarGR#6065"
+            }
+        ]
+    },
+    {
+        "id": 3530,
+        "coin": "BTCZ",
+        "category": "Electrum",
+        "server": "electrum2.btcz.rocks:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1486620,
+        "last_connection": 1736041052,
+        "contact": [
+            {
+                "discord": "VandarGR#6065"
+            }
+        ]
+    },
+    {
+        "id": 5181,
+        "coin": "BTCZ",
+        "category": "Electrum",
+        "server": "electrum3.btcz.rocks:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1486620,
+        "last_connection": 1736041051,
+        "contact": [
+            {
+                "discord": "426842722436120577"
+            }
+        ]
+    },
+    {
+        "id": 5183,
+        "coin": "BTCZ",
+        "category": "Electrum",
+        "server": "electrum5.btcz.rocks:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1465064,
+        "last_connection": 1732784857,
+        "contact": [
+            {
+                "discord": "426842722436120577"
+            }
+        ]
+    },
+    {
+        "id": 3533,
+        "coin": "BTE",
+        "category": "Electrum",
+        "server": "electrumx.bitwebcore.net:20002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1894792,
+        "last_connection": 1736041051,
+        "contact": [
+            {
+                "email": "mraksoll@gmail.com"
+            },
+            {
+                "discord": "mraksoll"
+            },
+            {
+                "github": "https:\/\/github.com\/bitweb-project\/electrumx\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3534,
+        "coin": "BTE",
+        "category": "Electrum",
+        "server": "electrumx1.bitwebcore.net:20002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1894792,
+        "last_connection": 1736041051,
+        "contact": [
+            {
+                "email": "mraksoll@gmail.com"
+            },
+            {
+                "discord": "mraksoll"
+            },
+            {
+                "github": "https:\/\/github.com\/bitweb-project\/electrumx\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3535,
+        "coin": "BTE",
+        "category": "Electrum",
+        "server": "electrumx2.bitwebcore.net:20002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1894792,
+        "last_connection": 1736041051,
+        "contact": [
+            {
+                "email": "mraksoll@gmail.com"
+            },
+            {
+                "discord": "mraksoll"
+            },
+            {
+                "github": "https:\/\/github.com\/bitweb-project\/electrumx\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3549,
+        "coin": "CCL",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10029",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2095074,
+        "last_connection": 1736041052,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3552,
+        "coin": "CCL",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20029",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2095074,
+        "last_connection": 1736041052,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3550,
+        "coin": "CCL",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10029",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2095074,
+        "last_connection": 1736041052,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3553,
+        "coin": "CCL",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20029",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2095074,
+        "last_connection": 1736041052,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3551,
+        "coin": "CCL",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10029",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2095074,
+        "last_connection": 1736041053,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3554,
+        "coin": "CCL",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20029",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2095074,
+        "last_connection": 1736041053,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3559,
+        "coin": "CDN",
+        "category": "Electrum",
+        "server": "holland.ecoincore.com:34333",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 448477,
+        "last_connection": 1736041053,
+        "contact": null
+    },
+    {
+        "id": 5569,
+        "coin": "CDN",
+        "category": "Electrum",
+        "server": "seattle.ecoincore.com:34333",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 448477,
+        "last_connection": 1736041054,
+        "contact": null
+    },
+    {
+        "id": 3563,
+        "coin": "CDN",
+        "category": "Electrum",
+        "server": "woolloomooloo.ecoincore.com:34333",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 448477,
+        "last_connection": 1736041054,
+        "contact": null
+    },
+    {
+        "id": 3578,
+        "coin": "CHTA",
+        "category": "Electrum",
+        "server": "electrum.shorelinecrypto.com:10007",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3625497,
+        "last_connection": 1736041054,
+        "contact": [
+            {
+                "email": "support@shorelinecrypto.com"
+            },
+            {
+                "discord": "honglu69#5911"
+            }
+        ]
+    },
+    {
+        "id": 3579,
+        "coin": "CHTA",
+        "category": "Electrum",
+        "server": "electrum1.mooo.com:10007",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3625497,
+        "last_connection": 1736041054,
+        "contact": [
+            {
+                "email": "support@shorelinecrypto.com"
+            },
+            {
+                "discord": "honglu69#5911"
+            }
+        ]
+    },
+    {
+        "id": 3580,
+        "coin": "CHTA",
+        "category": "Electrum",
+        "server": "electrum2.mooo.com:10007",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3625497,
+        "last_connection": 1736041054,
+        "contact": [
+            {
+                "email": "support@shorelinecrypto.com"
+            },
+            {
+                "discord": "honglu69#5911"
+            }
+        ]
+    },
+    {
+        "id": 3590,
+        "coin": "CLAM",
+        "category": "Electrum",
+        "server": "clam-ex-one.ewmci.online:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5497247,
+        "last_connection": 1736041054,
+        "contact": [
+            {
+                "discord": "475820011634819072"
+            }
+        ]
+    },
+    {
+        "id": 3591,
+        "coin": "CLAM",
+        "category": "Electrum",
+        "server": "clam-ex-one.ewmci.online:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5497247,
+        "last_connection": 1736041055,
+        "contact": [
+            {
+                "discord": "475820011634819072"
+            }
+        ]
+    },
+    {
+        "id": 4577,
+        "coin": "CLC",
+        "category": "Electrum",
+        "server": "electrumx.cryptocollider.com:10001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1150794,
+        "last_connection": 1728164784,
+        "contact": [
+            {
+                "email": "electrumx@cryptocollider.com"
+            },
+            {
+                "discord": "collider#6160"
+            }
+        ]
+    },
+    {
+        "id": 5121,
+        "coin": "CLC",
+        "category": "Electrum",
+        "server": "v2.cryptocollider.com:10001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1271678,
+        "last_connection": 1736041055,
+        "contact": [
+            {
+                "email": "electrumx@cryptocollider.com"
+            },
+            {
+                "discord": "collider#6160"
+            }
+        ]
+    },
+    {
+        "id": 5122,
+        "coin": "CLC",
+        "category": "Electrum",
+        "server": "v2.cryptocollider.com:8443",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1271678,
+        "last_connection": 1736041055,
+        "contact": [
+            {
+                "email": "electrumx@cryptocollider.com"
+            },
+            {
+                "discord": "collider#6160"
+            }
+        ]
+    },
+    {
+        "id": 4393,
+        "coin": "CRNC",
+        "category": "Electrum",
+        "server": "explorer.crionic.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2831374,
+        "last_connection": 1736041132,
+        "contact": [
+            {
+                "email": "diabatiis@gmail.com"
+            },
+            {
+                "discord": "Diabaths#1919"
+            }
+        ]
+    },
+    {
+        "id": 4395,
+        "coin": "CRNC",
+        "category": "Electrum",
+        "server": "explorer.crionic.org:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2831374,
+        "last_connection": 1736041132,
+        "contact": [
+            {
+                "email": "diabatiis@gmail.com"
+            },
+            {
+                "discord": "Diabaths#1919"
+            }
+        ]
+    },
+    {
+        "id": 3602,
+        "coin": "CY",
+        "category": "Electrum",
+        "server": "electrum02.cyberyen.work:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 855285,
+        "last_connection": 1736041056,
+        "contact": [
+            {
+                "support_chat": "https:\/\/matrix.to\/#\/#cyberyen-support:matrix.org"
+            }
+        ]
+    },
+    {
+        "id": 3603,
+        "coin": "CY",
+        "category": "Electrum",
+        "server": "electrum03.cyberyen.work:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 855285,
+        "last_connection": 1736041056,
+        "contact": [
+            {
+                "support_chat": "https:\/\/matrix.to\/#\/#cyberyen-support:matrix.org"
+            }
+        ]
+    },
+    {
+        "id": 3610,
+        "coin": "DASH",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10061",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2200259,
+        "last_connection": 1736041056,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3613,
+        "coin": "DASH",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20061",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2200259,
+        "last_connection": 1736041057,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3611,
+        "coin": "DASH",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10061",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2200259,
+        "last_connection": 1736041057,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3614,
+        "coin": "DASH",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20061",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2200259,
+        "last_connection": 1736041057,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3612,
+        "coin": "DASH",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10061",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2200259,
+        "last_connection": 1736041057,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3615,
+        "coin": "DASH",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20061",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2200259,
+        "last_connection": 1736041057,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3619,
+        "coin": "DGB",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10059",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 20634350,
+        "last_connection": 1736041057,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3622,
+        "coin": "DGB",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20059",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 20634350,
+        "last_connection": 1736041058,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3620,
+        "coin": "DGB",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10059",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 20634350,
+        "last_connection": 1736041058,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3623,
+        "coin": "DGB",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20059",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 20634350,
+        "last_connection": 1736041058,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3621,
+        "coin": "DGB",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10059",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 20634350,
+        "last_connection": 1736041058,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3624,
+        "coin": "DGB",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20059",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 20634350,
+        "last_connection": 1736041058,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3635,
+        "coin": "DGC",
+        "category": "Electrum",
+        "server": "electrumx.dgc.ewmcx.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 7460829,
+        "last_connection": 1728961996,
+        "contact": null
+    },
+    {
+        "id": 3636,
+        "coin": "DGC",
+        "category": "Electrum",
+        "server": "failover.dgc.ewmcx.biz:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 7603240,
+        "last_connection": 1736041059,
+        "contact": null
+    },
+    {
+        "id": 3644,
+        "coin": "DIAC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20072",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 461983,
+        "last_connection": 1736041060,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3645,
+        "coin": "DIAC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20072",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 461983,
+        "last_connection": 1736041060,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 5583,
+        "coin": "DIME",
+        "category": "Electrum",
+        "server": "electrumx1.dimecoinnetwork.com:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 6336743,
+        "last_connection": 1736041061,
+        "contact": [
+            {
+                "email": "developer@dimecoinnetwork.com"
+            },
+            {
+                "discord": "dhop14#9359"
+            }
+        ]
+    },
+    {
+        "id": 4659,
+        "coin": "DIME",
+        "category": "Electrum",
+        "server": "electrumx2.dimecoinnetwork.com:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 6336743,
+        "last_connection": 1736041061,
+        "contact": [
+            {
+                "email": "developer@dimecoinnetwork.com"
+            },
+            {
+                "discord": "dhop14#9359"
+            }
+        ]
+    },
+    {
+        "id": 3649,
+        "coin": "DIMI",
+        "category": "Electrum",
+        "server": "electrumx1.diminutivecoin.com:50012",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2900600,
+        "last_connection": 1736041061,
+        "contact": [
+            {
+                "email": "support@diminutivecoin.com"
+            },
+            {
+                "twitter": "coin_dimi"
+            },
+            {
+                "reddit": "DiminutiveCoin_DIMI"
+            },
+            {
+                "github": "MadCatMining"
+            },
+            {
+                "discord": "[MadCatMining]#0677"
+            }
+        ]
+    },
+    {
+        "id": 3650,
+        "coin": "DIMI",
+        "category": "Electrum",
+        "server": "electrumx2.diminutivecoin.com:50012",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2882098,
+        "last_connection": 1736041061,
+        "contact": [
+            {
+                "email": "support@diminutivecoin.com"
+            }
+        ]
+    },
+    {
+        "id": 4058,
+        "coin": "DOC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10020",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 893740,
+        "last_connection": 1736041100,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4061,
+        "coin": "DOC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20020",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 893740,
+        "last_connection": 1736041101,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4059,
+        "coin": "DOC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10020",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 893740,
+        "last_connection": 1736041101,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4062,
+        "coin": "DOC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20020",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 893740,
+        "last_connection": 1736041101,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4060,
+        "coin": "DOC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10020",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 893740,
+        "last_connection": 1736041101,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4063,
+        "coin": "DOC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20020",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 893740,
+        "last_connection": 1736041101,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3662,
+        "coin": "DOGE",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10060",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5531846,
+        "last_connection": 1736041062,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3665,
+        "coin": "DOGE",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20060",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5531846,
+        "last_connection": 1736041062,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3663,
+        "coin": "DOGE",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10060",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5531846,
+        "last_connection": 1736041062,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3666,
+        "coin": "DOGE",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20060",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5531846,
+        "last_connection": 1736041063,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3664,
+        "coin": "DOGE",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10060",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5531846,
+        "last_connection": 1736041063,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3667,
+        "coin": "DOGE",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20060",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5531846,
+        "last_connection": 1736041063,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3675,
+        "coin": "DOI",
+        "category": "Electrum",
+        "server": "big-parrot-60.doi.works:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 366486,
+        "last_connection": 1736041063,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/doichain\/electrum-doi\/issues",
+                "twitter": "doichain"
+            }
+        ]
+    },
+    {
+        "id": 3674,
+        "coin": "DOI",
+        "category": "Electrum",
+        "server": "pink-deer-69.doi.works:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 366486,
+        "last_connection": 1736041064,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/doichain\/electrum-doi\/issues",
+                "twitter": "doichain"
+            }
+        ]
+    },
+    {
+        "id": 3677,
+        "coin": "DOI",
+        "category": "Electrum",
+        "server": "pink-deer-69.doi.works:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 366486,
+        "last_connection": 1736041064,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/doichain\/electrum-doi\/issues",
+                "twitter": "doichain"
+            }
+        ]
+    },
+    {
+        "id": 5124,
+        "coin": "DOI",
+        "category": "Electrum",
+        "server": "ugly-bird-70.doi.works:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 366486,
+        "last_connection": 1736041064,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/doichain\/electrum-doi\/issues",
+                "twitter": "doichain"
+            }
+        ]
+    },
+    {
+        "id": 3673,
+        "coin": "DP",
+        "category": "Electrum",
+        "server": "1.eu.dp.electrum.dexstats.info:10021",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1441762,
+        "last_connection": 1736041063,
+        "contact": [
+            {
+                "discord": "Zanzarismo#6500"
+            }
+        ]
+    },
+    {
+        "id": 3638,
+        "coin": "DPC",
+        "category": "Electrum",
+        "server": "electrumxdpc.bitwebcore.net:22002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 74258,
+        "last_connection": 1736041060,
+        "contact": [
+            {
+                "email": "mraksoll@gmail.com"
+            },
+            {
+                "discord": "mraksoll"
+            },
+            {
+                "github": "https:\/\/github.com\/dpowcore-project\/electrumx\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3639,
+        "coin": "DPC",
+        "category": "Electrum",
+        "server": "electrumxdpc1.bitwebcore.net:22002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 74258,
+        "last_connection": 1736041060,
+        "contact": [
+            {
+                "email": "mraksoll@gmail.com"
+            },
+            {
+                "discord": "mraksoll"
+            },
+            {
+                "github": "https:\/\/github.com\/dpowcore-project\/electrumx\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3640,
+        "coin": "DPC",
+        "category": "Electrum",
+        "server": "electrumxdpc2.bitwebcore.net:22002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 74258,
+        "last_connection": 1736041060,
+        "contact": [
+            {
+                "email": "mraksoll@gmail.com"
+            },
+            {
+                "discord": "mraksoll"
+            },
+            {
+                "github": "https:\/\/github.com\/dpowcore-project\/electrumx\/issues"
+            }
+        ]
+    },
+    {
+        "id": 4448,
+        "coin": "EFL",
+        "category": "Electrum",
+        "server": "electrum1.egulden.org:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2860365,
+        "last_connection": 1736041064,
+        "contact": null
+    },
+    {
+        "id": 4449,
+        "coin": "EFL",
+        "category": "Electrum",
+        "server": "electrum3.egulden.org:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2860365,
+        "last_connection": 1736041064,
+        "contact": null
+    },
+    {
+        "id": 5571,
+        "coin": "EFL",
+        "category": "Electrum",
+        "server": "holland.ecoincore.com:11017",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2860365,
+        "last_connection": 1736041064,
+        "contact": null
+    },
+    {
+        "id": 3686,
+        "coin": "EMC2",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10062",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 8706166,
+        "last_connection": 1736041064,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3688,
+        "coin": "EMC2",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20062",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 8706166,
+        "last_connection": 1736041065,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3687,
+        "coin": "EMC2",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10062",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 8706166,
+        "last_connection": 1736041065,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3689,
+        "coin": "EMC2",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20062",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 8706166,
+        "last_connection": 1736041065,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4398,
+        "coin": "EVR",
+        "category": "Electrum",
+        "server": "electrum1-mainnet.evrmorecoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1140330,
+        "last_connection": 1736041133,
+        "contact": [
+            {
+                "email": "hans_schm1dt@protonmail.com"
+            },
+            {
+                "discord": "Hans_Schmidt#0745"
+            }
+        ]
+    },
+    {
+        "id": 4400,
+        "coin": "EVR",
+        "category": "Electrum",
+        "server": "electrum1-mainnet.evrmorecoin.org:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1140330,
+        "last_connection": 1736041133,
+        "contact": [
+            {
+                "email": "hans_schm1dt@protonmail.com"
+            },
+            {
+                "discord": "Hans_Schmidt#0745"
+            }
+        ]
+    },
+    {
+        "id": 4399,
+        "coin": "EVR",
+        "category": "Electrum",
+        "server": "electrum2-mainnet.evrmorecoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1140330,
+        "last_connection": 1736041133,
+        "contact": [
+            {
+                "email": "hans_schm1dt@protonmail.com"
+            },
+            {
+                "discord": "Hans_Schmidt#0745"
+            }
+        ]
+    },
+    {
+        "id": 4401,
+        "coin": "EVR",
+        "category": "Electrum",
+        "server": "electrum2-mainnet.evrmorecoin.org:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1140330,
+        "last_connection": 1736041133,
+        "contact": [
+            {
+                "email": "hans_schm1dt@protonmail.com"
+            },
+            {
+                "discord": "Hans_Schmidt#0745"
+            }
+        ]
+    },
+    {
+        "id": 3692,
+        "coin": "FIRO",
+        "category": "Electrum",
+        "server": "electrumx.firo.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1022149,
+        "last_connection": 1736041065,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/firoorg\/electrumx-firo\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3693,
+        "coin": "FIRO",
+        "category": "Electrum",
+        "server": "electrumx01.firo.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1022149,
+        "last_connection": 1736041067,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/firoorg\/electrumx-firo\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3694,
+        "coin": "FIRO",
+        "category": "Electrum",
+        "server": "electrumx02.firo.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1022149,
+        "last_connection": 1736041065,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/firoorg\/electrumx-firo\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3695,
+        "coin": "FIRO",
+        "category": "Electrum",
+        "server": "electrumx03.firo.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1022149,
+        "last_connection": 1736041066,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/firoorg\/electrumx-firo\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3700,
+        "coin": "FJC",
+        "category": "Electrum",
+        "server": "electrumx1.fujicoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5515490,
+        "last_connection": 1736041066,
+        "contact": [
+            {
+                "discord": "motty#8318"
+            }
+        ]
+    },
+    {
+        "id": 3702,
+        "coin": "FJC",
+        "category": "Electrum",
+        "server": "electrumx1.fujicoin.org:50003",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5515490,
+        "last_connection": 1736041066,
+        "contact": [
+            {
+                "discord": "motty#8318"
+            }
+        ]
+    },
+    {
+        "id": 3701,
+        "coin": "FJC",
+        "category": "Electrum",
+        "server": "electrumx2.fujicoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5515490,
+        "last_connection": 1736041067,
+        "contact": [
+            {
+                "discord": "motty#8318"
+            }
+        ]
+    },
+    {
+        "id": 3703,
+        "coin": "FJC",
+        "category": "Electrum",
+        "server": "electrumx2.fujicoin.org:50003",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5515490,
+        "last_connection": 1736041067,
+        "contact": [
+            {
+                "discord": "motty#8318"
+            }
+        ]
+    },
+    {
+        "id": 4275,
+        "coin": "FLUX",
+        "category": "Electrum",
+        "server": "electrumx.runonflux.io:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1810545,
+        "last_connection": 1736041142,
+        "contact": null
+    },
+    {
+        "id": 4413,
+        "coin": "FLUX",
+        "category": "Electrum",
+        "server": "electrumx2.runonflux.io:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1810545,
+        "last_connection": 1736041142,
+        "contact": null
+    },
+    {
+        "id": 3712,
+        "coin": "FTC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10054",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5500801,
+        "last_connection": 1736041067,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3715,
+        "coin": "FTC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20054",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5500801,
+        "last_connection": 1736041067,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3713,
+        "coin": "FTC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10054",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5500802,
+        "last_connection": 1736041067,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3716,
+        "coin": "FTC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20054",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5500801,
+        "last_connection": 1736041068,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3714,
+        "coin": "FTC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10054",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5500802,
+        "last_connection": 1736041068,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3717,
+        "coin": "FTC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20054",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5500801,
+        "last_connection": 1736041068,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3730,
+        "coin": "GBX",
+        "category": "Electrum",
+        "server": "88.99.26.209:5128",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1331177,
+        "last_connection": 1736041069,
+        "contact": null
+    },
+    {
+        "id": 3731,
+        "coin": "GLC",
+        "category": "Electrum",
+        "server": "electrum1.netseed.net:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2194844,
+        "last_connection": 1736041069,
+        "contact": null
+    },
+    {
+        "id": 3733,
+        "coin": "GLC",
+        "category": "Electrum",
+        "server": "electrum1.netseed.net:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2194844,
+        "last_connection": 1736041070,
+        "contact": null
+    },
+    {
+        "id": 3732,
+        "coin": "GLC",
+        "category": "Electrum",
+        "server": "electrum2.netseed.net:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2194844,
+        "last_connection": 1736041070,
+        "contact": null
+    },
+    {
+        "id": 3734,
+        "coin": "GLC",
+        "category": "Electrum",
+        "server": "electrum2.netseed.net:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2194844,
+        "last_connection": 1736041070,
+        "contact": null
+    },
+    {
+        "id": 3737,
+        "coin": "GLEEC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10022",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 938656,
+        "last_connection": 1724795530,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4737,
+        "coin": "GLEEC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10025",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 139707,
+        "last_connection": 1736041071,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3740,
+        "coin": "GLEEC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20022",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 938656,
+        "last_connection": 1724795531,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4740,
+        "coin": "GLEEC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20025",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 139707,
+        "last_connection": 1736041071,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3738,
+        "coin": "GLEEC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10022",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 938656,
+        "last_connection": 1724795531,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4738,
+        "coin": "GLEEC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10025",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 139707,
+        "last_connection": 1736041071,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3741,
+        "coin": "GLEEC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20022",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 938656,
+        "last_connection": 1724795531,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4741,
+        "coin": "GLEEC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20025",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 139707,
+        "last_connection": 1736041071,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3739,
+        "coin": "GLEEC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10022",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 938656,
+        "last_connection": 1724795531,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4739,
+        "coin": "GLEEC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10025",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 139707,
+        "last_connection": 1736041071,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3742,
+        "coin": "GLEEC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20022",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 938656,
+        "last_connection": 1724795531,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4742,
+        "coin": "GLEEC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20025",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 139707,
+        "last_connection": 1736041071,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3746,
+        "coin": "GRLC",
+        "category": "Electrum",
+        "server": "electrum.maxpuig.com:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5337239,
+        "last_connection": 1736041071,
+        "contact": [
+            {
+                "discord": "mecs#4770"
+            }
+        ]
+    },
+    {
+        "id": 3748,
+        "coin": "GRLC",
+        "category": "Electrum",
+        "server": "electrum.maxpuig.com:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5337239,
+        "last_connection": 1736041072,
+        "contact": [
+            {
+                "discord": "orpheas#1503"
+            }
+        ]
+    },
+    {
+        "id": 3747,
+        "coin": "GRLC",
+        "category": "Electrum",
+        "server": "electrum.niftybakes.com:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5337239,
+        "last_connection": 1736041072,
+        "contact": [
+            {
+                "discord": "405566674448810005"
+            }
+        ]
+    },
+    {
+        "id": 5558,
+        "coin": "GRLC",
+        "category": "Electrum",
+        "server": "electrum.niftybakes.com:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5337239,
+        "last_connection": 1736041072,
+        "contact": [
+            {
+                "discord": "405566674448810005"
+            }
+        ]
+    },
+    {
+        "id": 3749,
+        "coin": "GRLC",
+        "category": "Electrum",
+        "server": "uk.garlium.crapules.org:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5033374,
+        "last_connection": 1723551611,
+        "contact": [
+            {
+                "discord": "orpheas#1503"
+            }
+        ]
+    },
+    {
+        "id": 4674,
+        "coin": "GRMS",
+        "category": "Electrum",
+        "server": "electrum.grms.pw:17485",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 102285,
+        "last_connection": 1735691046,
+        "contact": [
+            {
+                "email": "contact@grms.pw"
+            },
+            {
+                "discord": "miner113#7864"
+            },
+            {
+                "github": "Miner113"
+            }
+        ]
+    },
+    {
+        "id": 4676,
+        "coin": "GRMS",
+        "category": "Electrum",
+        "server": "electrum.grms.pw:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 102285,
+        "last_connection": 1735691046,
+        "contact": [
+            {
+                "email": "contact@grms.pw"
+            },
+            {
+                "discord": "miner113#7864"
+            },
+            {
+                "github": "Miner113"
+            }
+        ]
+    },
+    {
+        "id": 4675,
+        "coin": "GRMS",
+        "category": "Electrum",
+        "server": "electrum2.grms.pw:17485",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 102285,
+        "last_connection": 1735691047,
+        "contact": [
+            {
+                "email": "contact@grms.pw"
+            },
+            {
+                "discord": "miner113#7864"
+            },
+            {
+                "github": "Miner113"
+            }
+        ]
+    },
+    {
+        "id": 4677,
+        "coin": "GRMS",
+        "category": "Electrum",
+        "server": "electrum2.grms.pw:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 102285,
+        "last_connection": 1735691047,
+        "contact": [
+            {
+                "email": "contact@grms.pw"
+            },
+            {
+                "discord": "miner113#7864"
+            },
+            {
+                "github": "Miner113"
+            }
+        ]
+    },
+    {
+        "id": 4668,
+        "coin": "GRR",
+        "category": "Electrum",
+        "server": "electrum.electrumx-coin.shop:17488",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 88193,
+        "last_connection": 1727742136,
+        "contact": [
+            {
+                "email": "contact@electrumx-coin.shop"
+            },
+            {
+                "github": "electrumx-coin"
+            }
+        ]
+    },
+    {
+        "id": 4670,
+        "coin": "GRR",
+        "category": "Electrum",
+        "server": "electrum.electrumx-coin.shop:50008",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 88193,
+        "last_connection": 1727742136,
+        "contact": [
+            {
+                "email": "contact@electrumx-coin.shop"
+            },
+            {
+                "github": "electrumx-coin"
+            }
+        ]
+    },
+    {
+        "id": 4669,
+        "coin": "GRR",
+        "category": "Electrum",
+        "server": "electrum1.electrumx-coin.shop:17488",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 88193,
+        "last_connection": 1727742136,
+        "contact": [
+            {
+                "email": "contact@electrumx-coin.shop"
+            },
+            {
+                "github": "electrumx-coin"
+            }
+        ]
+    },
+    {
+        "id": 4671,
+        "coin": "GRR",
+        "category": "Electrum",
+        "server": "electrum1.electrumx-coin.shop:50008",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 88193,
+        "last_connection": 1727742136,
+        "contact": [
+            {
+                "email": "contact@electrumx-coin.shop"
+            },
+            {
+                "github": "electrumx-coin"
+            }
+        ]
+    },
+    {
+        "id": 3780,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum11.groestlcoin.org:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041072,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3752,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum12.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041072,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3753,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum13.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041073,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3754,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum14.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041073,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3755,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum15.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041073,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3756,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum16.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041073,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3757,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum17.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041073,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3758,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum18.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041073,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3759,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum19.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041074,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3760,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum2.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041074,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3761,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum20.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041074,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3762,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum21.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041075,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3763,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum22.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041075,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3764,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum23.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041075,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3765,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum24.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041075,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3766,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum25.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041075,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3767,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum26.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041075,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3768,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum27.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041076,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3769,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum28.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041076,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3770,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum31.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041076,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3771,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum32.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041076,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3772,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum33.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041076,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3773,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum34.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041077,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3774,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum35.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041077,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3775,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum36.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041077,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3776,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum37.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041078,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3777,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum38.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041078,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3778,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum39.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041077,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3779,
+        "coin": "GRS",
+        "category": "Electrum",
+        "server": "electrum40.groestlcoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5411860,
+        "last_connection": 1736041078,
+        "contact": [
+            {
+                "email": "jackielove4u@hotmail.com"
+            },
+            {
+                "discord": "jackielove4u#0412"
+            }
+        ]
+    },
+    {
+        "id": 3813,
+        "coin": "IL8P",
+        "category": "Electrum",
+        "server": "il8p.electrumx.transcenders.name:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2022414,
+        "last_connection": 1736041078,
+        "contact": [
+            {
+                "email": "coins@ewmci.com"
+            },
+            {
+                "discord": "[CryptoStan]#9341"
+            },
+            {
+                "twitter": "EwmciL"
+            },
+            {
+                "reddit": "InfiniLooP"
+            },
+            {
+                "github": "WikiMin3R"
+            }
+        ]
+    },
+    {
+        "id": 3814,
+        "coin": "IL8P",
+        "category": "Electrum",
+        "server": "il9p.electrumx.transcenders.name:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2022414,
+        "last_connection": 1736041078,
+        "contact": [
+            {
+                "email": "coins@ewmci.com"
+            },
+            {
+                "discord": "[CryptoStan]#9341"
+            },
+            {
+                "twitter": "EwmciL"
+            },
+            {
+                "reddit": "InfiniLooP"
+            },
+            {
+                "github": "WikiMin3R"
+            }
+        ]
+    },
+    {
+        "id": 4606,
+        "coin": "KIIRO",
+        "category": "Electrum",
+        "server": "electrum2.kiirocoin.org:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 283618,
+        "last_connection": 1736041133,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/kiirocoin\/electrum-kiiro\/issues"
+            }
+        ]
+    },
+    {
+        "id": 4404,
+        "coin": "KIIRO",
+        "category": "Electrum",
+        "server": "electrum3.kiirocoin.org:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 307071,
+        "last_connection": 1736041133,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/kiirocoin\/electrum-kiiro\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3845,
+        "coin": "KMD",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 4254601,
+        "last_connection": 1736041078,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3848,
+        "coin": "KMD",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20001",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4254601,
+        "last_connection": 1736041078,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3846,
+        "coin": "KMD",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 4254601,
+        "last_connection": 1736041079,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3849,
+        "coin": "KMD",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20001",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4254601,
+        "last_connection": 1736041079,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3847,
+        "coin": "KMD",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 4254601,
+        "last_connection": 1736041079,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3850,
+        "coin": "KMD",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20001",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4254601,
+        "last_connection": 1736041079,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3854,
+        "coin": "KOIN",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10024",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2173221,
+        "last_connection": 1736041079,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3857,
+        "coin": "KOIN",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20024",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2173221,
+        "last_connection": 1736041079,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3855,
+        "coin": "KOIN",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10024",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2173221,
+        "last_connection": 1736041079,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3858,
+        "coin": "KOIN",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20024",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2173221,
+        "last_connection": 1736041080,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3856,
+        "coin": "KOIN",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10024",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2173221,
+        "last_connection": 1736041080,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3859,
+        "coin": "KOIN",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20024",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2173221,
+        "last_connection": 1736041080,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3863,
+        "coin": "LBC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10067",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1705888,
+        "last_connection": 1736041080,
+        "contact": null
+    },
+    {
+        "id": 3866,
+        "coin": "LBC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20067",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1705888,
+        "last_connection": 1736041080,
+        "contact": null
+    },
+    {
+        "id": 3864,
+        "coin": "LBC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10067",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1705888,
+        "last_connection": 1736041080,
+        "contact": null
+    },
+    {
+        "id": 3867,
+        "coin": "LBC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20067",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1705888,
+        "last_connection": 1736041081,
+        "contact": null
+    },
+    {
+        "id": 3865,
+        "coin": "LBC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10067",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1705888,
+        "last_connection": 1736041081,
+        "contact": null
+    },
+    {
+        "id": 3868,
+        "coin": "LBC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20067",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1705888,
+        "last_connection": 1736041081,
+        "contact": null
+    },
+    {
+        "id": 3881,
+        "coin": "LCC",
+        "category": "Electrum",
+        "server": "88.99.26.209:5140",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3862877,
+        "last_connection": 1736041082,
+        "contact": null
+    },
+    {
+        "id": 3882,
+        "coin": "LCC",
+        "category": "Electrum",
+        "server": "lcc-ex-one.ewmci.online:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3862877,
+        "last_connection": 1736041082,
+        "contact": [
+            {
+                "discord": "475820011634819072"
+            }
+        ]
+    },
+    {
+        "id": 3883,
+        "coin": "LCC",
+        "category": "Electrum",
+        "server": "lcc-ex-one.ewmci.online:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3862877,
+        "last_connection": 1736041083,
+        "contact": [
+            {
+                "discord": "475820011634819072"
+            }
+        ]
+    },
+    {
+        "id": 3889,
+        "coin": "LTC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10063",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2821748,
+        "last_connection": 1736041083,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3892,
+        "coin": "LTC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20063",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2821748,
+        "last_connection": 1736041083,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3890,
+        "coin": "LTC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10063",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2821748,
+        "last_connection": 1736041083,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3893,
+        "coin": "LTC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20063",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2821748,
+        "last_connection": 1736041083,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3891,
+        "coin": "LTC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10063",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2821748,
+        "last_connection": 1736041083,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3894,
+        "coin": "LTC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20063",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2821748,
+        "last_connection": 1736041084,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4647,
+        "coin": "LUPA",
+        "category": "Electrum",
+        "server": "electrum.lupacoin.biz:17487",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 350294,
+        "last_connection": 1731889388,
+        "contact": [
+            {
+                "email": "contact@lupacoin.biz"
+            },
+            {
+                "github": "LUPAZA-coin"
+            }
+        ]
+    },
+    {
+        "id": 4649,
+        "coin": "LUPA",
+        "category": "Electrum",
+        "server": "electrum.lupacoin.biz:50005",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 350294,
+        "last_connection": 1731889388,
+        "contact": [
+            {
+                "email": "contact@lupacoin.biz"
+            },
+            {
+                "github": "LUPAZA-coin"
+            }
+        ]
+    },
+    {
+        "id": 4648,
+        "coin": "LUPA",
+        "category": "Electrum",
+        "server": "electrum1.lupacoin.biz:17487",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 350294,
+        "last_connection": 1731889388,
+        "contact": [
+            {
+                "email": "contact@lupacoin.biz"
+            },
+            {
+                "github": "LUPAZA-coin"
+            }
+        ]
+    },
+    {
+        "id": 4650,
+        "coin": "LUPA",
+        "category": "Electrum",
+        "server": "electrum1.lupacoin.biz:50005",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 350294,
+        "last_connection": 1731889388,
+        "contact": [
+            {
+                "email": "contact@lupacoin.biz"
+            },
+            {
+                "github": "LUPAZA-coin"
+            }
+        ]
+    },
+    {
+        "id": 3907,
+        "coin": "LYNX",
+        "category": "Electrum",
+        "server": "electrum5.getlynx.io:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3086183,
+        "last_connection": 1736041085,
+        "contact": null
+    },
+    {
+        "id": 3908,
+        "coin": "LYNX",
+        "category": "Electrum",
+        "server": "electrum6.getlynx.io:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3086183,
+        "last_connection": 1736041085,
+        "contact": null
+    },
+    {
+        "id": 3909,
+        "coin": "LYNX",
+        "category": "Electrum",
+        "server": "electrum7.getlynx.io:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3086183,
+        "last_connection": 1736041085,
+        "contact": null
+    },
+    {
+        "id": 3910,
+        "coin": "LYNX",
+        "category": "Electrum",
+        "server": "electrum8.getlynx.io:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3086183,
+        "last_connection": 1736041086,
+        "contact": null
+    },
+    {
+        "id": 3911,
+        "coin": "LYNX",
+        "category": "Electrum",
+        "server": "electrum9.getlynx.io:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3086183,
+        "last_connection": 1736041086,
+        "contact": null
+    },
+    {
+        "id": 4067,
+        "coin": "MARTY",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10021",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 907655,
+        "last_connection": 1736041101,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4070,
+        "coin": "MARTY",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20021",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 907655,
+        "last_connection": 1736041101,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4068,
+        "coin": "MARTY",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10021",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 907655,
+        "last_connection": 1736041102,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4071,
+        "coin": "MARTY",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20021",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 907655,
+        "last_connection": 1736041102,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4069,
+        "coin": "MARTY",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10021",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 907655,
+        "last_connection": 1736041102,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4072,
+        "coin": "MARTY",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20021",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 907655,
+        "last_connection": 1736041102,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4383,
+        "coin": "MAZA",
+        "category": "Electrum",
+        "server": "electrum.seed.mazanode.com:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3548316,
+        "last_connection": 1736041132,
+        "contact": [
+            {
+                "email": "brian@mazacoin.org"
+            }
+        ]
+    },
+    {
+        "id": 4386,
+        "coin": "MAZA",
+        "category": "Electrum",
+        "server": "electrum.seed.mazanode.com:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3548316,
+        "last_connection": 1736041132,
+        "contact": [
+            {
+                "email": "brian@mazacoin.org"
+            }
+        ]
+    },
+    {
+        "id": 4384,
+        "coin": "MAZA",
+        "category": "Electrum",
+        "server": "electrumx.mazanode.com:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3548316,
+        "last_connection": 1736041132,
+        "contact": [
+            {
+                "email": "brian@mazacoin.org"
+            }
+        ]
+    },
+    {
+        "id": 4387,
+        "coin": "MAZA",
+        "category": "Electrum",
+        "server": "electrumx.mazanode.com:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3548316,
+        "last_connection": 1736041132,
+        "contact": [
+            {
+                "email": "brian@mazacoin.org"
+            }
+        ]
+    },
+    {
+        "id": 4385,
+        "coin": "MAZA",
+        "category": "Electrum",
+        "server": "electrumx2.mazacha.in:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3548316,
+        "last_connection": 1736041132,
+        "contact": [
+            {
+                "email": "contact@mazacoin.org"
+            },
+            {
+                "discord": "sherm77#5923"
+            }
+        ]
+    },
+    {
+        "id": 4388,
+        "coin": "MAZA",
+        "category": "Electrum",
+        "server": "electrumx2.mazacha.in:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3548316,
+        "last_connection": 1736041132,
+        "contact": [
+            {
+                "email": "contact@mazacoin.org"
+            },
+            {
+                "discord": "sherm77#5923"
+            }
+        ]
+    },
+    {
+        "id": 3917,
+        "coin": "MCL",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10023",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2590835,
+        "last_connection": 1736041086,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3920,
+        "coin": "MCL",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20023",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2590835,
+        "last_connection": 1736041086,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3918,
+        "coin": "MCL",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10023",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2590835,
+        "last_connection": 1736041086,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3921,
+        "coin": "MCL",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20023",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2590835,
+        "last_connection": 1736041086,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3919,
+        "coin": "MCL",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10023",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2590835,
+        "last_connection": 1736041086,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3922,
+        "coin": "MCL",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20023",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2590835,
+        "last_connection": 1736041086,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4406,
+        "coin": "MEWC",
+        "category": "Electrum",
+        "server": "meowcoinelectrum.xyz:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1221050,
+        "last_connection": 1736041134,
+        "contact": [
+            {
+                "discord": "Meowmancer#2099"
+            }
+        ]
+    },
+    {
+        "id": 4407,
+        "coin": "MEWC",
+        "category": "Electrum",
+        "server": "meowelectrum.xyz:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1221050,
+        "last_connection": 1736041134,
+        "contact": [
+            {
+                "discord": "Meowmancer#2099"
+            }
+        ]
+    },
+    {
+        "id": 3932,
+        "coin": "MONA",
+        "category": "Electrum",
+        "server": "133.167.67.203:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3543960,
+        "last_connection": 1736041087,
+        "contact": null
+    },
+    {
+        "id": 3933,
+        "coin": "MONA",
+        "category": "Electrum",
+        "server": "electrumx.tamami-foundation.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3543960,
+        "last_connection": 1736041087,
+        "contact": null
+    },
+    {
+        "id": 4016,
+        "coin": "MONA",
+        "category": "Electrum",
+        "server": "electrumx1.monacoin.ninja:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3543960,
+        "last_connection": 1736041087,
+        "contact": null
+    },
+    {
+        "id": 3936,
+        "coin": "NAV",
+        "category": "Electrum",
+        "server": "electrum2.nav.community:40002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 8956461,
+        "last_connection": 1736041087,
+        "contact": null
+    },
+    {
+        "id": 3937,
+        "coin": "NAV",
+        "category": "Electrum",
+        "server": "electrum3.nav.community:40002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 8956461,
+        "last_connection": 1736041088,
+        "contact": null
+    },
+    {
+        "id": 3940,
+        "coin": "NENG",
+        "category": "Electrum",
+        "server": "electrum.shorelinecrypto.com:10001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5862496,
+        "last_connection": 1736041088,
+        "contact": [
+            {
+                "email": "support@shorelinecrypto.com"
+            },
+            {
+                "discord": "honglu69#5911"
+            }
+        ]
+    },
+    {
+        "id": 3941,
+        "coin": "NENG",
+        "category": "Electrum",
+        "server": "electrum1.mooo.com:10001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5862496,
+        "last_connection": 1736041088,
+        "contact": [
+            {
+                "email": "support@shorelinecrypto.com"
+            },
+            {
+                "discord": "honglu69#5911"
+            }
+        ]
+    },
+    {
+        "id": 3942,
+        "coin": "NENG",
+        "category": "Electrum",
+        "server": "electrum2.mooo.com:10001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5862496,
+        "last_connection": 1736041088,
+        "contact": [
+            {
+                "email": "support@shorelinecrypto.com"
+            },
+            {
+                "discord": "honglu69#5911"
+            }
+        ]
+    },
+    {
+        "id": 3943,
+        "coin": "NINJA",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10036",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2093352,
+        "last_connection": 1736041088,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3946,
+        "coin": "NINJA",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20036",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2093352,
+        "last_connection": 1736041088,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3944,
+        "coin": "NINJA",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10036",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2093352,
+        "last_connection": 1736041088,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3947,
+        "coin": "NINJA",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20036",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2093352,
+        "last_connection": 1736041088,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3945,
+        "coin": "NINJA",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10036",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2093352,
+        "last_connection": 1736041088,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3948,
+        "coin": "NINJA",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20036",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2093352,
+        "last_connection": 1736041089,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 3949,
+        "coin": "NMC",
+        "category": "Electrum",
+        "server": "electrumx1.nmc.dotbit.zone:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 753174,
+        "last_connection": 1736041089,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/namecoin\/electrum-nmc\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3954,
+        "coin": "NMC",
+        "category": "Electrum",
+        "server": "electrumx1.nmc.dotbit.zone:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 753174,
+        "last_connection": 1736041089,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/namecoin\/electrum-nmc\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3950,
+        "coin": "NMC",
+        "category": "Electrum",
+        "server": "electrumx2.nmc.dotbit.zone:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 753174,
+        "last_connection": 1736041089,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/namecoin\/electrum-nmc\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3955,
+        "coin": "NMC",
+        "category": "Electrum",
+        "server": "electrumx2.nmc.dotbit.zone:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 753174,
+        "last_connection": 1736041089,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/namecoin\/electrum-nmc\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3951,
+        "coin": "NMC",
+        "category": "Electrum",
+        "server": "electrumx3.nmc.dotbit.zone:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 753174,
+        "last_connection": 1736041089,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/namecoin\/electrum-nmc\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3956,
+        "coin": "NMC",
+        "category": "Electrum",
+        "server": "electrumx3.nmc.dotbit.zone:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 753174,
+        "last_connection": 1736041090,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/namecoin\/electrum-nmc\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3952,
+        "coin": "NMC",
+        "category": "Electrum",
+        "server": "electrumx4.nmc.dotbit.zone:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 753174,
+        "last_connection": 1736041090,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/namecoin\/electrum-nmc\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3957,
+        "coin": "NMC",
+        "category": "Electrum",
+        "server": "electrumx4.nmc.dotbit.zone:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 753174,
+        "last_connection": 1736041090,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/namecoin\/electrum-nmc\/issues"
+            }
+        ]
+    },
+    {
+        "id": 3953,
+        "coin": "NMC",
+        "category": "Electrum",
+        "server": "nmc2.bitcoins.sk:57001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 753174,
+        "last_connection": 1736041090,
+        "contact": null
+    },
+    {
+        "id": 3958,
+        "coin": "NMC",
+        "category": "Electrum",
+        "server": "nmc2.bitcoins.sk:57002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 753174,
+        "last_connection": 1736041090,
+        "contact": null
+    },
+    {
+        "id": 3977,
+        "coin": "NVC",
+        "category": "Electrum",
+        "server": "electrumx.nvc.ewmcx.org:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 958100,
+        "last_connection": 1736041091,
+        "contact": [
+            {
+                "email": "coins@ewmci.com"
+            },
+            {
+                "discord": "[CryptoStan]#9341"
+            },
+            {
+                "twitter": "EwmciL"
+            },
+            {
+                "reddit": "NovacoinCommunity"
+            },
+            {
+                "github": "novacoin-project"
+            }
+        ]
+    },
+    {
+        "id": 3978,
+        "coin": "NVC",
+        "category": "Electrum",
+        "server": "failover.nvc.ewmcx.biz:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 958100,
+        "last_connection": 1736041092,
+        "contact": [
+            {
+                "email": "coins@ewmci.com"
+            },
+            {
+                "discord": "[CryptoStan]#9341"
+            },
+            {
+                "twitter": "EwmciL"
+            },
+            {
+                "reddit": "NovacoinCommunity"
+            },
+            {
+                "github": "novacoin-project"
+            }
+        ]
+    },
+    {
+        "id": 5561,
+        "coin": "NYC",
+        "category": "Electrum",
+        "server": "88.99.26.209:5127",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 11253412,
+        "last_connection": 1736041093,
+        "contact": null
+    },
+    {
+        "id": 5585,
+        "coin": "PEP",
+        "category": "Electrum",
+        "server": "electrum.pepe.tips:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 358363,
+        "last_connection": 1736041093,
+        "contact": [
+            {
+                "discord": "squidicuz"
+            }
+        ]
+    },
+    {
+        "id": 5586,
+        "coin": "PEP",
+        "category": "Electrum",
+        "server": "electrum.pepe.tips:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 358363,
+        "last_connection": 1736041093,
+        "contact": [
+            {
+                "discord": "squidicuz"
+            }
+        ]
+    },
+    {
+        "id": 4598,
+        "coin": "PEP",
+        "category": "Electrum",
+        "server": "electrum.pepeblocks.com:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 358363,
+        "last_connection": 1736041093,
+        "contact": [
+            {
+                "discord": "realmasterkush"
+            }
+        ]
+    },
+    {
+        "id": 4600,
+        "coin": "PEP",
+        "category": "Electrum",
+        "server": "electrum.pepeblocks.com:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 358363,
+        "last_connection": 1736041093,
+        "contact": [
+            {
+                "discord": "realmasterkush"
+            }
+        ]
+    },
+    {
+        "id": 4599,
+        "coin": "PEP",
+        "category": "Electrum",
+        "server": "electrum.pepelum.site:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 358363,
+        "last_connection": 1736041093,
+        "contact": [
+            {
+                "discord": "emgi2"
+            }
+        ]
+    },
+    {
+        "id": 4601,
+        "coin": "PEP",
+        "category": "Electrum",
+        "server": "electrum.pepelum.site:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 358363,
+        "last_connection": 1736041093,
+        "contact": [
+            {
+                "discord": "emgi2"
+            }
+        ]
+    },
+    {
+        "id": 3988,
+        "coin": "PINK",
+        "category": "Electrum",
+        "server": "pink-one.ewm-cx.net:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2563723,
+        "last_connection": 1736041094,
+        "contact": null
+    },
+    {
+        "id": 3989,
+        "coin": "PINK",
+        "category": "Electrum",
+        "server": "pink-two.ewm-cx.net:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2563723,
+        "last_connection": 1736041094,
+        "contact": null
+    },
+    {
+        "id": 3990,
+        "coin": "PIVX",
+        "category": "Electrum",
+        "server": "electrum01.chainster.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 4717087,
+        "last_connection": 1736041094,
+        "contact": [
+            {
+                "discord": "312541186793406465"
+            }
+        ]
+    },
+    {
+        "id": 4782,
+        "coin": "PIVX",
+        "category": "Electrum",
+        "server": "electrum02.chainster.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 4717087,
+        "last_connection": 1736041094,
+        "contact": [
+            {
+                "discord": "312541186793406465"
+            }
+        ]
+    },
+    {
+        "id": 3992,
+        "coin": "PND",
+        "category": "Electrum",
+        "server": "electrum.thepandacoin.net:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 217808,
+        "last_connection": 1736041094,
+        "contact": null
+    },
+    {
+        "id": 3994,
+        "coin": "POT",
+        "category": "Electrum",
+        "server": "pot-duo.ewmcx.net:50012",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4035704,
+        "last_connection": 1736041094,
+        "contact": null
+    },
+    {
+        "id": 3995,
+        "coin": "POT",
+        "category": "Electrum",
+        "server": "pot-uno.ewmcx.net:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4035704,
+        "last_connection": 1736041095,
+        "contact": null
+    },
+    {
+        "id": 3998,
+        "coin": "PPC",
+        "category": "Electrum",
+        "server": "allingas.peercoinexplorer.net:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 787607,
+        "last_connection": 1736041095,
+        "contact": null
+    },
+    {
+        "id": 3999,
+        "coin": "PPC",
+        "category": "Electrum",
+        "server": "electrum.peercoinexplorer.net:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 787607,
+        "last_connection": 1736041095,
+        "contact": null
+    },
+    {
+        "id": 4037,
+        "coin": "QRC20",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10071",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 4509999,
+        "last_connection": 1736041098,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4038,
+        "coin": "QRC20",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20071",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4509999,
+        "last_connection": 1736041098,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4040,
+        "coin": "QTUM",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10050",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 4478644,
+        "last_connection": 1736041098,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4043,
+        "coin": "QTUM",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20050",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4478644,
+        "last_connection": 1736041098,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4041,
+        "coin": "QTUM",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10050",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 4478644,
+        "last_connection": 1736041098,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4044,
+        "coin": "QTUM",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20050",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4478644,
+        "last_connection": 1736041099,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4042,
+        "coin": "QTUM",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10050",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 4478644,
+        "last_connection": 1736041099,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4045,
+        "coin": "QTUM",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20050",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4478644,
+        "last_connection": 1736041099,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4630,
+        "coin": "RDD",
+        "category": "Electrum",
+        "server": "electrum01.reddcoin.com:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5722106,
+        "last_connection": 1736041100,
+        "contact": null
+    },
+    {
+        "id": 4631,
+        "coin": "RDD",
+        "category": "Electrum",
+        "server": "electrum02.reddcoin.com:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5722106,
+        "last_connection": 1736041100,
+        "contact": null
+    },
+    {
+        "id": 4052,
+        "coin": "RDD",
+        "category": "Electrum",
+        "server": "electrum03.reddcoin.com:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5722106,
+        "last_connection": 1736041100,
+        "contact": null
+    },
+    {
+        "id": 4054,
+        "coin": "RIC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20074",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2278764,
+        "last_connection": 1736041100,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4076,
+        "coin": "RTM",
+        "category": "Electrum",
+        "server": "x1.raptoreum.com:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 993975,
+        "last_connection": 1736041102,
+        "contact": null
+    },
+    {
+        "id": 4077,
+        "coin": "RTM",
+        "category": "Electrum",
+        "server": "x2.raptoreum.com:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 993975,
+        "last_connection": 1736041102,
+        "contact": null
+    },
+    {
+        "id": 4374,
+        "coin": "RUNES",
+        "category": "Electrum",
+        "server": "electrum2.runebase.io:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1276612,
+        "last_connection": 1736041131,
+        "contact": [
+            {
+                "email": "support@runebase.io"
+            },
+            {
+                "discord": "Bago#7842"
+            }
+        ]
+    },
+    {
+        "id": 4376,
+        "coin": "RUNES",
+        "category": "Electrum",
+        "server": "electrum2.runebase.io:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1276612,
+        "last_connection": 1736041131,
+        "contact": [
+            {
+                "email": "support@runebase.io"
+            },
+            {
+                "discord": "Bago#7842"
+            }
+        ]
+    },
+    {
+        "id": 4375,
+        "coin": "RUNES",
+        "category": "Electrum",
+        "server": "electrum3.runebase.io:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1276612,
+        "last_connection": 1736041131,
+        "contact": [
+            {
+                "email": "support@runebase.io"
+            },
+            {
+                "discord": "Bago#7842"
+            }
+        ]
+    },
+    {
+        "id": 4377,
+        "coin": "RUNES",
+        "category": "Electrum",
+        "server": "electrum3.runebase.io:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1276612,
+        "last_connection": 1736041131,
+        "contact": [
+            {
+                "email": "support@runebase.io"
+            },
+            {
+                "discord": "Bago#7842"
+            }
+        ]
+    },
+    {
+        "id": 4080,
+        "coin": "RVN",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10051",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3658874,
+        "last_connection": 1736041103,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4083,
+        "coin": "RVN",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20051",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3658874,
+        "last_connection": 1736041103,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4081,
+        "coin": "RVN",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10051",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3658874,
+        "last_connection": 1736041103,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4084,
+        "coin": "RVN",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20051",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3658874,
+        "last_connection": 1736041103,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4082,
+        "coin": "RVN",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10051",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3658874,
+        "last_connection": 1736041103,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4085,
+        "coin": "RVN",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20051",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3658874,
+        "last_connection": 1736041103,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4089,
+        "coin": "SPACECOIN",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10011",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 4408816,
+        "last_connection": 1736041104,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4092,
+        "coin": "SPACECOIN",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20011",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4408816,
+        "last_connection": 1736041104,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4090,
+        "coin": "SPACECOIN",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10011",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 4408816,
+        "last_connection": 1736041104,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4093,
+        "coin": "SPACECOIN",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20011",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4408816,
+        "last_connection": 1736041104,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4091,
+        "coin": "SPACECOIN",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10011",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 4408816,
+        "last_connection": 1736041104,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4094,
+        "coin": "SPACECOIN",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20011",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4408816,
+        "last_connection": 1736041104,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4098,
+        "coin": "SUM",
+        "category": "Electrum",
+        "server": "sumpos.electrum-sum.org:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 840942,
+        "last_connection": 1736041105,
+        "contact": null
+    },
+    {
+        "id": 4109,
+        "coin": "SYS",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10064",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1957517,
+        "last_connection": 1736041105,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4112,
+        "coin": "SYS",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20064",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1957517,
+        "last_connection": 1736041105,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4110,
+        "coin": "SYS",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10064",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1957518,
+        "last_connection": 1736041105,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4113,
+        "coin": "SYS",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20064",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1957518,
+        "last_connection": 1736041105,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4111,
+        "coin": "SYS",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10064",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1957517,
+        "last_connection": 1736041105,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4114,
+        "coin": "SYS",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20064",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1957517,
+        "last_connection": 1736041105,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4127,
+        "coin": "TESTBTC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10068",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3611028,
+        "last_connection": 1736041107,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4129,
+        "coin": "TESTBTC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20068",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3611028,
+        "last_connection": 1736041107,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4128,
+        "coin": "TESTBTC",
+        "category": "Electrum",
+        "server": "testnet.aranguren.org:51001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3611028,
+        "last_connection": 1736041107,
+        "contact": null
+    },
+    {
+        "id": 4135,
+        "coin": "THC",
+        "category": "Electrum",
+        "server": "1.eu.thc.electrum.dexstats.info:10020",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2878056,
+        "last_connection": 1736041107,
+        "contact": [
+            {
+                "discord": "CHMEX#0686"
+            }
+        ]
+    },
+    {
+        "id": 4136,
+        "coin": "THC",
+        "category": "Electrum",
+        "server": "2.eu.thc.electrum.dexstats.info:10020",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2878056,
+        "last_connection": 1736041107,
+        "contact": [
+            {
+                "discord": "CHMEX#0686"
+            }
+        ]
+    },
+    {
+        "id": 4137,
+        "coin": "TKL",
+        "category": "Electrum",
+        "server": "1.eu.tokel.electrum.dexstats.info:10077",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1615796,
+        "last_connection": 1736041107,
+        "contact": [
+            {
+                "email": "chmex@dexstats.info"
+            },
+            {
+                "discord": "chmex#0686"
+            }
+        ]
+    },
+    {
+        "id": 4138,
+        "coin": "TKL",
+        "category": "Electrum",
+        "server": "1.eu.tokel.electrum.dexstats.info:11077",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1615796,
+        "last_connection": 1736041108,
+        "contact": [
+            {
+                "email": "chmex@dexstats.info"
+            },
+            {
+                "discord": "chmex#0686"
+            }
+        ]
+    },
+    {
+        "id": 4143,
+        "coin": "UIS",
+        "category": "Electrum",
+        "server": "uis-uno.ewmcx.net:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4054461,
+        "last_connection": 1736041108,
+        "contact": null
+    },
+    {
+        "id": 4148,
+        "coin": "UNO",
+        "category": "Electrum",
+        "server": "uno-bkp.coinmunity.gold:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2260154,
+        "last_connection": 1736041108,
+        "contact": null
+    },
+    {
+        "id": 4149,
+        "coin": "UNO",
+        "category": "Electrum",
+        "server": "uno-main.coinmunity.gold:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2260154,
+        "last_connection": 1736041109,
+        "contact": null
+    },
+    {
+        "id": 4162,
+        "coin": "VAL",
+        "category": "Electrum",
+        "server": "e2.validitytech.com:11001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5020401,
+        "last_connection": 1736041111,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 4165,
+        "coin": "VAL",
+        "category": "Electrum",
+        "server": "e2.validitytech.com:11002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5020401,
+        "last_connection": 1736041111,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 4163,
+        "coin": "VAL",
+        "category": "Electrum",
+        "server": "e3.validitytech.com:11001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 5020401,
+        "last_connection": 1736041111,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 4166,
+        "coin": "VAL",
+        "category": "Electrum",
+        "server": "e3.validitytech.com:11002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 5020401,
+        "last_connection": 1736041111,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 4170,
+        "coin": "VIA",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20073",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 13600805,
+        "last_connection": 1736041112,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4174,
+        "coin": "VRSC",
+        "category": "Electrum",
+        "server": "el0.verus.io:17485",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3376034,
+        "last_connection": 1736041112,
+        "contact": [
+            {
+                "email": "0x03-ctrlc@protonmail.com"
+            },
+            {
+                "discord": "0x03#8822"
+            },
+            {
+                "keybase": "bloodynora"
+            }
+        ]
+    },
+    {
+        "id": 4177,
+        "coin": "VRSC",
+        "category": "Electrum",
+        "server": "el0.verus.io:17486",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3376034,
+        "last_connection": 1736041112,
+        "contact": [
+            {
+                "email": "0x03-ctrlc@protonmail.com"
+            },
+            {
+                "discord": "0x03#8822"
+            },
+            {
+                "keybase": "bloodynora"
+            }
+        ]
+    },
+    {
+        "id": 4175,
+        "coin": "VRSC",
+        "category": "Electrum",
+        "server": "el1.verus.io:17485",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3376034,
+        "last_connection": 1736041113,
+        "contact": [
+            {
+                "email": "0x03-ctrlc@protonmail.com"
+            },
+            {
+                "discord": "0x03#8822"
+            },
+            {
+                "keybase": "bloodynora"
+            }
+        ]
+    },
+    {
+        "id": 4178,
+        "coin": "VRSC",
+        "category": "Electrum",
+        "server": "el1.verus.io:17486",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3376034,
+        "last_connection": 1736041113,
+        "contact": [
+            {
+                "email": "0x03-ctrlc@protonmail.com"
+            },
+            {
+                "discord": "0x03#8822"
+            },
+            {
+                "keybase": "bloodynora"
+            }
+        ]
+    },
+    {
+        "id": 4176,
+        "coin": "VRSC",
+        "category": "Electrum",
+        "server": "el2.verus.io:17485",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3376034,
+        "last_connection": 1736041113,
+        "contact": [
+            {
+                "email": "0x03-ctrlc@protonmail.com"
+            },
+            {
+                "discord": "0x03#8822"
+            },
+            {
+                "keybase": "bloodynora"
+            }
+        ]
+    },
+    {
+        "id": 4179,
+        "coin": "VRSC",
+        "category": "Electrum",
+        "server": "el2.verus.io:17486",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 3376034,
+        "last_connection": 1736041113,
+        "contact": [
+            {
+                "email": "0x03-ctrlc@protonmail.com"
+            },
+            {
+                "discord": "0x03#8822"
+            },
+            {
+                "keybase": "bloodynora"
+            }
+        ]
+    },
+    {
+        "id": 4190,
+        "coin": "VTC",
+        "category": "Electrum",
+        "server": "88.99.26.209:5028",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2325491,
+        "last_connection": 1736041114,
+        "contact": null
+    },
+    {
+        "id": 5588,
+        "coin": "VTC",
+        "category": "Electrum",
+        "server": "electrumx-vtc.cryptoverted.com:55001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2325491,
+        "last_connection": 1736041114,
+        "contact": [
+            {
+                "discord": "alviemahmud"
+            }
+        ]
+    },
+    {
+        "id": 4191,
+        "coin": "VTC",
+        "category": "Electrum",
+        "server": "electrumx.javerity.com:5885",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2325491,
+        "last_connection": 1736041115,
+        "contact": [
+            {
+                "discord": "cruelnovo#4936"
+            }
+        ]
+    },
+    {
+        "id": 4196,
+        "coin": "WAF",
+        "category": "Electrum",
+        "server": "waifu-explorer.io:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 76140,
+        "last_connection": 1724795579,
+        "contact": [
+            {
+                "discord": "376197863346274307"
+            }
+        ]
+    },
+    {
+        "id": 4643,
+        "coin": "WHIVE",
+        "category": "Electrum",
+        "server": "electrumx1.cointest.com:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 253620,
+        "last_connection": 1736041130,
+        "contact": [
+            {
+                "email": "protocol@whive.io"
+            },
+            {
+                "discord": "whiveio#9340"
+            },
+            {
+                "twitter": "whiveio"
+            }
+        ]
+    },
+    {
+        "id": 4644,
+        "coin": "WHIVE",
+        "category": "Electrum",
+        "server": "electrumx1.cointest.com:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 253620,
+        "last_connection": 1736041130,
+        "contact": [
+            {
+                "email": "protocol@whive.io"
+            },
+            {
+                "discord": "whiveio#9340"
+            },
+            {
+                "twitter": "whiveio"
+            }
+        ]
+    },
+    {
+        "id": 4355,
+        "coin": "XEC",
+        "category": "Electrum",
+        "server": "ecash.stackwallet.com:59002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 878329,
+        "last_connection": 1736041131,
+        "contact": null
+    },
+    {
+        "id": 4356,
+        "coin": "XEC",
+        "category": "Electrum",
+        "server": "electrum.bitcoinabc.org:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 868878,
+        "last_connection": 1730328595,
+        "contact": [
+            {
+                "email": "joey@e.cash"
+            },
+            {
+                "twitter": "bytesofman"
+            }
+        ]
+    },
+    {
+        "id": 4357,
+        "coin": "XEC",
+        "category": "Electrum",
+        "server": "fulcrum.pepipierre.fr:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 878329,
+        "last_connection": 1736041130,
+        "contact": [
+            {
+                "email": "contact@e.cash"
+            },
+            {
+                "twitter": "ecashofficial"
+            }
+        ]
+    },
+    {
+        "id": 4530,
+        "coin": "XMY",
+        "category": "Electrum",
+        "server": "xmy-two.ewm-cx.net:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3649471,
+        "last_connection": 1736041116,
+        "contact": [
+            {
+                "discord": "475820011634819072"
+            }
+        ]
+    },
+    {
+        "id": 4210,
+        "coin": "XNA",
+        "category": "Electrum",
+        "server": "electrumx-dex-01.neuraiexplorer.com:50001",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 897992,
+        "last_connection": 1736041116,
+        "contact": [
+            {
+                "email": "alarm@neurai.org"
+            },
+            {
+                "discord": "456566604809895947"
+            }
+        ]
+    },
+    {
+        "id": 4211,
+        "coin": "XNA",
+        "category": "Electrum",
+        "server": "electrumx-dex-02.neuraiexplorer.com:50001",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 897992,
+        "last_connection": 1736041116,
+        "contact": [
+            {
+                "email": "alarm@neurai.org"
+            },
+            {
+                "discord": "456566604809895947"
+            }
+        ]
+    },
+    {
+        "id": 4212,
+        "coin": "XNA",
+        "category": "Electrum",
+        "server": "electrumx3.neurai.top:50001",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 897992,
+        "last_connection": 1736041117,
+        "contact": [
+            {
+                "email": "alarm@neurai.org"
+            },
+            {
+                "discord": "456566604809895947"
+            }
+        ]
+    },
+    {
+        "id": 4216,
+        "coin": "XPM",
+        "category": "Electrum",
+        "server": "electrumx.gemmer.primecoin.org:50011",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 6126303,
+        "last_connection": 1736041117,
+        "contact": null
+    },
+    {
+        "id": 4217,
+        "coin": "XPM",
+        "category": "Electrum",
+        "server": "electrumx.mainnet.primecoin.org:50011",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 6126303,
+        "last_connection": 1736041117,
+        "contact": null
+    },
+    {
+        "id": 4218,
+        "coin": "XPM",
+        "category": "Electrum",
+        "server": "electrumx.primecoin.org:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 6126303,
+        "last_connection": 1736041117,
+        "contact": null
+    },
+    {
+        "id": 4219,
+        "coin": "XRG",
+        "category": "Electrum",
+        "server": "fulcrum.ergon.network:52138",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 203974,
+        "last_connection": 1736041117,
+        "contact": [
+            {
+                "email": "licho@ergon.moe"
+            },
+            {
+                "telegram": "licho92karol"
+            }
+        ]
+    },
+    {
+        "id": 4220,
+        "coin": "XRG",
+        "category": "Electrum",
+        "server": "la.ask.systems:52138",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 203974,
+        "last_connection": 1736041118,
+        "contact": [
+            {
+                "telegram": "@fsmv0"
+            }
+        ]
+    },
+    {
+        "id": 4221,
+        "coin": "XRG",
+        "category": "Electrum",
+        "server": "xrg_ful.googol.cash:52138",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 198351,
+        "last_connection": 1736041117,
+        "contact": null
+    },
+    {
+        "id": 4224,
+        "coin": "XVC",
+        "category": "Electrum",
+        "server": "electrumx1.vanillacash.info:50011",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1380222,
+        "last_connection": 1736041117,
+        "contact": null
+    },
+    {
+        "id": 4225,
+        "coin": "XVC",
+        "category": "Electrum",
+        "server": "electrumx2.vanillacash.info:50011",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 1380222,
+        "last_connection": 1736041118,
+        "contact": null
+    },
+    {
+        "id": 4237,
+        "coin": "XVG",
+        "category": "Electrum",
+        "server": "88.99.26.209:5036",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 7987902,
+        "last_connection": 1736041119,
+        "contact": null
+    },
+    {
+        "id": 4238,
+        "coin": "XVG",
+        "category": "Electrum",
+        "server": "electrum-verge.cloud:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 7987902,
+        "last_connection": 1736041119,
+        "contact": null
+    },
+    {
+        "id": 4532,
+        "coin": "XVG",
+        "category": "Electrum",
+        "server": "electrum-verge.cloud:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 7987902,
+        "last_connection": 1736041119,
+        "contact": null
+    },
+    {
+        "id": 4239,
+        "coin": "XVG",
+        "category": "Electrum",
+        "server": "electrumx-verge.cloud:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 7987902,
+        "last_connection": 1736041119,
+        "contact": null
+    },
+    {
+        "id": 4240,
+        "coin": "XVG",
+        "category": "Electrum",
+        "server": "electrumx-verge.cloud:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 7987902,
+        "last_connection": 1736041119,
+        "contact": null
+    },
+    {
+        "id": 4242,
+        "coin": "ZEC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10058",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2775224,
+        "last_connection": 1736041119,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4245,
+        "coin": "ZEC",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20058",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2775224,
+        "last_connection": 1736041119,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4243,
+        "coin": "ZEC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10058",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2775224,
+        "last_connection": 1736041120,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4246,
+        "coin": "ZEC",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20058",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2775224,
+        "last_connection": 1736041120,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4244,
+        "coin": "ZEC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10058",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2775224,
+        "last_connection": 1736041120,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4247,
+        "coin": "ZEC",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20058",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2775224,
+        "last_connection": 1736041120,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4251,
+        "coin": "ZER",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10065",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2074624,
+        "last_connection": 1736041120,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4254,
+        "coin": "ZER",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20065",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2074624,
+        "last_connection": 1736041120,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4252,
+        "coin": "ZER",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10065",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2074624,
+        "last_connection": 1736041120,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4255,
+        "coin": "ZER",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20065",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2074624,
+        "last_connection": 1736041121,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4253,
+        "coin": "ZER",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10065",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2074624,
+        "last_connection": 1736041121,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4256,
+        "coin": "ZER",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20065",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2074624,
+        "last_connection": 1736041121,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4260,
+        "coin": "ZET",
+        "category": "Electrum",
+        "server": "207.180.252.200:50011",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 3043680,
+        "last_connection": 1736041121,
+        "contact": null
+    },
+    {
+        "id": 4410,
+        "coin": "ZOIN",
+        "category": "Electrum",
+        "server": "electrum.zoincommunity.com:50001",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 56325,
+        "last_connection": 1736041134,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/seopub\/electrumx_zoin\/issues"
+            }
+        ]
+    },
+    {
+        "id": 4411,
+        "coin": "ZOIN",
+        "category": "Electrum",
+        "server": "electrum.zoincommunity.com:50002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 56325,
+        "last_connection": 1736041135,
+        "contact": [
+            {
+                "github": "https:\/\/github.com\/seopub\/electrumx_zoin\/issues"
+            }
+        ]
+    },
+    {
+        "id": 4348,
+        "coin": "tBCH",
+        "category": "Electrum",
+        "server": "electroncash.de:50004",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1624021,
+        "last_connection": 1726992681,
+        "contact": [
+            {
+                "website": "https:\/\/1209k.com\/bitcoin-eye\/ele.php?chain=tbch"
+            }
+        ]
+    },
+    {
+        "id": 4349,
+        "coin": "tBCH",
+        "category": "Electrum",
+        "server": "electrs.electroncash.de:60002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1639173,
+        "last_connection": 1736041130,
+        "contact": [
+            {
+                "website": "https:\/\/1209k.com\/bitcoin-eye\/ele.php?chain=tbch"
+            }
+        ]
+    },
+    {
+        "id": 4350,
+        "coin": "tBCH",
+        "category": "Electrum",
+        "server": "tbch.loping.net:60002",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 1639173,
+        "last_connection": 1736041131,
+        "contact": [
+            {
+                "website": "https:\/\/1209k.com\/bitcoin-eye\/ele.php?chain=tbch"
+            }
+        ]
+    },
+    {
+        "id": 3486,
+        "coin": "tBLK",
+        "category": "Electrum",
+        "server": "electrum1.blackcoin.nl:10011",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2162940,
+        "last_connection": 1736041046,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 3489,
+        "coin": "tBLK",
+        "category": "Electrum",
+        "server": "electrum1.blackcoin.nl:10012",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2162940,
+        "last_connection": 1736041046,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 3487,
+        "coin": "tBLK",
+        "category": "Electrum",
+        "server": "electrum2.blackcoin.nl:20011",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2162939,
+        "last_connection": 1736041047,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 3490,
+        "coin": "tBLK",
+        "category": "Electrum",
+        "server": "electrum2.blackcoin.nl:20012",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2162939,
+        "last_connection": 1736041047,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 3488,
+        "coin": "tBLK",
+        "category": "Electrum",
+        "server": "electrum3.blackcoin.nl:30011",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 2162939,
+        "last_connection": 1736041047,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 3491,
+        "coin": "tBLK",
+        "category": "Electrum",
+        "server": "electrum3.blackcoin.nl:30012",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 2162939,
+        "last_connection": 1736041047,
+        "contact": [
+            {
+                "discord": "michelvankessel#7656"
+            }
+        ]
+    },
+    {
+        "id": 4049,
+        "coin": "tQTUM",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10071",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 4509999,
+        "last_connection": 1736041099,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4050,
+        "coin": "tQTUM",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20071",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 4509999,
+        "last_connection": 1736041099,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4152,
+        "coin": "vARRR",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10009",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 386568,
+        "last_connection": 1736041109,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4155,
+        "coin": "vARRR",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20009",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 386568,
+        "last_connection": 1736041109,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4153,
+        "coin": "vARRR",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10009",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 386568,
+        "last_connection": 1736041109,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4156,
+        "coin": "vARRR",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20009",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 386568,
+        "last_connection": 1736041109,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4154,
+        "coin": "vARRR",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10009",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 386568,
+        "last_connection": 1736041109,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4157,
+        "coin": "vARRR",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20009",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 386568,
+        "last_connection": 1736041110,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4634,
+        "coin": "vDEX",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:10010",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 217082,
+        "last_connection": 1736041110,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4637,
+        "coin": "vDEX",
+        "category": "Electrum",
+        "server": "electrum1.cipig.net:20010",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 217082,
+        "last_connection": 1736041110,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4635,
+        "coin": "vDEX",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:10010",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 217082,
+        "last_connection": 1736041110,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4638,
+        "coin": "vDEX",
+        "category": "Electrum",
+        "server": "electrum2.cipig.net:20010",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 217082,
+        "last_connection": 1736041110,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4636,
+        "coin": "vDEX",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:10010",
+        "protocol": "TCP",
+        "result": "Passed",
+        "blockheight": 217082,
+        "last_connection": 1736041110,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    },
+    {
+        "id": 4639,
+        "coin": "vDEX",
+        "category": "Electrum",
+        "server": "electrum3.cipig.net:20010",
+        "protocol": "SSL",
+        "result": "Passed",
+        "blockheight": 217082,
+        "last_connection": 1736041111,
+        "contact": [
+            {
+                "email": "cipi@komodoplatform.com"
+            },
+            {
+                "discord": "cipi#4502"
+            }
+        ]
+    }
+]

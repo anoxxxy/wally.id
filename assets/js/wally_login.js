@@ -73,7 +73,7 @@
       "client": "Coinomi, Ledger",
       "slug": "coinomi_ledger",
       //"path": "m/44'/0'/0'",
-      "path": "m/44'/{coin}'/0'",
+      "path": "m/44'/{coin}'/0'/0",
       "supports": {
         "passphrase": true,
         "login": {
@@ -172,7 +172,30 @@
         "receive": "m/44'/0'/0'",
         "change": "m/44'/0'/1'",
       }
-    }
+    },
+    8: {
+      "client": "Phantom",
+      "slug": "phantom",
+      "path": "m/84'/0",
+      //"childPath": "m/0",
+      "supports": {
+        "passphrase": true,
+        "login": {
+          "mnemonic": true,
+          "masterkey": true,
+        },
+      },
+      //"passphrase": "lowercase",
+      "wordCount": 12,
+      "derivationProtocol": "bip84",
+      "address": {
+        "semantics": "p2wpkh",
+        "hardened": false,
+        "receive": "m/84'/{coin}'/0'/0",  //EVM path is always m/44', used in wally_fn.getMasterKeyAddresses
+        "change": "m/84'/{coin}'/0'/1",   //EVM path is always m/44', used in wally_fn.getMasterKeyAddresses
+        "evmPath": "m/44'",
+      }
+    },
   };
   //***Validate Wallet login fields
   login_wizard.validateLogin = async function(loginType, walletType, signatures) {
@@ -688,12 +711,18 @@ export functionality for all coins
   */
   login_wizard.openUserWallet = async function() {
     console.log('===login_wizard.openUserWallet===');
+
+
     //check if we have data in localstorage
     var userData = storage_s.get('wally.profile');
     //***If the userData is empty: exit-> login error! !
     if (userData === null || userData === undefined || Object.keys(userData).length === 0) {
       return;
     }
+
+    
+
+
     //user is auth, proceed!
     //update global variable for user data
     login_wizard.profile_data = userData;

@@ -10,6 +10,16 @@ data.icon
 data.chainModel
 data.symbol
 */
+
+function convertToMainUnit(value, decimals = 8, asString = true) {
+  if (value === 0) {
+    return asString ? '0' : 0;
+  }
+  
+  const mainUnitValue = value / Math.pow(10, decimals);
+  return asString ? mainUnitValue.toFixed(decimals) : mainUnitValue;
+}
+
 const walletAssetsTpl = `
   <div class="list-border position-relative">
     <div class="list-wrapper">
@@ -95,7 +105,7 @@ const seedReceiveAddressesTpl = `
         <div>
           <div class="d-flex flex-row">
             <div class="font-weight-bold">
-            <span class="badge badge-light fs-3 p-1 text-muted mr-1"><span class="coin_address_balance">{{=data.ext.final_balance}}</span> <span class="coin_symbol ml-1"> {{=data.coin}}</span></span> <span class="badge badge-light fs-4 pl-2 text-muted mr-1"><i class="bi bi-arrow-down-left"></i> <span>{{=data.ext.total_received}}</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-up"></i> <span class="font-weight-normal">TX:</span><span> {{=data.ext.n_tx}}</span></span>
+            <span class="badge badge-light fs-3 p-1 text-muted mr-1"><span class="coin_address_balance">{{=convertToMainUnit(data.ext.final_balance)}}</span> <span class="coin_symbol ml-1"> {{=data.coin}}</span></span> 
             </div>
           </div>
         </div>
@@ -103,7 +113,7 @@ const seedReceiveAddressesTpl = `
           <div class="list-action">
             <div class="btn-group">
               
-              <a href="#addressInfoModal" role="button" data-toggle="modal" data-address="{{=data.addr}}" data-blockieicon="{{=data.blockieIcon}}" data-coin="{{=data.coin}}" data-pubkey="{{=data.pubkey}}" data-privkey="{{=data.privkey}}" data-privkeyhex="{{=data.privkeyhex}}" data-derived-path="{{=data.derivedPath}}" class="btn btn-sm btn-flat-primary"><i class="bi bi-info-circle"></i> <span> info</span></a>
+              <a href="#addressInfoModal" role="button" data-toggle="modal" data-address="{{=data.addr}}" data-blockieicon="{{=data.blockieIcon}}" data-coin="{{=data.coin}}" data-pubkey="{{=data.pubkey}}" data-privkey="{{=data.privkey}}" data-privkeyhex="{{=data.privkeyhex}}" data-derived-path={{=data.derivedPath}} class="btn btn-sm btn-flat-primary"><i class="bi bi-info-circle"></i> <span> info</span></a>
               
               <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="bi bi-caret-down"></i>
@@ -112,7 +122,7 @@ const seedReceiveAddressesTpl = `
                 <a class="dropdown-item" href="#"><img src="./assets/images/send.svg" class="icon28" /> <span>Send</span></a>
                 <a class="dropdown-item" href="#"><img src="./assets/images/receive.svg" class="icon28" /> <span>Receive</span></a>
                 <a class="dropdown-item" href="#"><img src="./assets/images/qr-code.svg" class="icon28" /> <span>QR code</span></a>
-                <a class="dropdown-item" href="#addressInfoModal" role="button" data-toggle="modal" data-address="{{=data.addr}}" data-blockieicon="{{=data.blockieIcon}}" data-coin="{{=data.coin}}" data-pubkey="{{=data.pubkey}}" data-privkey="{{=data.privkey}}" data-privkeyhex="{{=data.privkeyhex}}" data-derived-path="{{=data.derivedPath}}"><img src="./assets/images/info.svg" class="icon28" /> <span>Info</span></a>
+                <a class="dropdown-item" href="#addressInfoModal" role="button" data-toggle="modal" data-address="{{=data.addr}}" data-blockieicon="{{=data.blockieIcon}}" data-coin="{{=data.coin}}" data-pubkey="{{=data.pubkey}}" data-privkey="{{=data.privkey}}" data-privkeyhex="{{=data.privkeyhex}}" data-derived-path={{=data.derivedPath}}><img src="./assets/images/info.svg" class="icon28" /> <span>Info</span></a>
               </div>
             </div>
           </div>
@@ -166,14 +176,14 @@ const seedChangeAddressesTpl = `
         <div>
           <div class="d-flex flex-row">
             <div class="font-weight-bold">
-            <span class="badge badge-light fs-3 p-1 text-muted mr-1"><span class="coin_address_balance">{{=data.ext.final_balance}}</span> <span class="coin_symbol ml-1"> {{=data.coin}}</span></span> <span class="badge badge-light fs-4 pl-2 text-muted mr-1"><i class="bi bi-arrow-down-left"></i> <span>{{=data.ext.total_received}}</span></span> <span class="badge badge-light fs-4 pl-2 text-muted "><i class="bi bi-arrow-down-up"></i> <span><span class="font-weight-normal">TX:</span><span> {{=data.ext.n_tx}}</span></span>
+            <span class="badge badge-light fs-3 p-1 text-muted mr-1"><span class="coin_address_balance">{{=convertToMainUnit(data.ext.final_balance)}}</span> <span class="coin_symbol ml-1"> {{=data.coin}}</span></span> 
             </div>
           </div>
         </div>
         <div>
           <div class="list-action">
             <div class="btn-group">
-              <a href="#addressInfoModal" role="button" data-toggle="modal" data-address="{{=data.addr}}" data-blockieicon="{{=data.blockieIcon}}" data-coin="{{=data.coin}}" data-pubkey="{{=data.pubkey}}" data-privkey="{{=data.privkey}}" data-privkeyhex="{{=data.privkeyhex}}" data-derived-path="{{=data.derivedPath}}" class="btn btn-sm btn-flat-primary"><i class="bi bi-info-circle"></i> <span> info</span></a>
+              <a href="#addressInfoModal" role="button" data-toggle="modal" data-address="{{=data.addr}}" data-blockieicon="{{=data.blockieIcon}}" data-coin="{{=data.coin}}" data-pubkey="{{=data.pubkey}}" data-privkey="{{=data.privkey}}" data-privkeyhex="{{=data.privkeyhex}}" data-derived-path={{=data.derivedPath}} class="btn btn-sm btn-flat-primary"><i class="bi bi-info-circle"></i> <span> info</span></a>
               <button type="button" class="btn btn-sm btn-flat-primary dropdown-toggle dropdown-toggle-split dropdown-without-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="bi bi-caret-down"></i>
               </button>
@@ -181,7 +191,7 @@ const seedChangeAddressesTpl = `
                 <a class="dropdown-item" href="#"><img src="./assets/images/send.svg" class="icon28" /> <span>Send</span></a>
                 <a class="dropdown-item" href="#"><img src="./assets/images/receive.svg" class="icon28" /> <span>Receive</span></a>
                 <a class="dropdown-item" href="#"><img src="./assets/images/qr-code.svg" class="icon28" /> <span>QR code</span></a>
-                <a class="dropdown-item" href="#addressInfoModal" role="button" data-toggle="modal" data-address="{{=data.addr}}" data-blockieicon="{{=data.blockieIcon}}" data-coin="{{=data.coin}}" data-pubkey="{{=data.pubkey}}" data-privkey="{{=data.privkey}}" data-privkeyhex="{{=data.privkeyhex}}" data-derived-path="{{=data.derivedPath}}"><img src="./assets/images/info.svg" class="icon28" /> <span>Info</span></a>
+                <a class="dropdown-item" href="#addressInfoModal" role="button" data-toggle="modal" data-address="{{=data.addr}}" data-blockieicon="{{=data.blockieIcon}}" data-coin="{{=data.coin}}" data-pubkey="{{=data.pubkey}}" data-privkey="{{=data.privkey}}" data-privkeyhex="{{=data.privkeyhex}}" data-derived-path={{=data.derivedPath}}><img src="./assets/images/info.svg" class="icon28" /> <span>Info</span></a>
               </div>
             </div>
           </div>
@@ -217,7 +227,9 @@ wally_fn.tpl.seed.viewChangeAddresses  = Mikado(containerSeedChangeAddresses, tp
 
 
 
-
+function capitalizeFirstLetter (strName){
+    return strName.charAt(0).toUpperCase() + strName.slice(1);
+}
 
 //template for rendering wallet provider options for balance 
 const apiBalanceProviderOptionsTpl = `
@@ -250,9 +262,7 @@ wally_fn.tpl.seed.viewBalanceProviderOptions  = Mikado(containerApiBalanceProvid
   }
 });
 
-function capitalizeFirstLetter (strName){
-    return strName.charAt(0).toUpperCase() + strName.slice(1);
-}
+
 //template for rendering wallet provider options for listunspent
 const apiListunspentProviderOptionsTpl = `
 <option value="{{=data.name}}">{{=capitalizeFirstLetter(data.name)}}</option>
@@ -316,116 +326,101 @@ wally_fn.tpl.seed.viewPushrawtxProviderOptions  = Mikado(containerApiPushrawtxPr
   }
 });
 
+//ElectrumX nodes template settings
 
-
-
-/*
-//template for rendering wallet address info
-const addressInfoTpl = `
-<div>
-<div class="input-group-callout" data-adress-info="qr_code_address">
-  <div class="callout-title text-muted text-primary d-flex justify-content-center mx-auto mb-2">QR code of Address</div>
-  <div id="addressInfoQrCode" class="d-flex justify-content-center mx-auto"><div>{{#=data.qrCode}}</div></div>
-</div>
-<div class="input-group-callout" data-adress-info="address">
-  <div class="callout-title text-muted text-primary">
-    <span class="coin_symbol"></span> Address
-  </div>
-  <div class="input-group">
-    <div class="input-group-prepend">
-      <span class="input-group-text cursor-pointer mr-0 ml-0 pr-2 pl-2">
-        <img class="blockieIcon icon icon24" src="{{=data.blockieIcon}}">
-        
-      </span>
-    </div>
-    <input id="" type="text" class="form-control addr" value="{{=data.addr}}" readonly />
-    <div class="input-group-append">
-      <span class="input-group-text cursor-pointer" title="Copy Address" data-copy-content="{{=data.addr}}">
-        <i class="bi bi-copy icon"></i>
-      </span>
-    </div>
-  </div>
-</div>
-<div class="input-group-callout" data-adress-info="path_type">
-  <div class="callout-title text-muted text-primary">Path/Type</div>
-  <div class="input-group">
-    <input id="" type="text" class="form-control path_type" value="{{=data.derivedPath}}" readonly />
-    <div class="input-group-append">
-      <span class="input-group-text cursor-pointer" title="Copy" data-copy-content="{{=data.derivedPath}}">
-        <i class="bi bi-copy icon"></i>
-      </span>
-    </div>
-  </div>
-</div>
-<div class="input-group-callout" data-adress-info="pubkey">
-  <div class="callout-title text-muted text-primary">Public Key</div>
-  <div class="input-group">
-    <input id="" type="text" class="form-control pubkey" value="{{=data.pubkey}}" readonly />
-    <div class="input-group-append">
-      <span class="input-group-text cursor-pointer" title="Copy Public Key" data-copy-content="{{=data.pubkey}}">
-        <i class="bi bi-copy icon"></i>
-      </span>
-    </div>
-  </div>
-</div>
-<div class="input-group-callout" data-adress-info="privkey">
-  <div class="callout-title text-muted text-primary">Private Key (WIF)</div>
-  <div class="input-group">
-    <input id="" type="password" class="form-control privkey" value="{{=data.privkey}}" readonly />
-    <div class="input-group-append">
-      <span class="showKey input-group-text cursor-pointer">
-        <i class="bi bi-eye-fill"></i>
-      </span>
-    </div>
-    <div class="input-group-append">
-      <span class="input-group-text cursor-pointer" title="Copy Private Key (WIF)" data-copy-content="{{=data.privkey}}">
-        <i class="bi bi-copy icon"></i>
-      </span>
-    </div>
-  </div>
-</div>
-<div class="input-group-callout" data-adress-info="privkeyhex">
-  <div class="callout-title text-muted text-primary">Private Key (HEX)</div>
-  <div class="input-group">
-    <input id="" type="password" class="form-control privkeyhex" value="{{=data.privkeyhex}}" readonly />
-    <div class="input-group-append">
-      <span class="showKey input-group-text cursor-pointer">
-        <i class="bi bi-eye-fill"></i>
-      </span>
-    </div>
-    <div class="input-group-append">
-      <span class="input-group-text cursor-pointer" title="Copy Private  Key (HEX)" data-copy-content="{{=data.privkeyhex}}">
-        <i class="bi bi-copy icon"></i>
-      </span>
-    </div>
-  </div>
-</div>
-</div>
+//template for rendering wallet provider options for balance 
+const apiBalanceProviderNodeOptionsTpl = `
+<option value="{{=data.url}}">{{=data.name}} ({{=data.protocol}})</option>
 `;
 
-const containerAddressInfoTpl = document.getElementById("addressInfo");
-const tplAddressInfoC = Mikado.compile(addressInfoTpl);
+const containerApiBalanceProviderNodeSelect = document.getElementById("apiBalanceProviderNodeSelector");
+const tplApiBalanceProviderNodeOptionsC = Mikado.compile(apiBalanceProviderNodeOptionsTpl);
 
-wally_fn.tpl.viewAddressInfo  = Mikado(containerAddressInfoTpl, tplAddressInfoC, {
+wally_fn.tpl.seed.viewBalanceProviderNodeOptions  = Mikado(containerApiBalanceProviderNodeSelect, tplApiBalanceProviderNodeOptionsC, {
   on: {
     create: function(node) {
-      console.log("Mikado.Templates.viewAddressInfo - created:", node);
+      console.log("Mikado.Templates.viewBalanceProviderNodeOptions - created:", node);
     },
     insert: function(node) {
-      console.log("Mikado.Templates.viewAddressInfo - inserted:", node);
+      console.log("Mikado.Templates.viewBalanceProviderNodeOptions - inserted:", node);
     },
     update: function(node) {
-      console.log("Mikado.Templates.viewAddressInfo - updated:", node);
+      console.log("Mikado.Templates.viewBalanceProviderNodeOptions - updated:", node);
     },
     change: function(node) {
-      console.log("Mikado.Templates.viewAddressInfo - changed:", node);
+      console.log("Mikado.Templates.viewBalanceProviderNodeOptions - changed:", node);
     },
     remove: function(node) {
-      console.log("Mikado.Templates.viewAddressInfo - removed:", node);
+      console.log("Mikado.Templates.viewBalanceProviderNodeOptions - removed:", node);
     },
-    async: true,
+    async: false,
     reuse: true,
-    cache: false,
+    cache: true,
   }
 });
-*/
+
+
+//template for rendering wallet provider options for listunspent
+const apiListunspentProviderNodeOptionsTpl = `
+<option value="{{=data.url}}">{{=data.name}} ({{=data.protocol}})</option>
+`;
+
+const containerApiListunspentProviderNodeSelect = document.getElementById("apiListunspentProviderNodeSelector");
+const tplListunspentProviderNodeOptionsC = Mikado.compile(apiListunspentProviderNodeOptionsTpl);
+
+wally_fn.tpl.seed.viewListunspentProviderNodeOptions  = Mikado(containerApiListunspentProviderNodeSelect, tplListunspentProviderNodeOptionsC, {
+  on: {
+    create: function(node) {
+      console.log("Mikado.Templates.viewListunspentProviderNodeOptions - created:", node);
+    },
+    insert: function(node) {
+      console.log("Mikado.Templates.viewListunspentProviderNodeOptions - inserted:", node);
+    },
+    update: function(node) {
+      console.log("Mikado.Templates.viewListunspentProviderNodeOptions - updated:", node);
+    },
+    change: function(node) {
+      console.log("Mikado.Templates.viewListunspentProviderNodeOptions - changed:", node);
+    },
+    remove: function(node) {
+      console.log("Mikado.Templates.viewListunspentProviderNodeOptions - removed:", node);
+    },
+    async: false,
+    reuse: true,
+    cache: true,
+  }
+});
+
+
+//template for rendering wallet provider options for listunspent
+const apiPushrawtxProviderNodeOptionsTpl = `
+<option value="{{=data.url}}">{{=data.name}} ({{=data.protocol}})</option>
+`;
+
+const containerApiPushrawtxProviderNodeSelect = document.getElementById("apiPushrawtxProviderNodeSelector");
+const tplPushrawtxProviderNodeOptionsC = Mikado.compile(apiPushrawtxProviderNodeOptionsTpl);
+
+wally_fn.tpl.seed.viewPushrawtxProviderNodeOptions  = Mikado(containerApiPushrawtxProviderNodeSelect, tplPushrawtxProviderNodeOptionsC, {
+  on: {
+    create: function(node) {
+      console.log("Mikado.Templates.viewPushrawtxProviderNodeOptions - created:", node);
+    },
+    insert: function(node) {
+      console.log("Mikado.Templates.viewPushrawtxProviderNodeOptions - inserted:", node);
+    },
+    update: function(node) {
+      console.log("Mikado.Templates.viewPushrawtxProviderNodeOptions - updated:", node);
+    },
+    change: function(node) {
+      console.log("Mikado.Templates.viewPushrawtxProviderNodeOptions - changed:", node);
+    },
+    remove: function(node) {
+      console.log("Mikado.Templates.viewPushrawtxProviderNodeOptions - removed:", node);
+    },
+    async: false,
+    reuse: true,
+    cache: true,
+  }
+});
+
+
