@@ -2506,7 +2506,7 @@ border: 1px solid red;
 
 .dropdown-select button{
     width: inherit;
-  height: 64px;
+  height: 48px;
   border-radius: 10px;
   background-color: #fff;
   border: 0;
@@ -2588,13 +2588,9 @@ a.item-donations:hover > svg {
   cursor: pointer;
   padding: 7.5px 15px;
   border-top: solid 1px #f3f3f3;
-  border-radius: 10px;  
+  border-radius: 10px;
+  
 }
-
-.dropdown-select ul.dropdown-menu.show li {
-	display: block;	
-}
-
 #coinjs_broadcast_api_select.dropdown-select.show,
 #coinjs_utxo_api_select.dropdown-select.show,
 #coinjs_network_select.dropdown-select.show {
@@ -4170,3 +4166,528 @@ padding-left: 0.75rem;
 
 
 /****** wally new ui*******/
+root {
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Theme Definitions */
+        .theme-light {
+        	--radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+
+            --primary: #F8FAFC;
+            --primary: #f0edf8;
+
+            --secondary: #FFFFFF;
+            --secondary-2: #F8FAFC;
+
+            --accent: #2563EB;
+            --accent: #5c4dff;
+            --accent: #b28cff;
+
+            --surface: #F1F5F9;
+            --surface-dropdown: #F1F5F9;
+            --surface-hover: #E2E8F0;
+            --text: #0F172A;
+            --text-secondary: #64748B;
+            --text-secondary-2: #3c3c3c;
+            --text-secondary-3: #3c3c3c;
+            --text-secondary-4: #3c3c3c;
+
+            --border: #E2E8F0;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-dark {
+        	--radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+
+            --primary: #0F172A;
+            --secondary: #1E293B;
+            --secondary-2: #1c2430;
+
+            --accent: #3B82F6;
+            --accent: #b28cff;
+            --accent: #5c4dff;
+
+
+            --surface: #334155;
+            --surface-dropdown: #5c4dff;
+            --surface-hover: #475569;
+            --text: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --text-secondary-2: #b28cff;
+            --text-secondary-3: #5c4dff;
+            --text-secondary-4: #94A3B8;
+
+            --border: #2D3748;
+            --shadow-color: rgba(0, 0, 0, 0.25);
+        }
+
+        /* Base Styles */
+        body {
+            background-color: var(--primary);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .btn {
+            border-radius: var(--radius-sm);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: relative;
+            /*top: 20px;
+            right: 20px;
+            */
+            z-index: 1000;
+            background-color: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 4px 8px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--surface);
+        }
+
+        /* Header */
+        .wallet-header {
+            padding: 5px 0;
+            text-align: center;
+        }
+
+        .wallet-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text);
+            margin: 0;
+        }
+
+        /* Balance Card */
+        .balance-card {
+            background-color: var(--secondary);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 6px;
+            text-align: center;
+            box-shadow: 0 4px 6px var(--shadow-color);
+        }
+
+        .balance-amount {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .balance-change {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .balance-change .positive {
+            color: #10B981;
+        }
+
+        /* Token List */
+        .token-list {
+            background-color: var(--secondary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+
+        .token-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        .token-item:last-child {
+            border-bottom: none;
+        }
+
+        .token-item:hover {
+            background-color: var(--surface);
+        }
+
+        .token-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background-color: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .token-icon img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .token-info {
+            flex: 1;
+        }
+
+        .token-name {
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .token-balance {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .token-value {
+            text-align: right;
+        }
+
+        .token-price {
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .token-change {
+            font-size: 14px;
+            color: #10B981;
+        }
+
+        .token-change.negative {
+            color: #EF4444;
+        }
+
+        /* Updated Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin: 12px 0 24px 0;
+        }
+
+        .action-button {
+            background-color: var(--surface);
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 12px 8px;
+            color: var(--text);
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 60px;
+        }
+
+        .action-button:hover {
+            background-color: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .action-button i {
+            font-size: 24px;
+            margin-bottom: 8px;
+            width: 36px;
+            height: 48px;
+        }
+
+        .action-button span {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .action-button:hover > span{
+            color: var(--text-primary);
+        }
+
+        /* Token Item Updates */
+        .token-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        .token-name-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .type-badge {
+            background-color: var(--surface);
+            color: var(--text-secondary);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Manage Tokens Button */
+        .manage-tokens {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 24px;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            color: var(--text);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .manage-tokens:hover {
+            background-color: var(--surface-hover);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-backdrop.show {
+            opacity: 0.75;
+        }
+        .modal {
+            border-radius: var(--radius-lg);
+              padding: 4px;
+              width: 100%;
+              backdrop-filter: blur(12px);
+
+        }
+        .modal-content {
+            background-color: var(--secondary);
+            border-radius: var(--radius-lg);
+        }
+        .modal-header {
+            border-bottom: 1px solid var(--border);
+        }
+        .modal-footer {
+            border-top: 1px solid var(--border);
+        }
+
+
+        .token-list-item {
+            
+            
+            border-bottom: 1px solid var(--border);
+        }
+
+        .token-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .token-checkbox {
+            margin-right: 12px;
+        }
+
+        .token-list-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            padding: 2px 0;
+        }
+
+        /* More Options Dropdown */
+        .more-options-content {
+            display: none;
+            position: absolute;
+            background-color: var(--secondary);
+            min-width: 160px;
+            box-shadow: 0 8px 16px var(--shadow-color);
+            border-radius: var(--radius-md);
+            z-index: 1;
+            right: 0;
+            margin-top: 8px;
+        }
+
+        .more-options-content a {
+            color: var(--text);
+            padding: 12px 12px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.2s;
+            
+        }
+        .more-options-content a:first-child {
+            color: red;
+            border-top-left-radius: var(--radius-md);
+            border-top-right-radius: var(--radius-md);
+        }
+        .more-options-content a:last-child {
+            color: red;
+            border-bottom-left-radius: var(--radius-md);
+            border-bottom-right-radius: var(--radius-md);
+        }
+
+        .more-options-content a:hover {
+            background-color: var(--surface);
+        }
+
+        .show2 {
+            display: block;
+        }
+
+        /* Type Badge */
+        .type-badge {
+            background-color: var(--surface);
+            color: var(--text-secondary);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Send Button */
+        .send-button {
+            background-color: var(--surface);
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            color: var(--text);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .send-button:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        /* Container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+
+        /*dropdown select*/
+        .dropdown-menu {
+            background-color: var(--secondary);
+
+            position: absolute;
+              min-width: 160px;
+              box-shadow: 0 8px 16px var(--shadow-color);
+              border-radius: var(--radius-md);
+              z-index: 1;
+              right: 0;
+              margin-top: 8px;
+              padding: 3px 4px 3px 3px;
+        }
+        .dropdown-menu .dropdown-item {
+            color: var(--text);
+          padding: 12px 12px;
+          text-decoration: none;
+          display: block;
+          /*transition: background-color 0.2s;*/
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+          background-color: var(--surface-dropdown);
+
+          border-radius: var(--radius-md);
+        }
+        .dropdown.show:before,
+        .dropdown-backdrop.show:before {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--primary);
+            opacity: 0.75;
+            content: '';
+            z-index: 1;
+            backdrop-filter: blur(12px);
+        }
+
+        /*Card custom */
+        .card-custom-info {
+            background-color: var(--secondary-2);
+            border-radius: var(--radius-lg);
+              padding: 12px;
+              margin-bottom: 6px;
+              box-shadow: 0 4px 6px var(--shadow-color);
+              border: 1px solid var(--secondary);
+
+        }
+        .card-custom-info .card-title {
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            font-size:0.9rem;
+            font-weight: 700;
+        }
+        .card-custom-info .card-text {
+            color: var(--text-secondary-4);
+            font-size:1rem;
+        }
+
+        .tab-content .tab-pane .card-openwallet-header {
+        	background-color: var(--primary);
+        	color: var(--text);
+        	border: unset;
+        }
+        .tab-content .tab-pane .card-openwallet-title {
+        	color: var(--text);
+        }
+
+        .tab-content .tab-pane .card-openwallet-footer {
+        	background-color: var(--primary);
+        	color: var(--text);
+        	border: unset;
+        }
+        .tab-content .tab-pane .card-openwallet, .tab-content .tab-pane .card-openwallet-small {
+        	background-color: var(--primary);
+        }
+        .callout {
+        	background-color: var(--secondary-2)
+        }
+
+        .callout-title {
+        	border: 1px solid var(--secondary);
+        	color: var(--text-primary);
+        	background-color: var(--secondary-2);
+        }
+
+        

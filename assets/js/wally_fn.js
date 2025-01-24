@@ -2637,6 +2637,181 @@ https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-
         txRBFTransaction: false,
         developer: 'K9w3PqeX9yr9AcYuyafcoa2wDk1VAfEzoH',
       },
+      peercoin: {
+        symbol: 'PPC', //ticker
+        asset: {
+          chainModel: 'utxo',
+          name: 'Peercoin',
+          version: 3, //latest BLK fork version
+          slug: 'peercoin',
+          symbol: 'PPC',
+          symbols: ['ppc', 'peercoin'],
+          icon: './assets/images/crypto/peercoin-ppc-logo.svg',
+          network: 'mainnet',
+          supports_address: ['compressed', 'uncompressed'],
+          api: {
+            unspent_outputs: {
+              'Cryptoid.info': 'ppc',
+              'ElectrumX-1 (SSL)': 'allingas.peercoinexplorer.net:50002',
+              'ElectrumX-2 (SSL)': 'electrum.peercoinexplorer.net:50002',
+              
+            },
+            broadcast: {
+              'Cryptoid.info': 'ppc',
+              'ElectrumX-1 (SSL)': 'allingas.peercoinexplorer.net:50002',
+              'ElectrumX-2 (SSL)': 'electrum.peercoinexplorer.net:50002',
+            },
+            providers: {
+              balance: {
+                'cryptoid.info': {
+                  params: {},
+                },
+                'electrumx': {
+                  params: {},
+                },
+              },
+              listunspent: {
+                'cryptoid.info': {
+                  params: {},
+                },
+                'electrumx': {
+                  params: {},
+                },
+              },
+              pushrawtx: {
+                'cryptoid.info': {
+                  params: {},
+                },
+                'electrumx': {
+                  params: {},
+                },
+              },
+              electrumx: {
+                nodes: [
+                  {
+                    name: 'allingas.peercoinexplorer.net',
+                    url: 'allingas.peercoinexplorer.net:50002',
+                    protocol: 'ssl',  //ssl/tcp
+                  },
+                  {
+                    name: 'allingas.peercoinexplorer.net',
+                    url: 'allingas.peercoinexplorer.net:50002',
+                    protocol: 'ssl',  //ssl/tcp
+                  },
+                ],
+                custom_nodes: [],
+              },
+            },
+          }
+        },
+        pub: 0x37, //pubKeyHash
+        priv: 0xb7, //wif
+        multisig: 0x75, //scriptHash
+        hdkey: {
+          'prv': 0x0488ade4,
+          'pub': 0x0488b21e
+        },
+        bech32: {
+          'charset': 'qpzry9x8gf2tvdw0s3jn54khce6mua7l',
+          'version': 0,
+          'hrp': 'pc'
+        },
+        slip_path: 6,
+        txExtraTimeField: false, 
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces: 6,
+        txRBFTransaction: false,
+        developer: 'PETGpEW1Y1r9ytZ522WJV4UygJ6zBZ2Zkk',
+      },
+      primecoin: {
+        symbol: 'XPM', //ticker
+        asset: {
+          chainModel: 'utxo',
+          name: 'Primecoin',
+          //version: 1,
+          slug: 'primecoin',
+          symbol: 'XPM',
+          symbols: ['xpm', 'primecoin'],
+          icon: './assets/images/crypto/primecoin-xpm-logo.svg',
+          network: 'mainnet',
+          supports_address: ['compressed', 'uncompressed'],
+          api: {
+            unspent_outputs: {
+              'Cryptoid.info': 'xpm',
+              'ElectrumX-1 (TCP)': 'electrumx.gemmer.primecoin.org:50011',
+              'ElectrumX-2 (TCP)': 'electrumx.mainnet.primecoin.org:50011',
+              'ElectrumX-3 (TCP)': 'electrumx.primecoin.org:50001',
+              
+            },
+            broadcast: {
+              'Cryptoid.info': 'xpm',
+              'ElectrumX-1 (TCP)': 'electrumx.gemmer.primecoin.org:50011',
+              'ElectrumX-2 (TCP)': 'electrumx.mainnet.primecoin.org:50011',
+              'ElectrumX-3 (TCP)': 'electrumx.primecoin.org:50001',
+            },
+            providers: {
+              balance: {
+                'cryptoid.info': {
+                  params: {},
+                },
+                'electrumx': {
+                  params: {},
+                },
+              },
+              listunspent: {
+                'cryptoid.info': {
+                  params: {},
+                },
+                'electrumx': {
+                  params: {},
+                },
+              },
+              pushrawtx: {
+                'cryptoid.info': {
+                  params: {},
+                },
+                'electrumx': {
+                  params: {},
+                },
+              },
+              electrumx: {
+                nodes: [
+                  /*{
+                    name: '',
+                    url: '',
+                    protocol: '',  //ssl/tcp
+                  },*/
+                ],
+                custom_nodes: [],
+              },
+            },
+          }
+        },
+        pub: 0x17,       // pubKeyHash: Primecoin addresses starting with 'A'
+        priv: 0x97,      // WIF prefix for private keys
+        multisig: 0x53,  // scriptHash: Primecoin multisig addresses starting with 'a'
+        hdkey: {
+          'prv': 0x0488ade4, // HD private key prefix
+          'pub': 0x0488b21e  // HD public key prefix
+        },
+        
+        
+        slip_path: 24,
+        bech32: {},
+        txExtraTimeField: false, 
+        txExtraTimeFieldValue: false,
+        txExtraUnitField: false,
+        txExtraUnitFieldValue: false,
+        decimalPlaces: 8,
+        txRBFTransaction: false,
+        developer: 'AMY1pqBErCinNYmtXRtwPxxW3uU2WNCvo8',
+        fee: {
+          byte: 100000,  //minimum tx fee 0.001/byte    0.001
+          dust: 25000000,   //recommended smallest txout is 0.25
+        },
+      },
       potcoin: {
         symbol: 'POT', //ticker
         asset: {
@@ -4882,7 +5057,7 @@ fetch('./json/komodo_filtered_data.json')
 wally_fn.updateElectrumNodes();
 */
 
-wally_fn.updateElectrumNodes = async function() {
+wally_fn.updateElectrumNodes2 = async function() {
   // Fetch the JSON data from the file
   fetch('./json/komodo_filtered_data.json')
     .then(response => response.json())
@@ -4929,9 +5104,78 @@ wally_fn.updateElectrumNodes = async function() {
     .catch(error => console.error('Error loading komodoFilteredData JSON:', error));
 };
 
+wally_fn.updateElectrumNodes = async function() {
+  // Fetch the JSON data from the file
+  fetch('./json/komodo_filtered_data.json')
+    .then(response => response.json())
+    .then(komodoFilteredData => {
+      const nodes = wally_fn.networks.mainnet;
+
+      if (Array.isArray(komodoFilteredData) && komodoFilteredData.length > 0) {
+        komodoFilteredData.forEach(item => {
+          // Only proceed if the coin is present in networks.mainnet
+          if (item.coin && item.server && item.protocol) {
+            for (let coinKey in nodes) {
+              const coinData = nodes[coinKey];
+              // Matching the symbol of the coin with item.coin
+              if (coinData.symbol === item.coin) {
+                // Ensure electrumx exists in the coin's API structure
+                if (!coinData.asset.api.providers.electrumx) {
+                  console.log(`KOMODO API - missing coin: ${coinKey}, provider set to empty`);
+                  coinData.asset.api.providers.electrumx = {
+                    nodes: [],
+                    custom_nodes: [],
+                  };
+                }
+
+                const electrumNodes = coinData.asset.api.providers.electrumx.nodes;
+
+                // Ensure we're not duplicating nodes
+                if (!electrumNodes.some(node => node.url === item.server)) {
+                  console.log(`KOMODO API - missing node: ${coinKey}, node added`);
+                  electrumNodes.push({
+                    name: item.server.split(":")[0], // Extract name from the server URL
+                    url: item.server, // Full server URL
+                    protocol: item.protocol.toLowerCase(), // Convert protocol to lowercase
+                  });
+
+                  // Add the nodes to unspent_outputs and broadcast
+                  const nodeName = `ElectrumX-${electrumNodes.length} (${item.protocol.toUpperCase()})`;
+
+                  if (!coinData.asset.api.unspent_outputs) {
+                    coinData.asset.api.unspent_outputs = {};
+                  }
+                  if (!coinData.asset.api.broadcast) {
+                    coinData.asset.api.broadcast = {};
+                  }
+
+                  coinData.asset.api.unspent_outputs[nodeName] = item.server;
+                  coinData.asset.api.broadcast[nodeName] = item.server;
+
+                  console.log(
+                    `KOMODO API - node added to unspent_outputs and broadcast: ${nodeName} -> ${item.server}`
+                  );
+                }
+              }
+            }
+          }
+        });
+      } else {
+        console.error("Invalid or empty komodoFilteredData");
+      }
+    })
+    .catch(error => console.error("Error loading komodoFilteredData JSON:", error));
+};
 
 // Update wally_fn coins with komodoFilteredData
-wally_fn.updateElectrumNodes();
+(async () => {
+    try {
+        await wally_fn.updateElectrumNodes();
+        console.log('Electrum nodes updated successfully.');
+    } catch (error) {
+        console.error('Error updating electrum nodes:', error);
+    }
+})();
 
 
 

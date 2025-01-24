@@ -265,6 +265,9 @@ profile_data = {
       		return;
 		}
 
+		//hide guest DOM elements
+		//$('[data-auth="hide"]').addClass('hidden');
+
   		custom.showModal(modalTitle, modalMessage, 'success');
 
 
@@ -2762,20 +2765,22 @@ only send scriptHash of multisig address to ElectrumX, not the redeemscripts
 				var r = 'Failed to broadcast';
 				$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
 			},
-            success: function(data) {
+      success: function(data) {
 					
-            	var r;
-
-            	if (data.result) {
-					var txid = data.result;
-					$("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden").html(' TXID: ' + txid + '<br> <a href="https://chainz.cryptoid.info/'+ticker+'/tx.dws?'+txid+'.htm" target="_blank">View on Blockchain Explorer</a>');
-				} else if (data.hasOwnProperty('error') ) {
-					r = 'Failed to Broadcast. ElectrumX response: <br>'
-					r += '<div class="alert alert-light">'+data.error.message+'</div>';
-					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i> ');
-				} else {
-					$("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again later...').prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
-				}
+					console.log('data: ', data);
+       	var r;
+       	// Ensure data is an array and has at least two objects
+        if (Array.isArray(data) && data.length > 1 && data[1].result) {
+            var txid = data[1].result; // Get the transaction ID from the second object
+            $("#rawTransactionStatus").addClass('alert-success').removeClass('alert-danger').removeClass("hidden").html(' TXID: ' + txid + '<br> <a href="https://chainz.cryptoid.info/' + ticker + '/tx.dws?' + txid + '.htm" target="_blank">View on Blockchain Explorer</a>');
+        } else if (data[1].hasOwnProperty('error')) {
+            r = 'Failed to Broadcast. ElectrumX response: <br>';
+            r += '<div class="alert alert-light"> Code: ' + data[1].error.code + '</div>';
+            r += '<div class="alert alert-light"> Message: ' + data[1].error.message + '</div>';
+            $("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(r).prepend('<i class="bi bi-exclamation-triangle-fill"></i> ');
+        } else {
+            $("#rawTransactionStatus").addClass('alert-danger').removeClass('alert-success').removeClass("hidden").html(' Unexpected error, please try again later...').prepend('<i class="bi bi-exclamation-triangle-fill"></i>');
+        }
 
 			},
 			complete: function(data, status) {
@@ -3802,6 +3807,9 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 	$("#signBtn").click(function(){
 		var wifkey = $("#signPrivateKey");
 		var script = $("#signTransaction");
+		wifkey.val().trim();
+		script.val().trim();
+
 
 		if(coinjs.addressDecode(wifkey.val())){
 			$(wifkey).parent().removeClass('has-error');
@@ -3844,12 +3852,25 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				}
 				*/
 				t = tx.deserialize(script.val());
-
 				console.log('tx.deserialize: ', t);
 
-				var signed = t.sign(wifkey.val(), $("#sighashType option:selected").val(), script.val());	// script.val() -> rawtx
-
+				var warnings = new Array();
+				var signed = t.sign(wifkey.val(), $("#sighashType option:selected").val(), script.val(), warnings);	// script.val() -> rawtx
 				console.log('signed: ', signed);
+				if (signed == script.val()) {
+					// if signed script is identical to the input,
+					// output a warning telling user to check inputs.
+					// most likely they chose the wrong WIF key for signing
+					
+					if (warnings.length > 0) {
+						$("#signedDataError").html("Warning: " + warnings.toString());
+						throw (warnings.toString());
+					}
+				}
+
+				
+
+				
 
 				//time, PoS coins, add extra timefield to TX
 				if(coinjs.asset.slug == 'potcoin'){
@@ -3864,6 +3885,8 @@ var tx = '1200900900002000001100000000990000000900000000000000000000000001';
 				$("#signedData").removeClass('hidden').fadeIn();
 			} catch(e) {
 				 console.log(e);
+				 $("#signedDataError").removeClass('hidden');
+				 $("#signedData").addClass('hidden');
 			}
 		} else {
 			$("#signedDataError").removeClass('hidden');
@@ -5144,7 +5167,7 @@ $("#walletSendReset").click(function(){
 */
 
   // Create the blockie image
-  var address = '0x138854708D8B603c9b7d4d6e55b6d32D40557F4D';
+  
 /*
 var img = new Image();
 img.src = makeBlockie(address);
@@ -5153,6 +5176,8 @@ img.classList.add('icon24');
 
 $(".blockie_address").append(img)
 */
+/*
+var address = '0x138854708D8B603c9b7d4d6e55b6d32D40557F4D';
 //$(".blockie_address").css("background", "url(" + img.src + ")");
 
 //$(".blockie_address.icon").css("background-image", "url(" + makeBlockie(address) + ")");
@@ -5166,6 +5191,7 @@ $(".blockie_wrapper .wallet_address").val(address);
 $(".blockie_wrapper").attr('title', 'Copy Address').attr('data-copy-content', address);
 //$(".blockie_wrapper").css("background-image", "url(" + makeBlockie('0x138854708D8B603c9b7d4d6e55b6d32D40557F4D') + ")");
 
+*/
 
 //jbox content loader
 var jbox_loader_id = 'jBoxTooltip-'+Math.floor(Math.random() * 999)+'_'+wally_fn.generatePassword(16, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');

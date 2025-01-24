@@ -557,12 +557,27 @@
         //set the user prefered API Provider, render API provider , render nodes
         if (login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.balance) {
           coinbinf.apiBalanceProviderSelector.val(login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.balance);
+
+          if (login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.balance == 'electrumx')
+            coinbinf.apiBalanceProviderNodeSelector.removeClass('hidden');
+          else
+            coinbinf.apiBalanceProviderNodeSelector.addClass('hidden');
         }
         if (login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.listunspent) {
           coinbinf.apiListunspentProviderSelector.val(login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.listunspent);
+
+          if (login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.listunspent == 'electrumx')
+            coinbinf.apiListunspentProviderNodeSelector.removeClass('hidden');
+          else
+            coinbinf.apiListunspentProviderNodeSelector.addClass('hidden');
         }
         if (login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.pushrawtx) {
           coinbinf.apiPushrawtxProviderSelector.val(login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.pushrawtx);
+
+          if (login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.pushrawtx == 'electrumx')
+            coinbinf.apiPushrawtxProviderNodeSelector.removeClass('hidden');
+          else
+            coinbinf.apiPushrawtxProviderNodeSelector.addClass('hidden');
         }
         //set the user prefered API Node Provider
         if (login_wizard.profile_data.generated[coinjs.asset.slug].api_provider.balance_node) {
@@ -597,6 +612,8 @@
         } else {
           $('#wallet_advanced_options_dropdown').addClass('hidden')
         }
+
+        
         $('.coin_name').text(coinjs.asset.name)
         $('.coin_symbol').text(coinjs.asset.symbol)
         $('.coin_chain').text(coinjs.asset.chainModel)
@@ -713,6 +730,9 @@
         $('[data-user-show="auth"]').addClass('hidden');
         $('[data-user-show="guest"]').removeClass('hidden');
 
+
+        //show guest DOM elements
+        //$('[data-auth="hide"]').removeClass('hidden');
 
         //remove session if remember me is false
         //if (!login_wizard.profile_data.remember)
@@ -1060,13 +1080,17 @@
     console.log('wally_fn.asset after: ', wally_fn.asset);
     $('#coinjs_broadcast_api_select button').text('');
     var i = 0,
+      nodeName = '',
       electrumXContent = '';
     for (var [key, value] of Object.entries(wally_fn.networks[wally_fn.network][wally_fn.asset].asset.api.broadcast)) {
       //show ElectrumX server in list
-      if (key.includes('ElectrumX'))
+      nodeName = key;
+      if (key.includes('ElectrumX')) {
+        nodeName = 'ElectrumX-'+(i+1) + ' ('+key.split('(')[1]?.split(')')[0] +')';
         electrumXContent = ' <small>' + value + '</small>';
+      }
       selectNetworkBroadcastAPI.append('<option value="' + key + '" data-icon="" >' + key + '</option>');
-      selectNetworkBroadcastAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-broadcast-provider="' + value + '" data-broadcast-provider-name="' + key + '"><img src="./assets/images/providers_icon.svg" class="icon32"> ' + key + electrumXContent + ' <i class="icon bi"></i></li>');
+      selectNetworkBroadcastAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-broadcast-provider="' + value + '" data-broadcast-provider-name="' + key + '"><img src="./assets/images/providers_icon.svg" class="icon32">' +nodeName + electrumXContent + ' <i class="icon bi"></i></li>');
       if (i == 0) { //set broadcast asset
         $('#coinjs_broadcast_api_select button').html('<img src="./assets/images/providers_icon.svg" class="icon32"> ' + key);
         wally_fn.provider.broadcast = key;
@@ -1078,11 +1102,14 @@
     i = 0;
     $('#coinjs_utxo_api_select button').text('');
     for (var [key, value] of Object.entries(wally_fn.networks[wally_fn.network][wally_fn.asset].asset.api.unspent_outputs)) {
+      nodeName = key;
       //show ElectrumX server in list
-      if (key.includes('ElectrumX'))
+      if (key.includes('ElectrumX')) {
+        nodeName = 'ElectrumX-'+(i+1) + ' ('+key.split('(')[1]?.split(')')[0] +')';
         electrumXContent = ' <small>' + value + '</small>';
+      }
       selectNetworkUtxoAPI.append('<option value="' + key + '" data-icon="" >' + key + '</option>');
-      selectNetworkUtxoAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-utxo-provider="' + value + '" data-utxo-provider-name="' + key + '"><img src="./assets/images/providers_icon.svg" class="icon32"> ' + key + electrumXContent + ' <i class="icon bi"></i></li>');
+      selectNetworkUtxoAPIwIcons.append('<li data-icon="./assets/images/providers_icon.svg" data-utxo-provider="' + value + '" data-utxo-provider-name="' + key + '"><img src="./assets/images/providers_icon.svg" class="icon32"> ' + nodeName + electrumXContent + ' <i class="icon bi"></i></li>');
       if (i == 0) { //set utxo provider asset
         $('#coinjs_utxo_api_select button').html('<img src="./assets/images/providers_icon.svg" class="icon32"> ' + key);
         wally_fn.provider.utxo = key;
@@ -1141,7 +1168,7 @@
           continue; // Skip the current iteration and move to the next one
       }
       const chainModel = value.asset.chainModel == 'account' ? 'evm' : value.asset.chainModel;
-       
+
       userAssetListArr.push({'name': value.asset.name, 'icon': value.asset.icon, 'chainModel': chainModel, 'symbol': value.asset.symbol, 'slug': key});
 
     }
@@ -1821,7 +1848,7 @@ wally_kit.apiGetCoinBalance = async function (providerName) {
     const apiResponse = await fetchApiDataWithRateLimit(url, providerName);
     
     if (!apiResponse)
-      throw('Rate Limit exceeded!')
+      console.error('Rate Limit exceeded!')
 
     console.log('Response on addresses balance:', apiResponse);
 

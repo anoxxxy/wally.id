@@ -2497,7 +2497,7 @@ var hash = Crypto.SHA256(message);
 		}
 
 		/* sign inputs */
-		r.sign = function(wif, sigHashType, rawTx, warnings){
+		r.sign = function(wif, sigHashType, rawTx){
 			var shType = sigHashType || 1;
 
 			console.log('===r.sign===');
@@ -2524,7 +2524,6 @@ var hash = Crypto.SHA256(message);
 
 				} else {
 					// could not sign
-					warnings.push("Could not sign input "+(i+1)+" using the supplied private key");
 				}
 			}
 			return this.serialize();
@@ -2707,6 +2706,68 @@ var hash = Crypto.SHA256(message);
 						obj.nTime = readAsInt(4);
 					}
 				}
+/*
+// Read multiplier length and multiplier
+				if (buffer.length >= 81) {
+                var multiplierLength = buffer[80];
+                console.log('multiplierLength: ', multiplierLength);
+                var multiplierBytes = buffer.slice(81, 81 + multiplierLength);
+                console.log('multiplierBytes: ', multiplierBytes);
+                var bnPrimeChainMultiplier = new BigInteger(Crypto.util.bytesToHex(multiplierBytes), 16);
+                console.log('bnPrimeChainMultiplier: ', bnPrimeChainMultiplier);
+
+              } else{
+              	console.log('no multiplierBytes!');
+              }
+              */
+/*
+				var multiplierLength = buffer[80]; // Byte 80 indicating the length
+console.log('multiplierLength: ', multiplierLength);
+
+// Ensure buffer has enough data for the multiplier
+if (buffer.length >= 81 + multiplierLength) {
+    var multiplierBytes = buffer.slice(81, 81 + multiplierLength); // Extract multiplier bytes
+    console.log('multiplierBytes: ', multiplierBytes);
+
+    // Convert bytes to a BigInteger
+    var bnPrimeChainMultiplier = new BigInteger(Crypto.util.bytesToHex(multiplierBytes), 16);
+    console.log('bnPrimeChainMultiplier (BigInteger object): ', bnPrimeChainMultiplier);
+
+    // Convert the BigInteger to a usable string or numeric value
+    var multiplierAsHex = bnPrimeChainMultiplier.toString(16); // Hexadecimal representation
+    var multiplierAsDecimal = bnPrimeChainMultiplier.toString(10); // Decimal representation
+
+    console.log('Multiplier as Hex: ', multiplierAsHex);
+    console.log('Multiplier as Decimal: ', multiplierAsDecimal);
+
+    // If you need it as a number (careful with large integers):
+    var multiplierAsNumber = parseInt(multiplierAsDecimal, 10);
+    console.log('Multiplier as Number: ', multiplierAsNumber);
+} else {
+    console.error('Insufficient buffer length for multiplierBytes.');
+}
+*/
+
+/*
+// Check if there's enough buffer left for byte 80
+if (buffer.length > pos) {
+    var multiplierLength = readAsInt(1); // Byte 80
+    console.log('multiplierLength: ', multiplierLength);
+
+    // Ensure the length of the multiplier doesn't exceed the remaining buffer
+    if (pos + multiplierLength <= buffer.length) {
+        obj.multiplier = Crypto.util.bytesToHex(readBytes(multiplierLength)); // Multiplier data
+        console.log('obj.multiplier: ', obj.multiplier);
+    } else {
+        console.error('Multiplier length exceeds buffer length. Malformed transaction.');
+        obj.multiplier = null; // Handle as a failed case
+    }
+} else {
+    console.error('Byte 80 does not exist. Malformed transaction.');
+    obj.multiplier = null; // Handle as a failed case
+}
+*/
+
 
 
 				return obj;

@@ -15,17 +15,17 @@ function convertToMainUnit(value, decimals = 8, asString = true) {
   if (value === 0) {
     return asString ? '0' : 0;
   }
-  
+
   const mainUnitValue = value / Math.pow(10, decimals);
   return asString ? mainUnitValue.toFixed(decimals) : mainUnitValue;
 }
 
-const walletAssetsTpl = `
+const walletAssetsTplOld = `
   <div class="list-border position-relative">
     <div class="list-wrapper">
       <div class="list-name">
         <div class="coin-icon">
-          <div class="icon icon32">
+          <div class="icon icon36">
             <img src="{{data.icon}}">
           </div>
         </div>
@@ -47,13 +47,43 @@ const walletAssetsTpl = `
               <i class="bi bi-caret-down"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right">
-              <a class="dropdown-item" href="#wallet/send/{{data.slug}">
+              <a class="dropdown-item" href="#wallet/send/{{data.slug}}">
                 <img src="./assets/images/send.svg" class="icon28"> <span>Send</span> </a>
-              <a class="dropdown-item" href="#wallet/receive/{{data.slug}">
+              <a class="dropdown-item" href="#wallet/receive/{{data.slug}}">
                 <img src="./assets/images/receive.svg" class="icon28"> <span>Receive</span></a>
               <a class="dropdown-item" href="#wallet/settings/{{data.slug}}">
                 <img src="./assets/images/settings.svg" class="icon28"> <span>Settings</span></a>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+  const walletAssetsTpl = `
+  <div class="list-border position-relative">
+    <div class="list-wrapper">
+      <div class="list-name">
+        <div class="coin-icon">
+          <div class="icon icon36">
+            <img src="{{data.icon}}">
+          </div>
+        </div>
+        <div class="coin-info">
+          <span class="title">
+            <a href="#wallet/asset/{{data.slug}}" class="stretched-link">{{data.name}}</a>
+            <span class="badge badge-primary chain_model ml-1">{{data.chainModel}}</span>
+          </span>
+          <span class="subtitle">
+            <span class="balance">0</span> <span> {{data.symbol}}</span></span>
+        </div>
+      </div>
+      <div class="list-details">
+        <div class="">
+          <div class="">
+            <button type="button" class="btn btn-sm btn-flat-primary">
+              $0
+              </button>
           </div>
         </div>
       </div>
@@ -274,19 +304,19 @@ const tplListunspentProviderOptionsC = Mikado.compile(apiListunspentProviderOpti
 wally_fn.tpl.seed.viewListunspentProviderOptions  = Mikado(containerApiListunspentProviderSelect, tplListunspentProviderOptionsC, {
   on: {
     create: function(node) {
-      console.log("Mikado.Templates.viewListunspentProviderOptions - created:", node);
+      //console.log("Mikado.Templates.viewListunspentProviderOptions - created:", node);
     },
     insert: function(node) {
-      console.log("Mikado.Templates.viewListunspentProviderOptions - inserted:", node);
+      //console.log("Mikado.Templates.viewListunspentProviderOptions - inserted:", node);
     },
     update: function(node) {
-      console.log("Mikado.Templates.viewListunspentProviderOptions - updated:", node);
+      //console.log("Mikado.Templates.viewListunspentProviderOptions - updated:", node);
     },
     change: function(node) {
-      console.log("Mikado.Templates.viewListunspentProviderOptions - changed:", node);
+      //console.log("Mikado.Templates.viewListunspentProviderOptions - changed:", node);
     },
     remove: function(node) {
-      console.log("Mikado.Templates.viewListunspentProviderOptions - removed:", node);
+      //console.log("Mikado.Templates.viewListunspentProviderOptions - removed:", node);
     },
     async: true,
     reuse: true,
@@ -306,19 +336,19 @@ const tplPushrawtxProviderOptionsC = Mikado.compile(apiPushrawtxProviderOptionsT
 wally_fn.tpl.seed.viewPushrawtxProviderOptions  = Mikado(containerApiPushrawtxProviderSelect, tplPushrawtxProviderOptionsC, {
   on: {
     create: function(node) {
-      console.log("Mikado.Templates.viewPushrawtxProviderOptions - created:", node);
+      //console.log("Mikado.Templates.viewPushrawtxProviderOptions - created:", node);
     },
     insert: function(node) {
-      console.log("Mikado.Templates.viewPushrawtxProviderOptions - inserted:", node);
+      //console.log("Mikado.Templates.viewPushrawtxProviderOptions - inserted:", node);
     },
     update: function(node) {
-      console.log("Mikado.Templates.viewPushrawtxProviderOptions - updated:", node);
+      //console.log("Mikado.Templates.viewPushrawtxProviderOptions - updated:", node);
     },
     change: function(node) {
-      console.log("Mikado.Templates.viewPushrawtxProviderOptions - changed:", node);
+      //console.log("Mikado.Templates.viewPushrawtxProviderOptions - changed:", node);
     },
     remove: function(node) {
-      console.log("Mikado.Templates.viewPushrawtxProviderOptions - removed:", node);
+      //console.log("Mikado.Templates.viewPushrawtxProviderOptions - removed:", node);
     },
     async: true,
     reuse: true,
@@ -339,19 +369,19 @@ const tplApiBalanceProviderNodeOptionsC = Mikado.compile(apiBalanceProviderNodeO
 wally_fn.tpl.seed.viewBalanceProviderNodeOptions  = Mikado(containerApiBalanceProviderNodeSelect, tplApiBalanceProviderNodeOptionsC, {
   on: {
     create: function(node) {
-      console.log("Mikado.Templates.viewBalanceProviderNodeOptions - created:", node);
+      //console.log("Mikado.Templates.viewBalanceProviderNodeOptions - created:", node);
     },
     insert: function(node) {
-      console.log("Mikado.Templates.viewBalanceProviderNodeOptions - inserted:", node);
+      //console.log("Mikado.Templates.viewBalanceProviderNodeOptions - inserted:", node);
     },
     update: function(node) {
-      console.log("Mikado.Templates.viewBalanceProviderNodeOptions - updated:", node);
+      //console.log("Mikado.Templates.viewBalanceProviderNodeOptions - updated:", node);
     },
     change: function(node) {
-      console.log("Mikado.Templates.viewBalanceProviderNodeOptions - changed:", node);
+      //console.log("Mikado.Templates.viewBalanceProviderNodeOptions - changed:", node);
     },
     remove: function(node) {
-      console.log("Mikado.Templates.viewBalanceProviderNodeOptions - removed:", node);
+      //console.log("Mikado.Templates.viewBalanceProviderNodeOptions - removed:", node);
     },
     async: false,
     reuse: true,
@@ -371,19 +401,19 @@ const tplListunspentProviderNodeOptionsC = Mikado.compile(apiListunspentProvider
 wally_fn.tpl.seed.viewListunspentProviderNodeOptions  = Mikado(containerApiListunspentProviderNodeSelect, tplListunspentProviderNodeOptionsC, {
   on: {
     create: function(node) {
-      console.log("Mikado.Templates.viewListunspentProviderNodeOptions - created:", node);
+      //console.log("Mikado.Templates.viewListunspentProviderNodeOptions - created:", node);
     },
     insert: function(node) {
-      console.log("Mikado.Templates.viewListunspentProviderNodeOptions - inserted:", node);
+      //console.log("Mikado.Templates.viewListunspentProviderNodeOptions - inserted:", node);
     },
     update: function(node) {
-      console.log("Mikado.Templates.viewListunspentProviderNodeOptions - updated:", node);
+      //console.log("Mikado.Templates.viewListunspentProviderNodeOptions - updated:", node);
     },
     change: function(node) {
-      console.log("Mikado.Templates.viewListunspentProviderNodeOptions - changed:", node);
+      //console.log("Mikado.Templates.viewListunspentProviderNodeOptions - changed:", node);
     },
     remove: function(node) {
-      console.log("Mikado.Templates.viewListunspentProviderNodeOptions - removed:", node);
+      //console.log("Mikado.Templates.viewListunspentProviderNodeOptions - removed:", node);
     },
     async: false,
     reuse: true,
@@ -403,19 +433,19 @@ const tplPushrawtxProviderNodeOptionsC = Mikado.compile(apiPushrawtxProviderNode
 wally_fn.tpl.seed.viewPushrawtxProviderNodeOptions  = Mikado(containerApiPushrawtxProviderNodeSelect, tplPushrawtxProviderNodeOptionsC, {
   on: {
     create: function(node) {
-      console.log("Mikado.Templates.viewPushrawtxProviderNodeOptions - created:", node);
+      //console.log("Mikado.Templates.viewPushrawtxProviderNodeOptions - created:", node);
     },
     insert: function(node) {
-      console.log("Mikado.Templates.viewPushrawtxProviderNodeOptions - inserted:", node);
+      //console.log("Mikado.Templates.viewPushrawtxProviderNodeOptions - inserted:", node);
     },
     update: function(node) {
-      console.log("Mikado.Templates.viewPushrawtxProviderNodeOptions - updated:", node);
+      //console.log("Mikado.Templates.viewPushrawtxProviderNodeOptions - updated:", node);
     },
     change: function(node) {
-      console.log("Mikado.Templates.viewPushrawtxProviderNodeOptions - changed:", node);
+      //console.log("Mikado.Templates.viewPushrawtxProviderNodeOptions - changed:", node);
     },
     remove: function(node) {
-      console.log("Mikado.Templates.viewPushrawtxProviderNodeOptions - removed:", node);
+      //console.log("Mikado.Templates.viewPushrawtxProviderNodeOptions - removed:", node);
     },
     async: false,
     reuse: true,
